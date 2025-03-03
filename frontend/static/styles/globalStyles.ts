@@ -152,4 +152,33 @@ module.exports = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
   },
+  navBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#0079FD",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    width: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 1000,
+    borderWidth: 2, 
+    borderColor: "#FFF", 
+  },
+  navText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  content: {
+    flex: 1,
+    paddingTop: 60,
+  },
+  navBarImage: {
+    width: 40,  
+    height: 40,
+    borderRadius: 20,  
+  },
 });
