@@ -10,7 +10,7 @@ export default function Page() {
 
   return (
     <View>
-        <Navbar />
+        
         <View style={gs.container}>
         
             <Text style={gs.headerText}>Registro de Alimento</Text>
