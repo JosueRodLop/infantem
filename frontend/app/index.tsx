@@ -15,12 +15,16 @@ export default function Page() {
         <Text>Hello world, frontend is working. :D</Text>
         <Text>This page is not implemented yet. It has no styles.</Text>
 
-        <Link href="/appStyleSamples" style={gs.link}>
+        <Link href="/appStyleSamples" style={gs.linkText}>
           Click here to check a showcase of the styles.
         </Link>
 
-        <Link href="/recipeRecommendations" style={gs.link}>
+        <Link href="/recipeRecommendations" style={gs.linkText}>
           Click here to check an initial version of the recipe recommendations page.
+        </Link>
+
+        <Link href="/food" style={gs.linkText}>
+          Click here to check an initial version of the food page.
         </Link>
       </View>
     </View>

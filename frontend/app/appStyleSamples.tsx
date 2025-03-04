@@ -7,7 +7,7 @@ export default function Page() {
   const gs = require("../static/styles/globalStyles");
 
   return (
-    <View style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }}>
       {}
       <NavBar />
 
@@ -60,7 +60,7 @@ export default function Page() {
           </View>
         </Modal>
       </ScrollView>
-    </View>
+    </ScrollView>
   );
 }
 

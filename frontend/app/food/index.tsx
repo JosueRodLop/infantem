@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Text, View, TextInput, Picker, TouchableOpacity } from "react-native";
-import Navbar from "../components/Navbar";
+import React, { useState } from "react";
+import { Text, View, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import Navbar from "../../components/NavBar";
 
 export default function Page() {
   const [foodName, setFoodName] = useState("");
@@ -9,10 +10,11 @@ export default function Page() {
   const gs = require('../../static/styles/globalStyles');
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
         
-        <View style={gs.container}>
+        <Navbar />
         
+        <ScrollView contentContainerStyle={[gs.container]}> 
             <Text style={gs.headerText}>Registro de Alimento</Text>
 
             <Text style={gs.subHeaderText}>Nombre del Alimento</Text>
@@ -35,14 +37,14 @@ export default function Page() {
                 <Picker.Item label="Carbohidrato" value="carbohidrato" />
             </Picker>
 
-            <TouchableOpacity style={gs.mainButton}>
+            <TouchableOpacity style={[gs.mainButton]}>
                 <Text style={gs.mainButtonText}>Guardar</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={gs.secondaryButton} >
-            <Text style={gs.secondaryButtonText} onPress={() => {window.location.href = "/";}}>Inicio</Text>
-            </TouchableOpacity>
-        </View>
+            
+        
+        </ScrollView>
     </View>
+    
   );
 }
