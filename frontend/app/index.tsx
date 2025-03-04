@@ -15,6 +15,15 @@ export default function Page() {
       >
         Click here to check a showcase of the styles.
       </Link>
+
+      <Link 
+      href="/auth/LoginScreen" 
+      style={{ 
+        color: 'blue', 
+        textDecorationLine: 'underline', 
+        marginTop: 20 }}>
+        Go to Login Screen
+      </Link>
     </View>
   );
 }
