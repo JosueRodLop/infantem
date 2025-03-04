@@ -1,31 +1,28 @@
+import { View, Text } from "react-native";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
-import Navbar from "./components/Navbar";
+import NavBar from "../components/NavBar";
 
 export default function Page() {
+  const gs = require("../static/styles/globalStyles");
+
   return (
-    <View> 
-      <Navbar />
-      <Text>Hello world, frontend is working. :D</Text>
-      <Text>This page is not implemented yet. It has not styles.</Text>
-      <Link
-        href="/appStyleSamples"
-        style={{
-          color: 'blue', 
-          textDecorationLine: 'underline', 
-        }}
-      >
-        Click here to check a showcase of the styles.
-      </Link>
-      <Link
-        href="/alimentos"
-        style={{
-          color: 'green', 
-          textDecorationLine: 'underline', 
-        }}
-      >
-        Registrar Alimentos.
-      </Link>
+    <View style={{ flex: 1 }}>
+      {}
+      <NavBar />
+
+      {}
+      <View style={[gs.container, { marginTop: 70 }]}>
+        <Text>Hello world, frontend is working. :D</Text>
+        <Text>This page is not implemented yet. It has no styles.</Text>
+
+        <Link href="/appStyleSamples" style={gs.link}>
+          Click here to check a showcase of the styles.
+        </Link>
+
+        <Link href="/recipeRecommendations" style={gs.link}>
+          Click here to check an initial version of the recipe recommendations page.
+        </Link>
+      </View>
     </View>
   );
 }
