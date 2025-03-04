@@ -9,9 +9,17 @@ const NavBar: React.FC = () => {
   return (
     <View style={gs.navBar}>
       {}
-      <TouchableOpacity onPress={() => router.push("/")}>
-        <Image source={require("../static/images/profile.webp")} style={gs.navBarImage} />
-      </TouchableOpacity>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 30 }}>
+        <TouchableOpacity onPress={() => router.push("/")}>
+          <Image source={require("../static/images/profile.webp")} style={gs.navBarImage} />
+        </TouchableOpacity>
+
+        <Link href="/recipeRecommendations" asChild>
+          <TouchableOpacity>
+            <Text style={gs.navText}>Recipes</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
 
       <Link href="/profile" asChild>
         <TouchableOpacity>
