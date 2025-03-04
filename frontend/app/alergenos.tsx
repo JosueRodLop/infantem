@@ -18,7 +18,7 @@ export default function Page() {
   // I think using records is a better approach than using maps here.
   const [answers, setAnswers] = useState<Record<number, string>>({}); 
 
-  // TODO: This must be retrieved from the back. The JSON is temporal
+  // TODO: This must be retrieved from the back. The JSON is temporary
   //const [questions, setQuestions] = useState([]);
   const questions: Question[] = [
     {
