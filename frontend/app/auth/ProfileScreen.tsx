@@ -1,17 +1,28 @@
 import { useState, useEffect } from "react";
-import { ActivityIndicator } from "react-native";
-import { Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
+import { ActivityIndicator, Modal, TextInput, Alert } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 interface User {
   nombre: string;
   apellidos: string;
   nombreUsuario: string;
   email: string;
+  rutaFotoPerfil: any;
 }
+
+const avatarOptions = [
+  require("../../assets/avatar/avatar1.png"),
+  require("../../assets/avatar/avatar2.png")
+];
 
 export default function ProfileScreen() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const navigation = useNavigation();
 
   const gs = require("../../static/styles/globalStyles"); // Importando estilos globales
 
@@ -19,7 +30,9 @@ export default function ProfileScreen() {
     fetch("http://localhost:8080/usuarios/1") // Se usa el ID del usuario en la URL
       .then(response => response.json())
       .then((data: User) => {
-        setUser(data);
+        if (data) {
+          setUser(data);
+        }
         setLoading(false);
       })
       .catch(error => {
@@ -29,17 +42,49 @@ export default function ProfileScreen() {
   }, []);
 
   const handleEditProfile = () => {
-    console.log("Editar perfil");
-    // Aquí se podría abrir una pantalla de edición de perfil
+    setIsEditing(true);
+  };
+
+  const handleSaveChanges = () => {
+    if (!user) return;
+    
+    fetch("http://localhost:8080/usuarios/1", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Error en la actualización del perfil");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data) {
+          setUser(data);
+          setIsEditing(false);
+          Alert.alert("Perfil actualizado", "Los cambios han sido guardados correctamente");
+        }
+      })
+      .catch(error => {
+        console.error("Error al guardar los cambios:", error);
+        Alert.alert("Error", "No se pudo guardar los cambios");
+      });
   };
 
   const handleLogout = () => {
     console.log("Cerrando sesión");
-    // Aquí iría la lógica para cerrar sesión
+  };
+
+  const handleAvatarSelection = (avatar: any) => {
+    if (user && isEditing) {
+      setUser({ ...user, rutaFotoPerfil: avatar });
+      setModalVisible(false);
+    }
   };
 
   if (!user) {
-    return <Text>Cargando perfil...</Text>; // Mensaje mientras se carga el usuario
+    return <Text>Cargando perfil...</Text>;
   }
   if (loading) {
     return (
@@ -52,34 +97,56 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView contentContainerStyle={gs.container}>
+      <TouchableOpacity style={{ position: 'absolute', top: 20, left: 20, zIndex: 10 }} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+      
       <Text style={gs.headerText}>Perfil</Text>
       <Text style={gs.subHeaderText}>Información de usuario</Text>
 
-      {/* Imagen de perfil (Si decides agregarla en la BD en el futuro) */}
-      <View style={gs.profileImageContainer}>
-        <Image source={{ uri: "https://via.placeholder.com/100" }} style={gs.profileImage} />
-      </View>
-
-      {/* Nombre de usuario */}
-      <Text style={gs.subHeaderText}>{user.nombre} {user.apellidos}</Text>
-
-      {/* Nombre de usuario */}
-      <Text style={gs.profileText}>Nombre de Usuario</Text>
-      <Text style={gs.subHeaderText}>{user.nombreUsuario}</Text>
-
-      {/* Correo electrónico */}
-      <Text style={gs.profileText}>Correo Electrónico</Text>
-      <Text style={[gs.subHeaderText, { marginBottom: 30 }]}>{user.email}</Text>
-
-      {/* Botón para editar perfil */}
-      <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleEditProfile}>
-        <Text style={gs.mainButtonText}>Editar Perfil</Text>
+      <TouchableOpacity style={gs.profileImageContainer} onPress={() => isEditing && setModalVisible(true)} disabled={!isEditing}>
+        <Image source={user.rutaFotoPerfil || require("../../assets/avatar/avatar1.png")} style={gs.profileImage} />
       </TouchableOpacity>
 
-      {/* Botón para cerrar sesión */}
+      <TextInput style={gs.input} value={user.nombre} editable={isEditing} onChangeText={text => setUser({ ...user, nombre: text })} />
+      <TextInput style={gs.input} value={user.apellidos} editable={isEditing} onChangeText={text => setUser({ ...user, apellidos: text })} />
+      <TextInput style={gs.input} value={user.nombreUsuario} editable={isEditing} onChangeText={text => setUser({ ...user, nombreUsuario: text })} />
+      <TextInput style={gs.input} value={user.email} editable={isEditing} onChangeText={text => setUser({ ...user, email: text })} />
+
+      {isEditing ? (
+        <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleSaveChanges}>
+          <Text style={gs.mainButtonText}>Guardar Cambios</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleEditProfile}>
+          <Text style={gs.mainButtonText}>Editar Perfil</Text>
+        </TouchableOpacity>
+      )}
+
       <TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
         <Text style={gs.secondaryButtonText}>Cerrar Sesión</Text>
       </TouchableOpacity>
+
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
+        <View style={gs.modalOverlay}>
+          <View style={gs.modalContent}>
+            <Text style={gs.modalTitle}>Selecciona tu avatar</Text>
+            <FlatList
+              data={avatarOptions}
+              keyExtractor={(item, index) => index.toString()}
+              numColumns={2}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleAvatarSelection(item)}>
+                  <Image source={item} style={gs.avatarOption} />
+                </TouchableOpacity>
+              )}
+            />
+            <TouchableOpacity style={gs.closeModalButton} onPress={() => setModalVisible(false)}>
+              <Text style={gs.closeModalButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
