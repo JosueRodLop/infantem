@@ -31,6 +31,7 @@ public class UsuarioService {
             usuario.setNombreUsuario(usuarioDetails.getNombreUsuario());
             usuario.setContraseña(usuarioDetails.getContraseña());
             usuario.setEmail(usuarioDetails.getEmail());
+            usuario.setRutaFotoPerfil(usuarioDetails.getRutaFotoPerfil());
             return usuarioRepository.save(usuario);
         });
     }

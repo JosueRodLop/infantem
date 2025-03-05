@@ -5,11 +5,12 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
 interface User {
+  id: number;
   nombre: string;
   apellidos: string;
   nombreUsuario: string;
   email: string;
-  rutaFotoPerfil: any;
+  rutaFotoPerfil: string;
 }
 
 const avatarOptions = [
@@ -24,10 +25,10 @@ export default function ProfileScreen() {
   const [isEditing, setIsEditing] = useState(false);
   const navigation = useNavigation();
 
-  const gs = require("../../static/styles/globalStyles"); // Importando estilos globales
+  const gs = require("../../static/styles/globalStyles");
 
   useEffect(() => {
-    fetch("http://localhost:8080/usuarios/1") // Se usa el ID del usuario en la URL
+    fetch("http://localhost:8080/usuarios/1")
       .then(response => response.json())
       .then((data: User) => {
         if (data) {
@@ -48,27 +49,40 @@ export default function ProfileScreen() {
   const handleSaveChanges = () => {
     if (!user) return;
     
-    fetch("http://localhost:8080/usuarios/1", {
+    console.log("Enviando datos al backend:", user);
+    
+    const userData = {
+      id: user.id,
+      nombre: user.nombre,
+      apellidos: user.apellidos,
+      nombreUsuario: user.nombreUsuario,
+      email: user.email,
+      rutaFotoPerfil: user.rutaFotoPerfil
+    };
+
+    fetch(`http://localhost:8080/usuarios/${user.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user)
+      body: JSON.stringify(userData)
     })
       .then(response => {
+        console.log("Respuesta del servidor:", response);
         if (!response.ok) {
-          throw new Error("Error en la actualización del perfil");
+          throw new Error(`Error en la actualización: ${response.status} ${response.statusText}`);
         }
         return response.json();
       })
       .then(data => {
+        console.log("Datos recibidos del backend:", data);
         if (data) {
-          setUser(data);
+          setUser(prevUser => ({ ...prevUser, ...data }));
           setIsEditing(false);
           Alert.alert("Perfil actualizado", "Los cambios han sido guardados correctamente");
         }
       })
       .catch(error => {
         console.error("Error al guardar los cambios:", error);
-        Alert.alert("Error", "No se pudo guardar los cambios");
+        Alert.alert("Error", `No se pudo guardar los cambios: ${error.message}`);
       });
   };
 
@@ -78,7 +92,8 @@ export default function ProfileScreen() {
 
   const handleAvatarSelection = (avatar: any) => {
     if (user && isEditing) {
-      setUser({ ...user, rutaFotoPerfil: avatar });
+      const avatarUri = Image.resolveAssetSource(avatar).uri;
+      setUser({ ...user, rutaFotoPerfil: avatarUri });
       setModalVisible(false);
     }
   };
@@ -105,7 +120,7 @@ export default function ProfileScreen() {
       <Text style={gs.subHeaderText}>Información de usuario</Text>
 
       <TouchableOpacity style={gs.profileImageContainer} onPress={() => isEditing && setModalVisible(true)} disabled={!isEditing}>
-        <Image source={user.rutaFotoPerfil || require("../../assets/avatar/avatar1.png")} style={gs.profileImage} />
+        <Image source={user.rutaFotoPerfil ? { uri: user.rutaFotoPerfil } : avatarOptions[0]} style={gs.profileImage} />
       </TouchableOpacity>
 
       <TextInput style={gs.input} value={user.nombre} editable={isEditing} onChangeText={text => setUser({ ...user, nombre: text })} />
