@@ -19,7 +19,7 @@ export default function Page() {
           Click here to check a showcase of the styles.
         </Link>
 
-        <Link href="/recipeRecommendations" style={gs.link}>
+        <Link href="/recipes/recipeRecommendations" style={gs.link}>
           Click here to check an initial version of the recipe recommendations page.
         </Link>
       </View>

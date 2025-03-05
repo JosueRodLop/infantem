@@ -14,7 +14,7 @@ const NavBar: React.FC = () => {
           <Image source={require("../static/images/profile.webp")} style={gs.navBarImage} />
         </TouchableOpacity>
 
-        <Link href="/recipeRecommendations" asChild>
+        <Link href="/recipes/recipeRecommendations" asChild>
           <TouchableOpacity>
             <Text style={gs.navText}>Recipes</Text>
           </TouchableOpacity>
