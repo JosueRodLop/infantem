@@ -30,12 +30,9 @@ public class MilestoneCompleted {
         this.date = new Date();
     }
 
-    public MilestoneCompleted(Milestone milestone, Date date) {
+    public MilestoneCompleted(Milestone milestone, Date fecha) {
         this.milestone = milestone;
-        this.date = date;
+        this.date = fecha;
     }
 
-    public Date getFecha() {
-        return date;
-    }
 }
