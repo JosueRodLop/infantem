@@ -1,6 +1,8 @@
-package com.isppG8.infantem.infantem.intake;
+package com.isppG8.infantem.infantem.recipe;
 
 import java.util.List;
+
+import com.isppG8.infantem.infantem.intake.IngredientRecipe;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
