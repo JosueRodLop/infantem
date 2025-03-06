@@ -1,4 +1,6 @@
-package com.isppG8.infantem.infantem.usuario;
+package com.isppG8.infantem.infantem.intake;
+
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,17 +11,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "usuario_table")
-@Getter @Setter
-public class Usuario {
-
+@Table(name = "intakeSymptom_table")
+@Getter 
+@Setter
+public class IntakeSymptom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String nombre;
-    private String apellidos;
-    private String nombreUsuario;
-    private String contraseña;
-    private String email;
+    private String description;
+    private LocalDateTime date;
+    
 }

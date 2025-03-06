@@ -101,7 +101,6 @@ module.exports = StyleSheet.create({
   },
 
   card: {
-    width: "90%",
     backgroundColor: "#FFF",
     padding: 15,
     borderRadius: 12,

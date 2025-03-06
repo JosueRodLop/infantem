@@ -6,27 +6,40 @@ export default function Page() {
   const gs = require("../static/styles/globalStyles");
 
   return (
-    <View style={{ flex: 1 }}>
-      {}
-      <NavBar />
 
-      {}
-      <View style={[gs.container, { marginTop: 70 }]}>
-        <Text>Hello world, frontend is working. :D</Text>
-        <Text>This page is not implemented yet. It has no styles.</Text>
+    <View>
+      <Text>Hello world, frontend is working. :D</Text>
+      <Text>This page is not implemented yet. It has not styles.</Text>
+      <Link
+        href="/appStyleSamples"
+        style={{
+          color: 'blue',
+          textDecorationLine: 'underline',
+        }}
+      >
+        Click here to check a showcase of the styles.
+      </Link>
 
-        <Link href="/appStyleSamples" style={gs.linkText}>
-          Click here to check a showcase of the styles.
-        </Link>
+      <Link
+        href="/auth/LoginScreen"
+        style={{
+          color: 'blue',
+          textDecorationLine: 'underline',
+          marginTop: 20
+        }}>
+        Go to Login Screen
+      </Link>
 
-        <Link href="/recipeRecommendations" style={gs.linkText}>
-          Click here to check an initial version of the recipe recommendations page.
-        </Link>
+      <Link
+        href="/auth/ProfileScreen"
+        style={{
+          color: 'blue',
+          textDecorationLine: 'underline',
+          marginTop: 20
+        }}>
+        Profile
+      </Link>
 
-        <Link href="/food" style={gs.linkText}>
-          Click here to check an initial version of the food page.
-        </Link>
-      </View>
     </View>
   );
 }
