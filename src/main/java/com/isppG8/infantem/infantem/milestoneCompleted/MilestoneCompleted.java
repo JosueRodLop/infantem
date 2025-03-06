@@ -2,7 +2,7 @@ package com.isppG8.infantem.infantem.milestoneCompleted;
 
 import java.util.*;
 
-import com.isppG8.infantem.infantem.bebe.Baby;
+import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.milestone.Milestone;
 
 import jakarta.persistence.*;
