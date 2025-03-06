@@ -49,54 +49,57 @@ export default function ProfileScreen() {
   const handleSaveChanges = () => {
     if (!user) return;
     
-    console.log("Enviando datos al backend:", user);
-    
     const userData = {
       id: user.id,
-      nombre: user.nombre,
-      apellidos: user.apellidos,
-      nombreUsuario: user.nombreUsuario,
+      firstName: user.nombre,
+      lastName: user.apellidos,
       email: user.email,
-      rutaFotoPerfil: user.rutaFotoPerfil
+      avatar: user.rutaFotoPerfil || "" // Asegurar que no es null
     };
-
+  
+    console.log("🟡 Datos enviados al backend:", userData);
+  
     fetch(`http://localhost:8080/usuarios/${user.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData)
     })
       .then(response => {
-        console.log("Respuesta del servidor:", response);
+        console.log("🟠 Respuesta del servidor:", response);
         if (!response.ok) {
-          throw new Error(`Error en la actualización: ${response.status} ${response.statusText}`);
+          return response.json().then(err => { throw new Error(JSON.stringify(err)); });
         }
         return response.json();
       })
       .then(data => {
-        console.log("Datos recibidos del backend:", data);
-        if (data) {
-          setUser(prevUser => ({ ...prevUser, ...data }));
-          setIsEditing(false);
-          Alert.alert("Perfil actualizado", "Los cambios han sido guardados correctamente");
-        }
+        console.log("🟢 Datos actualizados en el backend:", data);
+        setUser(prevUser => ({ ...prevUser, ...data }));
+        setIsEditing(false);
+        Alert.alert("Perfil actualizado", "Los cambios han sido guardados correctamente");
       })
       .catch(error => {
-        console.error("Error al guardar los cambios:", error);
+        console.error("🔴 Error al guardar los cambios:", error);
         Alert.alert("Error", `No se pudo guardar los cambios: ${error.message}`);
       });
   };
+  
 
   const handleLogout = () => {
     console.log("Cerrando sesión");
   };
 
+  
   const handleAvatarSelection = (avatar: any) => {
     if (user && isEditing) {
-      const avatarUri = Image.resolveAssetSource(avatar).uri;
+      const avatarUri = typeof avatar === "number" 
+        ? Image.resolveAssetSource(avatar).uri  // Convierte require() a una URI
+        : avatar; // Si ya es una URI, úsala directamente
+  
       setUser({ ...user, rutaFotoPerfil: avatarUri });
       setModalVisible(false);
     }
   };
+  
 
   if (!user) {
     return <Text>Cargando perfil...</Text>;
