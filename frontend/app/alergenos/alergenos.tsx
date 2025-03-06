@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity, TextInput, Pressable } from "react-native";
+import { Text, View, ScrollView, TouchableOpacity, TextInput } from "react-native";
 
 type QuestionType = "boolean" | "options" | "text";
 
@@ -13,7 +13,7 @@ type Question = {
 
 export default function Page() {
   
-  const gs = require('../static/styles/globalStyles');
+  const gs = require('../../static/styles/globalStyles');
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   // I think using records is a better approach than using maps here.
   const [answers, setAnswers] = useState<Record<number, string>>({}); 
@@ -88,8 +88,8 @@ export default function Page() {
       <Text style={gs.headerText}>Alergenos</Text>
 
       { currentQuestion === questions.length - 1 ? (
-        <View style={{ marginTop: 80, padding: 20, borderRadius: 25, borderWidth: 2, borderColor: "#007AFF" }}>
-          <Text style={gs.subHeaderText}>¡Gracias por completar el cuestionario!</Text>
+        <View style={gs.card}>
+          <Text style={[gs.cardTitle, {paddingBottom:20}]}>¡Gracias por completar el cuestionario!</Text>
           <Link href="/" asChild>
             <TouchableOpacity style={gs.mainButton}>
               <Text style={gs.mainButtonText}>Volver al inicio</Text>
@@ -98,12 +98,12 @@ export default function Page() {
         </View>
       ) : (
         <View>
-          <Text style={gs.bodyText}>
+          <Text style={[gs.subheaderText, {paddingBottom:40}]}>
             Realizaremos una serie de preguntas para buscar a qué es alérgico su bebé.
           </Text>
 
-          <View style={{ marginTop: 80, padding: 20, borderRadius: 25, borderWidth: 2, borderColor: "#007AFF" }}>
-            <Text style={gs.subHeaderText}>{questions[currentQuestion].question}</Text>
+          <View style={gs.card}>
+            <Text style={gs.cardTitle}>{questions[currentQuestion].question}</Text>
 
             {questions[currentQuestion].type === "boolean" && (
               <View>
