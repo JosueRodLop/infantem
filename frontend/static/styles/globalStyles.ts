@@ -1,5 +1,7 @@
 'use strict';
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, StatusBar, Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 module.exports = StyleSheet.create({
   container: {
@@ -164,22 +166,22 @@ module.exports = StyleSheet.create({
   },
   navBar: {
     position: "absolute",
-    top: Platform.OS === "ios" ? 44 : 0,  // Ajuste para iPhone con notch
+    width: Platform.OS === "ios" ? "100%" : StatusBar.currentHeight,  // Ajuste para iPhone con notch
     left: 0,
     right: 0,
     zIndex: 10,
     backgroundColor: "rgb(0,122,255)",
     height: 60, // Fija la altura en píxeles para evitar % inconsistentes
-    width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     paddingHorizontal: 15, // Mejor espaciado en móvil
     elevation: 10, 
     shadowColor: "#000", 
     shadowOffset: { width: 0, height: 4 }, 
     shadowOpacity: 0.3, 
     shadowRadius: 4, 
+    flexWrap: "wrap",
   },
   navBarImage: {
     width: 40,
@@ -187,14 +189,15 @@ module.exports = StyleSheet.create({
     borderRadius: 20,
   },
   navText: {
-    fontSize: 16,
+    fontSize: width < 400 ? 14 : 16, // Reduce el tamaño en móviles pequeños
     fontWeight: "bold",
     color: "#333",
+    paddingHorizontal: 5, // Evita que las palabras estén demasiado pegadas
   },
 
   content: {
     flex: 1,
-    paddingTop: Platform.OS ==="ios" ? 90 : 70, // Ajuste para que no quede oculto en iPhone
+    paddingTop: 80, // Ajuste para que no quede oculto en iPhone
   }, 
   
 
