@@ -9,6 +9,7 @@ const NavBar: React.FC = () => {
   return (
     <View style={gs.navBar}>
       {}
+
       <View style={{ flexDirection: "row", alignItems: "center", gap: 30 }}>
         <TouchableOpacity onPress={() => router.push("/")}>
           <Image source={require("../static/images/profile.webp")} style={gs.navBarImage} />
@@ -20,6 +21,7 @@ const NavBar: React.FC = () => {
           </TouchableOpacity>
         </Link>
       </View>
+
 
       <Link href="/profile" asChild>
         <TouchableOpacity>

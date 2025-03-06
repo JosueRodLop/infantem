@@ -131,6 +131,13 @@ module.exports = StyleSheet.create({
     borderRadius: 20,
     marginVertical: 16,
   },
+
+  navbarImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+
   profileImage: {
     width: 100,
     height: 100,
@@ -156,6 +163,7 @@ module.exports = StyleSheet.create({
     shadowRadius: 5,
   },
   navBar: {
+
     position: "absolute",
     top: 0,
     left: 0,
@@ -183,10 +191,13 @@ module.exports = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",
+
   },
   content: {
     flex: 1,
     paddingTop: 60,
+
   },  
   
+
 });
