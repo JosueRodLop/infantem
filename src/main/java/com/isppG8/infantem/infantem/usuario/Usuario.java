@@ -22,4 +22,5 @@ public class Usuario {
     private String nombreUsuario;
     private String contraseña;
     private String email;
+    private String rutaFotoPerfil;
 }
