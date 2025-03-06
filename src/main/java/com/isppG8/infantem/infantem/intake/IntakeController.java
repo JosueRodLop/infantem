@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.ingesta;
+package com.isppG8.infantem.infantem.intake;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,29 +13,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/ingesta")
-public class IngestaController {
+@RequestMapping("api/v1/intake")
+public class IntakeController {
     @Autowired
-    private IngestaService ingestaService;
+    private IntakeService intakeService;
 
     @GetMapping
-    public List<Ingesta> getAllIngestas() {
-        return ingestaService.getAllIngestas();
+    public List<Intake> getAllIntakes() {
+        return intakeService.getAllIntakes();
     }
 
         @GetMapping("/{id}")
-    public Optional<Ingesta> getIngestaById(@PathVariable Long id) {
-        return ingestaService.getIngestaById(id);
+    public Optional<Intake> getIntakeById(@PathVariable Long id) {
+        return intakeService.getIntakeById(id);
     }
 
     @PostMapping
-    public Ingesta createIngesta(@RequestBody Ingesta ingesta) {
-        return ingestaService.saveIngesta(ingesta);
+    public Intake createIntake(@RequestBody Intake intake) {
+        return intakeService.saveIntake(intake);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteIngesta(@PathVariable Long id) {
-        ingestaService.deleteIngesta(id);
+    public void deleteIntake(@PathVariable Long id) {
+        intakeService.deleteIntake(id);
     }
     
 }

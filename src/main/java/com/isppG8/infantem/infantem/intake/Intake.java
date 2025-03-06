@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.ingesta;
+package com.isppG8.infantem.infantem.intake;
 
 import java.time.LocalDateTime;
 
@@ -12,23 +12,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "ingesta_table")
+@Table(name = "intake_table")
 @Getter
 @Setter
-public class Ingesta {
+public class Intake {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime fecha;
+    private LocalDateTime date;
 
-    private double cantidad;
+    private double quantity;
 
-    private String observaciones;
-    public String descripcion;
-
-    @ManyToOne
-    private Alimento alimento;
+    private String observations;
+    public String description;
 
     @ManyToOne
-    private SintomaIngesta sintomaIngesta;
+    private Food food;
+
+    @ManyToOne
+    private IntakeSymptom IntakeSymptom;
 }

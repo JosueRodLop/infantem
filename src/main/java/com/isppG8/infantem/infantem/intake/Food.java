@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.ingesta;
+package com.isppG8.infantem.infantem.intake;
 
 
 import java.util.List;
@@ -16,19 +16,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "alimento_table")
+@Table(name = "food_table")
 @Getter @Setter
-public class Alimento {
+public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
+    private String name;
 
     @Enumerated(EnumType.STRING)
-    private CategoriaAlimento categoriaAlimento;
+    private FoodCategory foodCategory;
     
-    @OneToMany(mappedBy = "alimento", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<IngredienteReceta> ingredientes;
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<IngredientRecipe> ingredients;
 }
 
