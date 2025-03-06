@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
-public class NutritionalContributionFoodSourceFoodSourceService {
+public class NutritionalContributionFoodSourceService {
     @Autowired
     private NutritionalContributionFoodSourceRepository nutritionalContributionFoodSourceRepository;
 
