@@ -7,7 +7,7 @@ module.exports = StyleSheet.create({
     backgroundColor: "#F8F9FA", 
     padding: 20,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   row: {
     flexDirection: "row",
@@ -101,6 +101,10 @@ module.exports = StyleSheet.create({
   },
 
   card: {
+
+    width: "100%", 
+    alignSelf: "flex-start", 
+
     backgroundColor: "#FFF",
     padding: 15,
     borderRadius: 12,
@@ -159,34 +163,41 @@ module.exports = StyleSheet.create({
     shadowRadius: 5,
   },
   navBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "rgba(87, 152, 226, 0.88)",
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    width: "100%",
+
     position: "absolute",
     top: 0,
     left: 0,
-    zIndex: 1000,
-    borderRadius: 40,
-    borderWidth: 2,
-    marginTop: 3,
-    borderColor: "rgba(87, 152, 226, 0.94)", 
+    right: 0,
+    zIndex: 10,
+    backgroundColor: "rgb(0,122,255)",
+    height: 60,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+  
+    elevation: 10, 
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 4 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 4, 
+  },
+  navBarImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
   navText: {
-    color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
+    color: "#333",
+
   },
   content: {
     flex: 1,
     paddingTop: 60,
-  },
-  navBarImage: {
-    width: 40,  
-    height: 40,
-    borderRadius: 20,  
-  },
+
+  },  
+  
+
 });
