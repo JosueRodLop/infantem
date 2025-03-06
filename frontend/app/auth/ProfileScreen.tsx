@@ -117,7 +117,7 @@ export default function ProfileScreen() {
   return (
     <View style={{ flex: 1 }}>
       <NavBar />
-      <ScrollView contentContainerStyle={gs.container}>
+      <ScrollView contentContainerStyle={[gs.container, {paddingTop: 100, paddingBottom: 100}]}>
         <TouchableOpacity style={{ position: 'absolute', top: 20, left: 20, zIndex: 10 }} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
