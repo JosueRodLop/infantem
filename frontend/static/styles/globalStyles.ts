@@ -1,5 +1,7 @@
 'use strict';
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform, StatusBar, Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 module.exports = StyleSheet.create({
   container: {
@@ -7,7 +9,7 @@ module.exports = StyleSheet.create({
     backgroundColor: "#F8F9FA", 
     padding: 20,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   row: {
     flexDirection: "row",
@@ -101,6 +103,10 @@ module.exports = StyleSheet.create({
   },
 
   card: {
+
+    width: "100%", 
+    alignSelf: "flex-start", 
+
     backgroundColor: "#FFF",
     padding: 15,
     borderRadius: 12,
@@ -127,6 +133,13 @@ module.exports = StyleSheet.create({
     borderRadius: 20,
     marginVertical: 16,
   },
+
+  navbarImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+
   profileImage: {
     width: 100,
     height: 100,
@@ -151,4 +164,41 @@ module.exports = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
   },
+  navBar: {
+    position: "absolute",
+    width: Platform.OS === "ios" ? "100%" : StatusBar.currentHeight,  // Ajuste para iPhone con notch
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    backgroundColor: "rgb(0,122,255)",
+    height: 60, // Fija la altura en píxeles para evitar % inconsistentes
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    paddingHorizontal: 15, // Mejor espaciado en móvil
+    elevation: 10, 
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 4 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 4, 
+    flexWrap: "wrap",
+  },
+  navBarImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  navText: {
+    fontSize: width < 400 ? 14 : 16, // Reduce el tamaño en móviles pequeños
+    fontWeight: "bold",
+    color: "#333",
+    paddingHorizontal: 5, // Evita que las palabras estén demasiado pegadas
+  },
+
+  content: {
+    flex: 1,
+    paddingTop: 80, // Ajuste para que no quede oculto en iPhone
+  }, 
+  
+
 });
