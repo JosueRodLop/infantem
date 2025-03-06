@@ -2,6 +2,7 @@ package com.isppG8.infantem.infantem.milestoneCompleted;
 
 import java.util.*;
 
+import com.isppG8.infantem.infantem.bebe.Baby;
 import com.isppG8.infantem.infantem.milestone.Milestone;
 
 import jakarta.persistence.*;
@@ -13,26 +14,23 @@ import lombok.Setter;
 @Entity
 public class MilestoneCompleted {
 
+    //Id
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Milestone milestone;
+    //Atributos
 
     private Date date;
 
-    public MilestoneCompleted() {
-    }
-    
-    public MilestoneCompleted(Milestone milestone) {
-        this.milestone = milestone;
-        this.date = new Date();
-    }
+    //Relaciones
 
-    public MilestoneCompleted(Milestone milestone, Date fecha) {
-        this.milestone = milestone;
-        this.date = fecha;
-    }
+    @ManyToOne
+    private Milestone milestone;
+
+    @ManyToOne
+    private Baby baby;
+
 
 }

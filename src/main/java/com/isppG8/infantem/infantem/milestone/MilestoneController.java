@@ -34,8 +34,7 @@ public class MilestoneController {
     @PutMapping("/{id}")
     public ResponseEntity<Milestone> updateMilestone(@PathVariable Long id, @RequestBody Milestone milestoneDetails) {
         Optional<Milestone> updatedMilestone = milestoneService.updateMilestone(id, milestoneDetails);
-        return updatedMilestone.map(ResponseEntity::ok)
-                               .orElseGet(() -> ResponseEntity.notFound().build());
+        return updatedMilestone.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

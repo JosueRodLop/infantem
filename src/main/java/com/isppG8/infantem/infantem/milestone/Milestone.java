@@ -11,21 +11,20 @@ import lombok.Setter;
 @Entity
 public class Milestone {
     
+    //Id
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //Atributos
+
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "milestone", cascade = CascadeType.ALL, orphanRemoval = true)
+    //Relaciones
+
+    @OneToMany
     private List<MilestoneCompleted> milestonesCompleted = new ArrayList<>();
 
-    public Milestone() {
-    }
-
-    public Milestone(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 }
