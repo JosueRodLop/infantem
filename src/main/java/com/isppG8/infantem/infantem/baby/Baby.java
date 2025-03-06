@@ -1,12 +1,12 @@
-package com.isppG8.infantem.infantem.bebe;
+package com.isppG8.infantem.infantem.baby;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.isppG8.infantem.infantem.alergeno.Alergeno;
-import com.isppG8.infantem.infantem.sueño.Sueño;
+import com.isppG8.infantem.infantem.allergen.Allergen;
+import com.isppG8.infantem.infantem.dream.Dream;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -58,10 +58,10 @@ public class Baby {
     //Relaciones
 
     @OneToMany
-    private List<Sueño> sleep;
+    private List<Dream> sleep;
 
     @ManyToMany
-    private List<Alergeno> allergen;
+    private List<Allergen> allergen;
 }
 
 

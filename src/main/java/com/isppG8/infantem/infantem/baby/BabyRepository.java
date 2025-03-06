@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.bebe;
+package com.isppG8.infantem.infantem.baby;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
