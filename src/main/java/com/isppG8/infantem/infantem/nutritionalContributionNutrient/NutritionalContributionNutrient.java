@@ -13,7 +13,7 @@ import com.isppG8.infantem.infantem.nutrient.Nutrient;
 
 
 @Entity
-@Table(name = "nutritional_contribution_nutrient_table")
+@Table(name = "nutr_contr_nutrient_table")
 @Getter
 @Setter
 public class NutritionalContributionNutrient{

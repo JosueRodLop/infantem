@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/nutrients")
 public class NutrientController {
     @Autowired
     private NutrientService nutrientService;
@@ -24,7 +24,7 @@ public class NutrientController {
         return nutrientService.getAllNutrients();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("nutrient/{id}")
     public ResponseEntity<Nutrient> getNutrientById(@PathVariable Long id) {
         return nutrientService.getNutrientById(id)
                 .map(ResponseEntity::ok)
@@ -36,14 +36,14 @@ public class NutrientController {
         return nutrientService.createNutrient(nutrient);
     }
     
-    @PutMapping("/{id}")
+    @PutMapping("nutrient/{id}")
     public ResponseEntity<Nutrient> updateNutrient(@PathVariable Long id, @RequestBody Nutrient nutrient) {
         return nutrientService.updateNutrient(id, nutrient)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("nutrient/{id}")
     public ResponseEntity<Void> deleteNutrient(@PathVariable Long id) {
         if (nutrientService.deleteNutrient(id)) {
             return ResponseEntity.noContent().build();

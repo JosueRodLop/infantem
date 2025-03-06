@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping({"/nutritionalContribution/{nutritionalContributionId}/nutritionalContributionNutrients","/nutrient/{nutrientId}/nutritionalContributionNutrients"})
 public class NutritionalContributionNutrientController {
     @Autowired
     private NutritionalContributionNutrientService nutritionalContributionNutrientService;

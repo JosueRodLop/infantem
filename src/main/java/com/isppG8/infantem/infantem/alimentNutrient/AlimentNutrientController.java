@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping({"/aliments/{alimentId}/{alimentNutrientId}", "/nutrients/{nutrientId}/{alimentNutrientId}"})
+//Añadir la ruta de alimentos cuando se implemente la entidad
+@RequestMapping({"/nutrients/{nutrientId}/alimentnutrients"})
 public class AlimentNutrientController {
     @Autowired
     private AlimentNutrientService alimentNutrientService;

@@ -14,7 +14,7 @@ import com.isppG8.infantem.infantem.foodSource.FoodSource;
 
 
 @Entity
-@Table(name = "nutritional_contribution_food_source_table")
+@Table(name = "nutr_contr_food_source_table")
 @Getter
 @Setter
 public class NutritionalContributionFoodSource{
