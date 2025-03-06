@@ -40,8 +40,18 @@ export default function Page() {
             <TouchableOpacity style={[gs.mainButton]}>
                 <Text style={gs.mainButtonText}>Guardar</Text>
             </TouchableOpacity>
-
-            
+            <Text style={gs.headerText}>Alimentos Registrados</Text>
+            <View style={[{overflow: 'scroll', width: '50%'}]}>    
+                
+                <View style={gs.card}>
+                    <Text style={gs.cardTitle}>Zanahoria</Text>
+                    <Text style={gs.cardContent}>Tipo: Verdura</Text>
+                </View>
+                <View style={gs.card}>
+                    <Text style={gs.cardTitle}>Manzana</Text>
+                    <Text style={gs.cardContent}>Tipo: Fruta</Text>
+                </View>
+            </View>
         
         </ScrollView>
     </View>
