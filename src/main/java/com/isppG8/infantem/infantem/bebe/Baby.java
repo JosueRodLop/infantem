@@ -1,6 +1,7 @@
 package com.isppG8.infantem.infantem.bebe;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -57,10 +58,10 @@ public class Baby {
     //Relaciones
 
     @OneToMany
-    private Sueño sleep;
+    private List<Sueño> sleep;
 
     @ManyToMany
-    private Alergeno allergen;
+    private List<Alergeno> allergen;
 }
 
 
