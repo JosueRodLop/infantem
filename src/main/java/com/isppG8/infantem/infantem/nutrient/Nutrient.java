@@ -35,7 +35,7 @@ public class Nutrient{
     //Relaciones
 
     @OneToMany
-    private List<FoodNutrient> alimentsNutrients;
+    private List<FoodNutrient> foodNutrients;
 
     @OneToMany
     private List<NutritionalContributionNutrient> NutritionalContributionsNutrients;
