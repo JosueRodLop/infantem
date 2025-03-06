@@ -1,8 +1,12 @@
+import { View, Text } from "react-native";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import NavBar from "../components/NavBar";
 
 export default function Page() {
+  const gs = require("../static/styles/globalStyles");
+
   return (
+
     <View>
       <Text>Hello world, frontend is working. :D</Text>
       <Text>This page is not implemented yet. It has not styles.</Text>
@@ -35,6 +39,7 @@ export default function Page() {
         }}>
         Profile
       </Link>
+
     </View>
   );
 }

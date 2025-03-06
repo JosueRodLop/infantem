@@ -1,6 +1,5 @@
-package com.isppG8.infantem.infantem.sueño;
+package com.isppG8.infantem.infantem.intake;
 
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -12,18 +11,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "sueño_table")
-@Getter @Setter
-public class Sueño {
-
+@Table(name = "intakeSymptom_table")
+@Getter 
+@Setter
+public class IntakeSymptom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
-    private LocalDateTime inicio;
-    private LocalDateTime fin;
-    private Integer numDesvalos;
-    private tipoSueño tipoSueño;
+    private String description;
+    private LocalDateTime date;
     
 }
