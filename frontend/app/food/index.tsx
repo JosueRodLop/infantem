@@ -14,7 +14,7 @@ export default function Page() {
         
         <Navbar />
         
-        <ScrollView contentContainerStyle={[gs.container]}> 
+        <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}> 
             <Text style={gs.headerText}>Registro de Alimento</Text>
 
             <Text style={gs.subHeaderText}>Nombre del Alimento</Text>
