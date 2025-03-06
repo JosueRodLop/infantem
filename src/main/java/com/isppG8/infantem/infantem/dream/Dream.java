@@ -1,4 +1,7 @@
-package com.isppG8.infantem.infantem.usuario;
+package com.isppG8.infantem.infantem.dream;
+
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,18 +12,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "usuario_table")
+@Table(name = "dream_table")
 @Getter @Setter
-public class Usuario {
+public class Dream {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-    private String apellidos;
-    private String nombreUsuario;
-    private String contraseña;
-    private String email;
-    private String rutaFotoPerfil;
+
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private Integer numWakeups; // numero de desvelos
+    private DreamType DreamType;
+    
 }
