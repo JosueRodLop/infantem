@@ -11,7 +11,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
 
-import com.isppG8.infantem.infantem.bebe.Baby;
+import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.nutritionalContributionFoodSource.NutritionalContributionFoodSource;
 import com.isppG8.infantem.infantem.nutritionalContributionNutrient.NutritionalContributionNutrient;
 

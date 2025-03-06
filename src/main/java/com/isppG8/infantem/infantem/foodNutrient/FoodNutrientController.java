@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.alimentNutrient;
+package com.isppG8.infantem.infantem.foodNutrient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,39 +18,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-//Añadir la ruta de alimentos cuando se implemente la entidad
-@RequestMapping({"/nutrients/{nutrientId}/alimentnutrients"})
-public class AlimentNutrientController {
+@RequestMapping({"/nutrients/{nutrientId}/foodNutrients"})
+public class FoodNutrientController {
+    
+    private FoodNutrientService foodNutrientService;
+
     @Autowired
-    private AlimentNutrientService alimentNutrientService;
+    public FoodNutrientController(FoodNutrientService foodNutrientService) {
+        this.foodNutrientService = foodNutrientService;
+    }
 
     @GetMapping
-    public List<AlimentNutrient> getAlimentNutrient() {
-        return alimentNutrientService.getAllAlimentNutrients();
+    public List<FoodNutrient> getFoodNutrients() {
+        return foodNutrientService.getAllFoodNutrients();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlimentNutrient> getAlimentNutrientById(@PathVariable Long id) {
-        return alimentNutrientService.getAlimentNutrientById(id)
+    public ResponseEntity<FoodNutrient> getFoodNutrientById(@PathVariable Long id) {
+        return foodNutrientService.getFoodNutrientById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
     
     @PostMapping
-    public AlimentNutrient createAlimentNutrient(@RequestBody AlimentNutrient alimentNutrient) {
-        return alimentNutrientService.createAlimentNutrient(alimentNutrient);
+    public FoodNutrient createFoodNutrient(@RequestBody FoodNutrient foodNutrient) {
+        return foodNutrientService.createFoodNutrient(foodNutrient);
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<AlimentNutrient> updateAlimentNutrient(@PathVariable Long id, @RequestBody AlimentNutrient alimentNutrient) {
-        return alimentNutrientService.updateAlimentNutrient(id, alimentNutrient)
+    public ResponseEntity<FoodNutrient> updateFoodNutrient(@PathVariable Long id, @RequestBody FoodNutrient foodNutrient) {
+        return foodNutrientService.updateFoodNutrient(id, foodNutrient)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAlimentNutrient(@PathVariable Long id) {
-        if (alimentNutrientService.deleteAlimentNutrient(id)) {
+    public ResponseEntity<Void> deleteFoodNutrient(@PathVariable Long id) {
+        if (foodNutrientService.deleteFoodNutrient(id)) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

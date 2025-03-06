@@ -4,7 +4,8 @@ import jakarta.persistence.Entity;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import com.isppG8.infantem.infantem.alimentNutrient.AlimentNutrient;
+
+import com.isppG8.infantem.infantem.foodNutrient.FoodNutrient;
 import com.isppG8.infantem.infantem.nutritionalContributionNutrient.NutritionalContributionNutrient;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,7 +35,7 @@ public class Nutrient{
     //Relaciones
 
     @OneToMany
-    private List<AlimentNutrient> alimentsNutrients;
+    private List<FoodNutrient> alimentsNutrients;
 
     @OneToMany
     private List<NutritionalContributionNutrient> NutritionalContributionsNutrients;

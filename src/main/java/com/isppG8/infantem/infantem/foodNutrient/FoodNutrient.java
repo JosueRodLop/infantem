@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.alimentNutrient;
+package com.isppG8.infantem.infantem.foodNutrient;
 
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -9,14 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import com.isppG8.infantem.infantem.nutrient.Nutrient;
-import com.isppG8.infantem.infantem.ingesta.Alimento;
+import com.isppG8.infantem.infantem.intake.Food;
 
 
 @Entity
-@Table(name = "aliment_nutrient_table")
+@Table(name = "food_nutrient_table")
 @Getter
 @Setter
-public class AlimentNutrient{
+public class FoodNutrient{
 
     //Id
 
@@ -34,7 +34,7 @@ public class AlimentNutrient{
     private Nutrient nutrient;
 
     @ManyToOne
-    private Alimento aliment;
+    private Food food;
 
 
 }
