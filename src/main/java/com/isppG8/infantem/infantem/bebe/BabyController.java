@@ -18,51 +18,51 @@ import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("")
-public class BebeController {
+public class BabyController {
 
-    private final BebeService bebeService;
+    private final BabyService babyService;
 
     @Autowired
-    public BebeController(BebeService bebeService) {
-        this.bebeService = bebeService;
+    public BabyController(BabyService babyService) {
+        this.babyService = babyService;
     }
     
     @GetMapping
-    public List<Bebe> findAll() {
-        return bebeService.findAll();
+    public List<Baby> findAll() {
+        return babyService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Bebe findById(int id) {
-        return bebeService.findById(id);
+    public Baby findById(int id) {
+        return babyService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Bebe createBebe(@RequestBody @Valid Bebe bebe) {
-        bebeService.save(bebe);
-        return bebe;
+    public Baby createBebe(@RequestBody @Valid Baby baby) {
+        babyService.save(baby);
+        return baby;
     }
 
     @PutMapping("/update/{id}")
-    public void updateBebe(@PathVariable("id") Integer id,@RequestBody @Valid Bebe bebe) {
-        Bebe bebeToUpdate = bebeService.findById(id);
+    public void updateBebe(@PathVariable("id") Integer id,@RequestBody @Valid Baby baby) {
+        Baby bebeToUpdate = babyService.findById(id);
         if(bebeToUpdate == null) {
             throw new RuntimeException("Bebe not found");
         }
-        bebeToUpdate.setNombre(bebe.getNombre());
-        bebeToUpdate.setFechaNacimiento(bebe.getFechaNacimiento());
-        bebeToUpdate.setSexo(bebe.getSexo());
-        bebeToUpdate.setPeso(bebe.getPeso());
-        bebeToUpdate.setAltura(bebe.getAltura());
-        bebeToUpdate.setPerimetroCefalico(bebe.getPerimetroCefalico());
-        bebeToUpdate.setPreferenciaAlimenticia(bebe.getPreferenciaAlimenticia());
+        bebeToUpdate.setName(baby.getName());
+        bebeToUpdate.setBirthDate(baby.getBirthDate());
+        bebeToUpdate.setGenre(baby.getGenre());
+        bebeToUpdate.setWeight(baby.getWeight());
+        bebeToUpdate.setHeight(baby.getHeight());
+        bebeToUpdate.setCephalicPerimeter(baby.getCephalicPerimeter());
+        bebeToUpdate.setFoodPreference(baby.getFoodPreference());
 
-        bebeService.save(bebeToUpdate);
+        babyService.save(bebeToUpdate);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteBebe(@PathVariable("id") Integer id) {
-        bebeService.deleteBebe(id);
+    public void deleteBaby(@PathVariable("id") Integer id) {
+        babyService.deleteBaby(id);
     }
 }

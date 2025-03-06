@@ -1,6 +1,6 @@
 package com.isppG8.infantem.infantem.bebe;
 
-public enum Sexo {
+public enum Genre {
 
-    HOMBRE, MUJER, OTRO;
+    MALE, FEMALE, OTHER;
 }
