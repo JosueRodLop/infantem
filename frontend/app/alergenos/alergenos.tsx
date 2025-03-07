@@ -1,6 +1,7 @@
 import { Link } from "expo-router";
-import { useState } from "react";
 import { Text, View, ScrollView, TouchableOpacity, TextInput } from "react-native";
+import { useState } from "react";
+import NavBar from "../../components/NavBar";
 import { questions } from "../../hardcoded_data/questionsData";
 
 export default function Page() {
@@ -20,59 +21,64 @@ export default function Page() {
   console.log(questions);
 
   return (
-    <ScrollView contentContainerStyle={gs.container}>
-      <Text style={gs.headerText}>Alergenos</Text>
+    <View style={{ flex: 1 }}>
 
-      { currentQuestion === questions.length - 1 ? (
-        <View style={gs.card}>
-          <Text style={[gs.cardTitle, {paddingBottom:20}]}>¡Gracias por completar el cuestionario!</Text>
-          <Link href="/" asChild>
-            <TouchableOpacity style={gs.mainButton}>
-              <Text style={gs.mainButtonText}>Volver al inicio</Text>
-            </TouchableOpacity>
-          </Link>
-        </View>
-      ) : (
-        <View>
-          <Text style={[gs.subheaderText, {paddingBottom:40}]}>
-            Realizaremos una serie de preguntas para buscar a qué es alérgico su bebé.
-          </Text>
+      <NavBar />
 
+      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
+        <Text style={gs.headerText}>Alergenos</Text>
+
+        { currentQuestion === questions.length - 1 ? (
           <View style={gs.card}>
-            <Text style={gs.cardTitle}>{questions[currentQuestion].question}</Text>
-
-            {questions[currentQuestion].type === "boolean" && (
-              <View>
-                <TouchableOpacity onPress={() => handleAnswer("Sí")} style={[gs.mainButton, { margin: 10 }]}>
-                  <Text style={gs.mainButtonText}>Sí</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleAnswer("No")} style={[gs.secondaryButton, { margin: 10 }]}>
-                  <Text style={gs.secondaryButtonText}>No</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-
-            {questions[currentQuestion].type === "options" && questions[currentQuestion].options && (
-              <View>
-                {questions[currentQuestion].options!.map((option, index) => (
-                  <TouchableOpacity key={index} onPress={() => handleAnswer(option)} style={[gs.secondaryButton, { margin: 10 }]}>
-                    <Text style={gs.secondaryButtonText}>{option}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-
-            {questions[currentQuestion].type === "text" && (
-              <TextInput
-                style={gs.input}
-                placeholder="Escribe tu respuesta..."
-                onSubmitEditing={(event) => handleAnswer(event.nativeEvent.text)}
-              />
-            )}
+            <Text style={[gs.cardTitle, {paddingBottom:20}]}>¡Gracias por completar el cuestionario!</Text>
+            <Link href="/" asChild>
+              <TouchableOpacity style={gs.mainButton}>
+                <Text style={gs.mainButtonText}>Volver al inicio</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
-        </View>
-      )}
-    </ScrollView>
+        ) : (
+          <View>
+            <Text style={[gs.subheaderText, {paddingBottom:40}]}>
+              Realizaremos una serie de preguntas para buscar a qué es alérgico su bebé.
+            </Text>
+
+            <View style={gs.card}>
+              <Text style={gs.cardTitle}>{questions[currentQuestion].question}</Text>
+
+              {questions[currentQuestion].type === "boolean" && (
+                <View>
+                  <TouchableOpacity onPress={() => handleAnswer("Sí")} style={[gs.mainButton, { margin: 10 }]}>
+                    <Text style={gs.mainButtonText}>Sí</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleAnswer("No")} style={[gs.secondaryButton, { margin: 10 }]}>
+                    <Text style={gs.secondaryButtonText}>No</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {questions[currentQuestion].type === "options" && questions[currentQuestion].options && (
+                <View>
+                  {questions[currentQuestion].options!.map((option, index) => (
+                    <TouchableOpacity key={index} onPress={() => handleAnswer(option)} style={[gs.secondaryButton, { margin: 10 }]}>
+                      <Text style={gs.secondaryButtonText}>{option}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+
+              {questions[currentQuestion].type === "text" && (
+                <TextInput
+                  style={gs.input}
+                  placeholder="Escribe tu respuesta..."
+                  onSubmitEditing={(event) => handleAnswer(event.nativeEvent.text)}
+                />
+              )}
+            </View>
+          </View>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
