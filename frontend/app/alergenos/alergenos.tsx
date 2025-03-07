@@ -18,7 +18,6 @@ export default function Page() {
     setAnswers((prev) => ({ ...prev, [questions[currentQuestion].id]: answer }));
     setCurrentQuestion((prev) => prev + 1);
   };
-  console.log(questions);
 
   return (
     <View style={{ flex: 1 }}>
