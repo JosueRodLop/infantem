@@ -3,6 +3,7 @@ import { ActivityIndicator, Modal, TextInput, Alert } from "react-native";
 import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import NavBar from "../../components/NavBar";
 
 interface User {
   id: number;
@@ -114,57 +115,60 @@ export default function ProfileScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={gs.container}>
-      <TouchableOpacity style={{ position: 'absolute', top: 20, left: 20, zIndex: 10 }} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
-      
-      <Text style={gs.headerText}>Perfil</Text>
-      <Text style={gs.subHeaderText}>Información de usuario</Text>
-
-      <TouchableOpacity style={gs.profileImageContainer} onPress={() => isEditing && setModalVisible(true)} disabled={!isEditing}>
-        <Image source={user.rutaFotoPerfil ? { uri: user.rutaFotoPerfil } : avatarOptions[0]} style={gs.profileImage} />
-      </TouchableOpacity>
-
-      <TextInput style={gs.input} value={user.nombre} editable={isEditing} onChangeText={text => setUser({ ...user, nombre: text })} />
-      <TextInput style={gs.input} value={user.apellidos} editable={isEditing} onChangeText={text => setUser({ ...user, apellidos: text })} />
-      <TextInput style={gs.input} value={user.nombreUsuario} editable={isEditing} onChangeText={text => setUser({ ...user, nombreUsuario: text })} />
-      <TextInput style={gs.input} value={user.email} editable={isEditing} onChangeText={text => setUser({ ...user, email: text })} />
-
-      {isEditing ? (
-        <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleSaveChanges}>
-          <Text style={gs.mainButtonText}>Guardar Cambios</Text>
+    <View style={{ flex: 1 }}>
+      <NavBar />
+      <ScrollView contentContainerStyle={[gs.container, {paddingTop: 100, paddingBottom: 100}]}>
+        <TouchableOpacity style={{ position: 'absolute', top: 20, left: 20, zIndex: 10 }} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleEditProfile}>
-          <Text style={gs.mainButtonText}>Editar Perfil</Text>
+        
+        <Text style={gs.headerText}>Perfil</Text>
+        <Text style={gs.subHeaderText}>Información de usuario</Text>
+
+        <TouchableOpacity style={gs.profileImageContainer} onPress={() => isEditing && setModalVisible(true)} disabled={!isEditing}>
+          <Image source={user.rutaFotoPerfil ? { uri: user.rutaFotoPerfil } : avatarOptions[0]} style={gs.profileImage} />
         </TouchableOpacity>
-      )}
 
-      <TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
-        <Text style={gs.secondaryButtonText}>Cerrar Sesión</Text>
-      </TouchableOpacity>
+        <TextInput style={gs.input} value={user.nombre} editable={isEditing} onChangeText={text => setUser({ ...user, nombre: text })} />
+        <TextInput style={gs.input} value={user.apellidos} editable={isEditing} onChangeText={text => setUser({ ...user, apellidos: text })} />
+        <TextInput style={gs.input} value={user.nombreUsuario} editable={isEditing} onChangeText={text => setUser({ ...user, nombreUsuario: text })} />
+        <TextInput style={gs.input} value={user.email} editable={isEditing} onChangeText={text => setUser({ ...user, email: text })} />
 
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <View style={gs.modalOverlay}>
-          <View style={gs.modalContent}>
-            <Text style={gs.modalTitle}>Selecciona tu avatar</Text>
-            <FlatList
-              data={avatarOptions}
-              keyExtractor={(item, index) => index.toString()}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => handleAvatarSelection(item)}>
-                  <Image source={item} style={gs.avatarOption} />
-                </TouchableOpacity>
-              )}
-            />
-            <TouchableOpacity style={gs.closeModalButton} onPress={() => setModalVisible(false)}>
-              <Text style={gs.closeModalButtonText}>Cerrar</Text>
-            </TouchableOpacity>
+        {isEditing ? (
+          <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleSaveChanges}>
+            <Text style={gs.mainButtonText}>Guardar Cambios</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleEditProfile}>
+            <Text style={gs.mainButtonText}>Editar Perfil</Text>
+          </TouchableOpacity>
+        )}
+
+        <TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
+          <Text style={gs.secondaryButtonText}>Cerrar Sesión</Text>
+        </TouchableOpacity>
+
+        <Modal visible={modalVisible} animationType="fade" transparent={true}>
+          <View style={gs.modalOverlay}>
+            <View style={gs.modalContent}>
+              <Text style={gs.modalTitle}>Selecciona tu avatar</Text>
+              <FlatList
+                data={avatarOptions}
+                keyExtractor={(item, index) => index.toString()}
+                numColumns={2}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => handleAvatarSelection(item)}>
+                    <Image source={item} style={gs.avatarOption} />
+                  </TouchableOpacity>
+                )}
+              />
+              <TouchableOpacity style={gs.closeModalButton} onPress={() => setModalVisible(false)}>
+                <Text style={gs.closeModalButtonText}>Cerrar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
-    </ScrollView>
+        </Modal>
+      </ScrollView>
+    </View>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView, Image } from "react-native";
+import NavBar from "../../components/NavBar";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -13,43 +14,48 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={gs.container}>
-      <Text style={gs.headerText}>Iniciar Sesión</Text>
-      <Text style={gs.subHeaderText}>Accede con tu cuenta</Text>
+    <View style={{ flex: 1 }}>
 
-      {/* Imagen de usuario opcional */}
-      <Image source={require("../../static/images/profile.webp")} style={gs.profileImage} />
+      <NavBar />
 
-      {/* Campo de correo */}
-      <Text style={gs.subHeaderText}>Correo Electrónico</Text>
-      <TextInput
-        style={gs.input}
-        placeholder="Introduce tu correo"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
+        <Text style={gs.headerText}>Iniciar Sesión</Text>
+        <Text style={gs.subHeaderText}>Accede con tu cuenta</Text>
 
-      {/* Campo de contraseña */}
-      <Text style={gs.subHeaderText}>Contraseña</Text>
-      <TextInput
-        style={gs.input}
-        placeholder="Introduce tu contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        {/* Imagen de usuario opcional */}
+        <Image source={require("../../static/images/profile.webp")} style={gs.profileImage} />
 
-      {/* Botón de inicio de sesión */}
-      <TouchableOpacity style={gs.mainButton} onPress={handleLogin}>
-        <Text style={gs.mainButtonText}>Ingresar</Text>
-      </TouchableOpacity>
+        {/* Campo de correo */}
+        <Text style={gs.subHeaderText}>Correo Electrónico</Text>
+        <TextInput
+          style={gs.input}
+          placeholder="Introduce tu correo"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
 
-      {/* Botón para registrarse (opcional) */}
-      <TouchableOpacity style={gs.secondaryButton}>
-        <Text style={gs.secondaryButtonText}>¿No tienes cuenta? Regístrate</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        {/* Campo de contraseña */}
+        <Text style={gs.subHeaderText}>Contraseña</Text>
+        <TextInput
+          style={gs.input}
+          placeholder="Introduce tu contraseña"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+
+        {/* Botón de inicio de sesión */}
+        <TouchableOpacity style={gs.mainButton} onPress={handleLogin}>
+          <Text style={gs.mainButtonText}>Ingresar</Text>
+        </TouchableOpacity>
+
+        {/* Botón para registrarse (opcional) */}
+        <TouchableOpacity style={gs.secondaryButton}>
+          <Text style={gs.secondaryButtonText}>¿No tienes cuenta? Regístrate</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 }

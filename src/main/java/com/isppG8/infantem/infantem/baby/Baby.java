@@ -3,10 +3,15 @@ package com.isppG8.infantem.infantem.baby;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.isppG8.infantem.infantem.allergen.Allergen;
+import com.isppG8.infantem.infantem.disease.Disease;
 import com.isppG8.infantem.infantem.dream.Dream;
+import com.isppG8.infantem.infantem.vaccine.Vaccine;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,12 +21,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -62,6 +63,12 @@ public class Baby {
 
     @ManyToMany
     private List<Allergen> allergen;
+
+    @OneToMany(mappedBy = "baby")
+    private List<Disease> disease;  // Relación con enfermedades
+
+    @OneToMany(mappedBy = "baby")
+    private List<Vaccine> vaccine;  // Relación con vacunas
 }
 
 
