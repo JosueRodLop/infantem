@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isppG8.infantem.infantem.allergen.Allergen;
 import com.isppG8.infantem.infantem.baby.Baby;
@@ -43,15 +46,21 @@ public class RecipeService {
         return recipeRepository.findByRecommendedAgeLessThanEqual(babyAgeMonths);
     }
     
-    public void saveFavoriteRecipe(Long userId, Long recipeId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
+    public ResponseEntity<String> saveFavoriteRecipe(Long userId, Long recipeId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Recipe not found"));
+        
         user.getFavorites().add(recipe);
         userRepository.save(user);
+        return ResponseEntity.ok("Recipe added to favorites successfully");
     }
     
     public List<Recipe> getFavoriteRecipes(Long userId) {
-        return recipeRepository.findFavoriteRecipes(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return user.getFavorites();
     }
 
     private Integer calculateBabyAgeInMonths(LocalDate birthDate) {
