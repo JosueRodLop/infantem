@@ -2,6 +2,8 @@ package com.isppG8.infantem.infantem.user;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +19,7 @@ public class AuthController {
     private UserService userService;
     
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<User> signup(@RequestBody @Valid SignupRequest signupRequest) {
         User user = new User();
         user.setName(signupRequest.getName());
         user.setSurname(signupRequest.getSurname());
