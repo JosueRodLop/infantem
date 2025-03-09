@@ -1,9 +1,11 @@
 package com.isppG8.infantem.infantem.recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.isppG8.infantem.infantem.intake.IngredientRecipe;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,14 +19,21 @@ import lombok.Setter;
 @Table(name = "recipe_table")
 @Getter @Setter
 public class Recipe {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String name; // <-- Añadido
+    private String description; // <-- Añadido
+    private String photoRoute; // <-- Añadido
+
     private Integer minRecommendedAge;
-    private Integer maxRecommendedAge; // range?
+    private Integer maxRecommendedAge;
     private String elaboration;
 
-    @OneToMany
-    private List<IngredientRecipe> ingredients;
-    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<IngredientRecipe> ingredients = new ArrayList<>();
 }
+
+    

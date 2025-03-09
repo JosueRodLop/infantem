@@ -19,8 +19,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Recipe> searchRecipes(@Param("query") String query);
     
-    List<Recipe> findByRecommendedAgeLessThanEqual(Integer age);
-    
     @Query("SELECT r FROM Recipe r JOIN User u WHERE u.id = :userId AND r IN u.favorites")
     List<Recipe> findFavoriteRecipes(@Param("userId") Long userId);
     

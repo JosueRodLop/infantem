@@ -25,30 +25,34 @@ public class RecipeController {
         this.babyRepository = babyRepository;
     }
 
-      // Obtener recomendaciones de recetas basadas en la edad del bebé
+    // Obtener recetas recomendadas según edad del bebé y alérgenos
     @GetMapping("/recommendations/{babyId}")
     public ResponseEntity<List<Recipe>> getRecommendedRecipes(@PathVariable Integer babyId) {
         Baby baby = babyRepository.findById(babyId).orElse(null);
         if (baby == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(recipeService.getRecommendedRecipes(baby));
+
+        List<Recipe> recommendedRecipes = recipeService.getRecommendedRecipes(baby);
+        return ResponseEntity.ok(recommendedRecipes);
     }
-        // Buscar recetas por nombre o ingredientes
+
+    // Buscar recetas por nombre
     @GetMapping("/search")
-    public List<Recipe> searchRecipes(@RequestParam String query) {
-        return recipeService.searchRecipes(query);
+    public ResponseEntity<List<Recipe>> searchRecipes(@RequestParam String query) {
+        return ResponseEntity.ok(recipeService.searchRecipes(query));
     }
-    
+
     // Guardar receta como favorita
     @PostMapping("/favorites/{userId}/{recipeId}")
-    public void saveFavoriteRecipe(@PathVariable Long userId, @PathVariable Long recipeId) {
+    public ResponseEntity<Void> addFavorite(@PathVariable Long userId, @PathVariable Long recipeId) {
         recipeService.saveFavoriteRecipe(userId, recipeId);
+        return ResponseEntity.ok().build();
     }
-    
+
     // Obtener recetas favoritas del usuario
     @GetMapping("/favorites/{userId}")
-    public List<Recipe> getFavoriteRecipes(@PathVariable Long userId) {
-        return recipeService.getFavoriteRecipes(userId);
+    public ResponseEntity<List<Recipe>> getFavoriteRecipes(@PathVariable Long userId) {
+        return ResponseEntity.ok(recipeService.getFavoriteRecipes(userId));
     }
 }
