@@ -2,7 +2,7 @@ package com.isppG8.infantem.infantem.user;
 
 import java.util.Optional;
 
-import javax.validation.Valid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,7 +21,8 @@ public class AuthController {
     private UserService userService;
     
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody @Valid SignupRequest signupRequest) {
+    public ResponseEntity<User> signup(@Valid @RequestBody SignupRequest signupRequest) {
+        
         User user = new User();
         user.setName(signupRequest.getName());
         user.setSurname(signupRequest.getSurname());
@@ -30,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<User> login(@Valid @RequestBody LoginRequest loginRequest) {
         Optional<User> user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
         return user.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.status(401).build());
     }

@@ -1,9 +1,9 @@
 package com.isppG8.infantem.infantem.user;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
-import jakarta.persistence.Column;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +16,6 @@ public class SignupRequest {
     @NotBlank
     private String surname;
 
-    @Column(unique = true)
     @NotBlank
     private String nameUser;
 
@@ -24,7 +23,6 @@ public class SignupRequest {
     private String password;
     
     @Email
-    @Column(unique = true)
     @NotBlank
     private String email;
 }
