@@ -41,7 +41,7 @@ public class BabyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Baby> createBeby(@RequestBody @Valid Baby baby) {
+    public ResponseEntity<Baby> createBaby(@RequestBody @Valid Baby baby) {
         Baby createdBaby = babyService.createBaby(baby);
         return ResponseEntity.status(201).body(createdBaby);
     }
