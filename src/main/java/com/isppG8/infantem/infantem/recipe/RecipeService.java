@@ -18,6 +18,13 @@ import com.isppG8.infantem.infantem.user.UserRepository;
 
 
 @Service
+/*
+ * TODO:
+ * Add delete favourites recipes functionality
+ * Make all bbdd interactions transactional
+ * 
+ */
+
 public class RecipeService {
     @Autowired
     private RecipeRepository recipeRepository;
@@ -28,17 +35,25 @@ public class RecipeService {
     @Autowired
     private BabyRepository babyRepository;
 
+
+    
     public List<Recipe> getRecommendedRecipes(Integer babyId) {
+        //TODO: Add exception handler when baby is not found
         Baby baby = babyRepository.findById(babyId).orElse(null);
+
+        //TODO: Change baby age into years instead of months
         Integer babyAge = calculateBabyAgeInMonths(baby.getBirthDate());
 
+        //TODO: Change this search into a repository query
         List<Long> allergenIds = baby.getAllergen().stream()
             .map(Allergen::getId)
             .collect(Collectors.toList());
 
         List<Recipe> recipes = recipeRepository.findRecipesByAge(babyAge);
 
+
         if (!allergenIds.isEmpty()) {
+            //TODO: Change this search into a repository query
             recipes = recipes.stream()
                 .filter(recipe -> recipeRepository.findRecipesExcludingAllergens(allergenIds).contains(recipe))
                 .collect(Collectors.toList());
@@ -51,7 +66,7 @@ public class RecipeService {
         return recipeRepository.searchRecipes(query);
     }
 
-    public void saveFavoriteRecipe(Long userId, Long recipeId) {
+    public void saveFavoriteRecipe(Long userId, Long recipeId) throws ResponseStatusException{
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         Recipe recipe = recipeRepository.findById(recipeId)
@@ -61,12 +76,22 @@ public class RecipeService {
         userRepository.save(user);
     }
 
-    public List<Recipe> getFavoriteRecipes(Long userId) {
+
+    public List<Recipe> getFavoriteRecipes(Long userId) throws ResponseStatusException{
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         return user.getFavorites();
     }
 
+
+
+    //TODO
+    public void deleteRecipeFromFavourites(Integer recipeId,Integer userId){
+
+    }
+
+
+    //TODO: Change age into years 
     private Integer calculateBabyAgeInMonths(LocalDate birthDate) {
         return (int) ChronoUnit.MONTHS.between(birthDate, LocalDate.now());
     }
