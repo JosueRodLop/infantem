@@ -3,8 +3,8 @@ package com.isppG8.infantem.infantem.baby;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -40,7 +40,7 @@ public class Baby {
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate birthDate;
 
-    @NotBlank
+    @jakarta.validation.constraints.NotBlank
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
