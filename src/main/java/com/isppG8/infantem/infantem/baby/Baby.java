@@ -3,7 +3,10 @@ package com.isppG8.infantem.infantem.baby;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,7 +33,7 @@ import lombok.Setter;
 public class Baby {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE	, generator = "entity_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
     @NotBlank
@@ -40,17 +43,20 @@ public class Baby {
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate birthDate;
 
-    @jakarta.validation.constraints.NotBlank
+    @NotBlank
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
     @NotBlank
     private Double weight;
 
-    @NotBlank
+    @NotNull
+    @Min(0)
+    @Max(50)
     private Integer height;
 
-    @NotBlank
+    @NotNull
+    @Min(0)
     private Integer cephalicPerimeter;
 
     @NotBlank
