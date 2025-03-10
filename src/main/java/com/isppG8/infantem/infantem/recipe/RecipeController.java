@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,32 +18,48 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/recipes")
 public class RecipeController {
 
-    @Autowired
+    //TODO: add validation for only owner of the recipe can update or delete
+
     private RecipeService recipeService;
 
-    // Obtener recetas recomendadas según edad del bebé y alérgenos
-    @GetMapping("/recommendations/{babyId}")
-    public ResponseEntity<List<Recipe>> getRecommendedRecipes(@PathVariable Integer babyId) {
-        List<Recipe> recommendedRecipes = recipeService.getRecommendedRecipes(babyId);
-        return ResponseEntity.ok(recommendedRecipes);
+    @Autowired
+    public RecipeController(RecipeService recipeService) {
+        this.recipeService = recipeService;
     }
 
-    // Buscar recetas por nombre
-    @GetMapping("/search")
-    public ResponseEntity<List<Recipe>> searchRecipes(@RequestParam String query) {
-        return ResponseEntity.ok(recipeService.searchRecipes(query));
+     @GetMapping("/recommended")
+    public ResponseEntity<List<Recipe>> getRecommendedRecipes(@RequestParam Integer age) {
+        List<Recipe> recipes = recipeService.getRecommendedRecipes(age);
+        return ResponseEntity.ok(recipes);
     }
 
-    // Guardar receta como favorita
-    @PostMapping("/favorites/{userId}/{recipeId}")
-    public ResponseEntity<Void> addFavorite(@PathVariable Long userId, @PathVariable Long recipeId) {
-        recipeService.saveFavoriteRecipe(userId, recipeId);
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Recipe>> getRecipesByUserId(@PathVariable Long userId) {
+        List<Recipe> recipes = recipeService.getRecipesByUserId(userId);
+        return ResponseEntity.ok(recipes);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
+        Recipe recipe = recipeService.getRecipeById(id);
+        return ResponseEntity.ok(recipe);
+    }
+
+    @PostMapping
+    public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
+        Recipe createdRecipe = recipeService.createRecipe(recipe);
+        return ResponseEntity.status(201).body(createdRecipe);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @RequestBody Recipe recipeDetails) {
+        Recipe updatedRecipe = recipeService.updateRecipe(id, recipeDetails);
+        return ResponseEntity.ok(updatedRecipe);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecipe(@PathVariable Long id) {
+        recipeService.deleteRecipe(id);
         return ResponseEntity.ok().build();
-    }
-
-    // Obtener recetas favoritas del usuario
-    @GetMapping("/favorites/{userId}")
-    public ResponseEntity<List<Recipe>> getFavoriteRecipes(@PathVariable Long userId) {
-        return ResponseEntity.ok(recipeService.getFavoriteRecipes(userId));
     }
 }
