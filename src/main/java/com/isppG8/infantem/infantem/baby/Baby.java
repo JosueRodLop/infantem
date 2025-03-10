@@ -16,12 +16,15 @@ import com.isppG8.infantem.infantem.disease.Disease;
 import com.isppG8.infantem.infantem.dream.Dream;
 import com.isppG8.infantem.infantem.vaccine.Vaccine;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
@@ -66,14 +69,14 @@ public class Baby {
 
     @OneToMany
     private List<Dream> sleep;
-
-    @ManyToMany
+    
+    @ManyToMany(mappedBy = "baby")
     private List<Allergen> allergen;
 
-    @OneToMany(mappedBy = "baby")
+    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Disease> disease;  // Relación con enfermedades
 
-    @OneToMany(mappedBy = "baby")
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vaccine> vaccine;  // Relación con vacunas
 }
 
