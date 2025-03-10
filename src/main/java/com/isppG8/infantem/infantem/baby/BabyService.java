@@ -26,10 +26,12 @@ public class BabyService {
         return babyRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public void save(Baby bebe) {
         babyRepository.save(bebe);
     }
 
+    @Transactional
     public void deleteBaby(int id) {
         babyRepository.deleteById(id);
     }
