@@ -10,16 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
-    @Query("SELECT r FROM Recipe r WHERE :age BETWEEN r.minRecommendedAge AND r.maxRecommendedAge")
-    List<Recipe> findRecipesByAge(Integer age);
-
-    @Query("SELECT r FROM Recipe r JOIN r.ingredients i WHERE i.food.id NOT IN :allergenIds")
-    List<Recipe> findRecipesExcludingAllergens(List<Long> allergenIds);
-
-    @Query("SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', :query, '%'))")
-    List<Recipe> searchRecipes(@Param("query") String query);
     
-    @Query("SELECT r FROM Recipe r JOIN r.favoritedBy u WHERE u.id = :userId")
-    List<Recipe> findFavoriteRecipes(@Param("userId") Long userId);
-    
+    @Query("SELECT r FROM Recipe r WHERE r.minRecommendedAge <= :age AND r.maxRecommendedAge >= :age AND r.user IS NULL")
+    List<Recipe> findRecommendedRecipes(@Param("age") Integer age);
+
+    @Query("SELECT r FROM Recipe r WHERE r.user.id = :userId")
+    List<Recipe> findRecipesByUserId(@Param("userId") Long userId);
 }
