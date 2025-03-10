@@ -5,28 +5,33 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.isppG8.infantem.infantem.allergen.Allergen;
 import com.isppG8.infantem.infantem.baby.Baby;
+import com.isppG8.infantem.infantem.baby.BabyRepository;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserRepository;
 
+
 @Service
 public class RecipeService {
+    @Autowired
+    private RecipeRepository recipeRepository;
 
-    private final RecipeRepository recipeRepository;
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, UserRepository userRepository) {
-        this.recipeRepository = recipeRepository;
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private BabyRepository babyRepository;
 
-    public List<Recipe> getRecommendedRecipes(Baby baby) {
+    public List<Recipe> getRecommendedRecipes(Integer babyId) {
+        Baby baby = babyRepository.findById(babyId).orElse(null);
         Integer babyAge = calculateBabyAgeInMonths(baby.getBirthDate());
+
         List<Long> allergenIds = baby.getAllergen().stream()
             .map(Allergen::getId)
             .collect(Collectors.toList());
@@ -66,5 +71,7 @@ public class RecipeService {
         return (int) ChronoUnit.MONTHS.between(birthDate, LocalDate.now());
     }
 }
+
+
 
 
