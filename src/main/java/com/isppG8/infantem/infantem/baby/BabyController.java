@@ -2,8 +2,6 @@ package com.isppG8.infantem.infantem.baby;
 
 import java.util.List;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.validation.Valid;
-
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api/v1/baby")
 public class BabyController {
 
     private final BabyService babyService;
@@ -31,37 +28,29 @@ public class BabyController {
     }
     
     @GetMapping
-    public List<Baby> findAll() {
-        return babyService.findAll();
+    public ResponseEntity<List<Baby>> findAll() {
+        List<Baby> babyList =  babyService.findAll();
+        return ResponseEntity.ok().body(babyList);
     }
 
     @GetMapping("/{id}")
-    public Baby findById(int id) {
-        return babyService.findById(id);
+    public ResponseEntity<Baby> findById(int id) {
+        Baby baby = babyService.findById(id);
+        return ResponseEntity.ok().body(baby);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Baby createBebe(@RequestBody @Valid Baby baby) {
-        babyService.save(baby);
-        return baby;
+    public ResponseEntity<Baby> createBeby(@RequestBody @Valid Baby baby) {
+        Baby createdBaby = babyService.createBaby(baby);
+        return ResponseEntity.status(201).body(createdBaby);
     }
 
     @PutMapping("/update/{id}")
-    public void updateBebe(@PathVariable("id") Integer id,@RequestBody @Valid Baby baby) {
-        Baby bebeToUpdate = babyService.findById(id);
-        if(bebeToUpdate == null) {
-            throw new RuntimeException("Bebe not found");
-        }
-        bebeToUpdate.setName(baby.getName());
-        bebeToUpdate.setBirthDate(baby.getBirthDate());
-        bebeToUpdate.setGenre(baby.getGenre());
-        bebeToUpdate.setWeight(baby.getWeight());
-        bebeToUpdate.setHeight(baby.getHeight());
-        bebeToUpdate.setCephalicPerimeter(baby.getCephalicPerimeter());
-        bebeToUpdate.setFoodPreference(baby.getFoodPreference());
-
-        babyService.save(bebeToUpdate);
+    public ResponseEntity<Baby> updateBebe(@PathVariable("id") Integer id,@RequestBody @Valid Baby baby) {
+        Baby updatedBaby = babyService.updateBaby(id, baby);
+        return ResponseEntity.ok(updatedBaby);
+        
     }
 
     @DeleteMapping("/delete/{id}")
