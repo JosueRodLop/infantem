@@ -7,6 +7,7 @@ TRUNCATE TABLE baby;
 TRUNCATE TABLE recipe_table;
 TRUNCATE TABLE allergen;
 TRUNCATE TABLE user_table;
+TRUNCATE TABLE user_favorites;
 
 INSERT INTO user_table (surname, password , email, name, name_user) VALUES
 ('1', 'pwd', 'user1@gmail.com', 'user', 'user1'),
@@ -40,16 +41,16 @@ insert into sueño_table (fin, inicio, num_desvalos, `tipo_sueño`) values
 ('2024-03-11 21:30:00.000000', '2024-03-12 07:10:00.000000', 4, 1);
 
 INSERT INTO recipe_table (name, description, photo_route, min_recommended_age, max_recommended_age, elaboration) VALUES
-('Puré de Zanahoria', 'Un delicioso puré de zanahoria para bebés.', '/images/pure_zanahoria.jpg', 6, 12, 'Cocinar las zanahorias y triturarlas.'),
-('Papilla de Frutas', 'Papilla de frutas variadas para bebés.', '/images/papilla_frutas.jpg', 4, 10, 'Mezclar y triturar frutas frescas.'),
-('Sopa de Pollo', 'Sopa de pollo suave y nutritiva.', '/images/sopa_pollo.jpg', 8, 24, 'Cocinar pollo con verduras y triturar.'),
-('Galletas de Avena', 'Galletas saludables de avena.', '/images/galletas_avena.jpg', 12, 36, 'Mezclar avena con plátano y hornear.'),
-('Puré de Calabaza', 'Puré de calabaza suave y dulce.', '/images/pure_calabaza.jpg', 6, 12, 'Cocinar la calabaza y triturarla.'),
-('Compota de Manzana', 'Compota de manzana casera.', '/images/compota_manzana.jpg', 4, 10, 'Cocinar manzanas y triturarlas.'),
+('Puré de Zanahoria', 'Un delicioso puré de zanahoria para bebés.', '/images/pure_zanahoria.jpg', 2, 12, 'Cocinar las zanahorias y triturarlas.'),
+('Papilla de Frutas', 'Papilla de frutas variadas para bebés.', '/images/papilla_frutas.jpg', 2, 10, 'Mezclar y triturar frutas frescas.'),
+('Sopa de Pollo', 'Sopa de pollo suave y nutritiva.', '/images/sopa_pollo.jpg', 1, 24, 'Cocinar pollo con verduras y triturar.'),
+('Galletas de Avena', 'Galletas saludables de avena.', '/images/galletas_avena.jpg', 4, 36, 'Mezclar avena con plátano y hornear.'),
+('Puré de Calabaza', 'Puré de calabaza suave y dulce.', '/images/pure_calabaza.jpg', 3, 12, 'Cocinar la calabaza y triturarla.'),
+('Compota de Manzana', 'Compota de manzana casera.', '/images/compota_manzana.jpg', 2, 10, 'Cocinar manzanas y triturarlas.'),
 ('Puré de Espinacas', 'Puré de espinacas rico en hierro.', '/images/pure_espinacas.jpg', 8, 18, 'Cocinar espinacas y triturarlas.'),
 ('Arroz con Leche', 'Postre de arroz con leche.', '/images/arroz_leche.jpg', 12, 36, 'Cocinar arroz con leche y canela.'),
-('Puré de Patata', 'Puré de patata cremoso.', '/images/pure_patata.jpg', 6, 12, 'Cocinar patatas y triturarlas con leche.'),
-('Yogur Natural', 'Yogur natural casero.', '/images/yogur_natural.jpg', 10, 24, 'Fermentar leche para hacer yogur.');
+('Puré de Patata', 'Puré de patata cremoso.', '/images/pure_patata.jpg', 3, 12, 'Cocinar patatas y triturarlas con leche.'),
+('Yogur Natural', 'Yogur natural casero.', '/images/yogur_natural.jpg', 3, 24, 'Fermentar leche para hacer yogur.');
 
 
 INSERT INTO baby (id, name, birth_date, genre, weight, height, cephalic_perimeter, food_preference) VALUES
@@ -60,7 +61,6 @@ INSERT INTO baby (id, name, birth_date, genre, weight, height, cephalic_perimete
 (5, 'Charlie', '2023-05-01', 'MALE', 3.4, 49, 34, 'Milk');
 
 INSERT INTO baby_allergen (baby_id, allergen_id) VALUES
-(1, 1),
 (2, 2),
 (3, 3),
 (4, 4),
@@ -80,3 +80,11 @@ INSERT INTO vaccine_table (id, baby_id, type, vaccination_date) VALUES
 (3, 3, 'HepB', '2023-08-01'),
 (4, 4, 'Polio', '2023-09-01'),
 (5, 5, 'Hib', '2023-10-01');
+
+INSERT INTO user_favorites (user_id,recipe_id) VALUES
+(1,1),
+(1,3),
+(2,4),
+(2,1),
+(3,1),
+(3,7)

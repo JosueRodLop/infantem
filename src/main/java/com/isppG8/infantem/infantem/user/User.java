@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.isppG8.infantem.infantem.recipe.Recipe;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,19 +34,6 @@ public class User {
     private String email;
     private String profilePhotoRoute;
     
-    @ManyToMany
-    @JoinTable(
-        name = "user_favorites",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "recipe_id")
-    )
-    private List<Recipe> favorites = new ArrayList<>();
-
-    public List<Recipe> getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(List<Recipe> favorites) {
-        this.favorites = favorites;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Recipe> recipes = new ArrayList<>();
 }

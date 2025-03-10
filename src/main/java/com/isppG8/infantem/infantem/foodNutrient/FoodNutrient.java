@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import com.isppG8.infantem.infantem.nutrient.Nutrient;
-import com.isppG8.infantem.infantem.intake.Food;
+import com.isppG8.infantem.infantem.recipe.Recipe;
 
 
 @Entity
@@ -34,7 +34,7 @@ public class FoodNutrient{
     private Nutrient nutrient;
 
     @ManyToOne
-    private Food food;
+    private Recipe recipe;
 
 
 }
