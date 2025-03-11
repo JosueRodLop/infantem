@@ -49,7 +49,6 @@ public class BabyService {
         existingBaby.setSleep(updatedBaby.getSleep());
         existingBaby.setAllergen(updatedBaby.getAllergen());
         existingBaby.setDisease(updatedBaby.getDisease());
-        existingBaby.setVaccine(updatedBaby.getVaccine());
         return babyRepository.save(existingBaby);
     }
 
