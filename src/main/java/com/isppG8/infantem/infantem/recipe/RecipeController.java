@@ -62,4 +62,11 @@ public class RecipeController {
         recipeService.deleteRecipe(id);
         return ResponseEntity.ok().build();
     }
+
+    
+    @GetMapping("/all") 
+    public ResponseEntity<List<Recipe>> getAllRecipes() {
+        List<Recipe> recipes = recipeService.findAll();  
+        return ResponseEntity.ok(recipes);  
+    }
 }

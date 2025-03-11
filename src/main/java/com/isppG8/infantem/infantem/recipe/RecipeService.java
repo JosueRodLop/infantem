@@ -67,6 +67,10 @@ public class RecipeService {
         this.recipeRepository.delete(recipe);
     }
 
+    public List<Recipe> findAll() {
+        return recipeRepository.findAll(); 
+    }
+
 
 
 }
