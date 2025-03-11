@@ -1,6 +1,7 @@
 package com.isppG8.infantem.infantem.baby;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.validation.constraints.Max;
@@ -27,12 +28,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "baby_table")
 public class Baby {
 
     @Id
@@ -68,16 +71,16 @@ public class Baby {
     //Relaciones
 
     @OneToMany
-    private List<Dream> sleep;
-    
-    @ManyToMany(mappedBy = "baby")
-    private List<Allergen> allergen;
+    private List<Dream> sleep = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "babies")
+    private List<Allergen> allergen = new ArrayList<>();
 
     @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Disease> disease;  // Relación con enfermedades
+    private List<Disease> disease = new ArrayList<>();  // Relación con enfermedades
 
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vaccine> vaccine;  // Relación con vacunas
+    private List<Vaccine> vaccine = new ArrayList<>();  // Relación con vacuna
 }
 
 

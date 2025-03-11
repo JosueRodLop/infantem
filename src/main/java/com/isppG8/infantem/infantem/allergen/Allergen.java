@@ -26,6 +26,8 @@ public class Allergen {
     private List<Recipe> recipes = new ArrayList<>();
 
     
+
+    @ManyToMany
     @JoinTable(
         name = "baby_allergen",
         joinColumns = @JoinColumn(name = "baby_id"),
