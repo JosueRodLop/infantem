@@ -1,12 +1,20 @@
-import { View, ActivityIndicator } from "react-native";
+import { Link } from "expo-router";
+import { View, ActivityIndicator, Text } from "react-native";
 
 export default function Index() {
+  const gs = require("../static/styles/globalStyles"); 
 
   return (
     <View
-			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+			style={[gs.container, { justifyContent: "center" }]}
 		>
-			<ActivityIndicator size="large" color="black" />
+      <Text> This needs the login logic to work properly </Text>
+			<ActivityIndicator style={{ padding:20 }} size="large" color="black" />
+
+      <Link href={"/recipes"}>
+        <Text style={gs.linkText}>See the recipes!</Text>
+      </Link>
+
 		</View>
   );
 }
