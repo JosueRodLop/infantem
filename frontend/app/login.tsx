@@ -1,58 +1,53 @@
+import { Link } from "expo-router";
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView, Image } from "react-native";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const gs = require("../static/styles/globalStyles"); // Importando estilos globales
 
   const handleLogin = () => {
-    console.log("Iniciando sesión con:", email, password);
+    console.log("Iniciando sesión con:", username, password);
     // Aquí iría la lógica de autenticación con el backend
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={[gs.container, {justifyContent:"center"}]}>
+      <Text style={gs.headerText}>Iniciar Sesión</Text>
+      <Image source={require("../static/images/profile.webp")} style={[gs.profileImage, {marginBottom:20}]} />
 
-      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-        <Text style={gs.headerText}>Iniciar Sesión</Text>
-        <Text style={gs.subHeaderText}>Accede con tu cuenta</Text>
-
-        {/* Imagen de usuario opcional */}
-        <Image source={require("../static/images/profile.webp")} style={gs.profileImage} />
-
-        {/* Campo de correo */}
-        <Text style={gs.subHeaderText}>Correo Electrónico</Text>
+      <View style={[gs.card, {maxWidth:400}]}>
+        <Text style={{fontWeight: "bold"}}>Correo Electrónico</Text>
         <TextInput
           style={gs.input}
-          placeholder="Introduce tu correo"
-          value={email}
-          onChangeText={setEmail}
+          placeholder="user@example.com"
+          value={username}
+          onChangeText={setUsername}
           keyboardType="email-address"
           autoCapitalize="none"
         />
 
-        {/* Campo de contraseña */}
-        <Text style={gs.subHeaderText}>Contraseña</Text>
+        <Text style={{paddingTop:10, fontWeight:"bold"}}>Contraseña</Text>
         <TextInput
           style={gs.input}
-          placeholder="Introduce tu contraseña"
+          placeholder="contraseña1234"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
 
-        {/* Botón de inicio de sesión */}
-        <TouchableOpacity style={gs.mainButton} onPress={handleLogin}>
+        <Link href={"/signup"}>
+          <Text style={{color: "#007AFF"}}>¿No tienes cuenta? ¡Regístrate!</Text>
+        </Link>
+
+        <TouchableOpacity style={[gs.mainButton, {marginTop: 20}]} onPress={handleLogin}>
           <Text style={gs.mainButtonText}>Ingresar</Text>
         </TouchableOpacity>
+      </View>
 
-        {/* Botón para registrarse (opcional) */}
-        <TouchableOpacity style={gs.secondaryButton}>
-          <Text style={gs.secondaryButtonText}>¿No tienes cuenta? Regístrate</Text>
-        </TouchableOpacity>
-      </ScrollView>
+
     </View>
   );
 }
