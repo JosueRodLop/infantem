@@ -1,4 +1,5 @@
 import { Tabs } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
 //import { Redirect } from "expo-router";
 
 export default function TabLayout() {
@@ -10,6 +11,9 @@ export default function TabLayout() {
          headerShown: false,
          lazy: true,
          tabBarLabel: "Recipes",
+         tabBarIcon: ({ color }) => (
+          <Ionicons name='list' color={color} size={24} />
+          ),
        }}
        />
         <Tabs.Screen
@@ -18,6 +22,9 @@ export default function TabLayout() {
             lazy: true,
             headerShown: false,
             tabBarLabel: "Food",
+            tabBarIcon: ({ color }) => (
+              <Ionicons name='egg' color={color} size={24} />
+            ),
           }}
         />
         <Tabs.Screen
@@ -26,6 +33,20 @@ export default function TabLayout() {
           lazy: true,
           headerShown: false,
           tabBarLabel: "Allergens",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name='medical' color={color} size={24} />
+          ),
+        }}
+        />
+        <Tabs.Screen
+        name="account"
+        options={{
+          lazy: true,
+          headerShown: false,
+          tabBarLabel: "Account",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name='man' color={color} size={24} />
+          ),
         }}
         />
       </Tabs>
