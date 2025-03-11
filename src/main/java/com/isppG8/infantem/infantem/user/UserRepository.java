@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT u FROM User u WHERE u.nameUser = ?1")
-    Optional<User> findByNameUser(String nameUser);
+    @Query("SELECT u FROM User u WHERE u.username = ?1")
+    Optional<User> findByUsername(String username);
 
     @Query("SELECT u FROM User u WHERE u.email = ?1")
     Optional<User> findByEmail(String email);

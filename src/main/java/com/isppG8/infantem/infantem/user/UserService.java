@@ -26,6 +26,10 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public User findByUsername(String username) {
+	    return userRepository.findByUsername(username).orElse(null);
+    }
+
     @Transactional
     public User createUser(User user) {
         
@@ -33,7 +37,7 @@ public class UserService {
         throw new IllegalArgumentException("Email address is already registered.");
     }
     
-    if (userRepository.findByNameUser(user.getNameUser()).isPresent()) {
+    if (userRepository.findByUsername(user.getUsername()).isPresent()) {
         throw new IllegalArgumentException("Username is already registered.");
     }
 
@@ -42,11 +46,25 @@ public class UserService {
     }
 
     @Transactional
+    public User save(User user) {
+	    if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+		    throw new IllegalArgumentException("Email address is already registered.");
+	    }
+
+	    if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+		    throw new IllegalArgumentException("Username is already registered.");
+	    }
+
+	    return userRepository.save(user);
+
+    }
+
+    @Transactional
     public Optional<User> updateUser(Long id, User userDetails) {
         return userRepository.findById(id).map(user -> {
             user.setName(userDetails.getName());
             user.setSurname(userDetails.getSurname());
-            user.setNameUser(userDetails.getNameUser());
+            user.setUsername(userDetails.getUsername());
             user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
             user.setEmail(userDetails.getEmail());
             return userRepository.save(user);
@@ -63,8 +81,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> login(String nameUser, String password) {
-        Optional<User> user = userRepository.findByNameUser(nameUser);
+    public Optional<User> login(String username, String password) {
+        Optional<User> user = userRepository.findByUsername(username);
         if(user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
             return user;
         }

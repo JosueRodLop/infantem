@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import com.isppG8.infantem.infantem.auth.Authorities;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,8 +20,9 @@ public class User {
 
     private String name;
     private String surname;
-    private String nameUser;
+    private String username;
     private String password;
     private String email;
     private String profilePhotoRoute;
+    private Authorities authorities;
 }

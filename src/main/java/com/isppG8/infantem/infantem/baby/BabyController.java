@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("api/v1/babies")
 public class BabyController {
 
     private final BabyService babyService;
@@ -36,6 +36,7 @@ public class BabyController {
 
     @GetMapping("/{id}")
     public Baby findById(int id) {
+	System.out.println("Hi");
         return babyService.findById(id);
     }
 
