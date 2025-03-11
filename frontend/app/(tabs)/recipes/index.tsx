@@ -59,7 +59,7 @@ export default function Recipes() {
         {recipes.map((recipe, index) => (
           <Link
             key={index}
-            href={`/recipes/recipeDetails?recipeTitle=${recipe.title}`} 
+            href={`/recipes/detail?recipeTitle=${recipe.title}`} 
           >
             <View style={gs.card}>
               <Text style={gs.cardTitle}>{recipe.title}</Text>

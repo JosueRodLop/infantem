@@ -27,7 +27,7 @@ export default function RootLayout() {
       <Stack.Screen
         name="(tabs)"
         options={{
-          //headerShown: false,
+          headerShown: false,
           animation: "slide_from_bottom",
         }}
       />

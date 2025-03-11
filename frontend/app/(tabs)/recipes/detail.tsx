@@ -19,7 +19,6 @@ export default function RecipeDetails() {
 
   return (
     <View style={gs.container}>
-      <NavBar />
       <View style={[gs.content, { marginTop: 30 }]}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={gs.headerText}>{recipe.title}</Text>
