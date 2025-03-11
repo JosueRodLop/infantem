@@ -1,16 +1,41 @@
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Text, View, TouchableOpacity, TextInput, ScrollView, Image } from "react-native";
+import { Text, View, TouchableOpacity, TextInput, Image } from "react-native";
+
 
 export default function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const gs = require("../static/styles/globalStyles"); // Importando estilos globales
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-  const handleLogin = () => {
-    console.log("Iniciando sesión con:", username, password);
-    // Aquí iría la lógica de autenticación con el backend
+  const gs = require("../static/styles/globalStyles");
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/auth/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username, 
+          password: password,
+        }),
+      });
+
+      if (!response.ok) {
+        // I asked backend to implement the Bad credential error as a JSON. Waiting for that
+        setErrorMessage(String(response));
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Login successful:", data);
+    } catch (error) {
+      console.error("Network error:", error);
+    }
   };
 
   return (
@@ -37,12 +62,14 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
         />
+        
+        {errorMessage && <Text style={{ color: "red", marginVertical: 10 }}>Algo no ha ido bien.</Text>}
 
         <Link href={"/signup"}>
           <Text style={{color: "#007AFF"}}>¿No tienes cuenta? ¡Regístrate!</Text>
         </Link>
 
-        <TouchableOpacity style={[gs.mainButton, {marginTop: 20}]} onPress={handleLogin}>
+        <TouchableOpacity style={[gs.mainButton, {marginTop: 20}]} onPress={handleSubmit}>
           <Text style={gs.mainButtonText}>Ingresar</Text>
         </TouchableOpacity>
       </View>
