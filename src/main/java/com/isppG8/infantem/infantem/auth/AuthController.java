@@ -18,8 +18,10 @@ import com.isppG8.infantem.infantem.auth.payload.request.SignupRequest;
 import com.isppG8.infantem.infantem.auth.payload.response.MessageResponse;
 import com.isppG8.infantem.infantem.auth.jwt.JwtUtils;
 import com.isppG8.infantem.infantem.auth.jwt.JwtResponse;
+import com.isppG8.infantem.infantem.config.services.UserDetailsImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +51,6 @@ public class AuthController {
 
 	@PostMapping("/signin")
 	public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-		System.out.println("test");
 		try{
 			Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -57,10 +58,11 @@ public class AuthController {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			String jwt = jwtUtils.generateJwtToken(authentication);
 
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			String roles = userDetails.getAuthorities().iterator().next().getAuthority();
+			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+				.collect(Collectors.toList());
 
-			return ResponseEntity.ok().body(new JwtResponse(jwt, userDetails.getUsername(), roles));
+			return ResponseEntity.ok().body(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
 		}catch(BadCredentialsException exception){
 			return ResponseEntity.badRequest().body("Bad Credentials!");
 		}
@@ -75,7 +77,7 @@ public class AuthController {
 	
 	@PostMapping("/signup")	
 	public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		if (userService.findByUsername(signUpRequest.getUsername())==null) {
+		if (userService.findByUsername(signUpRequest.getUsername())!=null) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
 		}
 		authService.createUser(signUpRequest);

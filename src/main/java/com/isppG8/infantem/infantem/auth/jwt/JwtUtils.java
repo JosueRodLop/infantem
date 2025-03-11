@@ -10,6 +10,7 @@ import com.isppG8.infantem.infantem.auth.Authorities;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.isppG8.infantem.infantem.config.services.UserDetailsImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -21,18 +22,16 @@ import io.jsonwebtoken.UnsupportedJwtException;
 @Component
 public class JwtUtils {
 
-	@Value("secretillo")//@Value("${infantem.app.jwtSecret}")
+	@Value("${infantem.jwt.secret}")
 	private String jwtSecret;
 
-	@Value("5")//@Value("${infantem.app.jwtExpirationMs}")
+	@Value("${infantem.jwt.timeout}")
 	private int jwtExpirationMs;
 
 	public String generateJwtToken(Authentication authentication) {
 
-
-		UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 		Map<String, Object> claims = new HashMap<>();
-
 		claims.put("authorities",
 				userPrincipal.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toList()));
 
