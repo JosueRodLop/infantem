@@ -70,7 +70,7 @@ public class Baby {
 
     //Relaciones
 
-    @OneToMany
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dream> sleep = new ArrayList<>();
 
     @ManyToMany(mappedBy = "babies")
