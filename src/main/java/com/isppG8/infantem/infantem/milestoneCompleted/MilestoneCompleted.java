@@ -30,6 +30,7 @@ public class MilestoneCompleted {
     private Milestone milestone;
 
     @ManyToOne
+    @JoinColumn(name = "baby_id")
     private Baby baby;
 
 
