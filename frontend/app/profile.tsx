@@ -3,7 +3,6 @@ import { ActivityIndicator, Modal, TextInput, Alert } from "react-native";
 import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import NavBar from "../../components/NavBar";
 
 interface User {
   id: number;
@@ -15,18 +14,18 @@ interface User {
 }
 
 const avatarOptions = [
-  require("../../assets/avatar/avatar1.png"),
-  require("../../assets/avatar/avatar2.png")
+  require("../assets/avatar/avatar1.png"),
+  require("../assets/avatar/avatar2.png")
 ];
 
-export default function ProfileScreen() {
+export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const navigation = useNavigation();
 
-  const gs = require("../../static/styles/globalStyles");
+  const gs = require("../static/styles/globalStyles");
 
   useEffect(() => {
     fetch("http://localhost:8080/usuarios/1")

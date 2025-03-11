@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { Link } from "expo-router"; 
-import NavBar from "../../components/NavBar";
 
-export default function Page() {
-  const gs = require("../../static/styles/globalStyles");
+export default function Recipes() {
+  const gs = require('../../../static/styles/globalStyles');
   const [searchQuery, setSearchQuery] = useState("");
 
   const recipes = [
@@ -24,7 +23,6 @@ export default function Page() {
 
   return (
     <View style={{ flex: 1 }}>
-      <NavBar />
 
       <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
         <Text style={gs.headerText}>Recipe Suggestions</Text>
