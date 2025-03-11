@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotNull;
 
+import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.recipe.Recipe;
 
 import jakarta.persistence.Entity;
@@ -46,4 +47,8 @@ public class Intake {
 
     @ManyToOne
     private IntakeSymptom IntakeSymptom;
+
+    @ManyToOne
+    @JoinColumn(name = "baby_id")
+    private Baby baby;
 }
