@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { Link, useRouter } from "expo-router";
-import NavBar from "../../components/NavBar";
+
 
 export default function BabyInfo() {
   const gs = require("../../static/styles/globalStyles");
@@ -42,7 +42,6 @@ export default function BabyInfo() {
 
   return (
     <View style={{ flex: 1 }}>
-      <NavBar />
 
       <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
         <Text style={gs.headerText}>Baby Information</Text>
