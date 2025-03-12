@@ -9,6 +9,7 @@ export default function Signin() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  console.log("API URL:", apiUrl);
 
   const gs = require("../static/styles/globalStyles");
 
@@ -20,7 +21,7 @@ export default function Signin() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username, 
+          username: username,
           password: password,
         }),
       });
@@ -42,12 +43,12 @@ export default function Signin() {
   };
 
   return (
-    <View style={[gs.container, {justifyContent:"center"}]}>
+    <View style={[gs.container, { justifyContent: "center" }]}>
       <Text style={gs.headerText}>Iniciar Sesión</Text>
-      <Image source={require("../static/images/profile.webp")} style={[gs.profileImage, {marginBottom:20}]} />
+      <Image source={require("../static/images/profile.webp")} style={[gs.profileImage, { marginBottom: 20 }]} />
 
-      <View style={[gs.card, {maxWidth:400}]}>
-        <Text style={{fontWeight: "bold"}}>Nombre de usuario</Text>
+      <View style={[gs.card, { maxWidth: 400 }]}>
+        <Text style={{ fontWeight: "bold" }}>Nombre de usuario</Text>
         <TextInput
           style={gs.input}
           placeholder="juanperez1234"
@@ -56,7 +57,7 @@ export default function Signin() {
           autoCapitalize="none"
         />
 
-        <Text style={{paddingTop:10, fontWeight:"bold"}}>Contraseña</Text>
+        <Text style={{ paddingTop: 10, fontWeight: "bold" }}>Contraseña</Text>
         <TextInput
           style={gs.input}
           placeholder="contraseña1234"
@@ -64,14 +65,14 @@ export default function Signin() {
           onChangeText={setPassword}
           secureTextEntry
         />
-        
+
         {errorMessage && <Text style={{ color: "red", marginVertical: 10 }}>{errorMessage}</Text>}
 
         <Link href={"/signup"}>
-          <Text style={{color: "#007AFF"}}>¿No tienes cuenta? ¡Regístrate!</Text>
+          <Text style={{ color: "#007AFF" }}>¿No tienes cuenta? ¡Regístrate!</Text>
         </Link>
 
-        <TouchableOpacity style={[gs.mainButton, {marginTop: 20}]} onPress={handleSubmit}>
+        <TouchableOpacity style={[gs.mainButton, { marginTop: 20 }]} onPress={handleSubmit}>
           <Text style={gs.mainButtonText}>Ingresar</Text>
         </TouchableOpacity>
       </View>
