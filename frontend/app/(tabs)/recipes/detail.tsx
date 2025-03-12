@@ -18,8 +18,9 @@ export default function RecipeDetails() {
   }
 
   return (
-    <View style={gs.container}>
-      <View style={[gs.content, { marginTop: 30 }]}>
+    <View style={[gs.container, { paddingTop: 0, marginTop: 0 }]}>  
+      <NavBar />
+      <View style={[gs.content, { marginTop: 0 }]}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={gs.headerText}>{recipe.title}</Text>
           <TouchableOpacity style={[gs.mainButton, { marginLeft: 30 }]}>
@@ -38,3 +39,5 @@ export default function RecipeDetails() {
     </View>
   );
 }
+
+
