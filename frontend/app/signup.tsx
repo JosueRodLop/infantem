@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, Image } from "react-native";
 
@@ -33,6 +33,8 @@ export default function Signup() {
         setErrorMessage("Algo no ha ido bien.");
         return;
       }
+
+      router.push("/recipes");
 
     } catch (error) {
       console.error("An error ocurred: ", error);
@@ -100,9 +102,7 @@ export default function Signup() {
           <Text style={{ color: "red", marginVertical: 10 }}>
             {errorMessage}
           </Text>
-        )}
-
-        <Link href={"/signin"}>
+        )} <Link href={"/signin"}>
           <Text style={{ color: "#007AFF", marginTop: 10 }}>
             ¿Ya tienes cuenta? ¡Inicia sesión!
           </Text>

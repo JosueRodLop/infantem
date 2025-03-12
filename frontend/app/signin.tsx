@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, Image } from "react-native";
 
@@ -29,6 +29,8 @@ export default function Signin() {
         setErrorMessage("Algo no ha ido bien");
         return;
       }
+
+      router.push("/recipes");
 
     } catch (error) {
       console.error("An error ocurred: ", error);
