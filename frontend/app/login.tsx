@@ -44,13 +44,12 @@ export default function LoginScreen() {
       <Image source={require("../static/images/profile.webp")} style={[gs.profileImage, {marginBottom:20}]} />
 
       <View style={[gs.card, {maxWidth:400}]}>
-        <Text style={{fontWeight: "bold"}}>Correo Electrónico</Text>
+        <Text style={{fontWeight: "bold"}}>Nombre de usuario</Text>
         <TextInput
           style={gs.input}
-          placeholder="user@example.com"
+          placeholder="johndoe1234"
           value={username}
           onChangeText={setUsername}
-          keyboardType="email-address"
           autoCapitalize="none"
         />
 
