@@ -29,4 +29,13 @@ public class ExceptonHandleController {
 		return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(ResourceNotOwnedException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public ResponseEntity<ErrorMessage> resourceNotOwnedException(ResourceNotOwnedException ex, WebRequest request) {
+		ErrorMessage message = new ErrorMessage(HttpStatus.FORBIDDEN.value(), new Date(), ex.getMessage(),
+				request.getDescription(false));
+
+		return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
+	}
+
 }

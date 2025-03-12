@@ -1,12 +1,11 @@
 import { Link } from "expo-router";
 import { Text, View, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import { useState } from "react";
-import NavBar from "../../components/NavBar";
-import { questions } from "../../hardcoded_data/questionsData";
+import { questions } from "../../../hardcoded_data/questionsData";
 
-export default function Page() {
+export default function Allergens() {
   
-  const gs = require('../../static/styles/globalStyles');
+  const gs = require('../../../static/styles/globalStyles');
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   // I think using records is a better approach than using maps here.
   const [answers, setAnswers] = useState<Record<number, string>>({}); 
@@ -21,8 +20,6 @@ export default function Page() {
 
   return (
     <View style={{ flex: 1 }}>
-
-      <NavBar />
 
       <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
         <Text style={gs.headerText}>Alergenos</Text>

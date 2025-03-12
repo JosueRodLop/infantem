@@ -1,12 +1,11 @@
 import { useLocalSearchParams } from "expo-router"; 
 import { View, Text, TouchableOpacity } from "react-native";
-import NavBar from "../../components/NavBar";
-import { recipes } from "../../hardcoded_data/recipesData";
+import { recipes } from "../../../hardcoded_data/recipesData";
 
 export default function RecipeDetails() {
 
   const { recipeTitle } = useLocalSearchParams();
-  const gs = require("../../static/styles/globalStyles");
+  const gs = require('../../../static/styles/globalStyles');
 
   const recipe = recipes.find((r) => r.title === recipeTitle);
 
@@ -19,9 +18,9 @@ export default function RecipeDetails() {
   }
 
   return (
-    <View style={gs.container}>
+    <View style={[gs.container, { paddingTop: 0, marginTop: 0 }]}>  
       <NavBar />
-      <View style={[gs.content, { marginTop: 30 }]}>
+      <View style={[gs.content, { marginTop: 0 }]}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={gs.headerText}>{recipe.title}</Text>
           <TouchableOpacity style={[gs.mainButton, { marginLeft: 30 }]}>
@@ -40,3 +39,5 @@ export default function RecipeDetails() {
     </View>
   );
 }
+
+

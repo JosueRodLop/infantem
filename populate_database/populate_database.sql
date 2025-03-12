@@ -16,6 +16,8 @@ INSERT INTO user_table (surname, password , email, name, name_user) VALUES
 ('5', 'pwd', 'user5@gmail.com', 'user', 'user5'),
 ('6', 'pwd', 'user6@gmail.com', 'user', 'user6');
 
+INSERT INTO authorities (id,authority) VALUES (1,"user");
+
 insert into allergen (name, description) values
 ('Gluten', 'Presente en trigo, cebada, centeno y sus derivados.'),
 ('Lactosa', 'Azúcar presente en la leche y productos lácteos.'),
