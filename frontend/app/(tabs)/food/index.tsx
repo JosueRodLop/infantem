@@ -1,18 +1,15 @@
 import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import Navbar from "../../components/NavBar";
 
-export default function Page() {
+export default function Food() {
   const [foodName, setFoodName] = useState("");
   const [foodType, setFoodType] = useState("");
 
-  const gs = require('../../static/styles/globalStyles');
+  const gs = require("../../../static/styles/globalStyles");
 
   return (
     <View style={{ flex: 1 }}>
-        
-        <Navbar />
         
         <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}> 
             <Text style={gs.headerText}>Registro de Alimento</Text>

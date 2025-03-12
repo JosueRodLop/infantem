@@ -5,7 +5,6 @@
 # Archivos de compilación
 target/
 node_modules/
-**/node_modules/
 
 # Archivos generados y temporales
 *.map
@@ -22,13 +21,12 @@ __mocks__/
 .idea/
 jest.config.js
 
-# Archivos estáticos no requeridos
-frontend/dist/_expo/static/development/
-frontend/dist/_expo/static/debug/
-frontend/dist/_expo/static/media/
-frontend/dist/_expo/static/images/
 
 # Otros
 *.DS_Store
 *.iml
 *.swp
+
+# Excepciones para incluir archivos importantes
+!frontend/dist/_expo/static/js/web/**
+!frontend/dist/index.html
