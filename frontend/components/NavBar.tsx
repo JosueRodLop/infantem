@@ -32,6 +32,11 @@ const NavBar: React.FC = () => {
             <Text style={gs.navText}>Alergenos</Text>
           </TouchableOpacity>
         </Link>
+        <Link href="/baby/babyInfo" asChild>
+          <TouchableOpacity>
+            <Text style={gs.navText}>Mis bebes</Text>
+          </TouchableOpacity>
+        </Link>
 
       </View>
 

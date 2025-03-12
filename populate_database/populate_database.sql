@@ -1,8 +1,7 @@
- 
 TRUNCATE TABLE baby_allergen;
 TRUNCATE TABLE disease_table;
 TRUNCATE TABLE vaccine_table;
-TRUNCATE TABLE sueño_table;
+TRUNCATE TABLE dream_table;
 TRUNCATE TABLE baby;
 TRUNCATE TABLE recipe_table;
 TRUNCATE TABLE allergen;
@@ -15,7 +14,7 @@ INSERT INTO user_table (surname, password , email, name, name_user) VALUES
 ('4', 'pwd', 'user4@gmail.com', 'user', 'user4'),
 ('5', 'pwd', 'user5@gmail.com', 'user', 'user5'),
 ('6', 'pwd', 'user6@gmail.com', 'user', 'user6');
-
+/*
 insert into allergen (name, description) values
 ('Gluten', 'Presente en trigo, cebada, centeno y sus derivados.'),
 ('Lactosa', 'Azúcar presente en la leche y productos lácteos.'),
@@ -28,16 +27,16 @@ insert into allergen (name, description) values
 ('Sésamo', 'Presente en panes, galletas, tahini y otros productos.'),
 ('Sulfitos', 'Utilizados como conservantes en vinos, frutas secas y productos procesados.');
 
-insert into sueño_table (fin, inicio, num_desvalos, `tipo_sueño`) values
-('2024-03-03 22:00:00.000000', '2024-03-04 06:30:00.000000', 2, 1),
-('2024-03-04 23:15:00.000000', '2024-03-05 07:00:00.000000', 3, 2),
-('2024-03-05 21:45:00.000000', '2024-03-06 05:20:00.000000', 1, 1),
-('2024-03-06 00:30:00.000000', '2024-03-06 08:10:00.000000', 4, 3),
-('2024-03-07 22:20:00.000000', '2024-03-08 06:00:00.000000', 2, 2),
-('2024-03-08 23:50:00.000000', '2024-03-09 07:30:00.000000', 5, 1),
-('2024-03-09 22:10:00.000000', '2024-03-10 05:50:00.000000', 1, 2),
-('2024-03-10 23:40:00.000000', '2024-03-11 06:45:00.000000', 3, 3),
-('2024-03-11 21:30:00.000000', '2024-03-12 07:10:00.000000', 4, 1);
+insert into dream_table (start, end, numWakeups, DreamType) values
+('2024-03-03 22:00:00.000000', '2024-03-04 06:30:00.000000', 2, 'DEEP'),
+('2024-03-04 23:15:00.000000', '2024-03-05 07:00:00.000000', 3, 'LIGHT'),
+('2024-03-05 21:45:00.000000', '2024-03-06 05:20:00.000000', 1, 'REM'),
+('2024-03-06 00:30:00.000000', '2024-03-06 08:10:00.000000', 4, 'DEEP'),
+('2024-03-07 22:20:00.000000', '2024-03-08 06:00:00.000000', 2, 'LIGHT'),
+('2024-03-08 23:50:00.000000', '2024-03-09 07:30:00.000000', 5, 'REM'),
+('2024-03-09 22:10:00.000000', '2024-03-10 05:50:00.000000', 1, 'DEEP'),
+('2024-03-10 23:40:00.000000', '2024-03-11 06:45:00.000000', 3, 'LIGHT'),
+('2024-03-11 21:30:00.000000', '2024-03-12 07:10:00.000000', 4, 'AGITATED');
 
 INSERT INTO recipe_table (name, description, photo_route, min_recommended_age, max_recommended_age, elaboration) VALUES
 ('Puré de Zanahoria', 'Un delicioso puré de zanahoria para bebés.', '/images/pure_zanahoria.jpg', 6, 12, 'Cocinar las zanahorias y triturarlas.'),
@@ -51,14 +50,14 @@ INSERT INTO recipe_table (name, description, photo_route, min_recommended_age, m
 ('Puré de Patata', 'Puré de patata cremoso.', '/images/pure_patata.jpg', 6, 12, 'Cocinar patatas y triturarlas con leche.'),
 ('Yogur Natural', 'Yogur natural casero.', '/images/yogur_natural.jpg', 10, 24, 'Fermentar leche para hacer yogur.');
 
-
+*/
 INSERT INTO baby (id, name, birth_date, genre, weight, height, cephalic_perimeter, food_preference) VALUES
 (1, 'John', '2023-01-01', 'MALE', 3.5, 50, 35, 'Milk'),
 (2, 'Jane', '2023-02-01', 'FEMALE', 3.2, 48, 34, 'Milk'),
 (3, 'Alice', '2023-03-01', 'FEMALE', 3.8, 52, 36, 'Milk'),
 (4, 'Bob', '2023-04-01', 'MALE', 3.6, 51, 35, 'Milk'),
 (5, 'Charlie', '2023-05-01', 'MALE', 3.4, 49, 34, 'Milk');
-
+/*	
 INSERT INTO baby_allergen (baby_id, allergen_id) VALUES
 (1, 1),
 (2, 2),
@@ -80,3 +79,4 @@ INSERT INTO vaccine_table (id, baby_id, type, vaccination_date) VALUES
 (3, 3, 'HepB', '2023-08-01'),
 (4, 4, 'Polio', '2023-09-01'),
 (5, 5, 'Hib', '2023-10-01');
+*/
