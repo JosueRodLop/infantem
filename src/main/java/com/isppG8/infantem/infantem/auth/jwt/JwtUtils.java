@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import com.isppG8.infantem.infantem.auth.Authorities;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.security.core.userdetails.UserDetails;
 import com.isppG8.infantem.infantem.config.services.UserDetailsImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;

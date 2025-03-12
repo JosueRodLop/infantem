@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isppG8.infantem.infantem.allergen.Allergen;
 import com.isppG8.infantem.infantem.foodNutrient.FoodNutrient;
 import com.isppG8.infantem.infantem.intake.Intake;
@@ -60,6 +61,7 @@ public class Recipe {
 
     // Recipes made by nutritionists are not associated with any user
     @ManyToOne(optional = true)
+    @JsonBackReference
     private User user;
 
     @ManyToMany(mappedBy = "recipes")
