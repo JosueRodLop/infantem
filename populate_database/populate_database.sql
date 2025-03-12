@@ -1,13 +1,12 @@
- 
+SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE baby_allergen;
+TRUNCATE TABLE baby_table;
+TRUNCATE TABLE allergen;
+TRUNCATE TABLE dream_table;
+TRUNCATE TABLE recipe_table;
+TRUNCATE TABLE user_table;
 TRUNCATE TABLE disease_table;
 TRUNCATE TABLE vaccine_table;
-TRUNCATE TABLE sueño_table;
-TRUNCATE TABLE baby;
-TRUNCATE TABLE recipe_table;
-TRUNCATE TABLE allergen;
-TRUNCATE TABLE user_table;
-TRUNCATE TABLE user_favorites;
 
 INSERT INTO user_table (surname, password , email, name, name_user) VALUES
 ('1', 'pwd', 'user1@gmail.com', 'user', 'user1'),
@@ -31,7 +30,7 @@ insert into allergen (name, description) values
 ('Sésamo', 'Presente en panes, galletas, tahini y otros productos.'),
 ('Sulfitos', 'Utilizados como conservantes en vinos, frutas secas y productos procesados.');
 
-insert into sueño_table (fin, inicio, num_desvalos, `tipo_sueño`) values
+insert into dream_table (end, start, num_wakeups, dream_type) values
 ('2024-03-03 22:00:00.000000', '2024-03-04 06:30:00.000000', 2, 1),
 ('2024-03-04 23:15:00.000000', '2024-03-05 07:00:00.000000', 3, 2),
 ('2024-03-05 21:45:00.000000', '2024-03-06 05:20:00.000000', 1, 1),
@@ -55,7 +54,7 @@ INSERT INTO recipe_table (name, description, photo_route, min_recommended_age, m
 ('Yogur Natural', 'Yogur natural casero.', '/images/yogur_natural.jpg', 3, 24, 'Fermentar leche para hacer yogur.');
 
 
-INSERT INTO baby (id, name, birth_date, genre, weight, height, cephalic_perimeter, food_preference) VALUES
+INSERT INTO baby_table (id, name, birth_date, genre, weight, height, cephalic_perimeter, food_preference) VALUES
 (1, 'John', '2023-01-01', 'MALE', 3.5, 50, 35, 'Milk'),
 (2, 'Jane', '2023-02-01', 'FEMALE', 3.2, 48, 34, 'Milk'),
 (3, 'Alice', '2023-03-01', 'FEMALE', 3.8, 52, 36, 'Milk'),
@@ -82,11 +81,3 @@ INSERT INTO vaccine_table (id, baby_id, type, vaccination_date) VALUES
 (3, 3, 'HepB', '2023-08-01'),
 (4, 4, 'Polio', '2023-09-01'),
 (5, 5, 'Hib', '2023-10-01');
-
-INSERT INTO user_favorites (user_id,recipe_id) VALUES
-(1,1),
-(1,3),
-(2,4),
-(2,1),
-(3,1),
-(3,7)
