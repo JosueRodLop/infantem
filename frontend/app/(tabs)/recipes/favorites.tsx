@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { Recipe } from "../../../types/Recipe";
 import { Link } from "expo-router";
+import { getToken } from '../../../utils/jwtStorage';
+import { jwtDecode } from "jwt-decode";
 
 export default function FavouriteRecipes() {
   const gs = require("../../../static/styles/globalStyles");
@@ -11,15 +13,28 @@ export default function FavouriteRecipes() {
   const [userId, setUserId] = useState<number | null>(null);
 
   useEffect(() => {
-    const userToken = localStorage.getItem("userToken");
-    if (userToken) {
-      setIsLoggedIn(true);
-      const id = 999;
-      setUserId(id);
-    } else {
-      console.log("User is not logged in.");
-      setIsLoggedIn(false);
-    }
+    const checkAuth = async () => {
+      const authToken = await getToken();
+
+      if (authToken) {
+        setIsLoggedIn(true);
+        try {
+          const decodedToken: any = jwtDecode(authToken);
+          console.log("Decoded token:", decodedToken);
+          const userId = decodedToken.userId;
+          setUserId(userId);
+        } catch (error) {
+          console.error("Error decoding token:", error);
+          setIsLoggedIn(false);
+          setUserId(null);
+        }
+      } else {
+        console.log("User is not logged in.");
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkAuth();
   }, []);
 
   useEffect(() => {
