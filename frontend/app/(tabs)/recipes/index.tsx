@@ -1,19 +1,11 @@
 import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
-<<<<<<< HEAD:frontend/app/(tabs)/recipes/index.tsx
-import { Link } from "expo-router"; 
-
-export default function Recipes() {
-  const gs = require('../../../static/styles/globalStyles');
-  const [searchQuery, setSearchQuery] = useState("");
-=======
 import { Link } from "expo-router";
-import NavBar from "../../components/NavBar";
-import { recipes } from "../../hardcoded_data/recipesData"; 
-import { Recipe } from "../../types/Recipe"; 
+import { recipes } from "../../../hardcoded_data/recipesData"; 
+import { Recipe } from "../../../types/Recipe"; 
 
 export default function Page() {
-  const gs = require("../../static/styles/globalStyles");
+  const gs = require("../../../static/styles/globalStyles");
   const [searchQuery, setSearchQuery] = useState(""); 
   const [suggestedRecipes, setSuggestedRecipes] = useState<Recipe[]>(recipes); 
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]); 
@@ -22,7 +14,6 @@ export default function Page() {
   const [loading, setLoading] = useState(true); 
   const [babyId, setBabyId] = useState<number>(1); 
   const [allRecipes, setAllRecipes] = useState<Recipe[]>([]); 
->>>>>>> c7886fff46e7acc386fc1ad45d6fc28a74ccb080:frontend/app/recipes/recipeRecommendations.tsx
 
   useEffect(() => {
     fetch(`http://localhost:8081/api/v1/recipes/recommendations/${babyId}`)
@@ -115,19 +106,6 @@ export default function Page() {
 
         <Text style={[gs.subHeaderText, { marginTop: 30 }]}>Suggested recipes</Text>
 
-<<<<<<< HEAD:frontend/app/(tabs)/recipes/index.tsx
-        {recipes.map((recipe, index) => (
-          <Link
-            key={index}
-            href={`/recipes/detail?recipeTitle=${recipe.title}`} 
-          >
-            <View style={gs.card}>
-              <Text style={gs.cardTitle}>{recipe.title}</Text>
-              <Text style={gs.cardContent}>{recipe.description}</Text>
-            </View>
-          </Link>
-        ))}
-=======
         {loading ? (
           <Text>Loading recipes...</Text>
         ) : filteredSuggestedRecipes.length === 0 ? (
@@ -176,7 +154,6 @@ export default function Page() {
             </Link>
           ))
         )}
->>>>>>> c7886fff46e7acc386fc1ad45d6fc28a74ccb080:frontend/app/recipes/recipeRecommendations.tsx
       </ScrollView>
     </View>
   );

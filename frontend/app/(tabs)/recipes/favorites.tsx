@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { Text, View, ScrollView, TouchableOpacity } from "react-native";
-import NavBar from "../../components/NavBar";
-import { Recipe } from "../../types/Recipe"; 
+import { Recipe } from "../../../types/Recipe"; 
 import { Link } from "expo-router"; 
 
 export default function FavouriteRecipes() {
-  const gs = require("../../static/styles/globalStyles");
+  const gs = require("../../../static/styles/globalStyles");
   const [recipes, setRecipes] = useState<Recipe[]>([]); 
   const [loading, setLoading] = useState(true); 
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
