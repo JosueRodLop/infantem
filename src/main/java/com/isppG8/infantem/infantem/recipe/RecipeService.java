@@ -1,75 +1,92 @@
 package com.isppG8.infantem.infantem.recipe;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.isppG8.infantem.infantem.allergen.Allergen;
-import com.isppG8.infantem.infantem.baby.Baby;
-import com.isppG8.infantem.infantem.baby.BabyRepository;
+import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
+import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
 import com.isppG8.infantem.infantem.user.User;
-import com.isppG8.infantem.infantem.user.UserRepository;
+import com.isppG8.infantem.infantem.user.UserService;
 
 
 @Service
 public class RecipeService {
-    @Autowired
+    
     private RecipeRepository recipeRepository;
+    private UserService userService;
+
 
     @Autowired
-    private UserRepository userRepository;
+    public RecipeService(RecipeRepository recipeRepository, UserService userService) {
+        this.recipeRepository = recipeRepository;
+        this.userService = userService;
+    }
 
-    @Autowired
-    private BabyRepository babyRepository;
+    //TODO: change age to babyId
+    @Transactional(readOnly = true)
+    public List<Recipe> getRecommendedRecipes(Integer age) {
+        return this.recipeRepository.findRecommendedRecipes(age);
+    }
 
-    public List<Recipe> getRecommendedRecipes(Integer babyId) {
-        Baby baby = babyRepository.findById(babyId).orElse(null);
-        Integer babyAge = calculateBabyAgeInMonths(baby.getBirthDate());
+    //TODO: Valorate if it is necessary to change the method to just get the recipes of the current user
+    @Transactional(readOnly = true)
+    public List<Recipe> getRecipesByUserId(Long userId) {
+        return this.recipeRepository.findRecipesByUserId(userId);
+    }
 
-        List<Long> allergenIds = baby.getAllergen().stream()
-            .map(Allergen::getId)
-            .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Recipe getRecipeById(Long recipeId) {
+        Recipe recipe = this.recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "id", recipeId));
+        User user = userService.findCurrentUser();
+        if(recipe.getUser() != null && recipe.getUser().getId() != user.getId()) {
+            throw new ResourceNotOwnedException(recipe);
+        }
+        return recipe;
+    }
 
-        List<Recipe> recipes = recipeRepository.findRecipesByAge(babyAge);
+    @Transactional
+    public Recipe createRecipe(Recipe recipe) {
+        User user = userService.findCurrentUser();
+        recipe.setUser(user);
+        return this.recipeRepository.save(recipe);
+    }
 
-        if (!allergenIds.isEmpty()) {
-            recipes = recipes.stream()
-                .filter(recipe -> recipeRepository.findRecipesExcludingAllergens(allergenIds).contains(recipe))
-                .collect(Collectors.toList());
+    @Transactional
+    public Recipe updateRecipe(Long recipeId, Recipe recipeDetails) {
+        Recipe recipe = this.recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "id", recipeId));
+        User user = userService.findCurrentUser();
+
+        // If the recipe does not belong to the current user, throw an exception
+        if (recipe.getUser() == null || recipe.getUser().getId() != user.getId()) {
+            throw new ResourceNotOwnedException(recipe);
         }
 
-        return recipes;
+        recipe.setName(recipeDetails.getName());
+        recipe.setDescription(recipeDetails.getDescription());
+        recipe.setIngredients(recipeDetails.getIngredients());
+        recipe.setMinRecommendedAge(recipeDetails.getMinRecommendedAge());
+        recipe.setMaxRecommendedAge(recipeDetails.getMaxRecommendedAge());
+        recipe.setElaboration(recipeDetails.getElaboration());
+
+        return this.recipeRepository.save(recipe);
     }
 
-    public List<Recipe> searchRecipes(String query) {
-        return recipeRepository.searchRecipes(query);
+    @Transactional
+    public void deleteRecipe(Long recipeId) {
+        Recipe recipe = this.recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "id", recipeId));
+        User user = userService.findCurrentUser();
+
+        if (recipe.getUser() == null || recipe.getUser().getId() != user.getId()) {
+            throw new ResourceNotOwnedException(recipe);
+        }
+        this.recipeRepository.delete(recipe);
     }
 
-    public void saveFavoriteRecipe(Long userId, Long recipeId) {
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        Recipe recipe = recipeRepository.findById(recipeId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Recipe not found"));
-
-        user.getFavorites().add(recipe);
-        userRepository.save(user);
-    }
-
-    public List<Recipe> getFavoriteRecipes(Long userId) {
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        return user.getFavorites();
-    }
-
-    private Integer calculateBabyAgeInMonths(LocalDate birthDate) {
-        return (int) ChronoUnit.MONTHS.between(birthDate, LocalDate.now());
-    }
 }
 
 
