@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/api/v1/recipes")
 public class RecipeController {
@@ -47,6 +48,7 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
+
         Recipe createdRecipe = recipeService.createRecipe(recipe);
         return ResponseEntity.status(201).body(createdRecipe);
     }
