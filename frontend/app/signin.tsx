@@ -2,8 +2,7 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, Image } from "react-native";
 
-
-export default function LoginScreen() {
+export default function Signin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -27,14 +26,12 @@ export default function LoginScreen() {
 
       if (!response.ok) {
         // I asked backend to implement the Bad credential error as a JSON. Waiting for that
-        setErrorMessage(String(response));
+        setErrorMessage("Algo no ha ido bien");
         return;
       }
 
-      const data = await response.json();
-      console.log("Login successful:", data);
     } catch (error) {
-      console.error("Network error:", error);
+      console.error("An error ocurred: ", error);
     }
   };
 
@@ -47,7 +44,7 @@ export default function LoginScreen() {
         <Text style={{fontWeight: "bold"}}>Nombre de usuario</Text>
         <TextInput
           style={gs.input}
-          placeholder="johndoe1234"
+          placeholder="juanperez1234"
           value={username}
           onChangeText={setUsername}
           autoCapitalize="none"
@@ -62,7 +59,7 @@ export default function LoginScreen() {
           secureTextEntry
         />
         
-        {errorMessage && <Text style={{ color: "red", marginVertical: 10 }}>Algo no ha ido bien.</Text>}
+        {errorMessage && <Text style={{ color: "red", marginVertical: 10 }}>{errorMessage}</Text>}
 
         <Link href={"/signup"}>
           <Text style={{color: "#007AFF"}}>¿No tienes cuenta? ¡Regístrate!</Text>
