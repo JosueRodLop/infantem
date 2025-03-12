@@ -1,20 +1,46 @@
 import { useState, useEffect } from "react";
 import { Text, View, TextInput, TouchableOpacity} from "react-native";
 import { useRouter} from "expo-router";
-import NavBar from "../../components/NavBar";
+
+const jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTc0MTkwNTg0MCwiaWF0IjoxNzQxODE5NDQwLCJhdXRob3JpdGllcyI6WyJ1c2VyIl19.mhdow7R3W_TQz8wdmXG1Nak_S8PIApBswblRix-5RiDjDG6si5RyYOPVSEMRY7WSPOm_atey3RMwNwvy2R68MQ";
+
 
 export default function EditBaby() {
-  const gs = require("../../static/styles/globalStyles");
+  const gs = require("../../../static/styles/globalStyles");
   const router = useRouter();
   const [baby, setBaby] = useState(null);
   const [id, setId] = useState<string | null>(null);
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
   useEffect(() => {
-    // Obtener la ID del bebé desde la URL
-    const query = new URLSearchParams(window.location.search);
-    const babyId = query.get('id');
-    setId(babyId);
-  }, []);
+      fetch(`${apiUrl}/api/v1/baby/${id}`, {
+        headers: { "Authorization": `Bearer ${jwt}` },
+      })
+        .then((response) => {
+                console.log("Response received:", response);
+        
+                return response.text().then((text) => {
+                  console.log("Response body:", text);
+        
+                  if (!response.ok) {
+                    throw new Error(`Error: ${response.status} - ${text}`);
+                  }
+        
+                  try {
+                    return JSON.parse(text);
+                  } catch (error) {
+                    throw new Error(`Invalid JSON: ${text}`);
+                  }
+                });
+              })
+              .then((data) => {
+                console.log("Parsed JSON:", data);
+                setBaby(data);
+              })
+              .catch((error) => {
+                console.error("Error fetching all recipes:", error);
+              });
+          }, [id]);
 
   useEffect(() => {
     if (id) {
@@ -46,7 +72,7 @@ export default function EditBaby() {
   if (!baby) {
     return (
       <View style={{ flex: 1 }}>
-        <NavBar />
+        
         <Text>Loading...</Text>
       </View>
     );
@@ -54,7 +80,7 @@ export default function EditBaby() {
 
   return (
     <View style={{ flex: 1 }}>
-      <NavBar />
+      
       <View style={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
         <Text style={gs.headerText}>Edit Baby Information</Text>
         <TextInput

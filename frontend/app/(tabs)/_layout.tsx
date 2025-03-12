@@ -17,17 +17,6 @@ export default function TabLayout() {
        }}
        />
         <Tabs.Screen
-          name="food"
-          options={{
-            lazy: true,
-            headerShown: false,
-            tabBarLabel: "Food",
-            tabBarIcon: ({ color }) => (
-              <Ionicons name='egg' color={color} size={24} />
-            ),
-          }}
-        />
-        <Tabs.Screen
         name="allergens"
         options={{
           lazy: true,
@@ -49,7 +38,19 @@ export default function TabLayout() {
           ),
         }}
         />
+        <Tabs.Screen
+        name="baby"
+        options={{
+          lazy: true,
+          headerShown: false,
+          tabBarLabel: "Baby",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name='folder-sharp' color={color} size={24} />
+          ),
+        }}
+        />
       </Tabs>
+      
 		);
   // We should return this if the user is not logged in
 	// return <Redirect href="/login" />;

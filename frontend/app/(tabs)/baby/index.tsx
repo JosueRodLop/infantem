@@ -1,33 +1,61 @@
 import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { Link, useRouter } from "expo-router";
+import { getToken } from "../../../utils/jwtStorage";
+
+const jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTc0MTkwNTg0MCwiaWF0IjoxNzQxODE5NDQwLCJhdXRob3JpdGllcyI6WyJ1c2VyIl19.mhdow7R3W_TQz8wdmXG1Nak_S8PIApBswblRix-5RiDjDG6si5RyYOPVSEMRY7WSPOm_atey3RMwNwvy2R68MQ";
 
 
 export default function BabyInfo() {
-  const gs = require("../../static/styles/globalStyles");
+  const gs = require("../../../static/styles/globalStyles");
   const [babies, setBabies] = useState([]);
   const router = useRouter();
 
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  console.log("API URL:", apiUrl);
+  console.log("JWT:", jwt);
+  
+
   useEffect(() => {
-    fetch("http://localhost:8080/baby") // Adjust the URL to match your backend endpoint
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Datos de babies:", data); // Mira qué está llegando realmente
-        setBabies(data);
-      })
-      .catch((error) => console.error("Error fetching baby data:", error));
-  }, []);
+    fetch(`${apiUrl}/api/v1/baby`, {
+      headers: { "Authorization": `Bearer ${jwt}` },
+    })
+      .then((response) => {
+              console.log("Response received:", response);
+      
+              return response.text().then((text) => {
+                console.log("Response body:", text);
+      
+                if (!response.ok) {
+                  throw new Error(`Error: ${response.status} - ${text}`);
+                }
+      
+                try {
+                  return JSON.parse(text);
+                } catch (error) {
+                  throw new Error(`Invalid JSON: ${text}`);
+                }
+              });
+            })
+            .then((data) => {
+              console.log("Parsed JSON:", data);
+              setBabies(data);
+            })
+            .catch((error) => {
+              console.error("Error fetching all recipes:", error);
+            });
+        }, []);
 
   const handleAddBaby = () => {
     // Navigate to add baby page
   };
 
   const handleEditBaby = (id: number) => {
-    router.push(`/baby/babyEdit?id=${id}`);
+    router.push(`/baby/edit?id=${id}`);
   };
 
   const handleDeleteBaby = (id: number) => {
-    fetch(`http://localhost:8080/baby/delete/${id}`, {
+    fetch(`${apiUrl}/api/v1/baby/delete/${id}`, {
       method: "DELETE",
     })
       .then((response) => {
