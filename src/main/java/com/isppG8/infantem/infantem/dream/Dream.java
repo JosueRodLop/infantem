@@ -23,8 +23,8 @@ public class Dream {
     private Long id;
 
 
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime dateStart;
+    private LocalDateTime dateEnd;
     private Integer numWakeups; // numero de desvelos
     private DreamType DreamType;
     
