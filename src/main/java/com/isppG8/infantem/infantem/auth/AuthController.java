@@ -16,11 +16,9 @@ import com.isppG8.infantem.infantem.auth.jwt.JwtUtils;
 import com.isppG8.infantem.infantem.auth.payload.request.LoginRequest;
 import com.isppG8.infantem.infantem.auth.payload.request.SignupRequest;
 import com.isppG8.infantem.infantem.auth.payload.response.MessageResponse;
-import com.isppG8.infantem.infantem.auth.jwt.JwtUtils;
 import com.isppG8.infantem.infantem.auth.jwt.JwtResponse;
 import com.isppG8.infantem.infantem.config.services.UserDetailsImpl;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,7 +48,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 		try{
 			Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
