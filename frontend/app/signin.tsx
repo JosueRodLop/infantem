@@ -1,6 +1,7 @@
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, Image } from "react-native";
+import { storeToken } from "../utils/jwtStorage";
 
 export default function Signin() {
   const [username, setUsername] = useState("");
@@ -29,6 +30,9 @@ export default function Signin() {
         setErrorMessage("Algo no ha ido bien");
         return;
       }
+
+      const data = await response.json();
+      await storeToken(data.token);
 
       router.push("/recipes");
 

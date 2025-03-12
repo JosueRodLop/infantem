@@ -1,6 +1,7 @@
-import { Link, Redirect, router } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, Image } from "react-native";
+import { storeToken } from "../utils/jwtStorage";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -15,7 +16,7 @@ export default function Signup() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${apiUrl}/api/v1/auth/signup`, {
+      const signupResponse= await fetch(`${apiUrl}/api/v1/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,11 +30,31 @@ export default function Signup() {
         }),
       });
 
-      if (!response.ok) {
+      if (!signupResponse.ok) {
         setErrorMessage("Algo no ha ido bien.");
         return;
       }
 
+      // If we reach here the signup was successful. Then we can signin. 
+      // I'm not sure if there is a cleaner way. Gotta think about it.
+      const signinResponse = await fetch(`${apiUrl}/api/v1/auth/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username, 
+          password: password,
+        }),
+      });
+
+      if (!signinResponse.ok) {
+        setErrorMessage("Algo no ha ido bien");
+        return;
+      }
+
+      const data = await signinResponse.json();
+      await storeToken(data.token);
       router.push("/recipes");
 
     } catch (error) {
