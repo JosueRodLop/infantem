@@ -15,7 +15,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Allergen.class,generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 public class Allergen {
 

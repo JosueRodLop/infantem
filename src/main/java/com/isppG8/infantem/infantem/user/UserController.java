@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
-@CrossOrigin(origins = "*")
+@RequestMapping("api/v1/users")
 public class UserController {
 
     @Autowired
@@ -35,7 +34,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
         Optional<User> updatedUser = userService.updateUser(id, userDetails);
         return updatedUser.map(ResponseEntity::ok)
                              .orElseGet(() -> ResponseEntity.notFound().build());

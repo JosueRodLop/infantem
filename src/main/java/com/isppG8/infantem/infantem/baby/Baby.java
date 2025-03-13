@@ -41,7 +41,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Baby.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Getter
 @Setter
 @Table(name = "baby_table")
@@ -55,6 +55,7 @@ public class Baby {
     @Size(min = 3, max = 50)
     private String name;
 
+    @NotNull
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate birthDate;
 
@@ -67,7 +68,7 @@ public class Baby {
 
     @NotNull
     @Min(0)
-    @Max(50)
+    @Max(200)
     private Integer height;
 
     @NotNull
@@ -82,13 +83,13 @@ public class Baby {
     @OneToOne
     private NutritionalContribution nutritionalContribution;
 
-    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<Dream> sleep = new ArrayList<>();
 
-    @OneToMany(mappedBy = "baby")
+    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL)
     private List<MilestoneCompleted> milestonesCompleted = new ArrayList<>();
 
-    @OneToMany(mappedBy = "baby")
+    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL)
     private List<Intake> intakes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "babies")

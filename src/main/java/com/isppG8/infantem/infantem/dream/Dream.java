@@ -18,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "dream_table")
 @Getter @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Dream.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Dream {
 
     @Id

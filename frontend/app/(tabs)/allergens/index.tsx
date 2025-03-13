@@ -26,12 +26,7 @@ export default function Allergens() {
 
         { currentQuestion === questions.length - 1 ? (
           <View style={gs.card}>
-            <Text style={[gs.cardTitle, {paddingBottom:20}]}>¡Gracias por completar el cuestionario!</Text>
-            <Link href="/" asChild>
-              <TouchableOpacity style={gs.mainButton}>
-                <Text style={gs.mainButtonText}>Volver al inicio</Text>
-              </TouchableOpacity>
-            </Link>
+            <Text style={gs.cardTitle}>¡Gracias por completar el cuestionario!</Text>
           </View>
         ) : (
           <View>
