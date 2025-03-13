@@ -4,25 +4,29 @@ import { useRouter } from "expo-router";
 import { getToken } from "../../../utils/jwtStorage";
 import { useLocalSearchParams } from 'expo-router';
 
-
-
-
-
 export default function EditBaby() {
   const gs = require("../../../static/styles/globalStyles");
   const router = useRouter();
+
   const [baby, setBaby] = useState(null);
+  const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga
+  const [jwt, setJwt] = useState<string | null>(null);
 
-  const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-
   const { id } = useLocalSearchParams();
 
 
   useEffect(() => {
+    const getUserToken = async () => {
+      const token = await getToken();
+      setJwt(token);
+    };
+    getUserToken();
+  },[]) 
+
+  useEffect(() => {
     const fetchBabyData = async () => {
-      const jwt = await getToken();
-      if (id) {
+      if (id && jwt) {
         try {
           const response = await fetch(`${apiUrl}/api/v1/baby/${id}`, {
             headers: { "Authorization": `Bearer ${jwt}` },
@@ -51,7 +55,7 @@ export default function EditBaby() {
     };
 
     fetchBabyData();
-  }, [id]);
+  }, [id, jwt]);
 
   const handleSave = async () => {
     const jwt = await getToken(); 
