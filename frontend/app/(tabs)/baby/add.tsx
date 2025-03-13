@@ -95,7 +95,7 @@ export default function AddBaby() {
 
   return (
     <View style={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-      <Text style={gs.headerText}>Add a baby</Text>
+      <Text style={gs.headerText}>Añade un bebé</Text>
 
       <TextInput
         style={gs.input}
