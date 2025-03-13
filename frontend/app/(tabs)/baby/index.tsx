@@ -42,14 +42,11 @@ export default function BabyInfo() {
     fetchBabies();
   }, []);
 
-  const handleAddBaby = () => {
-    // Navigate to add baby page
-  };
 
   const handleEditBaby = (id: number) => {
     router.push(`/baby/edit?id=${id}`);
   };
-
+  
   const handleDeleteBaby = (id: number) => {
     fetch(`${apiUrl}/api/v1/baby/delete/${id}`, {
       method: "DELETE",
@@ -75,9 +72,9 @@ export default function BabyInfo() {
 
         <View style={{ width: "90%" }}>
             <View style={{ flexDirection: "row", gap: 10, marginVertical: 10, alignSelf: "center" }}>
-            <TouchableOpacity style={gs.mainButton} onPress={handleAddBaby}>
+            <Link style={gs.mainButton} href={"/baby/add/"}>
               <Text style={gs.mainButtonText}>Add Baby</Text>
-            </TouchableOpacity>
+            </Link>
           </View>
         </View>
 
