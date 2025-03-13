@@ -15,23 +15,23 @@ export default function Index() {
       
         <View style={{ flex: 1, padding: 20 }}>
         
-        <Text style={{ color: "#1565C0", fontSize: 60, fontWeight: "bold", textAlign: "left" }}>
+        <Text style={{ color: "#1565C0", fontSize: 60, fontWeight: "bold", textAlign: "left",width: 500 }}>
           <Text style={{ fontWeight: "bold" ,fontStyle: "italic"}}>INFANTEM</Text>
           </Text>
-          <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "left" }}>
+          <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "left",width: "100%"}}>
             El mejor cuidado <Text style={{ fontStyle: "italic" }}>para tu bebé</Text>
           </Text>
 
-          <Text style={{ color: "#1565C0", fontSize: 20, textAlign: "left" }}>
+          <Text style={{ color: "#1565C0", fontSize: 20, textAlign: "left" , marginTop: 20}}>
           <Text style={{ fontStyle: "italic" }}>Recomendaciones Personalizadas</Text>
           </Text>
-          <Text style={{ color: "#1565C0", fontSize: 20, textAlign: "left" }}>
+          <Text style={{ color: "#1565C0", fontSize: 20, textAlign: "left",marginTop: 5 }}>
           <Text style={{ fontStyle: "italic" }}>Validado por Expertos</Text>
           </Text>
-          <Text style={{ color: "#1565C0", fontSize: 20, textAlign: "left" }}>
+          <Text style={{ color: "#1565C0", fontSize: 20, textAlign: "left",marginTop: 5 }}>
           <Text style={{ fontStyle: "italic" }}>Contenido actualizado</Text>
           </Text>
-          <Text style={{ color: "#1565C0", fontSize: 20, textAlign: "left" }}>
+          <Text style={{ color: "#1565C0", fontSize: 20, textAlign: "left",marginTop: 5 }}>
           <Text style={{ fontStyle: "italic" }}>Acceso rápido y sencillo</Text>
           </Text>
 
@@ -53,7 +53,7 @@ export default function Index() {
         <View style={{ flex: 1 }}>
           <Image 
             source={require("../static/images/food.png")}  
-            style={{ width:"100%", resizeMode: "contain",borderTopLeftRadius:200, borderBottomLeftRadius:200 }} 
+            style={{ width:"115%", resizeMode: "cover",borderTopLeftRadius:200, borderBottomLeftRadius:200 }} 
           />
         </View>
         
