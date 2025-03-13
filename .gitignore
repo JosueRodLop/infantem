@@ -1,5 +1,3 @@
-.env
-
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -44,4 +42,6 @@ Thumbs.db
 
 *.vim/
 *workspace/
+
+.env
 
