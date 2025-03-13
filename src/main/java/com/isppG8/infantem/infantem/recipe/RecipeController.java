@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/recipes")
 public class RecipeController {
@@ -46,14 +48,14 @@ public class RecipeController {
     }
 
     @PostMapping
-    public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
+    public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipe) {
 
         Recipe createdRecipe = recipeService.createRecipe(recipe);
         return ResponseEntity.status(201).body(createdRecipe);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @RequestBody Recipe recipeDetails) {
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @Valid @RequestBody Recipe recipeDetails) {
         Recipe updatedRecipe = recipeService.updateRecipe(id, recipeDetails);
         return ResponseEntity.ok(updatedRecipe);
     }

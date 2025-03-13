@@ -85,10 +85,10 @@ public class Baby {
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dream> sleep = new ArrayList<>();
 
-    @OneToMany(mappedBy = "baby")
+    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<MilestoneCompleted> milestonesCompleted = new ArrayList<>();
 
-    @OneToMany(mappedBy = "baby")
+    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Intake> intakes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "babies")

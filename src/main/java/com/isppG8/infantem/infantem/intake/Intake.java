@@ -27,7 +27,7 @@ import lombok.Setter;
 @Table(name = "intake_table")
 @Getter
 @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Intake.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Intake {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
