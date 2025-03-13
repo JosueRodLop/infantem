@@ -12,7 +12,7 @@ export default function RecipeDetails() {
   if (!recipe) {
     return (
       <View style={gs.container}>
-        <Text>Recipe not found</Text>
+        <Text>Receta no encontrada</Text>
       </View>
     );
   }
@@ -24,13 +24,13 @@ export default function RecipeDetails() {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={gs.headerText}>{recipe.title}</Text>
           <TouchableOpacity style={[gs.mainButton, { marginLeft: 30 }]}>
-            <Text style={gs.mainButtonText}>Add to Favourites</Text>
+            <Text style={gs.mainButtonText}>Añadir a favoritos</Text>
           </TouchableOpacity>
         </View>
         <Text style={gs.card}>{recipe.description}</Text>
 
         <View style={{ marginTop: 20 }}>
-          <Text style={[gs.cardTitle, { marginBottom: 10 }]}>Ingredients:</Text>
+          <Text style={[gs.cardTitle, { marginBottom: 10 }]}>Ingredientes:</Text>
           {recipe.ingredients.map((ingredient, index) => (
             <Text key={index} style={gs.cardContent}>- {ingredient}</Text>
           ))}

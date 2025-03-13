@@ -79,36 +79,36 @@ export default function BabyInfo() {
     <View style={{ flex: 1 }}>
 
       <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-        <Text style={gs.headerText}>Baby Information</Text>
+        <Text style={gs.headerText}>Información de los bebés</Text>
         <Text style={gs.bodyText}>
-          View and manage your baby's information
+          Revisa y gestiona la información de tu bebé
         </Text>
 
         <View style={{ width: "90%" }}>
             <View style={{ flexDirection: "row", gap: 10, marginVertical: 10, alignSelf: "center" }}>
             <Link style={gs.mainButton} href={"/baby/add/"}>
-              <Text style={gs.mainButtonText}>Add Baby</Text>
+              <Text style={gs.mainButtonText}>Añadir bebé</Text>
             </Link>
           </View>
         </View>
 
-        <Text style={[gs.subHeaderText, { marginTop: 30 }]}>Your Babies</Text>
+        <Text style={[gs.subHeaderText, { marginTop: 30 }]}>Mis bebés registrados</Text>
 
         {babies.map((baby) => (
-              <View key={baby.id} style={[gs.card, { maxWidth: 500, alignSelf: "center" }]}>
-              <Text style={gs.cardTitle}>{baby.name}</Text>
-              <Text style={gs.cardContent}>Birth Date: {baby.birthDate}</Text>
-              <Text style={gs.cardContent}>Gender: {baby.genre}</Text>
-              <Text style={gs.cardContent}>Weight: {baby.weight} kg</Text>
-              <Text style={gs.cardContent}>Height: {baby.height} cm</Text>
-              <Text style={gs.cardContent}>Cephalic Perimeter: {baby.cephalicPerimeter} cm</Text>
-              <Text style={gs.cardContent}>Food Preference: {baby.foodPreference}</Text>
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View key={baby.id} style={[gs.card, { maxWidth: 500, alignSelf: "center" }]}>
+            <Text style={gs.cardTitle}>{baby.name}</Text>
+            <Text style={gs.cardContent}>Fecha de nacimiento: {baby.birthDate}</Text>
+            <Text style={gs.cardContent}>Género: {baby.genre}</Text>
+            <Text style={gs.cardContent}>Peso: {baby.weight} kg</Text>
+            <Text style={gs.cardContent}>Altura: {baby.height} cm</Text>
+            <Text style={gs.cardContent}>Perímetro cefálico: {baby.cephalicPerimeter} cm</Text>
+            <Text style={gs.cardContent}>Preferencias alimentarias: {baby.foodPreference}</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <TouchableOpacity style={gs.mainButton} onPress={() => handleEditBaby(baby.id)}>
-                <Text style={gs.mainButtonText}>Edit</Text>
+                <Text style={gs.mainButtonText}>Editar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={gs.mainButton} onPress={() => handleDeleteBaby(baby.id)}>
-                <Text style={gs.mainButtonText}>Delete</Text>
+                <Text style={gs.mainButtonText}>Eliminar</Text>
               </TouchableOpacity>
             </View>
           </View>

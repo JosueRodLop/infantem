@@ -122,53 +122,53 @@ export default function EditBaby() {
     <View style={{ flex: 1 }}>
       {baby && (
         <View style={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-          <Text style={gs.headerText}>Edit Baby Information</Text>
+          <Text style={gs.headerText}>Modificar información del bebé</Text>
           <TextInput
             style={gs.input}
-            placeholder="Name"
+            placeholder="Nombre"
             value={baby.name}
             onChangeText={(text) => setBaby({ ...baby, name: text })}
           />
           <TextInput
             style={gs.input}
-            placeholder="Birth Date"
+            placeholder="Fecha de nacimiento"
             value={baby.birthDate}
             onChangeText={(text) => setBaby({ ...baby, birthDate: text })}
           />
           <TextInput
             style={gs.input}
-            placeholder="Gender"
+            placeholder="Género"
             value={baby.genre}
             onChangeText={(text) => setBaby({ ...baby, genre: text })}
           />
           <TextInput
             style={gs.input}
-            placeholder="Weight"
+            placeholder="Peso"
             value={baby.weight}
             onChangeText={(text) => setBaby({ ...baby, weight: text })}
           />
           <TextInput
             style={gs.input}
-            placeholder="Height"
+            placeholder="Altura"
             value={baby.height}
             onChangeText={(text) => setBaby({ ...baby, height: text })}
           />
           <TextInput
             style={gs.input}
-            placeholder="Cephalic Perimeter"
+            placeholder="Perímetro cefálico"
             value={baby.cephalicPerimeter}
             onChangeText={(text) => setBaby({ ...baby, cephalicPerimeter: text })}
           />
           <TextInput
             style={gs.input}
-            placeholder="Food Preference"
+            placeholder="Preferencias alimentarias"
             value={baby.foodPreference}
             onChangeText={(text) => setBaby({ ...baby, foodPreference: text })}
           />
 
           {/* Botón de Guardar */}
           <TouchableOpacity style={gs.mainButton} onPress={handleSave}>
-            <Text style={gs.mainButtonText}>Save</Text>
+            <Text style={gs.mainButtonText}>Guardar</Text>
           </TouchableOpacity>
 
           {/* Mostrar error si existe */}
