@@ -22,7 +22,7 @@ import com.isppG8.infantem.infantem.nutritionalContributionNutrient.NutritionalC
 @Table(name = "nutr_contr_table")
 @Getter
 @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = NutritionalContribution.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class NutritionalContribution{
 
 

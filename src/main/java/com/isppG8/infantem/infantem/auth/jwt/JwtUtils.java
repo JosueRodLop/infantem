@@ -34,7 +34,7 @@ public class JwtUtils {
 		claims.put("authorities",
 				userPrincipal.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toList()));
 
-		return Jwts.builder().setClaims(claims).setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
+		return Jwts.builder().setClaims(claims).setSubject((userPrincipal.getUsername())).setId(userPrincipal.getId().toString()).setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
