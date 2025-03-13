@@ -53,6 +53,7 @@ public class User {
     @JsonManagedReference
     private List<Recipe> recipes = new ArrayList<>();
 
+    // TODO Ignored because json serialization of recursive properties is wonky, unrealiable, and fuck that tbh
     @JsonIgnore
     @ManyToMany(mappedBy = "users")
     List<Baby> babies = new ArrayList<>();

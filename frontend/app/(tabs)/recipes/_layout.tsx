@@ -23,6 +23,13 @@ function StackLayout() {
 					title: "Detail",
 				}}
 			/>
+      <Stack.Screen
+				name="add"
+				options={{
+					title: "Add a recipe",
+				}}
+			/>
+
 		</Stack>
 	);
 }
