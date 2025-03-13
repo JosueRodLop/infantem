@@ -9,6 +9,7 @@ import { getToken } from "../../../utils/jwtStorage"
 
 export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   // const [suggestedRecipes, setSuggestedRecipes] = useState<Recipe[]>(recipes);
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
@@ -94,6 +95,27 @@ export default function Page() {
       console.log("No jwt token")
     }
   }, [jwt]);
+
+  useEffect(() => {
+    fetch(`http://localhost:8081/api/v1/recipes/recommendations/${babyId}`)
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then((text) => {
+            throw new Error(`Error: ${response.status} - ${text}`);
+          });
+        }
+        return response.json();
+      })
+      .then((data: Recipe[]) => {
+        setRecommendedRecipes(data);
+        setFilteredRecommendedRecipes(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching recommended recipes:", error);
+      })
+      .finally(() => setLoading(false));
+  }, [babyId]);
+
 
 
   useEffect(() => {
