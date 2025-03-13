@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView, Image } from "react-native";
 import { Link } from "expo-router";
-import { recipes } from "../../../hardcoded_data/recipesData";
 import { Recipe } from "../../../types/Recipe";
 import { getToken } from "../../../utils/jwtStorage"
 
@@ -130,12 +129,12 @@ export default function Page() {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
 
-    const filteredSuggested = recipes.filter((recipe) =>
+    const filteredSuggested = allRecipes.filter((recipe: Recipe) =>
       recipe.name.toLowerCase().includes(query.toLowerCase())
     );
     // setFilteredSuggestedRecipes(filteredSuggested);
 
-    const filteredRecommended = recommendedRecipes.filter((recipe) =>
+    const filteredRecommended = recommendedRecipes.filter((recipe: Recipe) =>
       recipe.name.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredRecommendedRecipes(filteredRecommended);
@@ -163,6 +162,10 @@ export default function Page() {
             <Link href="/recipes/favorites" style={gs.mainButton}>
               <Text style={gs.mainButtonText}>Favourite recipes</Text>
             </Link>
+            <Link style={gs.mainButton} href={"/recipes/add"}>
+              <Text style={gs.mainButtonText}>Add a recipe</Text>
+            </Link>
+
           </View>
         </View>
 

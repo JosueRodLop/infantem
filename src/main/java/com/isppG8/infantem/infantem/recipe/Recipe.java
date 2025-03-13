@@ -12,6 +12,8 @@ import com.isppG8.infantem.infantem.allergen.Allergen;
 import com.isppG8.infantem.infantem.foodNutrient.FoodNutrient;
 import com.isppG8.infantem.infantem.intake.Intake;
 import com.isppG8.infantem.infantem.user.User;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -30,6 +32,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "recipe_table")
+@JsonIdentityInfo(scope = Recipe.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Getter @Setter
 public class Recipe {
 
@@ -43,9 +46,11 @@ public class Recipe {
     @Column(nullable = true)
     private String description;
 
+    // TODO string??? -.-
     @Column(nullable = true)
     private String photo_route;
-
+	
+    // TODO string??? -.-
     @Column(nullable = true)
     private String ingredients;
 
