@@ -8,7 +8,7 @@ export default function Signin() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const apiUrl = process.env.EXPO_PUBLIC_API_URL;;
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   console.log("API URL:", apiUrl);
 
   const gs = require("../static/styles/globalStyles");

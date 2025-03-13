@@ -21,7 +21,7 @@ export default function AddBaby() {
 
   const [errorMessage, setErrorMessage] = useState<string>(""); // Para mostrar errores
 
-  const apiUrl = process.env.EXPO_PUBLIC_API_URL;;
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
   // Obtener token al montar
   useEffect(() => {
