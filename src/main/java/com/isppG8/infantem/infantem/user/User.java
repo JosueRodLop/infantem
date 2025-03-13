@@ -29,7 +29,7 @@ import lombok.Setter;
 @Table(name = "user_table")
 @Getter
 @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = User.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 public class User {
 
