@@ -21,7 +21,7 @@ export default function AddBaby() {
 
   const [errorMessage, setErrorMessage] = useState<string>(""); // Para mostrar errores
 
-  const apiUrl = "https://ispp-2425-g8.ew.r.appspot.com";
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;;
 
   // Obtener token al montar
   useEffect(() => {

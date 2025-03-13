@@ -22,7 +22,7 @@ export default function Account() {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string | null>(null);
 
-  const apiUrl = "https://ispp-2425-g8.ew.r.appspot.com";
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;;
 
   const gs = require("../../../static/styles/globalStyles");
 

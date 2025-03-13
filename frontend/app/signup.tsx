@@ -11,7 +11,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const apiUrl = "https://ispp-2425-g8.ew.r.appspot.com";
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;;
   const gs = require("../static/styles/globalStyles");
 
   const handleSubmit = async () => {
