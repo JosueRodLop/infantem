@@ -9,7 +9,6 @@ import { getToken } from "../../../utils/jwtStorage"
 
 export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   // const [suggestedRecipes, setSuggestedRecipes] = useState<Recipe[]>(recipes);
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);

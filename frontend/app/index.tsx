@@ -38,13 +38,13 @@ export default function Index() {
           <View style={{ marginTop: 20, gap: 10 }}>
             <Link style={[gs.mainButton, { width:150, backgroundColor: "#1565C0", padding: 12, borderRadius: 8, alignItems: "center" }]} href={"/signin"}>
               <Text style={[gs.mainButtonText, { color: "#FFFFFF", fontSize: 16, fontWeight: "bold" }]}>
-                Inicia sesión
+                Inicia sesión 
               </Text>
             </Link>
 
-            <Link style={[gs.secondaryButton, { width: 250, backgroundColor: "#E3F2FD", padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", alignItems: "center" }]} href={"/recipes"}>
+            <Link style={[gs.secondaryButton, { width: 250, backgroundColor: "#E3F2FD", padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", alignItems: "center" }]} href={"/signup"}>
               <Text style={[gs.secondaryButtonText, { color: "#1565C0", fontSize: 16, fontWeight: "bold" }]}>
-                Continúa como invitado
+                ¿No tienes cuenta? Únete
               </Text>
             </Link>
           </View>

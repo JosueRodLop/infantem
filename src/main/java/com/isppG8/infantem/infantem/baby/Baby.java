@@ -68,7 +68,7 @@ public class Baby {
 
     @NotNull
     @Min(0)
-    @Max(50)
+    @Max(200)
     private Integer height;
 
     @NotNull
