@@ -28,5 +28,5 @@ jest.config.js
 *.swp
 
 # Excepciones para incluir archivos importantes
-!frontend/dist/_expo/static/js/web/**
-!frontend/dist/index.html
+!frontend/dist/assets/node_modules/
+!frontend/.env
