@@ -34,7 +34,6 @@ export default function Signin() {
 
       const data = await response.json();
       await storeToken(data.token);
-
       router.push("/recipes");
 
     } catch (error) {

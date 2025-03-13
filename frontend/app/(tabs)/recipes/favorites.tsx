@@ -1,24 +1,40 @@
 import { useState, useEffect } from "react";
 import { Text, View, ScrollView, TouchableOpacity } from "react-native";
-import { Recipe } from "../../../types/Recipe"; 
-import { Link } from "expo-router"; 
+import { Recipe } from "../../../types/Recipe";
+import { Link } from "expo-router";
+import { getToken } from '../../../utils/jwtStorage';
+import { jwtDecode } from "jwt-decode";
 
 export default function FavouriteRecipes() {
   const gs = require("../../../static/styles/globalStyles");
-  const [recipes, setRecipes] = useState<Recipe[]>([]); 
-  const [loading, setLoading] = useState(true); 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
-  const [userId, setUserId] = useState<number | null>(null); 
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState<number | null>(null);
 
   useEffect(() => {
-    const userToken = localStorage.getItem("userToken"); 
-    if (userToken) {
-      setIsLoggedIn(true);
-      const id = 999; 
-      setUserId(id);
-    } else {
-      setIsLoggedIn(false);
-    }
+    const checkAuth = async () => {
+      const authToken = await getToken();
+
+      if (authToken) {
+        setIsLoggedIn(true);
+        try {
+          const decodedToken: any = jwtDecode(authToken);
+          console.log("Decoded token:", decodedToken);
+          const userId = decodedToken.userId;
+          setUserId(userId);
+        } catch (error) {
+          console.error("Error decoding token:", error);
+          setIsLoggedIn(false);
+          setUserId(null);
+        }
+      } else {
+        console.log("User is not logged in.");
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkAuth();
   }, []);
 
   useEffect(() => {
@@ -29,21 +45,20 @@ export default function FavouriteRecipes() {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-          return response.json(); 
+          return response.json();
         })
         .then((data: Recipe[]) => {
-          setRecipes(data); 
+          setRecipes(data);
         })
         .catch((error) => {
           console.error("Error fetching recipes:", error);
         })
         .finally(() => setLoading(false));
     }
-  }, [isLoggedIn, userId]); 
+  }, [isLoggedIn, userId]);
 
   return (
     <View style={{ flex: 1 }}>
-      <NavBar />
 
       <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
         <Text style={gs.headerText}>Your Favourite Recipes</Text>
@@ -52,26 +67,26 @@ export default function FavouriteRecipes() {
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <Text style={gs.bodyText}>You need to be logged in to see your favourite recipes.</Text>
 
-            <Link href="/auth/LoginScreen" asChild>
+            <Link href="/login" asChild>
               <TouchableOpacity>
                 <Text style={gs.mainButton}>Log In</Text>
               </TouchableOpacity>
             </Link>
           </View>
         ) : loading ? (
-          
+
           <Text>Loading recipes...</Text>
         ) : recipes.length === 0 ? (
           <Text>No favourite recipes found.</Text>
         ) : (
           recipes.map((recipe, index) => (
             <Link key={index} href={`/recipes/recipeDetails?recipeTitle=${recipe.title}`}>
-                <View style={gs.card}>
-                    <Text style={gs.cardTitle}>{recipe.title}</Text>
-                    <Text style={gs.cardContent}>{recipe.description}</Text>
-                </View>
+              <View style={gs.card}>
+                <Text style={gs.cardTitle}>{recipe.title}</Text>
+                <Text style={gs.cardContent}>{recipe.description}</Text>
+              </View>
             </Link>
-                  ))
+          ))
         )}
       </ScrollView>
     </View>

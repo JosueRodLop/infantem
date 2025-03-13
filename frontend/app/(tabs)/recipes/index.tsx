@@ -1,22 +1,47 @@
 import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { Link } from "expo-router";
-import { recipes } from "../../../hardcoded_data/recipesData";
 import { Recipe } from "../../../types/Recipe";
 
 export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [suggestedRecipes, setSuggestedRecipes] = useState<Recipe[]>(recipes);
-  const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
-  const [filteredSuggestedRecipes, setFilteredSuggestedRecipes] = useState<Recipe[]>(recipes);
-  const [filteredRecommendedRecipes, setFilteredRecommendedRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
-  const [babyId, setBabyId] = useState<number>(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
+  const [filteredRecommendedRecipes, setFilteredRecommendedRecipes] = useState<Recipe[]>([]);
   const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+  const [filteredAllRecipes, setFilteredAllRecipes] = useState<Recipe[]>([]);
+  const [suggestedRecipes, setSuggestedRecipes] = useState<Recipe[]>([]);
+  const [filteredSuggestedRecipes, setFilteredSuggestedRecipes] = useState<Recipe[]>([]);
+  const [babyId, setBabyId] = useState<number>(1);
 
   useEffect(() => {
-    fetch(`http://localhost:8081/api/v1/recipes/recommended/${babyId}`)
+    fetch("http://localhost:8081/api/v1/recipes")
+      .then((response) => {
+        return response.text().then((text) => {
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${text}`);
+          }
+
+          try {
+            return JSON.parse(text);
+          } catch (error) {
+            throw new Error(`Invalid JSON: ${text}`);
+          }
+        });
+      })
+      .then((data: Recipe[]) => {
+        console.log(data);
+        setAllRecipes(data);
+        setFilteredAllRecipes(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching all recipes:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:8081/api/v1/recipes/recommendations/${babyId}`)
       .then((response) => {
         if (!response.ok) {
           return response.text().then((text) => {
@@ -35,39 +60,12 @@ export default function Page() {
       .finally(() => setLoading(false));
   }, [babyId]);
 
-  useEffect(() => {
-    fetch("http://localhost:8081/api/v1/recipes/all")
-      .then((response) => {
-        console.log("Response received:", response);
-
-        return response.text().then((text) => {
-          console.log("Response body:", text);
-
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status} - ${text}`);
-          }
-
-          try {
-            return JSON.parse(text);
-          } catch (error) {
-            throw new Error(`Invalid JSON: ${text}`);
-          }
-        });
-      })
-      .then((data: Recipe[]) => {
-        console.log("Parsed JSON:", data);
-        setAllRecipes(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching all recipes:", error);
-      });
-  }, []);
 
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
 
-    const filteredSuggested = recipes.filter((recipe) =>
+    const filteredSuggested = allRecipes.filter((recipe) =>
       recipe.title.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredSuggestedRecipes(filteredSuggested);
@@ -124,7 +122,7 @@ export default function Page() {
 
         {loading ? (
           <Text>Loading recommended recipes...</Text>
-        ) : filteredRecommendedRecipes.length === 0 ? (
+        ) : allRecipes.length === 0 ? (
           <Text>No recommended recipes found.</Text>
         ) : (
           filteredRecommendedRecipes.map((recipe, index) => (
