@@ -22,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "disease_table")
 @Getter @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Disease.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Disease {
     
     @Id
