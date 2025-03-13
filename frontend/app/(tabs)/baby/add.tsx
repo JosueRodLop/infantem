@@ -99,13 +99,13 @@ export default function AddBaby() {
 
       <TextInput
         style={gs.input}
-        placeholder="Name"
+        placeholder="Nombre"
         value={name}
         onChangeText={setName}
       />
       <TextInput
         style={gs.input}
-        placeholder="YYYY-MM-DD"
+        placeholder="Fecha de nacimiento: YYYY-MM-DD"
         value={birthDate}
         onChangeText={setBirthDate}
       />
@@ -114,34 +114,34 @@ export default function AddBaby() {
         style={[gs.input, { height: 50 }]}
         onValueChange={(itemValue) => setGenre(itemValue)}
       >
-        <Picker.Item label="Male" value="MALE" />
-        <Picker.Item label="Female" value="FEMALE" />
-        <Picker.Item label="Other" value="OTHER" />
+        <Picker.Item label="Niño" value="MALE" />
+        <Picker.Item label="Niña" value="FEMALE" />
+        <Picker.Item label="Otro" value="OTHER" />
       </Picker>
       <TextInput
         style={gs.input}
-        placeholder="Weight (kg)"
+        placeholder="Peso (kg)"
         value={weight?.toString() || ""}
         keyboardType="numeric"
         onChangeText={(text) => setWeight(text ? parseFloat(text) : null)}
       />
       <TextInput
         style={gs.input}
-        placeholder="Height (cm)"
+        placeholder="Altura (cm)"
         value={height?.toString() || ""}
         keyboardType="numeric"
         onChangeText={(text) => setHeight(text ? parseInt(text) : null)}
       />
       <TextInput
         style={gs.input}
-        placeholder="Cephalic Perimeter (cm)"
+        placeholder="Perímetro cefálico (cm)"
         value={cephalicPerimeter?.toString() || ""}
         keyboardType="numeric"
         onChangeText={(text) => setCephalicPerimeter(text ? parseInt(text) : null)}
       />
       <TextInput
         style={gs.input}
-        placeholder="Food Preference"
+        placeholder="Preferencias "
         value={foodPreference}
         onChangeText={setFoodPreference}
       />
@@ -154,7 +154,7 @@ export default function AddBaby() {
       )}
 
       <TouchableOpacity style={gs.mainButton} onPress={handleSave}>
-        <Text style={gs.mainButtonText}>Save</Text>
+        <Text style={gs.mainButtonText}>Guardar</Text>
       </TouchableOpacity>
     </View>
   );
