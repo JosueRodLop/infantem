@@ -9,10 +9,14 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class InfantemApplication {
 
 	public static void main(String[] args) {
-		
-		Dotenv dotenv = Dotenv.load();
 
-        System.setProperty("spring.profiles.active", dotenv.get("SPRING_PROFILES_ACTIVE"));
+		String profile = System.getenv("SPRING_PROFILES_ACTIVE");
+		if(profile == null){
+			Dotenv dotenv = Dotenv.load();
+			System.setProperty("spring.profiles.active", dotenv.get("SPRING_PROFILES_ACTIVE"));
+		}else{
+			System.setProperty("spring.profiles.active", profile);
+		}
 		SpringApplication.run(InfantemApplication.class, args);
 	}
 
