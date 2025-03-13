@@ -77,28 +77,28 @@ export default function AddBaby() {
 
   return (
   <View style={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-      <Text style={gs.headerText}>Add a recipe</Text>
+      <Text style={gs.headerText}>Añadir una receta</Text>
       <TextInput
         style={gs.input}
-        placeholder="Name"
+        placeholder="Nombre"
         value={name}
         onChangeText={setName}
       />
       <TextInput
         style={gs.input}
-        placeholder="Description"
+        placeholder="Descripción"
         value={description}
         onChangeText={setDescription}
       />
       <TextInput
         style={gs.input}
-        placeholder="Ingredients"
+        placeholder="Ingredientes"
         value={ingredients}
         onChangeText={setIngredients}
       />
       <TextInput
         style={gs.input}
-        placeholder="Minimum recommend age"
+        placeholder="Edad mínima recomendada"
         value={minRecommendedAge?.toString()}
         keyboardType="numeric"
         onChangeText={(text) => {
@@ -108,7 +108,7 @@ export default function AddBaby() {
       />
       <TextInput
         style={gs.input}
-        placeholder="Maximum recommend age"
+        placeholder="Edad máxima recomendada"
         value={maxRecommendedAge?.toString()}
         keyboardType="numeric"
         onChangeText={(text) => {
@@ -118,12 +118,12 @@ export default function AddBaby() {
       />
       <TextInput
         style={gs.input}
-        placeholder="Elaboration"
+        placeholder="Elaboración"
         value={elaboration}
         onChangeText={setElaboration}
       />
       <TouchableOpacity style={gs.mainButton} onPress={handleSave}>
-        <Text style={gs.mainButtonText}>Save</Text>
+        <Text style={gs.mainButtonText}>Guardar</Text>
       </TouchableOpacity>
     </View>
   );

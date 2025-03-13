@@ -14,19 +14,19 @@ function StackLayout() {
 			<Stack.Screen
 				name="index"
 				options={{
-					title: "My Babies",
+					title: "Mis bebés",
 				}}
 			/>
 			<Stack.Screen
 				name="edit"
 				options={{
-					title: "Edit Baby",
+					title: "Modificar datos del bebé",
 				}}
 			/>
       <Stack.Screen
 				name="add"
 				options={{
-					title: "Add Baby",
+					title: "Añadir un bebé",
 				}}
 			/>
 

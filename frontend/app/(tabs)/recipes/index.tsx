@@ -9,7 +9,6 @@ import { getToken } from "../../../utils/jwtStorage"
 
 export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   // const [suggestedRecipes, setSuggestedRecipes] = useState<Recipe[]>(recipes);
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
@@ -166,15 +165,15 @@ export default function Page() {
     <View style={{ flex: 1 }}>
 
       <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, flexGrow: 1 }]}>
-        <Text style={gs.headerText}>Recipe Recommendations</Text>
+        <Text style={gs.headerText}>Recetas Recomendadas</Text>
         <Text style={gs.bodyText}>
-          Find suitable recipes based on your baby's age and preferences
+          Encuentre recetas adecuadas en función de la edad y las preferencias de su bebé
         </Text>
 
         <View style={{ width: "90%" }}>
           <TextInput
             style={gs.input}
-            placeholder="Search recipes..."
+            placeholder="Busca recetas..."
             value={searchQuery}
             onChangeText={handleSearch}
           />
@@ -182,10 +181,10 @@ export default function Page() {
           <View style={{ flexDirection: "row", gap: 10, marginVertical: 10, alignSelf: "flex-start" }}>
 
             <Link href="/recipes/favorites" style={gs.mainButton}>
-              <Text style={gs.mainButtonText}>Favourite recipes</Text>
+              <Text style={gs.mainButtonText}>Recetas favoritas</Text>
             </Link>
             <Link style={gs.mainButton} href={"/recipes/add"}>
-              <Text style={gs.mainButtonText}>Add a recipe</Text>
+              <Text style={gs.mainButtonText}>Añade una receta</Text>
             </Link>
 
           </View>
@@ -208,11 +207,11 @@ export default function Page() {
           ))
         )} */}
 
-        <Text style={[gs.subHeaderText, { marginTop: 50 }]}>Recommended recipes</Text>
+        <Text style={[gs.subHeaderText, { marginTop: 50 }]}>Recetas recomendadas</Text>
 
         <TextInput
           style={[gs.input, { width: "25%", marginHorizontal: "auto" }]}
-          placeholder="Introduce age"
+          placeholder="Introduce la edad"
           keyboardType="numeric"
           value={age !== null ? age.toString() : ""}
           onChangeText={(text) => {
@@ -225,9 +224,9 @@ export default function Page() {
         />
 
         {loading ? (
-          <Text>Loading recommended recipes...</Text>
+          <Text>Cargando recetas recomendadas...</Text>
         ) : recommendedRecipes.length === 0 ? (
-          <Text>No recipes found.</Text>
+          <Text>No se encontraron recetas.</Text>
         ) : (
           recommendedRecipes.map((recipe: Recipe) => (
 
@@ -247,12 +246,12 @@ export default function Page() {
           ))
         )}
 
-        <Text style={[gs.subHeaderText, { marginTop: 50 }]}>All  Recipes</Text>
+        <Text style={[gs.subHeaderText, { marginTop: 50 }]}>Todas tus recetas</Text>
 
         {loading ? (
-          <Text>Loading all recipes...</Text>
+          <Text>Cargando recetas recomendadas...</Text>
         ) : allRecipes.length === 0 ? (
-          <Text>No recipes found.</Text>
+          <Text>No se encontraron recetas.</Text>
         ) : (
           allRecipes.map((recipe: Recipe) => (
 

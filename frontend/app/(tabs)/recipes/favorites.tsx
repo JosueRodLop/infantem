@@ -61,23 +61,23 @@ export default function FavouriteRecipes() {
     <View style={{ flex: 1 }}>
 
       <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-        <Text style={gs.headerText}>Your Favourite Recipes</Text>
+        <Text style={gs.headerText}>Tus recetas favoritas</Text>
 
         {!isLoggedIn ? (
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text style={gs.bodyText}>You need to be logged in to see your favourite recipes.</Text>
+            <Text style={gs.bodyText}>Debes iniciar sesión para ver tus recetas favoritas.</Text>
 
             <Link href="/login" asChild>
               <TouchableOpacity>
-                <Text style={gs.mainButton}>Log In</Text>
+                <Text style={gs.mainButton}>Iniciar sesión</Text>
               </TouchableOpacity>
             </Link>
           </View>
         ) : loading ? (
 
-          <Text>Loading recipes...</Text>
+          <Text>Cargando recetas...</Text>
         ) : recipes.length === 0 ? (
-          <Text>No favourite recipes found.</Text>
+          <Text>No se encontraron recetas favoritas.</Text>
         ) : (
           recipes.map((recipe, index) => (
             <Link key={index} href={`/recipes/recipeDetails?recipeTitle=${recipe.title}`}>

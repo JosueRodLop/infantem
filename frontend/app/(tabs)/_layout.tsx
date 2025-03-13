@@ -4,24 +4,24 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TabLayout() {
   return (
-     <Tabs>
-       <Tabs.Screen
-       name="recipes"
-       options={{
-         headerShown: false,
-         lazy: true,
-         tabBarLabel: "Recipes",
-         tabBarIcon: ({ color }) => (
-          <Ionicons name='list' color={color} size={24} />
-          ),
-       }}
-       />
+      <Tabs>
+        <Tabs.Screen
+        name="recipes"
+        options={{
+          headerShown: false,
+          lazy: true,
+          tabBarLabel: "Recetas",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name='list' color={color} size={24} />
+            ),
+        }}
+        />
         <Tabs.Screen
         name="allergens"
         options={{
           lazy: true,
           headerShown: false,
-          tabBarLabel: "Allergens",
+          tabBarLabel: "Alérgenos",
           tabBarIcon: ({ color }) => (
             <Ionicons name='medical' color={color} size={24} />
           ),
@@ -32,7 +32,7 @@ export default function TabLayout() {
         options={{
           lazy: true,
           headerShown: false,
-          tabBarLabel: "Account",
+          tabBarLabel: "Cuenta",
           tabBarIcon: ({ color }) => (
             <Ionicons name='man' color={color} size={24} />
           ),
@@ -43,7 +43,7 @@ export default function TabLayout() {
         options={{
           lazy: true,
           headerShown: false,
-          tabBarLabel: "Baby",
+          tabBarLabel: "Bebé",
           tabBarIcon: ({ color }) => (
             <Ionicons name='folder-sharp' color={color} size={24} />
           ),
