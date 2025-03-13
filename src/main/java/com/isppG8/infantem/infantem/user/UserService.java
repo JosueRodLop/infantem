@@ -78,9 +78,6 @@ public class UserService {
             user.setName(userDetails.getName());
             user.setSurname(userDetails.getSurname());
             user.setUsername(userDetails.getUsername());
-	    if (userDetails.getPassword()!=user.getPassword()) {
-            	user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
-	    }
             user.setEmail(userDetails.getEmail());
             return userRepository.save(user);
         });
