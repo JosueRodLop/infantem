@@ -24,11 +24,11 @@ INSERT INTO allergen (name, description) VALUES
 
 -- Inserción de bebés
 INSERT INTO baby_table (name, birth_date, genre, weight, height, cephalic_perimeter, food_preference) VALUES
-('John', '2023-01-01', 'MALE', 3.5, 49, 35, 'Milk'),
-('Jane', '2023-02-01', 'FEMALE', 3.2, 48, 34, 'Milk'),
-('Alice', '2023-03-01', 'FEMALE', 3.8, 36, 36, 'Milk'),
-('Bob', '2023-04-01', 'MALE', 3.6, 41, 35, 'Milk'),
-('Charlie', '2023-05-01', 'MALE', 3.4, 49, 34, 'Milk');
+('Juan', '2023-01-01', 'MALE', 3.5, 49, 35, 'Leche'),
+('María', '2023-02-01', 'FEMALE', 3.2, 48, 34, 'Leche'),
+('Alicia', '2023-03-01', 'FEMALE', 3.8, 36, 36, 'Leche'),
+('Bruno', '2023-04-01', 'MALE', 3.6, 41, 35, 'Leche'),
+('Carlos', '2023-05-01', 'MALE', 3.4, 49, 34, 'Leche');
 
 -- Inserción de relaciones entre bebés y alérgenos
 INSERT INTO baby_allergen (allergen_id, baby_id) VALUES
@@ -72,12 +72,12 @@ INSERT INTO milestone_completed (baby_id, milestone_id, date) VALUES
 
 -- Inerción de recetas
 INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, description, elaboration, ingredients, name, photo_route) VALUES
-(10, 3, 1, 'Description1', 'Elaboration1', 'Ingredients1', 'Recipe1', 'a'),
-(1, 1, 2, 'Description2', 'Elaboration2', 'Ingredients2', 'Recipe2', 'a'),
-(5, 1, 2, 'Description3', 'Elaboration3', 'Ingredients3', 'Recipe3', 'a'),
-(10, 3, 1, 'Description4', 'Elaboration4', 'Ingredients4', 'Recipe4', 'a'),
-(4, 1, 1, 'Description5', 'Elaboration5', 'Ingredients5', 'Recipe5', 'a'),
-(10, 1, null, 'Description6', 'Elaboration6', 'Ingredients6', 'Recipe6', 'a'),
-(10, 1, null, 'Description7', 'Elaboration7', 'Ingredients7', 'Recipe7', 'a'),
-(16, 7, null, 'Description8', 'Elaboration8', 'Ingredients8', 'Recipe8', 'a'),
-(15, 6, null, 'Description9', 'Elaboration9', 'Ingredients9', 'Recipe9', 'a');
+(10, 3, 1, 'Descripción1', 'Elaboración1', 'Ingredientes1', 'Receta1', 'a'),
+(1, 1, 2, 'Descripción2', 'Elaboración2', 'Ingredientes2', 'Receta2', 'a'),
+(5, 1, 2, 'Descripción3', 'Elaboración3', 'Ingredientes3', 'Receta3', 'a'),
+(10, 3, 1, 'Descripción4', 'Elaboración4', 'Ingredientes4', 'Receta4', 'a'),
+(4, 1, 1, 'Descripción5', 'Elaboración5', 'Ingredientes5', 'Receta5', 'a'),
+(10, 1, null, 'Descripción6', 'Elaboración6', 'Ingredientes6', 'Receta6', 'a'),
+(10, 1, null, 'Descripción7', 'Elaboración7', 'Ingredientes7', 'Receta7', 'a'),
+(16, 7, null, 'Descripción8', 'Elaboración8', 'Ingredientes8', 'Receta8', 'a'),
+(15, 6, null, 'Descripción9', 'Elaboración9', 'Ingredientes9', 'Receta9', 'a');
