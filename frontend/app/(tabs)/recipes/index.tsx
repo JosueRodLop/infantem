@@ -3,9 +3,12 @@ import { Text, View, TouchableOpacity, TextInput, ScrollView, Image } from "reac
 import { Link } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
 import { getToken } from "../../../utils/jwtStorage"
+import { jwtDecode } from "jwt-decode";
 
 // const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTc0MTkwODQxNSwiaWF0IjoxNzQxODIyMDE1LCJhdXRob3JpdGllcyI6WyJ1c2VyIl19.bf4c5fTej1qEcu03Bt8lTbPIYjw9aVIySOqbtjRNalTZmeUP4Li1-OjFNOAcwfNExThBPyppJxnkhiTS38aUuA'
 // console.log(jwt)
+
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
@@ -18,8 +21,10 @@ export default function Page() {
   const [babyId, setBabyId] = useState<number>(1);
   const [allRecipes, setAllRecipes] = useState([]);
   const [age, setAge] = useState<number | null>(null);
-
+  const [userId, setUserId] = useState<number | null>(null);
   const [jwt, setJwt] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
 
   useEffect(() => {
     const getUserToken = async () => {
@@ -31,9 +36,34 @@ export default function Page() {
     getUserToken();
   }, []);
 
+    useEffect(() => {
+      const checkAuth = async () => {
+        const authToken = await getToken();
+  
+        if (authToken) {
+          setIsLoggedIn(true);
+          try {
+            const decodedToken: any = jwtDecode(authToken);
+            console.log("Decoded token:", decodedToken);
+            const userId = decodedToken.userId;
+            setUserId(userId);
+          } catch (error) {
+            console.error("Error decoding token:", error);
+            setIsLoggedIn(false);
+            setUserId(null);
+          }
+        } else {
+          console.log("User is not logged in.");
+          setIsLoggedIn(false);
+        }
+      };
+  
+      checkAuth();
+    }, []);
+
   useEffect(() => {
     if (jwt) {
-      fetch(`http://localhost:8080/api/v1/recipes/recommended?age=${age}`, {
+      fetch(`${apiUrl}/api/v1/recipes/recommended?age=${age}`, {
         headers: {
           "Authorization": "Bearer " + jwt
         }
@@ -61,7 +91,7 @@ export default function Page() {
 
   useEffect(() => {
     if (jwt) {
-      fetch("http://localhost:8080/api/v1/recipes/user/1", {
+      fetch(`${apiUrl}/api/v1/recipes/user/${userId}`, {
         headers: {
           "Authorization": "Bearer " + jwt
         }
@@ -130,7 +160,7 @@ export default function Page() {
     if (age === null) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/recipes/recommended?age=${age}`, {
+      const response = await fetch(`${apiUrl}/api/v1/recipes/recommended?age=${age}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${jwt}`,
