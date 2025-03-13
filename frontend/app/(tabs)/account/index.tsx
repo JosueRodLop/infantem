@@ -3,14 +3,16 @@ import { ActivityIndicator, Modal, TextInput, Alert } from "react-native";
 import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { getToken } from '../../../utils/jwtStorage';
+import { jwtDecode } from "jwt-decode";
 
 interface User {
   id: number;
-  nombre: string;
-  apellidos: string;
-  nombreUsuario: string;
+  name: string;
+  surname: string;
+  username: string;
   email: string;
-  rutaFotoPerfil: string;
+  profilePhotoRoute: string;
 }
 
 const avatarOptions = [
@@ -20,47 +22,88 @@ const avatarOptions = [
 
 export default function Account() {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<number | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const navigation = useNavigation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const gs = require("../../../static/styles/globalStyles");
 
   useEffect(() => {
-    // Change this. Don't hardcode endpoints. Use .env
-    fetch("http://localhost:8080/usuarios/1")
-      .then(response => response.json())
-      .then((data: User) => {
-        if (data) {
-          setUser(data);
+    const checkAuth = async () => {
+      const authToken = await getToken();
+
+      if (authToken) {
+        console.log("Setting isLoggedIn to true");
+        setIsLoggedIn(true);
+        try {
+          const decodedToken: any = jwtDecode(authToken);
+          console.log("Decoded token:", decodedToken);
+          const userId = decodedToken.jti;
+          setUserId(userId);
+        } catch (error) {
+          console.error("Error decoding token:", error);
+          console.log("Setting isLoggedIn to false");
+          setIsLoggedIn(false);
+          setUserId(null);
         }
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Error al cargar el usuario:", error);
-        setLoading(false);
-      });
+      } else {
+        console.log("User is not logged in.");
+        console.log("Setting isLoggedIn to false");
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkAuth();
   }, []);
+
+  useEffect(() => {
+    console.log("isLoggedIn:", isLoggedIn);
+    console.log("userId:", userId);
+    if (isLoggedIn && userId) {
+      setLoading(true);
+      console.log("Fetching user data...");
+      fetch(`http://localhost:8081/api/v1/users/${userId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          console.log("🟠 Respuesta del servidor:", response);
+          return response.json();
+        })
+        .then((data) => {
+          const profilePhotoRoute = data.profilePhotoRoute === null ? "" : data.profilePhotoRoute;
+          setUser({ ...data, profilePhotoRoute: profilePhotoRoute });
+          console.log("🟢 Datos del usuario:", user);
+        })
+        .catch((error) => {
+          console.error("Error fetching recipes:", error);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [isLoggedIn, userId]);
 
   const handleEditProfile = () => {
     setIsEditing(true);
   };
 
   const handleSaveChanges = () => {
-    if (!user) return;
-    
+    const profilePhotoRoute = user.profilePhotoRoute === null ? "" : user.profilePhotoRoute;
+
     const userData = {
       id: user.id,
-      firstName: user.nombre,
-      lastName: user.apellidos,
+      firstName: user.name,
+      lastName: user.surname,
+      username: user.username,
       email: user.email,
-      avatar: user.rutaFotoPerfil || "" // Asegurar que no es null
+      avatar: profilePhotoRoute
     };
-  
+
     console.log("🟡 Datos enviados al backend:", userData);
-  
-    fetch(`http://localhost:8080/usuarios/${user.id}`, {
+
+    fetch(`http://localhost:8080/api/v1/users/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData)
@@ -74,7 +117,7 @@ export default function Account() {
       })
       .then(data => {
         console.log("🟢 Datos actualizados en el backend:", data);
-        setUser(prevUser => ({ ...prevUser, ...data }));
+        setUser((prevUser: any) => ({ ...prevUser, ...data }));
         setIsEditing(false);
         Alert.alert("Perfil actualizado", "Los cambios han sido guardados correctamente");
       })
@@ -83,29 +126,27 @@ export default function Account() {
         Alert.alert("Error", `No se pudo guardar los cambios: ${error.message}`);
       });
   };
-  
+
 
   const handleLogout = () => {
     console.log("Cerrando sesión");
   };
 
-  
+
   const handleAvatarSelection = (avatar: any) => {
     if (user && isEditing) {
-      const avatarUri = typeof avatar === "number" 
+      const avatarUri = typeof avatar === "number"
         ? Image.resolveAssetSource(avatar).uri  // Convierte require() a una URI
         : avatar; // Si ya es una URI, úsala directamente
-  
-      setUser({ ...user, rutaFotoPerfil: avatarUri });
+
+      setUser({ ...user, profilePhotoRoute: avatarUri });
       setModalVisible(false);
     }
   };
-  
 
-  if (!user) {
-    return <Text>Cargando perfil...</Text>;
-  }
-  if (loading) {
+
+  if (!loading && !isLoggedIn && !user) {
+    console.log("IsLoggedIn:", isLoggedIn);
     return (
       <View style={gs.loadingContainer}>
         <ActivityIndicator size="large" color="#00446a" />
@@ -116,23 +157,42 @@ export default function Account() {
 
   return (
     <View style={{ flex: 1 }}>
-      <NavBar />
-      <ScrollView contentContainerStyle={[gs.container, {paddingTop: 100, paddingBottom: 100}]}>
+      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
         <TouchableOpacity style={{ position: 'absolute', top: 20, left: 20, zIndex: 10 }} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        
+
         <Text style={gs.headerText}>Perfil</Text>
         <Text style={gs.subHeaderText}>Información de usuario</Text>
 
         <TouchableOpacity style={gs.profileImageContainer} onPress={() => isEditing && setModalVisible(true)} disabled={!isEditing}>
-          <Image source={user.rutaFotoPerfil ? { uri: user.rutaFotoPerfil } : avatarOptions[0]} style={gs.profileImage} />
+          <Image source={user.profilePhotoRoute ? { uri: user.profilePhotoRoute } : avatarOptions[0]} style={gs.profileImage} />
         </TouchableOpacity>
 
-        <TextInput style={gs.input} value={user.nombre} editable={isEditing} onChangeText={text => setUser({ ...user, nombre: text })} />
-        <TextInput style={gs.input} value={user.apellidos} editable={isEditing} onChangeText={text => setUser({ ...user, apellidos: text })} />
-        <TextInput style={gs.input} value={user.nombreUsuario} editable={isEditing} onChangeText={text => setUser({ ...user, nombreUsuario: text })} />
-        <TextInput style={gs.input} value={user.email} editable={isEditing} onChangeText={text => setUser({ ...user, email: text })} />
+        <TextInput
+          style={gs.input}
+          value={user.name}
+          editable={isEditing}
+          onChangeText={(text) => setUser({ ...user, name: text })}
+        />
+        <TextInput
+          style={gs.input}
+          value={user.surname}
+          editable={isEditing}
+          onChangeText={(text) => setUser({ ...user, surname: text })}
+        />
+        <TextInput
+          style={gs.input}
+          value={user.username}
+          editable={isEditing}
+          onChangeText={(text) => setUser({ ...user, username: text })}
+        />
+        <TextInput
+          style={gs.input}
+          value={user.email}
+          editable={isEditing}
+          onChangeText={(text) => setUser({ ...user, email: text })}
+        />
 
         {isEditing ? (
           <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleSaveChanges}>
