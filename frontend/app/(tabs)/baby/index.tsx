@@ -3,8 +3,7 @@ import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { getToken } from "../../../utils/jwtStorage";
 
-const jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTc0MTkwNTg0MCwiaWF0IjoxNzQxODE5NDQwLCJhdXRob3JpdGllcyI6WyJ1c2VyIl19.mhdow7R3W_TQz8wdmXG1Nak_S8PIApBswblRix-5RiDjDG6si5RyYOPVSEMRY7WSPOm_atey3RMwNwvy2R68MQ";
-
+const jwt = getToken();
 
 export default function BabyInfo() {
   const gs = require("../../../static/styles/globalStyles");
@@ -17,34 +16,31 @@ export default function BabyInfo() {
   
 
   useEffect(() => {
-    fetch(`${apiUrl}/api/v1/baby`, {
-      headers: { "Authorization": `Bearer ${jwt}` },
-    })
-      .then((response) => {
-              console.log("Response received:", response);
-      
-              return response.text().then((text) => {
-                console.log("Response body:", text);
-      
-                if (!response.ok) {
-                  throw new Error(`Error: ${response.status} - ${text}`);
-                }
-      
-                try {
-                  return JSON.parse(text);
-                } catch (error) {
-                  throw new Error(`Invalid JSON: ${text}`);
-                }
-              });
-            })
-            .then((data) => {
-              console.log("Parsed JSON:", data);
-              setBabies(data);
-            })
-            .catch((error) => {
-              console.error("Error fetching all recipes:", error);
-            });
-        }, []);
+    const fetchBabies = async () => {
+      try {
+        const token = await getToken();
+        const response = await fetch(`${apiUrl}/api/v1/baby`, {
+          headers: { "Authorization": `Bearer ${token}` },
+        });
+
+        console.log("Response received:", response);
+        const text = await response.text();
+        console.log("Response body:", text);
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} - ${text}`);
+        }
+
+        const data = JSON.parse(text);
+        console.log("Parsed JSON:", data);
+        setBabies(data);
+      } catch (error) {
+        console.error("Error fetching all recipes:", error);
+      }
+    };
+
+    fetchBabies();
+  }, []);
 
   const handleAddBaby = () => {
     // Navigate to add baby page

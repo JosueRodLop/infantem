@@ -17,6 +17,12 @@ function StackLayout() {
 					title: "My Babies",
 				}}
 			/>
+			<Stack.Screen
+				name="edit"
+				options={{
+					title: "Edit Baby",
+				}}
+			/>
 		</Stack>
 	);
 }
