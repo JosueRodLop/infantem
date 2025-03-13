@@ -9,11 +9,17 @@ export default function BabyInfo() {
   const gs = require("../../../static/styles/globalStyles");
   const [babies, setBabies] = useState([]);
   const router = useRouter();
+  const [jwt, setJwt] = useState<string | null>(null);(null);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-  console.log("API URL:", apiUrl);
-  console.log("JWT:", jwt);
-  
+
+  useEffect(() => {
+    const getUserToken = async () => {
+      const token = await getToken();
+      setJwt(token);
+    };
+    getUserToken();
+  },[]) 
 
   useEffect(() => {
     const fetchBabies = async () => {
@@ -42,26 +48,31 @@ export default function BabyInfo() {
     fetchBabies();
   }, []);
 
-  const handleAddBaby = () => {
-    // Navigate to add baby page
-  };
 
   const handleEditBaby = (id: number) => {
     router.push(`/baby/edit?id=${id}`);
   };
+  
+  const handleDeleteBaby = async (id: number) => {
+    if (jwt) {
+      try {
+        const response = await fetch(`${apiUrl}/api/v1/baby/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${jwt}`, 
+          },
+        });
 
-  const handleDeleteBaby = (id: number) => {
-    fetch(`${apiUrl}/api/v1/baby/delete/${id}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
         if (response.ok) {
           setBabies(babies.filter((baby) => baby.id !== id));
         } else {
           console.error("Error deleting baby:", response.statusText);
         }
-      })
-      .catch((error) => console.error("Error deleting baby:", error));
+
+      } catch (error) {
+        console.error("Error deleting baby:", error);
+      }
+    }
   };
 
   return (
@@ -75,9 +86,9 @@ export default function BabyInfo() {
 
         <View style={{ width: "90%" }}>
             <View style={{ flexDirection: "row", gap: 10, marginVertical: 10, alignSelf: "center" }}>
-            <TouchableOpacity style={gs.mainButton} onPress={handleAddBaby}>
+            <Link style={gs.mainButton} href={"/baby/add/"}>
               <Text style={gs.mainButtonText}>Add Baby</Text>
-            </TouchableOpacity>
+            </Link>
           </View>
         </View>
 
