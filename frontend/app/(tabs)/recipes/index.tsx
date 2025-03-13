@@ -126,7 +126,7 @@ export default function Page() {
   }, [jwt]);
 
   useEffect(() => {
-    fetch(`http://localhost:8081/api/v1/recipes/recommendations/${babyId}`)
+    fetch(`${apiUrl}/api/v1/recipes/recommendations/${babyId}`)
       .then((response) => {
         if (!response.ok) {
           return response.text().then((text) => {
