@@ -41,6 +41,8 @@ public class User {
     private String name;
     private String surname;
     private String username;
+    // TODO this as a fix to update issues is wobbly at best :)
+    @JsonIgnore
     private String password;
     private String email;
     private String profilePhotoRoute;
