@@ -14,7 +14,13 @@ function StackLayout() {
 			<Stack.Screen
 				name="index"
 				options={{
-					title: "Food",
+					title: "My Babies",
+				}}
+			/>
+			<Stack.Screen
+				name="edit"
+				options={{
+					title: "Edit Baby",
 				}}
 			/>
 		</Stack>
@@ -22,4 +28,3 @@ function StackLayout() {
 }
 
 export default StackLayout;
-
