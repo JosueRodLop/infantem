@@ -76,4 +76,8 @@ INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, desc
 (1, 1, 2, 'Description2', 'Elaboration2', 'Ingredients2', 'Recipe2', 'a'),
 (5, 1, 2, 'Description3', 'Elaboration3', 'Ingredients3', 'Recipe3', 'a'),
 (10, 3, 1, 'Description4', 'Elaboration4', 'Ingredients4', 'Recipe4', 'a'),
-(4, 1, 1, 'Description5', 'Elaboration5', 'Ingredients5', 'Recipe5', 'a');
+(4, 1, 1, 'Description5', 'Elaboration5', 'Ingredients5', 'Recipe5', 'a'),
+(10, 1, null, 'Description6', 'Elaboration6', 'Ingredients6', 'Recipe6', 'a'),
+(10, 1, null, 'Description7', 'Elaboration7', 'Ingredients7', 'Recipe7', 'a'),
+(16, 7, null, 'Description8', 'Elaboration8', 'Ingredients8', 'Recipe8', 'a'),
+(15, 6, null, 'Description9', 'Elaboration9', 'Ingredients9', 'Recipe9', 'a');
