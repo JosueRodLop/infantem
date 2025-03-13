@@ -10,7 +10,7 @@ export default function EditBaby() {
   const [baby, setBaby] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(""); // Estado para errores
-  const apiUrl = "https://ispp-2425-g8.ew.r.appspot.com";
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const { id } = useLocalSearchParams();
 
   // Fetch datos iniciales del bebé
