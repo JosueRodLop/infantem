@@ -98,6 +98,10 @@ export default function Page() {
             <Link href="/recipes/favorites" style={gs.mainButton}>
               <Text style={gs.mainButtonText}>Favourite recipes</Text>
             </Link>
+            <Link style={gs.mainButton} href={"/recipes/add"}>
+              <Text style={gs.mainButtonText}>Add a recipe</Text>
+            </Link>
+
           </View>
         </View>
 
