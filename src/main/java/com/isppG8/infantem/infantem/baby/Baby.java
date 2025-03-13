@@ -82,13 +82,13 @@ public class Baby {
     @OneToOne
     private NutritionalContribution nutritionalContribution;
 
-    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<Dream> sleep = new ArrayList<>();
 
-    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL)
     private List<MilestoneCompleted> milestonesCompleted = new ArrayList<>();
 
-    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL)
     private List<Intake> intakes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "babies")
