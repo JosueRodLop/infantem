@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isppG8.infantem.infantem.auth.Authorities;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,6 +53,8 @@ public class User {
     @JsonManagedReference
     private List<Recipe> recipes = new ArrayList<>();
 
+    // TODO Ignored because json serialization of recursive properties is wonky, unrealiable, and fuck that tbh
+    @JsonIgnore
     @ManyToMany(mappedBy = "users")
     List<Baby> babies = new ArrayList<>();
 }
