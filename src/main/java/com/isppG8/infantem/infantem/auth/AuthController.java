@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.security.authentication.BadCredentialsException;
@@ -69,9 +70,12 @@ public class AuthController {
 	}
 	
 	@GetMapping("/me")
-	public ResponseEntity<Object> authSantos(@RequestHeader (name="Authorization") String token) {
+	public ResponseEntity<Object> authSantos(@RequestHeader HttpHeaders headers) {
 		try {
-			token = token.substring(6);
+			if (!headers.containsKey("Authorization")) {
+				throw new BadCredentialsException("");
+			}
+			String token = headers.get("Authorization").get(0).substring(6);
 			Boolean isValid = jwtUtils.validateJwtToken(token);
 			if (!isValid) {
 				throw new BadCredentialsException("");
