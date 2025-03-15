@@ -1,8 +1,27 @@
-import { Link } from "expo-router";
-import { View, Text, ImageBackground, Image } from "react-native";
+import { Link, Redirect } from "expo-router";
+import { View, Text, ImageBackground, Image, ActivityIndicator } from "react-native";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 
 export default function Index() {
+  const { isAuthenticated, isLoading, checkAuth } = useAuth();
+
   const gs = require("../static/styles/globalStyles");
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={gs.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  if (isAuthenticated) 
+    return <Redirect href="recipes"/>
 
   return (
     <ImageBackground 

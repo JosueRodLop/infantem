@@ -2,14 +2,15 @@ import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, Image } from "react-native";
 import { storeToken } from "../utils/jwtStorage";
+import { useAuth } from "../context/AuthContext";
 
 export default function Signin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-  console.log("API URL:", apiUrl);
+  const { isAuthenticated, checkAuth } = useAuth();
+
 
   const gs = require("../static/styles/globalStyles");
 
@@ -27,14 +28,16 @@ export default function Signin() {
       });
 
       if (!response.ok) {
-        // I asked backend to implement the Bad credential error as a JSON. Waiting for that
+        console.log(response)
         setErrorMessage("Algo no ha ido bien");
         return;
       }
 
       const data = await response.json();
       await storeToken(data.token);
-      router.push("/recipes");
+      
+      await checkAuth();
+      router.replace("/recipes")
 
     } catch (error) {
       console.error("An error ocurred: ", error);
