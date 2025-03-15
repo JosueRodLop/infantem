@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.isppG8.infantem.infantem.user.UserService;
+import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.auth.jwt.JwtUtils;
 import com.isppG8.infantem.infantem.auth.payload.request.LoginRequest;
 import com.isppG8.infantem.infantem.auth.payload.request.SignupRequest;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.security.authentication.BadCredentialsException;
@@ -63,6 +65,27 @@ public class AuthController {
 			return ResponseEntity.ok().body(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
 		}catch(BadCredentialsException exception){
 			return ResponseEntity.badRequest().body(new MessageResponse("Bad Credentials!"));
+		}
+	}
+	
+	@GetMapping("/me")
+	public ResponseEntity<Object> authSantos(@RequestHeader (name="Authorization") String token) {
+		try {
+			token = token.substring(6);
+			Boolean isValid = jwtUtils.validateJwtToken(token);
+			if (!isValid) {
+				throw new BadCredentialsException("");
+			}
+			String username = jwtUtils.getUserNameFromJwtToken(token);
+			User loggedInUser = userService.findByUsername(username);
+			if (loggedInUser==null) {
+				throw new BadCredentialsException("");
+			}
+			return ResponseEntity.ok().body(loggedInUser);
+		} catch(BadCredentialsException exception){
+			return ResponseEntity.badRequest().body(new MessageResponse("Bad Credentials!"));
+		} catch(Exception e) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong"));
 		}
 	}
 
