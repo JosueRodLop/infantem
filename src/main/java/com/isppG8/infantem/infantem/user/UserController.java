@@ -18,6 +18,8 @@ import com.isppG8.infantem.infantem.auth.payload.response.MessageResponse;
 
 import com.isppG8.infantem.infantem.user.dto.UserDTO;
 
+import com.isppG8.infantem.infantem.user.dto.UserDTO;
+
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -27,7 +29,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final JwtUtils jwtUtils;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @Autowired
     public UserController(UserService userService, JwtUtils jwtUtils) {
@@ -43,22 +49,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUserById(@PathVariable Long id,
-            @RequestHeader(name = "Authorization") String token) {
-
-        String jwtId = jwtUtils.getIdFromJwtToken(token.substring(6));
-        if (!(jwtId.equals(id.toString()))) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Not your user"));
-        }
-
-        User user = userService.getUserById(id);
-
-        if (user == null) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong"));
-        }
-
-        return ResponseEntity.ok().body(user);
-
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        return this.userService.getUserById(id)
+                .map(user -> ResponseEntity.ok(new UserDTO(user)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -68,18 +62,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails,
-            @RequestHeader(name = "Authorization") String token) {
-
-        String jwtId = jwtUtils.getIdFromJwtToken(token.substring(6));
-
-        if (!(jwtId.equals(id.toString()))) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Not your user"));
-        }
-
-        User updatedUser = userService.updateUser(id, userDetails);
-        return ResponseEntity.ok().body(updatedUser);
-
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
+        return this.userService.updateUser(id, userDetails)
+                .map(user -> ResponseEntity.ok(new UserDTO(userDetails)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
