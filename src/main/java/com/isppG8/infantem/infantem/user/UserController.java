@@ -2,6 +2,7 @@ package com.isppG8.infantem.infantem.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.isppG8.infantem.infantem.user.dto.UserDTO;
@@ -9,7 +10,7 @@ import com.isppG8.infantem.infantem.user.dto.UserDTO;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -22,12 +23,14 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping
     public List<UserDTO> getAllUsers() {
         List<UserDTO> users = this.userService.getAllUsers().stream().map(UserDTO::new).toList();
         return users;
     }
 
+    @PreAuthorize("hasAuthority('admin') or #id == principal.id")
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         return this.userService.getUserById(id)
@@ -41,6 +44,7 @@ public class UserController {
         return ResponseEntity.ok(new UserDTO(createdUser));
     }
 
+    @PreAuthorize("hasAuthority('admin') or #id == principal.id")
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
         return this.userService.updateUser(id, userDetails)
@@ -48,6 +52,7 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (userService.deleteUser(id)) {
