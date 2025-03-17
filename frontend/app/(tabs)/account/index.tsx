@@ -1,100 +1,47 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ActivityIndicator, Modal, TextInput, Alert } from "react-native";
 import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { getToken, removeToken } from '../../../utils/jwtStorage';
-import { jwtDecode } from "jwt-decode";
-import { router, Link } from "expo-router";
+import { router } from "expo-router";
+import { useAuth } from "../../../context/AuthContext";
 
 const avatarOptions = [
+  // There are no avatar images in backend yet.
   require("../../../assets/avatar/avatar1.png"),
   require("../../../assets/avatar/avatar2.png")
 ];
 
 export default function Account() {
-  const [user, setUser] = useState<any | null>(null);
-  const [userId, setUserId] = useState<number | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const navigation = useNavigation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState<string | null>(null);
 
-  const apiUrl = process.env.EXPO_PUBLIC_API_URL;;
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
   const gs = require("../../../static/styles/globalStyles");
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const authToken = await getToken();
-      setToken(authToken);
+  const { isLoading, user, token, setUser, checkAuth, signOut } = useAuth();
 
-      if (authToken) {
-        setIsLoggedIn(true);
-        try {
-          const decodedToken: any = jwtDecode(authToken);
-          const userId = decodedToken.jti;
-          setUserId(userId);
-        } catch (error) {
-          console.error("Error decoding token:", error);
-          setIsLoggedIn(false);
-          setUserId(null);
-        }
-      } else {
-        setIsLoggedIn(false);
-      }
-      setLoading(false);
-    };
-
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
-    if (token && userId) {
-      const fetchUserData = async () => {
-        try {
-          const response = await fetch(`${apiUrl}/api/v1/users/${userId}`, {
-            headers: { "Authorization": `Bearer ${token}` },
-          });
-
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-          }
-
-          const data = await response.json();
-          setUser(data);
-        } catch (error) {
-          console.error("Error fetching users:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchUserData();
-    } else {
-      setLoading(false);
-    }
-  }, [userId, token]);
 
   const handleEditProfile = () => {
     setIsEditing(true);
   };
 
   const handleSaveChanges = () => {
-    if (!user || !token || !userId) return;
+    if (!user || !token) return;
 
     const userData = {
+      id: user.id,
       name: user.name,
       surname: user.surname,
       username: user.username,
       password: user.password,
       email: user.email,
-      avatar: user.profilePhotoRoute
+      profilePhotoRoute: user.profilePhotoRoute
     };
 
-    fetch(`${apiUrl}/api/v1/users/${userId}`, {
+    fetch(`${apiUrl}/api/v1/users/${user.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -109,7 +56,7 @@ export default function Account() {
         return response.json();
       })
       .then(data => {
-        setUser((prevUser: any) => ({ ...prevUser, ...data }));
+        setUser(data);
         setIsEditing(false);
         Alert.alert("Perfil actualizado", "Los cambios han sido guardados correctamente");
         router.push("/account");
@@ -119,10 +66,7 @@ export default function Account() {
       });
   };
 
-  const handleLogout = async () => {
-    await removeToken();
-    router.push("/");
-  };
+  const handleLogout = signOut;
 
   const handleAvatarSelection = (avatar: any) => {
     if (user && isEditing) {
@@ -135,7 +79,7 @@ export default function Account() {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={gs.loadingContainer}>
         <ActivityIndicator size="large" color="#00446a" />
@@ -160,38 +104,34 @@ export default function Account() {
 
         {user && (
           <>
-            {user && (
-              <>
-                <Text style={gs.inputLabel}>Nombre</Text>
-                <TextInput
-                  style={gs.card}
-                  value={user.name}
-                  editable={isEditing}
-                  onChangeText={(text) => setUser({ ...user, name: text })}
-                />
-                <Text style={gs.inputLabel}>Apellido</Text>
-                <TextInput
-                  style={gs.card}
-                  value={user.surname}
-                  editable={isEditing}
-                  onChangeText={(text) => setUser({ ...user, surname: text })}
-                />
-                <Text style={gs.inputLabel}>Nombre de Usuario</Text>
-                <TextInput
-                  style={gs.card}
-                  value={user.username}
-                  editable={isEditing}
-                  onChangeText={(text) => setUser({ ...user, username: text })}
-                />
-                <Text style={gs.inputLabel}>Correo Electrónico</Text>
-                <TextInput
-                  style={gs.card}
-                  value={user.email}
-                  editable={isEditing}
-                  onChangeText={(text) => setUser({ ...user, email: text })}
-                />
-              </>
-            )}
+            <Text style={gs.inputLabel}>Nombre</Text>
+            <TextInput
+              style={gs.card}
+              value={user.name}
+              editable={isEditing}
+              onChangeText={(text) => setUser({ ...user, name: text })}
+            />
+            <Text style={gs.inputLabel}>Apellido</Text>
+            <TextInput
+              style={gs.card}
+              value={user.surname}
+              editable={isEditing}
+              onChangeText={(text) => setUser({ ...user, surname: text })}
+            />
+            <Text style={gs.inputLabel}>Nombre de Usuario</Text>
+            <TextInput
+              style={gs.card}
+              value={user.username}
+              editable={isEditing}
+              onChangeText={(text) => setUser({ ...user, username: text })}
+            />
+            <Text style={gs.inputLabel}>Correo Electrónico</Text>
+            <TextInput
+              style={gs.card}
+              value={user.email}
+              editable={isEditing}
+              onChangeText={(text) => setUser({ ...user, email: text })}
+            />
           </>
         )}
 
@@ -205,13 +145,9 @@ export default function Account() {
           </TouchableOpacity>
         )}
 
-        <Link href="/account/payment" style={[gs.secondaryButton, { marginTop: 20 }]}>
-          <Text style={gs.secondaryButtonText}>¿Ya eres usuario Premium?</Text>
-        </Link>
-
-        <TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
+        {<TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
           <Text style={gs.secondaryButtonText}>Cerrar Sesión</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>}
 
         <Modal visible={modalVisible} animationType="fade" transparent={true}>
           <View style={gs.modalOverlay}>
