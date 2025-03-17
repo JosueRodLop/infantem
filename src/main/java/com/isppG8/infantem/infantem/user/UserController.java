@@ -22,14 +22,12 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("api/v1/users")
 public class UserController {
 
     private final UserService userService;
     private final JwtUtils jwtUtils;
-
 
     @Autowired
     public UserController(UserService userService, JwtUtils jwtUtils) {
@@ -43,7 +41,6 @@ public class UserController {
         List<UserDTO> users = this.userService.getAllUsers().stream().map(UserDTO::new).toList();
         return users;
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable Long id,
@@ -61,7 +58,7 @@ public class UserController {
         }
 
         return ResponseEntity.ok().body(new UserDTO(user));
-              
+
     }
 
     @PostMapping
@@ -69,7 +66,6 @@ public class UserController {
         User createdUser = this.userService.createUser(user);
         return ResponseEntity.ok(new UserDTO(createdUser));
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails,
@@ -83,9 +79,8 @@ public class UserController {
 
         User updatedUser = userService.updateUser(id, userDetails);
         return ResponseEntity.ok().body(new UserDTO(updatedUser));
-              
-    }
 
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long id,
