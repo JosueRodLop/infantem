@@ -37,6 +37,9 @@ public class SecurityConfig {
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("api/v1/recipes/*").authenticated()
                 .requestMatchers("api/v1/auth/*").permitAll()
+                .requestMatchers("api/v1/paypal-webhooks/*").permitAll()
+                .requestMatchers("api/v1/subcriptions/*").permitAll()
+                .requestMatchers("api/v1/payments/*").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
