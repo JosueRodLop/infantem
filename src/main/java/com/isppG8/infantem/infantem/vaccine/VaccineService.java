@@ -9,20 +9,25 @@ import org.springframework.stereotype.Service;
 public class VaccineService {
     @Autowired
     private final VaccineRepository repository;
-    public VaccineService(VaccineRepository repository) { 
-        this.repository = repository; 
+
+    public VaccineService(VaccineRepository repository) {
+        this.repository = repository;
     }
-    public List<Vaccine> getAll() { 
-        return repository.findAll(); 
+
+    public List<Vaccine> getAll() {
+        return repository.findAll();
     }
-    public Vaccine getById(Long id) { 
-        return repository.findById(id).orElse(null); 
+
+    public Vaccine getById(Long id) {
+        return repository.findById(id).orElse(null);
     }
-    public Vaccine save(Vaccine vaccine) { 
-        return repository.save(vaccine); 
+
+    public Vaccine save(Vaccine vaccine) {
+        return repository.save(vaccine);
     }
-    public void delete(Long id) { 
-        repository.deleteById(id); 
+
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
-    
+
 }

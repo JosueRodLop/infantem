@@ -1,4 +1,5 @@
 package com.isppG8.infantem.infantem.intake;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -27,4 +28,3 @@ public class IntakeService {
         intakeRepository.deleteById(id);
     }
 }
-

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
-    
     @Query("SELECT r FROM Recipe r WHERE r.minRecommendedAge <= :age AND r.maxRecommendedAge >= :age AND r.user IS NULL")
     List<Recipe> findRecommendedRecipes(@Param("age") Integer age);
 

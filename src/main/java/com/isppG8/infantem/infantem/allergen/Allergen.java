@@ -15,7 +15,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@JsonIdentityInfo(scope = Allergen.class,generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Allergen.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 public class Allergen {
 
@@ -29,17 +29,10 @@ public class Allergen {
     @ManyToMany(mappedBy = "allergens")
     private List<Recipe> recipes = new ArrayList<>();
 
-    
-
     @ManyToMany
-    @JoinTable(
-        name = "baby_allergen",
-        joinColumns = @JoinColumn(name = "baby_id"),
-        inverseJoinColumns = @JoinColumn(name = "allergen_id")
-    )
+    @JoinTable(name = "baby_allergen", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "allergen_id"))
     private List<Baby> babies = new ArrayList<>();
 
-   
     public Allergen() {
     }
 
@@ -48,4 +41,3 @@ public class Allergen {
         this.description = description;
     }
 }
-
