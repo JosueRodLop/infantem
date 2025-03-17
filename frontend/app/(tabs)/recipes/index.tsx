@@ -2,72 +2,96 @@ import { useState, useEffect } from "react";
 import { Text, View, TextInput, ScrollView, Image } from "react-native";
 import { Link } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
+// import { getToken } from "../../../utils/jwtStorage"
+// import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../../context/AuthContext";
 
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function Page() {
-  const [allRecommendedRecipes, setAllRecommendedRecipes] = useState([]);
-  const [userRecipes, setUserRecipes] = useState([]);
-  const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
-  const [allFilteredRecipes, setAllFilteredRecipes] = useState([]);
-  const [userFilteredRecipes, setUserFilteredRecipes] = useState([]);
-  const [recommendedFilteredRecipes, setRecommendedFilteredRecipes] = useState<Recipe[]>([]);
-
+  const gs = require("../../../static/styles/globalStyles");
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
+  const [filteredRecommendedRecipes, setFilteredRecommendedRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [babyId, setBabyId] = useState<number>(1);
+  const [allRecipes, setAllRecipes] = useState([]);
   const [age, setAge] = useState<number | null>(null);
 
-  const gs = require("../../../static/styles/globalStyles");
-
-  const { user, token } = useAuth();
+  const { isAuthenticated, isLoading, user, token, setUser, checkAuth, signOut } = useAuth();
 
   useEffect(() => {
-    obtainAllRecommendedRecipes();
-    obtainUserRecipes();
-  }, []);
-
-  const obtainAllRecommendedRecipes = async (): Promise<boolean> => {
-    try {
-      const response = await fetch(`${apiUrl}/api/v1/recipes/recommended`, {
-        method: 'GET',
+    if (token) {
+      fetch(`${apiUrl}/api/v1/recipes/recommended?age=${age}`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const recipesData = await response.json();
-        setAllRecommendedRecipes(recipesData);
-        setAllFilteredRecipes(recipesData);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.error('Error fetching recipes: ', error);
-      setAllRecommendedRecipes([]);
-      setAllFilteredRecipes([]);
-      return false;
+          "Authorization": "Bearer " + token
+        }
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response.text().then((text) => {
+              throw new Error(`Error: ${response.status} - ${text}`);
+            });
+          }
+          return response.json();
+        })
+        .then((data: Recipe[]) => {
+          setRecommendedRecipes(data);
+          // setFilteredRecommendedRecipes(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching recommended recipes:", error);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      console.log("No jwt token")
     }
-  };
+  }, [token]);
 
-  const obtainUserRecipes = async (): Promise<boolean> => {
-    try {
-      let responseReceived = false;
-      if (token && user) {
-        const response = await fetch(`${apiUrl}/api/v1/recipes/user/${user.id}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
+  useEffect(() => {
+    if (token && user) {
+      fetch(`${apiUrl}/api/v1/recipes/user/${user.id}`, {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+        .then((response) => {
+          console.log("Response received:", response);
+
+          return response.text().then((text) => {
+            console.log("Response body:", text);
+
+            if (!response.ok) {
+              throw new Error(`Error: ${response.status} - ${text}`);
+            }
+
+            try {
+              return JSON.parse(text);
+            } catch (error) {
+              throw new Error(`Invalid JSON: ${text}`);
+            }
+          });
+        })
+        .then((data) => {
+          console.log("Parsed JSON:", data);
+          setAllRecipes(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching all recipes:", error);
         });
-        if (response.ok) {
-          const recipesData = await response.json();
-          setUserRecipes(recipesData);
-          setUserFilteredRecipes(recipesData);
-          responseReceived = true;
+    } else {
+      console.log("No jwt token")
+    }
+  }, [token]);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/api/v1/recipes/recommendations/${babyId}`)
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then((text) => {
+            throw new Error(`Error: ${response.status} - ${text}`);
+          });
         }
       }
       return responseReceived ? true : false;
@@ -188,21 +212,21 @@ export default function Page() {
         {recommendedFilteredRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
-          recommendedFilteredRecipes.map((recipe: Recipe) => (
-            <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
-              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
-                <View>
-                  <Image
-                    source={require('frontend/assets/adaptive-icon.png')}
-                    style={{ width: 50, height: 50 }}
-                  />
-                </View>
-                <View>
-                  <Text style={gs.cardTitle}>{recipe.name}</Text>
-                  <Text style={gs.cardContent}>{recipe.description}</Text>
-                </View>
+          recommendedRecipes.map((recipe: Recipe) => (
+
+            <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
+              <View>
+                <Image
+                  source={require('frontend/assets/adaptive-icon.png')}
+                  style={{ width: 50, height: 50 }}
+                />
               </View>
-            </Link>
+              <View>
+                <Text style={gs.cardTitle}>{recipe.name}</Text>
+                <Text style={gs.cardContent}>{recipe.description}</Text>
+              </View>
+            </View>
+
           ))
         )}
 
@@ -211,21 +235,21 @@ export default function Page() {
         {userFilteredRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
-          userFilteredRecipes.map((recipe: Recipe) => (
-            <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
-              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
-                <View>
-                  <Image
-                    source={require('frontend/assets/adaptive-icon.png')}
-                    style={{ width: 50, height: 50 }}
-                  />
-                </View>
-                <View>
-                  <Text style={gs.cardTitle}>{recipe.name}</Text>
-                  <Text style={gs.cardContent}>{recipe.description}</Text>
-                </View>
+          allRecipes.map((recipe: Recipe) => (
+
+            <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
+              <View>
+                <Image
+                  source={require('frontend/assets/adaptive-icon.png')}
+                  style={{ width: 50, height: 50 }}
+                />
               </View>
-            </Link>
+              <View>
+                <Text style={gs.cardTitle}>{recipe.name}</Text>
+                <Text style={gs.cardContent}>{recipe.description}</Text>
+              </View>
+            </View>
+
           ))
         )}
       </ScrollView>
