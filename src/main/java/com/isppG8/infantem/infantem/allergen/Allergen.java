@@ -8,7 +8,13 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.recipe.Recipe;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
 
