@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView, Image } from "react-native";
 import { Link } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
-import { getToken } from "../../../utils/jwtStorage"
-import { jwtDecode } from "jwt-decode";
+// import { getToken } from "../../../utils/jwtStorage"
+// import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../../../context/AuthContext";
 
 // const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTc0MTkwODQxNSwiaWF0IjoxNzQxODIyMDE1LCJhdXRob3JpdGllcyI6WyJ1c2VyIl19.bf4c5fTej1qEcu03Bt8lTbPIYjw9aVIySOqbtjRNalTZmeUP4Li1-OjFNOAcwfNExThBPyppJxnkhiTS38aUuA'
 // console.log(jwt)
@@ -13,59 +14,20 @@ const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
   const [searchQuery, setSearchQuery] = useState("");
-  // const [suggestedRecipes, setSuggestedRecipes] = useState<Recipe[]>(recipes);
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
-  // const [filteredSuggestedRecipes, setFilteredSuggestedRecipes] = useState<Recipe[]>(recipes);
   const [filteredRecommendedRecipes, setFilteredRecommendedRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [babyId, setBabyId] = useState<number>(1);
   const [allRecipes, setAllRecipes] = useState([]);
   const [age, setAge] = useState<number | null>(null);
-  const [userId, setUserId] = useState<number | null>(null);
-  const [jwt, setJwt] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
+  const { isAuthenticated, isLoading, user, token, setUser, checkAuth, signOut } = useAuth();
 
   useEffect(() => {
-    const getUserToken = async () => {
-      const token = await getToken();
-      console.log(`Token obtenido: ${token}`)
-      setJwt(token);
-    };
-  
-    getUserToken();
-  }, []);
-
-    useEffect(() => {
-      const checkAuth = async () => {
-        const authToken = await getToken();
-  
-        if (authToken) {
-          setIsLoggedIn(true);
-          try {
-            const decodedToken: any = jwtDecode(authToken);
-            console.log("Decoded token:", decodedToken);
-            const userId = decodedToken.userId;
-            setUserId(userId);
-          } catch (error) {
-            console.error("Error decoding token:", error);
-            setIsLoggedIn(false);
-            setUserId(null);
-          }
-        } else {
-          console.log("User is not logged in.");
-          setIsLoggedIn(false);
-        }
-      };
-  
-      checkAuth();
-    }, []);
-
-  useEffect(() => {
-    if (jwt) {
+    if (token) {
       fetch(`${apiUrl}/api/v1/recipes/recommended?age=${age}`, {
         headers: {
-          "Authorization": "Bearer " + jwt
+          "Authorization": "Bearer " + token
         }
       })
         .then((response) => {
@@ -87,13 +49,13 @@ export default function Page() {
     } else {
       console.log("No jwt token")
     }
-  }, [jwt]);
+  }, [token]);
 
   useEffect(() => {
-    if (jwt) {
-      fetch(`${apiUrl}/api/v1/recipes/user/${userId}`, {
+    if (token && user) {
+      fetch(`${apiUrl}/api/v1/recipes/user/${user.id}`, {
         headers: {
-          "Authorization": "Bearer " + jwt
+          "Authorization": "Bearer " + token
         }
       })
         .then((response) => {
@@ -123,7 +85,7 @@ export default function Page() {
     } else {
       console.log("No jwt token")
     }
-  }, [jwt]);
+  }, [token]);
 
   useEffect(() => {
     fetch(`${apiUrl}/api/v1/recipes/recommendations/${babyId}`)
@@ -163,10 +125,10 @@ export default function Page() {
       const response = await fetch(`${apiUrl}/api/v1/recipes/recommended?age=${age}`, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${jwt}`,
+          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      });      
+      });
       if (!response.ok) {
         throw new Error("Error al obtener recetas recomendadas");
       }
@@ -264,7 +226,7 @@ export default function Page() {
               <View>
                 <Image
                   source={require('frontend/assets/adaptive-icon.png')}
-                  style={{width: 50, height: 50}}
+                  style={{ width: 50, height: 50 }}
                 />
               </View>
               <View>
@@ -272,7 +234,7 @@ export default function Page() {
                 <Text style={gs.cardContent}>{recipe.description}</Text>
               </View>
             </View>
-            
+
           ))
         )}
 
@@ -289,7 +251,7 @@ export default function Page() {
               <View>
                 <Image
                   source={require('frontend/assets/adaptive-icon.png')}
-                  style={{width: 50, height: 50}}
+                  style={{ width: 50, height: 50 }}
                 />
               </View>
               <View>
@@ -297,7 +259,7 @@ export default function Page() {
                 <Text style={gs.cardContent}>{recipe.description}</Text>
               </View>
             </View>
-            
+
           ))
         )}
       </ScrollView>

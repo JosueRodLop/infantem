@@ -7,8 +7,9 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
   isAuthenticated: false,
-  setUser: () => {},
-  signOut: async () => {},
+  token: null,
+  setUser: () => { },
+  signOut: async () => { },
   checkAuth: async () => false,
 });
 
@@ -18,6 +19,7 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -26,80 +28,84 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const checkAuth = async (): Promise<boolean> => {
-      try {
-        setIsLoading(true);
-        const token = await getToken();
-        
-        if (!token) {
-          setIsAuthenticated(false);
-          setUser(null);
-          setIsLoading(false);
-          return false;
-        }
+    try {
+      setIsLoading(true);
+      setToken(await getToken());
 
-        try {
-          const response = await fetch(`${apiUrl}/api/v1/auth/me`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          });
-
-          if (response.ok) {
-            const userData = await response.json();
-            setUser({
-              name: userData.name,
-              surname: userData.name,
-              username: userData.username,
-              email: userData.email 
-            });
-            setIsAuthenticated(true);
-            setIsLoading(false);
-            return true;
-          } else {
-            await signOut();
-            return false;
-          }
-
-        } catch (error) {
-          console.error('Error validating token:', error);
-          // I've read some approaches sayn that maybe we should consider validate
-          // just via token if the API is not available. ATM I thought it's not a good
-          // idea. I return false. - Javier Santos
-          setIsAuthenticated(false);
-          setUser(null);
-          setIsLoading(false);
-          return false;
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
+      if (!token) {
         setIsAuthenticated(false);
         setUser(null);
         setIsLoading(false);
         return false;
       }
-    };
 
-    const signOut = async () => {
       try {
-        await removeToken();
-        setUser(null);
-        setIsAuthenticated(false);
-        router.replace('/signin');
+        const response = await fetch(`${apiUrl}/api/v1/auth/me`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setUser({
+            id: userData.id,
+            name: userData.name,
+            surname: userData.name,
+            username: userData.username,
+            password: userData.password,
+            email: userData.email,
+            profilePhotoRoute: userData.profilePhotoRoute,
+          });
+          setIsAuthenticated(true);
+          setIsLoading(false);
+          return true;
+        } else {
+          await signOut();
+          return false;
+        }
 
       } catch (error) {
-        console.error('Sign out failed', error);
+        console.error('Error validating token:', error);
+        // I've read some approaches sayn that maybe we should consider validate
+        // just via token if the API is not available. ATM I thought it's not a good
+        // idea. I return false. - Javier Santos
+        setIsAuthenticated(false);
+        setUser(null);
+        setIsLoading(false);
+        return false;
       }
-    };
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      setIsAuthenticated(false);
+      setUser(null);
+      setIsLoading(false);
+      return false;
+    }
+  };
 
-    const value = {
-      user,
-      isLoading,
-      isAuthenticated,
-      setUser,
-      signOut,
-      checkAuth,
-    };
+  const signOut = async () => {
+    try {
+      await removeToken();
+      setUser(null);
+      setIsAuthenticated(false);
+      router.replace('/signin');
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    } catch (error) {
+      console.error('Sign out failed', error);
+    }
+  };
+
+  const value = {
+    user,
+    isLoading,
+    isAuthenticated,
+    token,
+    setUser,
+    signOut,
+    checkAuth,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
