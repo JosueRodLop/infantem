@@ -26,8 +26,8 @@ public class UserService {
         return userRepository.findAll();
     }
     @Transactional(readOnly = true)
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     public User findByUsername(String username) {
@@ -73,14 +73,14 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<User> updateUser(Long id, User userDetails) {
+    public User updateUser(Long id, User userDetails) {
         return userRepository.findById(id).map(user -> {
             user.setName(userDetails.getName());
             user.setSurname(userDetails.getSurname());
             user.setUsername(userDetails.getUsername());
             user.setEmail(userDetails.getEmail());
             return userRepository.save(user);
-        });
+        }).orElse(null);
     }
 
     @Transactional

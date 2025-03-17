@@ -3,7 +3,18 @@ package com.isppG8.infantem.infantem.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+
+import com.isppG8.infantem.infantem.auth.jwt.JwtUtils;
+import com.isppG8.infantem.infantem.auth.payload.response.MessageResponse;
 
 import com.isppG8.infantem.infantem.user.dto.UserDTO;
 
@@ -17,10 +28,13 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtils jwtUtils;
+
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController (UserService userService, JwtUtils jwtUtils) {
+	    this.userService = userService;
+	    this.jwtUtils = jwtUtils;
     }
 
     @PreAuthorize("hasAuthority('admin')")
@@ -30,12 +44,23 @@ public class UserController {
         return users;
     }
 
-    @PreAuthorize("hasAuthority('admin') or #id == principal.id")
+
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        return this.userService.getUserById(id)
-                .map(user -> ResponseEntity.ok(new UserDTO(user)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Object> getUserById(@PathVariable Long id, @RequestHeader (name = "Authorization") String token) {
+
+	String jwtId = jwtUtils.getIdFromJwtToken(token.substring(6));
+	if (!(jwtId.equals(id.toString()))) {
+		return ResponseEntity.badRequest().body(new MessageResponse("Not your user"));
+	}
+
+        User user = userService.getUserById(id);
+
+	if (user==null) {
+		return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong"));
+	}
+
+        return ResponseEntity.ok().body(new UserDTO(user));
+              
     }
 
     @PostMapping
@@ -44,20 +69,37 @@ public class UserController {
         return ResponseEntity.ok(new UserDTO(createdUser));
     }
 
-    @PreAuthorize("hasAuthority('admin') or #id == principal.id")
+
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
-        return this.userService.updateUser(id, userDetails)
-                .map(user -> ResponseEntity.ok(new UserDTO(userDetails)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Object> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails , @RequestHeader (name = "Authorization") String token) {
+
+	String jwtId = jwtUtils.getIdFromJwtToken(token.substring(6));
+	
+	if (!(jwtId.equals(id.toString()))) {
+		return ResponseEntity.badRequest().body(new MessageResponse("Not your user"));
+	}
+
+        User updatedUser = userService.updateUser(id, userDetails);
+        return ResponseEntity.ok().body(new UserDTO(updatedUser));
+              
     }
 
-    @PreAuthorize("hasAuthority('admin')")
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long id, @RequestHeader (name = "Authorization") String token) {
+
+	String jwtId = jwtUtils.getIdFromJwtToken(token.substring(6));
+	
+	if (!(jwtId.equals(id.toString()))) {
+		return ResponseEntity.badRequest().body(new MessageResponse("Not your user"));
+	}
+
         if (userService.deleteUser(id)) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().body(new MessageResponse("User deleted successfully"));
         }
-        return ResponseEntity.notFound().build();
+
+	// Unreachable code unless some kind of race condition happens
+        return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong"));
+
     }
 }
