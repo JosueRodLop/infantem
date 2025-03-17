@@ -40,11 +40,7 @@ public class Intake {
     public String description;
 
     @ManyToMany()
-    @JoinTable(
-        name = "intake_recipe",
-        joinColumns = @JoinColumn(name = "intake_id"),
-        inverseJoinColumns = @JoinColumn(name = "recipe_id")
-    )
+    @JoinTable(name = "intake_recipe", joinColumns = @JoinColumn(name = "intake_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
     @NotNull
     private List<Recipe> recipes = new ArrayList<>();
 

@@ -40,4 +40,3 @@ public class AllergenService {
         return false;
     }
 }
-
