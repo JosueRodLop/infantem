@@ -22,8 +22,7 @@ public class MilestoneController {
     @GetMapping("/{id}")
     public ResponseEntity<Milestone> getMilestoneById(@PathVariable Long id) {
         Optional<Milestone> milestone = milestoneService.getMilestoneById(id);
-        return milestone.map(ResponseEntity::ok)
-                        .orElseGet(() -> ResponseEntity.notFound().build());
+        return milestone.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -40,6 +39,6 @@ public class MilestoneController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMilestone(@PathVariable Long id) {
         return milestoneService.deleteMilestone(id) ? ResponseEntity.noContent().build()
-                                                    : ResponseEntity.notFound().build();
+                : ResponseEntity.notFound().build();
     }
 }

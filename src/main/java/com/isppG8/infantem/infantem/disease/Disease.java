@@ -21,10 +21,11 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "disease_table")
-@Getter @Setter
+@Getter
+@Setter
 @JsonIdentityInfo(scope = Disease.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Disease {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
@@ -36,11 +37,7 @@ public class Disease {
     private String extraObservations;
 
     @ManyToMany
-    @JoinTable(
-        name = "disease_baby",
-        joinColumns = @JoinColumn(name = "baby_id"),
-        inverseJoinColumns = @JoinColumn(name = "disease_id")
-    )
+    @JoinTable(name = "disease_baby", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "disease_id"))
     @Size(min = 1)
     private List<Baby> babies;
 }

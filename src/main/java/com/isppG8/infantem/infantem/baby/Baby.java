@@ -78,7 +78,7 @@ public class Baby {
     @NotBlank
     private String foodPreference;
 
-    //Relaciones
+    // Relaciones
 
     @OneToOne
     private NutritionalContribution nutritionalContribution;
@@ -86,34 +86,24 @@ public class Baby {
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<Dream> sleep = new ArrayList<>();
 
-    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<MilestoneCompleted> milestonesCompleted = new ArrayList<>();
 
-    @OneToMany(mappedBy = "baby",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<Intake> intakes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "babies")
     private List<Allergen> allergen = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "babies",cascade = CascadeType.ALL)
-    private List<Disease> disease = new ArrayList<>();  // Relación con enfermedades
+    @ManyToMany(mappedBy = "babies", cascade = CascadeType.ALL)
+    private List<Disease> disease = new ArrayList<>(); // Relación con enfermedades
 
     @ManyToMany
-    @JoinTable(
-        name = "vaccine_baby",
-        joinColumns = @JoinColumn(name = "vaccine_id"),
-        inverseJoinColumns = @JoinColumn(name = "baby_id")
-    )
-    private List<Vaccine> vaccines = new ArrayList<>();  // Relación con vacuna
+    @JoinTable(name = "vaccine_baby", joinColumns = @JoinColumn(name = "vaccine_id"), inverseJoinColumns = @JoinColumn(name = "baby_id"))
+    private List<Vaccine> vaccines = new ArrayList<>(); // Relación con vacuna
 
     @ManyToMany
-    @JoinTable(
-        name = "user_baby",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "baby_id")
-    )
+    @JoinTable(name = "user_baby", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "baby_id"))
     @Size(min = 1, max = 2, message = "A baby should have 1 or 2 users")
     private List<User> users = new ArrayList<>();
 }
-
-

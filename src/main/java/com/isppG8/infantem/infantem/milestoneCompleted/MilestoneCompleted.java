@@ -18,17 +18,17 @@ import lombok.Setter;
 @JsonIdentityInfo(scope = MilestoneCompleted.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class MilestoneCompleted {
 
-    //Id
-    
+    // Id
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Atributos
+    // Atributos
 
     private Date date;
 
-    //Relaciones
+    // Relaciones
 
     @ManyToOne
     private Milestone milestone;
@@ -36,6 +36,5 @@ public class MilestoneCompleted {
     @ManyToOne
     @JoinColumn(name = "baby_id")
     private Baby baby;
-
 
 }

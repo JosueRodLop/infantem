@@ -1,4 +1,5 @@
 package com.isppG8.infantem.infantem.dream;
+
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -17,7 +18,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "dream_table")
-@Getter @Setter
+@Getter
+@Setter
 @JsonIdentityInfo(scope = Dream.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Dream {
 
@@ -25,14 +27,13 @@ public class Dream {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private LocalDateTime dateStart;
     private LocalDateTime dateEnd;
     private Integer numWakeups; // numero de desvelos
     private DreamType DreamType;
-    
+
     @ManyToOne
     @JoinColumn(name = "baby_id")
     private Baby baby;
-    
+
 }

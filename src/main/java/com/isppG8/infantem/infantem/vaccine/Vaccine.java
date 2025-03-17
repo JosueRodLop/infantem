@@ -20,8 +20,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name= "vaccine_table")
-@Getter @Setter
+@Table(name = "vaccine_table")
+@Getter
+@Setter
 @JsonIdentityInfo(scope = Vaccine.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 public class Vaccine {
@@ -35,4 +36,3 @@ public class Vaccine {
     @Size(min = 1)
     private List<Baby> babies = new ArrayList<>();
 }
-

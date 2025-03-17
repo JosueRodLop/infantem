@@ -13,19 +13,19 @@ import lombok.Setter;
 @Entity
 @JsonIdentityInfo(scope = Milestone.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Milestone {
-    
-    //Id
+
+    // Id
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Atributos
+    // Atributos
 
     private String name;
     private String description;
 
-    //Relaciones
+    // Relaciones
 
     @OneToMany
     private List<MilestoneCompleted> milestonesCompleted = new ArrayList<>();
