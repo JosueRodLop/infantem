@@ -7,7 +7,8 @@ INSERT INTO authorities (id, authority) VALUES (1, 'user'), (2, 'admin');
 INSERT INTO user_table (name, surname, username, password, email, profile_photo_route, authority_id) 
 VALUES ('user', 'user', 'user1', '$2a$10$quXOAFytwj43GJuecSaM7.nrieG6RG4GVUZASDEefCcEfzk.lPMo6', 'user1@example.com', 'a', 1),
        ('user', 'user', 'user2', '$2a$10$quXOAFytwj43GJuecSaM7.nrieG6RG4GVUZASDEefCcEfzk.lPMo6', 'user2@example.com', 'a', 1),
-       ('admin', 'admin', 'admin1', '$2a$10$quXOAFytwj43GJuecSaM7.nrieG6RG4GVUZASDEefCcEfzk.lPMo6', 'admin1@example.com', 'a', 2);
+       ('admin', 'admin', 'admin1', '$2a$10$quXOAFytwj43GJuecSaM7.nrieG6RG4GVUZASDEefCcEfzk.lPMo6', 'admin1@example.com', 'a', 2),
+       ('Manuel', 'Lopez', 'Manlop', '$2a$10$4O211g5P//hHFMq6.oReHurEixOS773x1lp.LHt7GGEKS1F5qcft2', 'manuelopez@gmail.com','', 1);
 
 -- Inserción de alérgenos
 INSERT INTO allergen (name, description) VALUES
@@ -81,3 +82,12 @@ INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, desc
 (10, 1, null, 'Descripción7', 'Elaboración7', 'Ingredientes7', 'Receta7', 'a'),
 (16, 7, null, 'Descripción8', 'Elaboración8', 'Ingredientes8', 'Receta8', 'a'),
 (15, 6, null, 'Descripción9', 'Elaboración9', 'Ingredientes9', 'Receta9', 'a');
+
+-- Inserción de pagos
+INSERT INTO payment_table (payment_type, paypal_email, billing_agreement_id, is_default, user_id) VALUES
+('PAYPAL', 'encrypted_email', 'encrypted_billing_id', true, 4);
+
+
+-- Inserción de suscripciones
+INSERT INTO subcription_table (price, start_date, active, user_id, payment_id) VALUES
+(4.99, '2025-03-01', true, 4, 1);
