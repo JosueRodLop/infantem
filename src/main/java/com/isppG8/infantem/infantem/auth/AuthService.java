@@ -1,7 +1,5 @@
 package com.isppG8.infantem.infantem.auth;
 
-import java.util.ArrayList;
-
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
