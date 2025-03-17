@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, ImageBackground, ScrollView, Image, Alert } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { getToken } from "../../../utils/jwtStorage";
-
-const jwt = getToken();
+import { Ionicons } from "@expo/vector-icons"; 
 
 export default function BabyInfo() {
   const gs = require("../../../static/styles/globalStyles");
   const [babies, setBabies] = useState([]);
   const router = useRouter();
-  const [jwt, setJwt] = useState<string | null>(null);(null);
+  const [jwt, setJwt] = useState<string | null>(null);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -19,7 +18,7 @@ export default function BabyInfo() {
       setJwt(token);
     };
     getUserToken();
-  },[]) 
+  }, []);
 
   useEffect(() => {
     const fetchBabies = async () => {
@@ -29,91 +28,124 @@ export default function BabyInfo() {
           headers: { "Authorization": `Bearer ${token}` },
         });
 
-        console.log("Response received:", response);
-        const text = await response.text();
-        console.log("Response body:", text);
-
         if (!response.ok) {
-          throw new Error(`Error: ${response.status} - ${text}`);
+          throw new Error(`Error: ${response.status}`);
         }
 
-        const data = JSON.parse(text);
-        console.log("Parsed JSON:", data);
+        const data = await response.json();
         setBabies(data);
       } catch (error) {
-        console.error("Error fetching all recipes:", error);
+        console.error("Error fetching babies:", error);
       }
     };
 
     fetchBabies();
   }, []);
 
-
   const handleEditBaby = (id: number) => {
     router.push(`/baby/edit?id=${id}`);
   };
-  
+
   const handleDeleteBaby = async (id: number) => {
-    if (jwt) {
-      try {
-        const response = await fetch(`${apiUrl}/api/v1/baby/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Authorization": `Bearer ${jwt}`, 
+    Alert.alert(
+      "Eliminar bebé",
+      "¿Estás seguro de que quieres eliminar este perfil?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Eliminar",
+          style: "destructive",
+          onPress: async () => {
+            if (jwt) {
+              try {
+                const response = await fetch(`${apiUrl}/api/v1/baby/${id}`, {
+                  method: "DELETE",
+                  headers: {
+                    "Authorization": `Bearer ${jwt}`,
+                  },
+                });
+
+                if (response.ok) {
+                  setBabies(babies.filter((baby) => baby.id !== id));
+                } else {
+                  console.error("Error deleting baby:", response.statusText);
+                }
+              } catch (error) {
+                console.error("Error deleting baby:", error);
+              }
+            }
           },
-        });
-
-        if (response.ok) {
-          setBabies(babies.filter((baby) => baby.id !== id));
-        } else {
-          console.error("Error deleting baby:", response.statusText);
-        }
-
-      } catch (error) {
-        console.error("Error deleting baby:", error);
-      }
-    }
+        },
+      ]
+    );
   };
 
   return (
-    <View style={{ flex: 1 }}>
-
-      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-        <Text style={gs.headerText}>Información de los bebés</Text>
-        <Text style={gs.bodyText}>
-          Revisa y gestiona la información de tu bebé
+    <ImageBackground 
+      source={require("../../../static/images/Background.png")}  
+      style={{ flex: 1, width: "100%", height: "100%" }} 
+      imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
+    >
+      {/* ScrollView permite desplazarse sin que se corte en pantallas pequeñas */}
+      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
+        
+        {/* 📌 Encabezado */}
+        <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
+          Información de los <Text style={{ fontStyle: "italic" }}>bebés</Text>
+        </Text>
+        
+        <Text style={{ color: "#1565C0", textAlign: "center", fontSize: 16, marginBottom: 20 }}>
+          Revisa y gestiona la información de tu bebé.
         </Text>
 
-        <View style={{ width: "90%" }}>
-            <View style={{ flexDirection: "row", gap: 10, marginVertical: 10, alignSelf: "center" }}>
-            <Link style={gs.mainButton} href={"/baby/add/"}>
-              <Text style={gs.mainButtonText}>Añadir bebé</Text>
-            </Link>
-          </View>
+        {/* 📌 Botón de añadir bebé */}
+        <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 20 }}>
+          <Link style={[gs.mainButton, { flexDirection: "row", alignItems: "center", padding: 10 }]} href={"/baby/add/"}>
+            <Ionicons name="add-circle-outline" size={20} color="white" />
+            <Text style={[gs.mainButtonText, { marginLeft: 5 }]}>Añadir bebé</Text>
+          </Link>
         </View>
 
-        <Text style={[gs.subHeaderText, { marginTop: 30 }]}>Mis bebés registrados</Text>
+        {/* 📌 Lista de bebés */}
+        <Text style={[gs.subHeaderText, { color: "#1565C0",marginBottom: 10 ,fontWeight: "bold"}]}>Mis bebés registrados</Text>
 
-        {babies.map((baby) => (
-          <View key={baby.id} style={[gs.card, { maxWidth: 500, alignSelf: "center" }]}>
-            <Text style={gs.cardTitle}>{baby.name}</Text>
-            <Text style={gs.cardContent}>Fecha de nacimiento: {baby.birthDate}</Text>
-            <Text style={gs.cardContent}>Género: {baby.genre}</Text>
-            <Text style={gs.cardContent}>Peso: {baby.weight} kg</Text>
-            <Text style={gs.cardContent}>Altura: {baby.height} cm</Text>
-            <Text style={gs.cardContent}>Perímetro cefálico: {baby.cephalicPerimeter} cm</Text>
-            <Text style={gs.cardContent}>Preferencias alimentarias: {baby.foodPreference}</Text>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <TouchableOpacity style={gs.mainButton} onPress={() => handleEditBaby(baby.id)}>
-                <Text style={gs.mainButtonText}>Editar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={gs.mainButton} onPress={() => handleDeleteBaby(baby.id)}>
-                <Text style={gs.mainButtonText}>Eliminar</Text>
-              </TouchableOpacity>
+        {babies.length === 0 ? (
+          <Text style={{ textAlign: "center", color: "gray", fontSize: 16 }}>
+            No hay bebés registrados aún.
+          </Text>
+        ) : (
+          babies.map((baby) => (
+            <View key={baby.id} style={[gs.card, { width:"100%",flexDirection: "row", alignItems: "center", padding: 15, marginBottom: 10 }]}>
+              
+              {/* 📌 Imagen de perfil del bebé */}
+              <Image
+                source={require("../../../static/images/baby-placeholder.png")} // Imagen por defecto
+                style={{ width: 70, height: 70, borderRadius: 50, marginRight: 15 }}
+              />
+
+              {/* 📌 Información del bebé */}
+              <View style={{ flex: 1 }}>
+                <Text style={[gs.cardTitle, { fontSize: 18 }]}>{baby.name}</Text>
+                <Text style={gs.cardContent}>📅 Fecha de nacimiento: {baby.birthDate}</Text>
+                <Text style={gs.cardContent}>🍼 Preferencia alimentaria: {baby.foodPreference}</Text>
+                <Text style={gs.cardContent}>⚖️ Peso: {baby.weight} kg | 📏 Altura: {baby.height} cm</Text>
+              </View>
+
+              {/* 📌 Acciones de editar y eliminar */}
+              <View style={{ flexDirection: "row", gap: 10 }}>
+                <TouchableOpacity onPress={() => handleEditBaby(baby.id)}>
+                  <Ionicons name="create-outline" size={24} color="#1565C0" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDeleteBaby(baby.id)}>
+                  <Ionicons name="trash-outline" size={24} color="red" />
+                </TouchableOpacity>
+              </View>
+
             </View>
-          </View>
-        ))}
+          ))
+        )}
+
       </ScrollView>
-    </View>
+    </ImageBackground>
   );
 }

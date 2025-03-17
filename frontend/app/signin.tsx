@@ -46,10 +46,8 @@ export default function Signin() {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View style={[gs.container, { justifyContent: "center", alignItems: "center", backgroundColor: "#E3F2FD", flex: 1, paddingVertical: 40 }]}>
         
-        {/* 📌 Imagen de perfil */}
         <Image source={require("../static/images/profile.webp")} style={[{ width: 100, height: 100, borderRadius: 50, marginBottom: 20 }]} />
 
-        {/* 📌 Tarjeta de inicio de sesión */}
         <View style={[gs.card, { maxWidth: 400, width: "90%", padding: 25, borderRadius: 15, backgroundColor: "white", shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 10, elevation: 5 }]}>
           
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1565C0", textAlign: "center", marginBottom: 15 }}>
@@ -60,7 +58,6 @@ export default function Signin() {
             Introduce tu cuenta de siempre en Infantem o regístrate si es tu primera vez.
           </Text>
 
-          {/* 📌 Input de usuario */}
           <TextInput
             style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", marginBottom: 10, opacity:0.6 }]}
             placeholder="Nombre de usuario"
@@ -69,7 +66,6 @@ export default function Signin() {
             autoCapitalize="none"
           />
 
-          {/* 📌 Input de contraseña */}
           <TextInput
             style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.6}]}
             placeholder="Contraseña"
@@ -78,15 +74,12 @@ export default function Signin() {
             secureTextEntry
           />
 
-          {/* 📌 Mensaje de error */}
           {errorMessage ? <Text style={{ color: "red", marginVertical: 10, textAlign: "center" }}>{errorMessage}</Text> : null}
 
-          {/* 📌 Link de registro */}
           <Link href={"/signup"} style={{ marginTop: 10, textAlign: "center" }}>
             <Text style={{ color: "#007AFF", fontSize: 14 }}>¿No tienes cuenta? ¡Regístrate!</Text>
           </Link>
 
-          {/* 📌 Botón de inicio de sesión */}
           <TouchableOpacity 
             style={{ marginTop: 20, backgroundColor: "#1565C0", padding: 14, borderRadius: 8, alignItems: "center", shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 5, elevation: 3 }}
             onPress={handleSubmit}
