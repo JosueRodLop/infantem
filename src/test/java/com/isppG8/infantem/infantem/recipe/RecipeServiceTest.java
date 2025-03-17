@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-@SuppressWarnings()
+@SuppressWarnings("unused")
 @SpringBootTest
 @Transactional
 public class RecipeServiceTest {
