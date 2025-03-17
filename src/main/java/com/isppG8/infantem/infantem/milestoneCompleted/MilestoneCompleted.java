@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.milestone.Milestone;
-
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
