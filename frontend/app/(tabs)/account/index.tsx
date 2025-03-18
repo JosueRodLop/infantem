@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { getToken, removeToken } from '../../../utils/jwtStorage';
 import { jwtDecode } from "jwt-decode";
-import { router } from "expo-router";
+import { router, Link } from "expo-router";
 
 const avatarOptions = [
   require("../../../assets/avatar/avatar1.png"),
@@ -204,6 +204,10 @@ export default function Account() {
             <Text style={gs.mainButtonText}>Editar Perfil</Text>
           </TouchableOpacity>
         )}
+
+        <Link href="/account/payment" style={[gs.secondaryButton, { marginTop: 20 }]}>
+          <Text style={gs.secondaryButtonText}>¿Ya eres usuario Premium?</Text>
+        </Link>
 
         <TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
           <Text style={gs.secondaryButtonText}>Cerrar Sesión</Text>
