@@ -19,7 +19,7 @@ export default function Page() {
   const [allRecipes, setAllRecipes] = useState([]);
   const [age, setAge] = useState<number | null>(null);
 
-  const { isAuthenticated, isLoading, user, token, setUser, checkAuth, signOut } = useAuth();
+  const { user, token } = useAuth();
 
   useEffect(() => {
     if (token) {
@@ -162,6 +162,10 @@ export default function Page() {
           />
 
           <View style={{ flexDirection: "row", gap: 10, marginVertical: 10, alignSelf: "flex-start" }}>
+
+            {/* <Link href="/recipes/favorites" style={gs.mainButton}>
+              <Text style={gs.mainButtonText}>Recetas favoritas</Text>
+            </Link> */}
             <Link style={gs.mainButton} href={"/recipes/add"}>
               <Text style={gs.mainButtonText}>Añade una receta</Text>
             </Link>
@@ -213,20 +217,20 @@ export default function Page() {
           <Text>No se encontraron recetas.</Text>
         ) : (
           recommendedRecipes.map((recipe: Recipe) => (
-
-            <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
-              <View>
-                <Image
-                  source={require('frontend/assets/adaptive-icon.png')}
-                  style={{ width: 50, height: 50 }}
-                />
+            <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
+              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
+                <View>
+                  <Image
+                    source={require('frontend/assets/adaptive-icon.png')}
+                    style={{ width: 50, height: 50 }}
+                  />
+                </View>
+                <View>
+                  <Text style={gs.cardTitle}>{recipe.name}</Text>
+                  <Text style={gs.cardContent}>{recipe.description}</Text>
+                </View>
               </View>
-              <View>
-                <Text style={gs.cardTitle}>{recipe.name}</Text>
-                <Text style={gs.cardContent}>{recipe.description}</Text>
-              </View>
-            </View>
-
+            </Link>
           ))
         )}
 
@@ -236,20 +240,20 @@ export default function Page() {
           <Text>No se encontraron recetas.</Text>
         ) : (
           allRecipes.map((recipe: Recipe) => (
-
-            <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
-              <View>
-                <Image
-                  source={require('frontend/assets/adaptive-icon.png')}
-                  style={{ width: 50, height: 50 }}
-                />
+            <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
+              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
+                <View>
+                  <Image
+                    source={require('frontend/assets/adaptive-icon.png')}
+                    style={{ width: 50, height: 50 }}
+                  />
+                </View>
+                <View>
+                  <Text style={gs.cardTitle}>{recipe.name}</Text>
+                  <Text style={gs.cardContent}>{recipe.description}</Text>
+                </View>
               </View>
-              <View>
-                <Text style={gs.cardTitle}>{recipe.name}</Text>
-                <Text style={gs.cardContent}>{recipe.description}</Text>
-              </View>
-            </View>
-
+            </Link>
           ))
         )}
       </ScrollView>
