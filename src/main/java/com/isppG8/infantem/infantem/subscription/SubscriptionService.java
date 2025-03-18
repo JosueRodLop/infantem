@@ -39,12 +39,8 @@ public class SubscriptionService {
         return subscriptionRepository.findById(id); 
     }
 
-    public Subscription save(Subscription subscription) {
+    public Subscription create(Subscription subscription) {
         return subscriptionRepository.save(subscription);
-    }
-
-    public void delete(Long id) {
-        subscriptionRepository.deleteById(id);
     }
 
     public Subscription update(Long id, Subscription subscription) {
@@ -53,6 +49,10 @@ public class SubscriptionService {
         subscriptionToUpdate.setPrice(subscription.getPrice());
         subscriptionToUpdate.setStartDate(subscription.getStartDate());
         return subscriptionRepository.save(subscription);
+    }
+
+    public void delete(Long id) {
+        subscriptionRepository.deleteById(id);
     }
 
     @Scheduled(cron = "0 0 0 * * ?") // Corre todos los días a medianoche
