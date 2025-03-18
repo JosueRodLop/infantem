@@ -40,7 +40,7 @@ public class SubscriptionController {
 
     @PostMapping
     public ResponseEntity<Subscription> createSubscription(@RequestBody Subscription subscription) {
-        Subscription newSubscription = subscriptionService.save(subscription);
+        Subscription newSubscription = subscriptionService.create(subscription);
         return ResponseEntity.ok(newSubscription);
     }
 
