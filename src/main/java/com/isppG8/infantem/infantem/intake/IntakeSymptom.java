@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "intakeSymptom_table")
-@Getter 
+@Getter
 @Setter
 public class IntakeSymptom {
     @Id
@@ -20,5 +20,5 @@ public class IntakeSymptom {
     private Long id;
     private String description;
     private LocalDateTime date;
-    
+
 }

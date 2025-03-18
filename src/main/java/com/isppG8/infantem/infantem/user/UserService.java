@@ -25,25 +25,26 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     public User findByUsername(String username) {
-	    return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     @Transactional
     public User createUser(User user) {
-        
-    if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-        throw new IllegalArgumentException("Email address is already registered.");
-    }
-    
-    if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-        throw new IllegalArgumentException("Username is already registered.");
-    }
+
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email address is already registered.");
+        }
+
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username is already registered.");
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -60,15 +61,15 @@ public class UserService {
 
     @Transactional
     public User save(User user) {
-	    if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-		    throw new IllegalArgumentException("Email address is already registered.");
-	    }
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email address is already registered.");
+        }
 
-	    if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-		    throw new IllegalArgumentException("Username is already registered.");
-	    }
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username is already registered.");
+        }
 
-	    return userRepository.save(user);
+        return userRepository.save(user);
 
     }
 
@@ -95,10 +96,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> login(String username, String password) {
         Optional<User> user = userRepository.findByUsername(username);
-        if(user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
+        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
             return user;
         }
         return Optional.empty();
     }
-    
+
 }

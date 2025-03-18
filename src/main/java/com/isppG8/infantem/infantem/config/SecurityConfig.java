@@ -27,30 +27,25 @@ import com.isppG8.infantem.infantem.config.jwt.AuthTokenFilter;
 public class SecurityConfig {
 
     @Autowired
-	private AuthEntryPointJwt unauthorizedHandler;
+    private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(withDefaults())
-			.csrf(AbstractHttpConfigurer::disable)		
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.exceptionHandling((exepciontHandling) -> exepciontHandling.authenticationEntryPoint(unauthorizedHandler))	
-            .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("api/v1/recipes/*").authenticated()
-                .requestMatchers("api/v1/auth/*").permitAll()
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-            .formLogin(AbstractHttpConfigurer::disable)
-            .httpBasic(Customizer.withDefaults());
+        http.cors(withDefaults()).csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(
+                        (exepciontHandling) -> exepciontHandling.authenticationEntryPoint(unauthorizedHandler))
+                .authorizeHttpRequests((requests) -> requests.requestMatchers("api/v1/recipes/*").authenticated()
+                        .requestMatchers("api/v1/auth/*").permitAll().anyRequest().authenticated())
+                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .formLogin(AbstractHttpConfigurer::disable).httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
     @Bean
-	public AuthTokenFilter authenticationJwtTokenFilter() {
-		return new AuthTokenFilter();
-	}
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -58,7 +53,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
-	    return config.getAuthenticationManager();
-    }	
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 }
