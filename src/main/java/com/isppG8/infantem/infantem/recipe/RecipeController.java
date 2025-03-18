@@ -47,6 +47,26 @@ public class RecipeController {
         return ResponseEntity.ok(recipe);
     }
 
+    @GetMapping("/minAge")
+    public ResponseEntity<List<Recipe>> getRecipeByMinAge(@RequestParam Integer age) {
+        List<Recipe> recipes = recipeService.getRecipeByMinAge(age);
+        return ResponseEntity.ok(recipes);
+    }
+
+    @GetMapping("/maxAge")
+    public ResponseEntity<List<Recipe>> getRecipeByMaxAge(@RequestParam Integer age) {
+        List<Recipe> recipes = recipeService.getRecipeByMaxAge(age);
+        return ResponseEntity.ok(recipes);
+    }
+
+    @GetMapping("/ingredients")
+    public ResponseEntity<List<Recipe>> getRecipesByIngredients(@RequestParam List<String> ingredients) {
+        System.out.println("CONTROLLER");
+        System.out.println("LISTA POR PARAMETRO" + ingredients);
+        List<Recipe> recipes = recipeService.getRecipeByIngredients(ingredients);
+        return ResponseEntity.ok(recipes);
+    }
+
     @PostMapping
     public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipe) {
 

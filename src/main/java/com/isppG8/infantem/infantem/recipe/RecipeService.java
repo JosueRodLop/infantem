@@ -1,5 +1,6 @@
 package com.isppG8.infantem.infantem.recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,4 +86,20 @@ public class RecipeService {
         this.recipeRepository.delete(recipe);
     }
 
+    public List<Recipe> getRecipeByMinAge(Integer age) {
+        return this.recipeRepository.findRecipeByMinAge(age);
+    }
+
+    public List<Recipe> getRecipeByMaxAge(Integer age) {
+        return this.recipeRepository.findRecipeByMaxAge(age);
+    }
+
+    public List<Recipe> getRecipeByIngredients(List<String> ingredients) {
+        List<Recipe> recipes = new ArrayList<>();
+        for (String ingredient : ingredients) {
+            System.out.println(ingredient);
+            recipes.addAll(this.recipeRepository.findRecipeByIngredient(ingredient));
+        }
+        return recipes;
+    }
 }
