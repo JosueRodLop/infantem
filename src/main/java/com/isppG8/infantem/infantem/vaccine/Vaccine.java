@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isppG8.infantem.infantem.baby.Baby;
@@ -15,7 +17,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,10 +33,15 @@ public class Vaccine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
     private String type;
+
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @PastOrPresent
+    @NotNull
     private LocalDate vaccinationDate;
 
     @ManyToMany(mappedBy = "vaccines", cascade = CascadeType.ALL)
-    @Size(min = 1)
     private List<Baby> babies = new ArrayList<>();
 }

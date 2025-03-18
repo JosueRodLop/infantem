@@ -98,11 +98,11 @@ public class Baby {
     private List<Disease> disease = new ArrayList<>(); // Relación con enfermedades
 
     @ManyToMany
-    @JoinTable(name = "vaccine_baby", joinColumns = @JoinColumn(name = "vaccine_id"), inverseJoinColumns = @JoinColumn(name = "baby_id"))
+    @JoinTable(name = "vaccine_baby", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "vaccine_id"))
     private List<Vaccine> vaccines = new ArrayList<>(); // Relación con vacuna
 
     @ManyToMany
-    @JoinTable(name = "user_baby", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "baby_id"))
+    @JoinTable(name = "user_baby", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Size(min = 1, max = 2, message = "A baby should have 1 or 2 users")
     private List<User> users = new ArrayList<>();
 }
