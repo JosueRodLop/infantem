@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/dream")
 public class DreamController {
@@ -34,12 +36,12 @@ public class DreamController {
     }
 
     @PostMapping
-    public Dream createDream(@RequestBody Dream dream) {
+    public Dream createDream(@Valid @RequestBody Dream dream) {
         return dreamService.createDream(dream);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Dream> updateDream(@PathVariable Long id, @RequestBody Dream dreamDetails) {
+    public ResponseEntity<Dream> updateDream(@PathVariable Long id, @Valid @RequestBody Dream dreamDetails) {
         Optional<Dream> updatedDream = dreamService.updateDream(id, dreamDetails);
         return updatedDream.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
