@@ -28,6 +28,12 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
+    @GetMapping("/recommended/all")
+    public ResponseEntity<List<Recipe>> getAllRecommendedRecipes() {
+        List<Recipe> recipes = recipeService.getAllRecommendedRecipes();
+        return ResponseEntity.ok(recipes);
+    }
+
     @GetMapping("/recommended")
     public ResponseEntity<List<Recipe>> getAllRecommendedRecipes() {
         List<Recipe> recipes = recipeService.getAllRecommendedRecipes();
