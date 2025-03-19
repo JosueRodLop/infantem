@@ -21,6 +21,18 @@ export default function BabyInfo() {
   const [babies, setBabies] = useState<Baby[]>([]);
   const [jwt, setJwt] = useState<string | null>(null);
   const [selectedBaby, setSelectedBaby] = useState<Baby | null>(null);
+  const [birthDateError, setBirthDateError] = useState<string | null>(null);
+
+  const handleBirthDateChange = (text: string) => {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/; // Formato YYYY-MM-DD
+    if (!dateRegex.test(text)) {
+      setBirthDateError("Formato incorrecto. Use AAAA-MM-DD");
+    } else {
+      setBirthDateError(null);
+    }
+    setSelectedBaby((prev) => ({ ...prev!, birthDate: text }));
+  };
+  
 
   useEffect(() => {
     const getUserToken = async () => {
@@ -119,11 +131,12 @@ export default function BabyInfo() {
           />
           <TextInput
             style={gs.input}
-            placeholder="Fecha de nacimiento"
+            placeholder="Fecha de nacimiento (AAAA-MM-DD)"
             value={selectedBaby?.birthDate || ""}
-            onChangeText={(text) => setSelectedBaby({ ...selectedBaby!, birthDate: text })} 
+            onChangeText={handleBirthDateChange}
           />
-          
+          {birthDateError && <Text style={{ color: "red" }}>{birthDateError}</Text>}
+
           {/* Campo para el género */}
           <Picker
             selectedValue={selectedBaby?.genre || "OTHER"} 
