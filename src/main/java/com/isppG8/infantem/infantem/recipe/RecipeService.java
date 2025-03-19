@@ -107,12 +107,12 @@ public class RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Recipe> getRecipesByNutrient(String nutrientName){
+    public List<Recipe> getRecipesByNutrient(String nutrientName) {
         return recipeRepository.findRecipeByNutrient(nutrientName);
     }
 
     @Transactional(readOnly = true)
-    public List<Recipe> getRecipesFilteringAllergens(List<String> allergens){
+    public List<Recipe> getRecipesFilteringAllergens(List<String> allergens) {
         return recipeRepository.findRecipesWithoutAllergen(allergens);
     }
 

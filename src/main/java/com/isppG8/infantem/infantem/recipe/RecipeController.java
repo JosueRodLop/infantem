@@ -31,13 +31,12 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Recipe>> getAllRecipes(
-            @RequestParam(value = "maxAge", required = false) Integer maxAge,
+    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(value = "maxAge", required = false) Integer maxAge,
             @RequestParam(value = "minAge", required = false) Integer minAge,
             @RequestParam(value = "ingredients", required = false) List<String> ingredients,
             @RequestParam(value = "nutrient", required = false) String nutrient,
             @RequestParam(value = "allergens", required = false) List<String> allergens) {
-    
+
         List<Recipe> recipes = new ArrayList<>(recipeService.findAllRecipes());
 
         if (maxAge != null) {
@@ -63,7 +62,6 @@ public class RecipeController {
 
         return ResponseEntity.ok(recipes);
     }
-    
 
     @GetMapping("/recommended")
     public ResponseEntity<List<Recipe>> getRecommendedRecipes(@RequestParam Integer age) {
