@@ -112,8 +112,13 @@ public class RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Recipe> getRecipesFilteringAllergens(List<String> allegergens){
-        return recipeRepository.findRecipesWithoutAllergen(allegergens);
+    public List<Recipe> getRecipesFilteringAllergens(List<String> allergens){
+        return recipeRepository.findRecipesWithoutAllergen(allergens);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Recipe> findAllRecipes() {
+        return (List<Recipe>) recipeRepository.findAll();
     }
 
 }

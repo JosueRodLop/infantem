@@ -1,5 +1,6 @@
 package com.isppG8.infantem.infantem.recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,41 @@ public class RecipeController {
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
+
+    @GetMapping
+    public ResponseEntity<List<Recipe>> getAllRecipes(
+            @RequestParam(value = "maxAge", required = false) Integer maxAge,
+            @RequestParam(value = "minAge", required = false) Integer minAge,
+            @RequestParam(value = "ingredients", required = false) List<String> ingredients,
+            @RequestParam(value = "nutrient", required = false) String nutrient,
+            @RequestParam(value = "allergens", required = false) List<String> allergens) {
+    
+        List<Recipe> recipes = new ArrayList<>(recipeService.findAllRecipes());
+
+        if (maxAge != null) {
+            List<Recipe> recipesByMaxAge = recipeService.getRecipeByMaxAge(maxAge);
+            recipes.retainAll(recipesByMaxAge);
+        }
+        if (minAge != null) {
+            List<Recipe> recipesByMinAge = recipeService.getRecipeByMaxAge(maxAge);
+            recipes.retainAll(recipesByMinAge);
+        }
+        if (ingredients != null && !ingredients.isEmpty()) {
+            List<Recipe> recipesByIngredients = recipeService.getRecipeByIngredients(ingredients);
+            recipes.retainAll(recipesByIngredients);
+        }
+        if (nutrient != null && !nutrient.isBlank()) {
+            List<Recipe> recipesByNutrient = recipeService.getRecipesByNutrient(nutrient);
+            recipes.retainAll(recipesByNutrient);
+        }
+        if (allergens != null && !allergens.isEmpty()) {
+            List<Recipe> recipesByAllergens = recipeService.getRecipesFilteringAllergens(allergens);
+            recipes.retainAll(recipesByAllergens);
+        }
+
+        return ResponseEntity.ok(recipes);
+    }
+    
 
     @GetMapping("/recommended")
     public ResponseEntity<List<Recipe>> getRecommendedRecipes(@RequestParam Integer age) {
