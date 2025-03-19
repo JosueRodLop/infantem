@@ -31,7 +31,7 @@ public class RecipeController {
     }
 
     @GetMapping
-    //TODO: Add pagination
+    // TODO: Add pagination
     public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(value = "maxAge", required = false) Integer maxAge,
             @RequestParam(value = "minAge", required = false) Integer minAge,
             @RequestParam(value = "ingredients", required = false) List<String> ingredients,
