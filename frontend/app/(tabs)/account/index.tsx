@@ -95,9 +95,6 @@ export default function Account() {
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >      
     <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor:"transparent" }]}>
-        <TouchableOpacity style={{ position: 'absolute', top: 20, left: 20, zIndex: 10 }} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#1565C0" />
-        </TouchableOpacity>
 
         <Text style={[gs.headerText, { color: "#1565C0" }]}>Perfil</Text>
 
