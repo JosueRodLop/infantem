@@ -94,9 +94,6 @@ public class Baby {
     @ManyToMany(mappedBy = "babies")
     private List<Allergen> allergen = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "babies", cascade = CascadeType.ALL)
-    private List<Disease> disease = new ArrayList<>(); // Relación con enfermedades
-
     @ManyToMany
     @JoinTable(name = "vaccine_baby", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "vaccine_id"))
     private List<Vaccine> vaccines = new ArrayList<>(); // Relación con vacuna
