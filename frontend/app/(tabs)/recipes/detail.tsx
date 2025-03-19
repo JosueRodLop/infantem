@@ -70,7 +70,7 @@ export default function RecipeDetails() {
           </>
         )}
         <Text style={[gs.cardTitle, { marginBottom: 10 }]}>Ingredientes:</Text>
-        {recipe.ingredients.split("\n").map((ingredient, index) => (
+        {recipe.ingredients.split(",").map((ingredient, index) => (
           <Text key={index} style={gs.card}>{ingredient}</Text>
         ))}
         <Text style={[gs.cardTitle, { marginBottom: 10 }]}>Elaboración:</Text>
