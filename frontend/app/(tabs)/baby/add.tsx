@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, TouchableOpacity,ImageBackground,ScrollView ,Image} from "react-native";
 import { useRouter } from "expo-router";
 import { getToken } from "../../../utils/jwtStorage";
 import { Picker } from "@react-native-picker/picker";
@@ -94,53 +94,63 @@ export default function AddBaby() {
   }
 
   return (
-    <View style={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-      <Text style={gs.headerText}>Añade un bebé</Text>
+    <ImageBackground
+          source={require("../../../static/images/Background.png")}
+          style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center" }}
+          imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
+        >      
+        <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor:"transparent" }]}>
+        <Image source={require("../../../static/images/Diaper.png")} style={{ position: 'absolute', top: "20%", right: "0%", width: 150, height: 80,transform: [{ rotate: '-15deg' }] }} />
+
+        <Text style={[gs.headerText, { color: "#1565C0" }]}>Añade a tu </Text>
+        <Text style={[gs.headerText, { color: "#1565C0", fontStyle: "italic"}]}>bebé </Text>
+
 
       <TextInput
-        style={gs.input}
-        placeholder="Nombre"
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              placeholder="Nombre"
         value={name}
         onChangeText={setName}
       />
       <TextInput
-        style={gs.input}
-        placeholder="Fecha de nacimiento: YYYY-MM-DD"
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              placeholder="Fecha de nacimiento: YYYY-MM-DD"
         value={birthDate}
         onChangeText={setBirthDate}
       />
       <Picker
         selectedValue={genre}
-        style={[gs.input, { height: 50 }]}
+        style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%",height:50}]} 
         onValueChange={(itemValue) => setGenre(itemValue)}
       >
         <Picker.Item label="Niño" value="MALE" />
         <Picker.Item label="Niña" value="FEMALE" />
         <Picker.Item label="Otro" value="OTHER" />
       </Picker>
+     
       <TextInput
-        style={gs.input}
+        style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
         placeholder="Peso (kg)"
         value={weight?.toString() || ""}
         keyboardType="numeric"
         onChangeText={(text) => setWeight(text ? parseFloat(text) : null)}
       />
       <TextInput
-        style={gs.input}
+        style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
         placeholder="Altura (cm)"
         value={height?.toString() || ""}
         keyboardType="numeric"
         onChangeText={(text) => setHeight(text ? parseInt(text) : null)}
       />
       <TextInput
-        style={gs.input}
+        style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
         placeholder="Perímetro cefálico (cm)"
         value={cephalicPerimeter?.toString() || ""}
         keyboardType="numeric"
         onChangeText={(text) => setCephalicPerimeter(text ? parseInt(text) : null)}
       />
       <TextInput
-        style={gs.input}
+        style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
         placeholder="Preferencias "
         value={foodPreference}
         onChangeText={setFoodPreference}
@@ -156,6 +166,7 @@ export default function AddBaby() {
       <TouchableOpacity style={gs.mainButton} onPress={handleSave}>
         <Text style={gs.mainButtonText}>Guardar</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
+        </ImageBackground>
   );
 }

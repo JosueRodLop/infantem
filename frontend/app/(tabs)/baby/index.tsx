@@ -86,9 +86,10 @@ export default function BabyInfo() {
       style={{ flex: 1, width: "100%", height: "100%" }} 
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
-    <Image source={require("../../../static/images/BodySuit.png")} style={{ position: 'absolute', top: "25%", right: "10%", width: 110, height: 110,transform: [{ rotate: '15deg' }] }} />
 
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
+      <Image source={require("../../../static/images/BodySuit.png")} style={{ position: 'absolute', top: "20%", right: "7%", width: 110, height: 110,transform: [{ rotate: '15deg' }] }} />
+
         
         <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
           Información de los <Text style={{ fontStyle: "italic" }}>bebés</Text>
@@ -123,8 +124,9 @@ export default function BabyInfo() {
               <View style={{ flex: 1 }}>
                 <Text style={[gs.cardTitle, { fontSize: 18 }]}>{baby.name}</Text>
                 <Text style={gs.cardContent}>📅 Fecha de nacimiento: {baby.birthDate}</Text>
-                <Text style={gs.cardContent}>🍼 Preferencia alimentaria: {baby.foodPreference}</Text>
-                <Text style={gs.cardContent}>⚖️ Peso: {baby.weight} kg | 📏 Altura: {baby.height} cm</Text>
+                <Text style={gs.cardContent}>🍼 Preferencia: {baby.foodPreference}</Text>
+                <Text style={gs.cardContent}>⚖️ Peso: {baby.weight} kg </Text>
+                <Text style={gs.cardContent}>📏 Altura: {baby.height} cm</Text>
               </View>
 
               <View style={{ flexDirection: "row", gap: 10 }}>
