@@ -6,8 +6,9 @@ function StackLayout() {
 			screenOptions={{
 				headerTitleStyle: {
 					fontWeight: "normal",
-					fontSize: 25,
+					fontSize: 20,
 					fontFamily: "sans-serif",
+					color: "#1565C0",
 				},
 			}}
 		>

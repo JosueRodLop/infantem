@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, TouchableOpacity,ImageBackground,Image,ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { getToken } from "../../../utils/jwtStorage";
 import { useLocalSearchParams } from 'expo-router';
@@ -119,49 +119,63 @@ export default function EditBaby() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <ImageBackground
+              source={require("../../../static/images/Background.png")}
+              style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center" }}
+              imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
+>      
+    <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor:"transparent" }]}>
+    <Image source={require("../../../static/images/Diaper.png")} style={{ position: 'absolute', top: "20%", right: "10%", width: 120, height: 60,transform: [{ rotate: '-15deg' }] }} />
+
+    <View style={{ flex: 1,width:"100%",marginTop:-140,height:"100%" }}>
       {baby && (
-        <View style={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-          <Text style={gs.headerText}>Modificar información del bebé</Text>
+        <View style={[gs.container, { paddingTop: 100, paddingBottom: 100 ,backgroundColor:"transparent",width:"100%"}]}>
+          <Text 
+          style={[gs.headerText, { color: "#1565C0" }]}
+          >Modifica la información de tu</Text>
+          <Text 
+          style={[gs.headerText, { color: "#1565C0",fontStyle: "italic",marginTop:-10,marginBottom:50 }]}
+          >bebé</Text>
+
           <TextInput
-            style={gs.input}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
             placeholder="Nombre"
             value={baby.name}
             onChangeText={(text) => setBaby({ ...baby, name: text })}
           />
           <TextInput
-            style={gs.input}
-            placeholder="Fecha de nacimiento"
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              placeholder="Fecha de nacimiento"
             value={baby.birthDate}
             onChangeText={(text) => setBaby({ ...baby, birthDate: text })}
           />
           <TextInput
-            style={gs.input}
-            placeholder="Género"
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              placeholder="Género"
             value={baby.genre}
             onChangeText={(text) => setBaby({ ...baby, genre: text })}
           />
           <TextInput
-            style={gs.input}
-            placeholder="Peso"
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              placeholder="Peso"
             value={baby.weight}
             onChangeText={(text) => setBaby({ ...baby, weight: text })}
           />
           <TextInput
-            style={gs.input}
-            placeholder="Altura"
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              placeholder="Altura"
             value={baby.height}
             onChangeText={(text) => setBaby({ ...baby, height: text })}
           />
           <TextInput
-            style={gs.input}
-            placeholder="Perímetro cefálico"
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              placeholder="Perímetro cefálico"
             value={baby.cephalicPerimeter}
             onChangeText={(text) => setBaby({ ...baby, cephalicPerimeter: text })}
           />
           <TextInput
-            style={gs.input}
-            placeholder="Preferencias alimentarias"
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              placeholder="Preferencias alimentarias"
             value={baby.foodPreference}
             onChangeText={(text) => setBaby({ ...baby, foodPreference: text })}
           />
@@ -180,5 +194,7 @@ export default function EditBaby() {
         </View>
       )}
     </View>
+    </ScrollView>
+    </ImageBackground>
   );
 }
