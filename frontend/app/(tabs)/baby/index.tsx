@@ -23,16 +23,28 @@ export default function BabyInfo() {
   const [selectedBaby, setSelectedBaby] = useState<Baby | null>(null);
   const [birthDateError, setBirthDateError] = useState<string | null>(null);
 
-  const handleBirthDateChange = (text: string) => {
+  const isValidDate = (dateString: string) => {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/; // Formato YYYY-MM-DD
-    if (!dateRegex.test(text)) {
-      setBirthDateError("Formato incorrecto. Use AAAA-MM-DD");
+    if (!dateRegex.test(dateString)) return false;
+  
+    const [year, month, day] = dateString.split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+  
+    return (
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day
+    );
+  };
+  
+  const handleBirthDateChange = (text: string) => {
+    if (!isValidDate(text)) {
+      setBirthDateError("Fecha inválida. Use AAAA-MM-DD y asegúrese de que la fecha existe.");
     } else {
       setBirthDateError(null);
     }
     setSelectedBaby((prev) => ({ ...prev!, birthDate: text }));
-  };
-  
+  };  
 
   useEffect(() => {
     const getUserToken = async () => {
