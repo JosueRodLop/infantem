@@ -6,8 +6,6 @@ import { Recipe } from "../../../types/Recipe";
 // import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../../context/AuthContext";
 
-// const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTc0MTkwODQxNSwiaWF0IjoxNzQxODIyMDE1LCJhdXRob3JpdGllcyI6WyJ1c2VyIl19.bf4c5fTej1qEcu03Bt8lTbPIYjw9aVIySOqbtjRNalTZmeUP4Li1-OjFNOAcwfNExThBPyppJxnkhiTS38aUuA'
-// console.log(jwt)
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -15,7 +13,6 @@ export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
   const [searchQuery, setSearchQuery] = useState("");
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
-  const [filteredRecommendedRecipes, setFilteredRecommendedRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [babyId, setBabyId] = useState<number>(1);
   const [allRecipes, setAllRecipes] = useState([]);
@@ -40,7 +37,6 @@ export default function Page() {
         })
         .then((data: Recipe[]) => {
           setRecommendedRecipes(data);
-          // setFilteredRecommendedRecipes(data);
         })
         .catch((error) => {
           console.error("Error fetching recommended recipes:", error);
@@ -99,7 +95,6 @@ export default function Page() {
       })
       .then((data: Recipe[]) => {
         setRecommendedRecipes(data);
-        setFilteredRecommendedRecipes(data);
       })
       .catch((error) => {
         console.error("Error fetching recommended recipes:", error);
@@ -145,12 +140,10 @@ export default function Page() {
     const filteredSuggested = allRecipes.filter((recipe: Recipe) =>
       recipe.name.toLowerCase().includes(query.toLowerCase())
     );
-    // setFilteredSuggestedRecipes(filteredSuggested);
 
     const filteredRecommended = recommendedRecipes.filter((recipe: Recipe) =>
       recipe.name.toLowerCase().includes(query.toLowerCase())
     );
-    setFilteredRecommendedRecipes(filteredRecommended);
   };
 
   return (
