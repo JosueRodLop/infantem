@@ -21,8 +21,12 @@ import jakarta.validation.Valid;
 @RequestMapping("api/v1/dream")
 public class DreamController {
 
-    @Autowired
     private DreamService dreamService;
+
+    @Autowired
+    public DreamController(DreamService dreamService) {
+        this.dreamService = dreamService;
+    }
 
     @GetMapping
     public List<Dream> getAllDreams() {
@@ -36,14 +40,14 @@ public class DreamController {
     }
 
     @PostMapping
-    public Dream createDream(@Valid @RequestBody Dream dream) {
-        return dreamService.createDream(dream);
+    public ResponseEntity<Dream> createDream(@Valid @RequestBody Dream dream) {
+        return ResponseEntity.ok(dreamService.createDream(dream));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Dream> updateDream(@PathVariable Long id, @Valid @RequestBody Dream dreamDetails) {
-        Optional<Dream> updatedDream = dreamService.updateDream(id, dreamDetails);
-        return updatedDream.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        Dream updatedDream = dreamService.updateDream(id, dreamDetails);
+        return ResponseEntity.ok(updatedDream);
     }
 
     @DeleteMapping("/{id}")

@@ -45,7 +45,7 @@ public class DreamService {
     }
 
     @Transactional
-    public Optional<Dream> updateDream(Long id, Dream dreamDetails) {
+    public Dream updateDream(Long id, Dream dreamDetails) {
         checkOwnership(dreamDetails);
         return dreamRepository.findById(id).map(dream -> {
             dream.setDateStart(dreamDetails.getDateStart());
@@ -54,7 +54,7 @@ public class DreamService {
             dream.setDreamType(dreamDetails.getDreamType());
             dream.setBaby(dreamDetails.getBaby());
             return dreamRepository.save(dream);
-        });
+        }).orElseThrow(() -> new ResourceNotFoundException("Dream", "id", id));
     }
 
     @Transactional
