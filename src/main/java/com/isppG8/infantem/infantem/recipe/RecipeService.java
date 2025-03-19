@@ -86,14 +86,17 @@ public class RecipeService {
         this.recipeRepository.delete(recipe);
     }
 
+    @Transactional(readOnly = true)
     public List<Recipe> getRecipeByMinAge(Integer age) {
         return this.recipeRepository.findRecipeByMinAge(age);
     }
 
+    @Transactional(readOnly = true)
     public List<Recipe> getRecipeByMaxAge(Integer age) {
         return this.recipeRepository.findRecipeByMaxAge(age);
     }
 
+    @Transactional(readOnly = true)
     public List<Recipe> getRecipeByIngredients(List<String> ingredients) {
         List<Recipe> recipes = new ArrayList<>();
         for (String ingredient : ingredients) {
@@ -102,4 +105,15 @@ public class RecipeService {
         }
         return recipes;
     }
+
+    @Transactional(readOnly = true)
+    public List<Recipe> getRecipesByNutrient(String nutrientName){
+        return recipeRepository.findRecipeByNutrient(nutrientName);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Recipe> getRecipesFilteringAllergens(List<String> allegergens){
+        return recipeRepository.findRecipesWithoutAllergen(allegergens);
+    }
+
 }
