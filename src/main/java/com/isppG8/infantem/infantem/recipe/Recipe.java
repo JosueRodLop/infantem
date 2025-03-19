@@ -71,12 +71,12 @@ public class Recipe {
     private User user;
 
     @ManyToMany(mappedBy = "recipes")
-    private List<Intake> intakes = new ArrayList<>();
+    private List<Allergen> allergens = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "intake_recipe", joinColumns = @JoinColumn(name = "intake_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
-    private List<Allergen> allergens = new ArrayList<>();
+    private List<Intake> intakes = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FoodNutrient> alimentoNutrientes = new ArrayList<>();
+    private List<FoodNutrient> foodNutrients = new ArrayList<>();
 }
