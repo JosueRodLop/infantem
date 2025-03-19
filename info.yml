@@ -1,10 +1,10 @@
 xproject:
-  name: 'ISPP-2024-L3-08'
-  owner: 'L3'
-  teamId: '08'
+  name: 'ISPP-2024-LX-XX'
+  owner: 'LX'
+  teamId: 'XX'
   identities: {}
   notifications:
-    email: 'dandelpin@alum.us.es'
+    email: 'XXXXXXXXXXX'
   members:
     member1:
       name: 'Paula'
