@@ -29,6 +29,6 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
     List<Recipe> findRecipeByNutrient(@Param("nutrientName") String nutrientName);
 
     @Query("SELECT r FROM Recipe r WHERE NOT EXISTS (SELECT 1 FROM r.allergens a WHERE a.name IN :allergens)")
-    List<Recipe> findRecipesWithoutAllergen(@Param("allergen") List<String> allegergens);
+    List<Recipe> findRecipesWithoutAllergen(@Param("allergens") List<String> allergens);
 
 }
