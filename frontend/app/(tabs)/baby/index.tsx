@@ -86,10 +86,8 @@ export default function BabyInfo() {
       style={{ flex: 1, width: "100%", height: "100%" }} 
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
-      {/* ScrollView permite desplazarse sin que se corte en pantallas pequeñas */}
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
         
-        {/* 📌 Encabezado */}
         <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
           Información de los <Text style={{ fontStyle: "italic" }}>bebés</Text>
         </Text>
@@ -98,7 +96,6 @@ export default function BabyInfo() {
           Revisa y gestiona la información de tu bebé.
         </Text>
 
-        {/* 📌 Botón de añadir bebé */}
         <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 20 }}>
           <Link style={[gs.mainButton, { flexDirection: "row", alignItems: "center", padding: 10 }]} href={"/baby/add/"}>
             <Ionicons name="add-circle-outline" size={20} color="white" />
@@ -106,7 +103,6 @@ export default function BabyInfo() {
           </Link>
         </View>
 
-        {/* 📌 Lista de bebés */}
         <Text style={[gs.subHeaderText, { color: "#1565C0",marginBottom: 10 ,fontWeight: "bold"}]}>Mis bebés registrados</Text>
 
         {babies.length === 0 ? (
@@ -117,13 +113,11 @@ export default function BabyInfo() {
           babies.map((baby) => (
             <View key={baby.id} style={[gs.card, { width:"100%",flexDirection: "row", alignItems: "center", padding: 15, marginBottom: 10 }]}>
               
-              {/* 📌 Imagen de perfil del bebé */}
               <Image
                 source={require("../../../static/images/baby-placeholder.png")} // Imagen por defecto
                 style={{ width: 70, height: 70, borderRadius: 50, marginRight: 15 }}
               />
 
-              {/* 📌 Información del bebé */}
               <View style={{ flex: 1 }}>
                 <Text style={[gs.cardTitle, { fontSize: 18 }]}>{baby.name}</Text>
                 <Text style={gs.cardContent}>📅 Fecha de nacimiento: {baby.birthDate}</Text>
@@ -131,7 +125,6 @@ export default function BabyInfo() {
                 <Text style={gs.cardContent}>⚖️ Peso: {baby.weight} kg | 📏 Altura: {baby.height} cm</Text>
               </View>
 
-              {/* 📌 Acciones de editar y eliminar */}
               <View style={{ flexDirection: "row", gap: 10 }}>
                 <TouchableOpacity onPress={() => handleEditBaby(baby.id)}>
                   <Ionicons name="create-outline" size={24} color="#1565C0" />
