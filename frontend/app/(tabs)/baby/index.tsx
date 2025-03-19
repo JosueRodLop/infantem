@@ -86,6 +86,8 @@ export default function BabyInfo() {
       style={{ flex: 1, width: "100%", height: "100%" }} 
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
+    <Image source={require("../../../static/images/BodySuit.png")} style={{ position: 'absolute', top: "25%", right: "10%", width: 110, height: 110,transform: [{ rotate: '15deg' }] }} />
+
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
         
         <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
