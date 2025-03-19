@@ -81,8 +81,6 @@ export default function Page() {
 
   const fetchRecommendedRecipes = async () => {
     if (age === null) return;
-    console.log("Fetching recommended recipes for age:", age);
-    console.log("Token:", token);
     try {
       const response = await fetch(`${apiUrl}/api/v1/recipes/recommended/${age}`, {
         method: "GET",
@@ -97,7 +95,6 @@ export default function Page() {
       const data = await response.json();
       setRecommendedRecipes(data);
       setRecommendedFilteredRecipes(data);
-      console.log("Recommended recipes:", data);
     } catch (error) {
       console.error("Error:", error);
     }
