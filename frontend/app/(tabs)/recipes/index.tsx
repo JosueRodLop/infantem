@@ -8,111 +8,81 @@ import { useAuth } from "../../../context/AuthContext";
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function Page() {
-  const gs = require("../../../static/styles/globalStyles");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [allRecommendedRecipes, setAllRecommendedRecipes] = useState([]);
+  const [userRecipes, setUserRecipes] = useState([]);
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [babyId, setBabyId] = useState<number>(1);
-  const [allRecipes, setAllRecipes] = useState([]);
+  const [allFilteredRecipes, setAllFilteredRecipes] = useState([]);
+  const [userFilteredRecipes, setUserFilteredRecipes] = useState([]);
+  const [recommendedFilteredRecipes, setRecommendedFilteredRecipes] = useState<Recipe[]>([]);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [age, setAge] = useState<number | null>(null);
+
+  const gs = require("../../../static/styles/globalStyles");
 
   const { user, token } = useAuth();
 
   useEffect(() => {
-    if (token) {
-      fetch(`${apiUrl}/api/v1/recipes/recommended?age=${age}`, {
+    obtainAllRecommendedRecipes();
+    obtainUserRecipes();
+  }, []);
+
+  const obtainAllRecommendedRecipes = async (): Promise<boolean> => {
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/recipes/recommended/all`, {
+        method: 'GET',
         headers: {
-          "Authorization": "Bearer " + token
-        }
-      })
-        .then((response) => {
-          if (!response.ok) {
-            return response.text().then((text) => {
-              throw new Error(`Error: ${response.status} - ${text}`);
-            });
-          }
-          return response.json();
-        })
-        .then((data: Recipe[]) => {
-          setRecommendedRecipes(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching recommended recipes:", error);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      console.log("No jwt token")
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const recipesData = await response.json();
+        setAllRecommendedRecipes(recipesData);
+        setAllFilteredRecipes(recipesData);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('Error fetching recipes: ', error);
+      setAllRecommendedRecipes([]);
+      setAllFilteredRecipes([]);
+      return false;
     }
-  }, [token]);
+  };
 
-  useEffect(() => {
-    if (token && user) {
-      fetch(`${apiUrl}/api/v1/recipes/user/${user.id}`, {
-        headers: {
-          "Authorization": "Bearer " + token
-        }
-      })
-        .then((response) => {
-          console.log("Response received:", response);
-
-          return response.text().then((text) => {
-            console.log("Response body:", text);
-
-            if (!response.ok) {
-              throw new Error(`Error: ${response.status} - ${text}`);
-            }
-
-            try {
-              return JSON.parse(text);
-            } catch (error) {
-              throw new Error(`Invalid JSON: ${text}`);
-            }
-          });
-        })
-        .then((data) => {
-          console.log("Parsed JSON:", data);
-          setAllRecipes(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching all recipes:", error);
+  const obtainUserRecipes = async (): Promise<boolean> => {
+    try {
+      let responseReceived = false;
+      if (token && user) {
+        const response = await fetch(`${apiUrl}/api/v1/recipes/user/${user.id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
         });
-    } else {
-      console.log("No jwt token")
-    }
-  }, [token]);
-
-  useEffect(() => {
-    fetch(`${apiUrl}/api/v1/recipes/recommendations/${babyId}`)
-      .then((response) => {
-        if (!response.ok) {
-          return response.text().then((text) => {
-            throw new Error(`Error: ${response.status} - ${text}`);
-          });
+        if (response.ok) {
+          const recipesData = await response.json();
+          setUserRecipes(recipesData);
+          setUserFilteredRecipes(recipesData);
+          responseReceived = true;
         }
-        return response.json();
-      })
-      .then((data: Recipe[]) => {
-        setRecommendedRecipes(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching recommended recipes:", error);
-      })
-      .finally(() => setLoading(false));
-  }, [babyId]);
-
-
-
-  useEffect(() => {
-    console.log("Updated allRecipes:", allRecipes);
-  }, [allRecipes]);
-
-  useEffect(() => {
-    console.log("AAAAAAAAAAA")
-    console.log("Updated recommendedRecipes:", recommendedRecipes);
-  }, [recommendedRecipes]);
+      }
+      return responseReceived ? true : false;
+    } catch (error) {
+      console.error('Error fetching user recipes: ', error);
+      setUserRecipes([]);
+      setUserFilteredRecipes([]);
+      return false;
+    }
+  };
 
   const fetchRecommendedRecipes = async () => {
     if (age === null) return;
+    console.log("Fetching recommended recipes for age:", age);
+    console.log("Token:", token);
     try {
       const response = await fetch(`${apiUrl}/api/v1/recipes/recommended/${age}`, {
         method: "GET",
@@ -127,6 +97,7 @@ export default function Page() {
       const data = await response.json();
       setRecommendedRecipes(data);
       setRecommendedFilteredRecipes(data);
+      console.log("Recommended recipes:", data);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -142,10 +113,14 @@ export default function Page() {
     const filteredUser = userRecipes.filter((recipe: Recipe) =>
       recipe.name.toLowerCase().includes(query.toLowerCase())
     );
-
     const filteredRecommended = recommendedRecipes.filter((recipe: Recipe) =>
       recipe.name.toLowerCase().includes(query.toLowerCase())
     );
+
+    setAllFilteredRecipes(filteredAll);
+    setUserFilteredRecipes(filteredUser);
+    setRecommendedFilteredRecipes(filteredRecommended);
+
   };
 
   return (
@@ -166,10 +141,6 @@ export default function Page() {
           />
 
           <View style={{ flexDirection: "row", gap: 10, marginVertical: 10, alignSelf: "flex-start" }}>
-
-            {/* <Link href="/recipes/favorites" style={gs.mainButton}>
-              <Text style={gs.mainButtonText}>Recetas favoritas</Text>
-            </Link> */}
             <Link style={gs.mainButton} href={"/recipes/add"}>
               <Text style={gs.mainButtonText}>Añade una receta</Text>
             </Link>
@@ -220,7 +191,7 @@ export default function Page() {
         {recommendedFilteredRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
-          recommendedRecipes.map((recipe: Recipe) => (
+          recommendedFilteredRecipes.map((recipe: Recipe) => (
             <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
               <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
                 <View>
@@ -243,7 +214,7 @@ export default function Page() {
         {userFilteredRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
-          allRecipes.map((recipe: Recipe) => (
+          userFilteredRecipes.map((recipe: Recipe) => (
             <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
               <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
                 <View>
