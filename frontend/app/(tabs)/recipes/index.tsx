@@ -13,7 +13,6 @@ export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
   const [searchQuery, setSearchQuery] = useState("");
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
-  const [filteredRecommendedRecipes, setFilteredRecommendedRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [babyId, setBabyId] = useState<number>(1);
   const [allRecipes, setAllRecipes] = useState([]);
@@ -38,7 +37,6 @@ export default function Page() {
         })
         .then((data: Recipe[]) => {
           setRecommendedRecipes(data);
-          // setFilteredRecommendedRecipes(data);
         })
         .catch((error) => {
           console.error("Error fetching recommended recipes:", error);
@@ -93,15 +91,27 @@ export default function Page() {
             throw new Error(`Error: ${response.status} - ${text}`);
           });
         }
-      }
-      return responseReceived ? true : false;
-    } catch (error) {
-      console.error('Error fetching user recipes: ', error);
-      setUserRecipes([]);
-      setUserFilteredRecipes([]);
-      return false;
-    }
-  };
+        return response.json();
+      })
+      .then((data: Recipe[]) => {
+        setRecommendedRecipes(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching recommended recipes:", error);
+      })
+      .finally(() => setLoading(false));
+  }, [babyId]);
+
+
+
+  useEffect(() => {
+    console.log("Updated allRecipes:", allRecipes);
+  }, [allRecipes]);
+
+  useEffect(() => {
+    console.log("AAAAAAAAAAA")
+    console.log("Updated recommendedRecipes:", recommendedRecipes);
+  }, [recommendedRecipes]);
 
   const fetchRecommendedRecipes = async () => {
     if (age === null) return;
@@ -134,14 +144,10 @@ export default function Page() {
     const filteredUser = userRecipes.filter((recipe: Recipe) =>
       recipe.name.toLowerCase().includes(query.toLowerCase())
     );
+
     const filteredRecommended = recommendedRecipes.filter((recipe: Recipe) =>
       recipe.name.toLowerCase().includes(query.toLowerCase())
     );
-
-    setAllFilteredRecipes(filteredAll);
-    setUserFilteredRecipes(filteredUser);
-    setRecommendedFilteredRecipes(filteredRecommended);
-
   };
 
   return (
