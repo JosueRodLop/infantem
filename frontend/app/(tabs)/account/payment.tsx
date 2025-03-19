@@ -1,26 +1,62 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { Linking } from "react-native";
+import { getToken } from "../../../utils/jwtStorage";
 
 const PaymentScreen = () => {
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const storedToken = await getToken();
+        if (!storedToken) {
+          Alert.alert("Error", "No se encontró el token de autenticación.");
+          return;
+        }
+        setToken(storedToken);
+      } catch (error) {
+        console.error("Error obteniendo el token:", error);
+        Alert.alert("Error", "No se pudo obtener el token.");
+      }
+    };
+    fetchToken();
+  }, []);
 
   const handleSubscribe = async () => {
     setLoading(true);
     try {
+      if (!token) {
+        throw new Error("No se encontró el token de autenticación.");
+      }
+  
       const response = await fetch(
         "http://localhost:8081/api/v1/subcriptions/start/P-15E846608Y045080FM7MCHII",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+            "Authorization": `Bearer ${token}`,
+          },
         }
       );
   
-      const data = await response.json();
-      
+      const contentType = response.headers.get("content-type");
+      const text = await response.text(); // Obtener respuesta como texto
+  
+      console.log("Respuesta completa del servidor:", text);
+      console.log("Content-Type recibido:", contentType);
+  
       if (!response.ok) {
-        throw new Error(`Error: ${data.error || "No se pudo obtener la URL"}`);
+        throw new Error(`Error en la respuesta: ${text}`);
       }
+  
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("El servidor no devolvió un JSON válido.");
+      }
+  
+      const data = JSON.parse(text); // Intentar convertir a JSON
   
       if (!data.approvalUrl) {
         throw new Error("No se recibió una URL de aprobación válida.");
