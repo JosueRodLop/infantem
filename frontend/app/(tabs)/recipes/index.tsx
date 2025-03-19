@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, TextInput, ScrollView, Image } from "react-native";
+import { Text, View, TextInput, ScrollView, Image } from "react-native";
 import { Link } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
-// import { getToken } from "../../../utils/jwtStorage"
-// import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../../context/AuthContext";
 
 
