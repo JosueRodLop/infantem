@@ -14,7 +14,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,14 +35,32 @@ public class Disease {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
+    @NotBlank
     private String name;
+
+    @NotNull
+    @PastOrPresent
     private LocalDate startDate;
+
+    @NotNull
+    @PastOrPresent
     private LocalDate endDate;
+
+    @NotBlank
     private String symptoms;
+
     private String extraObservations;
 
-    @ManyToMany
-    @JoinTable(name = "disease_baby", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "disease_id"))
-    @Size(min = 1)
-    private List<Baby> babies;
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "baby_id")
+    private Baby baby;
+
+    @AssertTrue(message = "The end date must be after the start date")
+    public boolean isDateValid() {
+        if (startDate == null || endDate == null) {
+            return true;
+        }
+        return endDate.isAfter(startDate);
+    }
 }
