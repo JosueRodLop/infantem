@@ -23,7 +23,7 @@ import com.paypal.base.rest.PayPalRESTException;
 @RestController
 @RequestMapping("api/v1/subcriptions")
 public class SubscriptionController {
-    
+
     @Autowired
     private SubscriptionService subscriptionService;
 
@@ -45,7 +45,8 @@ public class SubscriptionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Subscription> updateSubscription(@PathVariable Long id, @RequestBody Subscription subscription) {
+    public ResponseEntity<Subscription> updateSubscription(@PathVariable Long id,
+            @RequestBody Subscription subscription) {
         Subscription updatedSubscription = subscriptionService.update(id, subscription);
         return ResponseEntity.ok(updatedSubscription);
     }
@@ -63,20 +64,23 @@ public class SubscriptionController {
             String approvalUrl = subscriptionService.createSubscriptionPlan(planId);
             return ResponseEntity.ok(approvalUrl);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al iniciar la suscripción: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al iniciar la suscripción: " + e.getMessage());
         }
     }
 
     // Endpoint para confirmar una suscripción después de la aprobación de PayPal
     @PostMapping("/confirm")
-    public ResponseEntity<String> confirmSubscription(@RequestParam String paymentId, @RequestParam String payerId) throws PayPalRESTException {
+    public ResponseEntity<String> confirmSubscription(@RequestParam String paymentId, @RequestParam String payerId)
+            throws PayPalRESTException {
         Optional<Subscription> subscription = subscriptionService.confirmSubscription(paymentId, payerId);
-        return subscription.map(s -> ResponseEntity.ok("Suscripción confirmada con éxito"))
-                        .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo confirmar la suscripción"));
+        return subscription.map(s -> ResponseEntity.ok("Suscripción confirmada con éxito")).orElseGet(
+                () -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo confirmar la suscripción"));
     }
 
     @PostMapping("/create/{agreementId}")
-    public String createSubscription(@PathVariable String agreementId) throws MalformedURLException, UnsupportedEncodingException, PayPalRESTException {
+    public String createSubscription(@PathVariable String agreementId)
+            throws MalformedURLException, UnsupportedEncodingException, PayPalRESTException {
         return subscriptionService.createSubscriptionPlan(agreementId);
     }
 
@@ -84,4 +88,4 @@ public class SubscriptionController {
     public String cancelSubscription(@PathVariable String agreementId) throws PayPalRESTException {
         return subscriptionService.cancelSubscription(agreementId);
     }
-}    
+}

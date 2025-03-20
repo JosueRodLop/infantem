@@ -35,7 +35,7 @@ public class PaymentService {
 
     public Payment update(long id, Payment payment) {
         Payment paymentToUpdate = paymentRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
 
         paymentToUpdate.setIsDefault(payment.getIsDefault());
         paymentToUpdate.setPaymentType(payment.getPaymentType());

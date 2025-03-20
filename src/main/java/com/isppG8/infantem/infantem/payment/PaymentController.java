@@ -1,4 +1,5 @@
 package com.isppG8.infantem.infantem.payment;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/payments")
 public class PaymentController {
-    
+
     @Autowired
     private PaymentService paymentService;
 
@@ -29,7 +30,6 @@ public class PaymentController {
         return paymentService.getPaymentById(id);
     }
 
-
     @PostMapping
     public void create(@RequestBody Payment payment) {
         paymentService.create(payment);
@@ -39,11 +39,10 @@ public class PaymentController {
     public Payment update(long id, @RequestBody Payment payment) {
         return paymentService.update(id, payment);
     }
-    
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id) {
         paymentService.delete(id);
     }
-
 
 }

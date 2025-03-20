@@ -21,7 +21,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 
 @Entity
 @Table(name = "payment_table")
-@Getter @Setter
+@Getter
+@Setter
 public class Payment {
 
     @Id
@@ -30,7 +31,7 @@ public class Payment {
 
     @NonNull
     @Enumerated(EnumType.STRING)
-    private PaymentType paymentType;  // PAYPAL, CARD
+    private PaymentType paymentType; // PAYPAL, CARD
 
     @JdbcTypeCode(Types.VARCHAR)
     private String paypalEmail;

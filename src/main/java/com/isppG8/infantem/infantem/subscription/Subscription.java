@@ -20,7 +20,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "subcription_table")
-@Getter @Setter
+@Getter
+@Setter
 public class Subscription {
 
     @Id
@@ -45,13 +46,10 @@ public class Subscription {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-
     public LocalDate getNextBillingDate() {
         LocalDate today = LocalDate.now();
         long periodsPassed = ChronoUnit.DAYS.between(startDate, today) / 28;
         return startDate.plusDays((periodsPassed + 1) * 28);
     }
 
-
-    
 }

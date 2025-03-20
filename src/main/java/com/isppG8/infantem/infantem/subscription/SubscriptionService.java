@@ -36,7 +36,7 @@ public class SubscriptionService {
     }
 
     public Optional<Subscription> findById(Long id) {
-        return subscriptionRepository.findById(id); 
+        return subscriptionRepository.findById(id);
     }
 
     public Subscription create(Subscription subscription) {
@@ -44,7 +44,8 @@ public class SubscriptionService {
     }
 
     public Subscription update(Long id, Subscription subscription) {
-        Subscription subscriptionToUpdate = subscriptionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Suscripción no encontrada"));
+        Subscription subscriptionToUpdate = subscriptionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Suscripción no encontrada"));
         subscriptionToUpdate.setActive(subscription.getActive());
         subscriptionToUpdate.setPrice(subscription.getPrice());
         subscriptionToUpdate.setStartDate(subscription.getStartDate());
@@ -61,7 +62,8 @@ public class SubscriptionService {
         LocalDate firstDayOfMonth = today.withDayOfMonth(1);
         LocalDate nextMonth = firstDayOfMonth.plusMonths(1);
 
-        List<Subscription> dueSubscriptions = subscriptionRepository.findSubscriptionsExpiringThisMonth(firstDayOfMonth, nextMonth);
+        List<Subscription> dueSubscriptions = subscriptionRepository.findSubscriptionsExpiringThisMonth(firstDayOfMonth,
+                nextMonth);
 
         for (Subscription subscription : dueSubscriptions) {
             if (subscription.getNextBillingDate().isEqual(today)) { // Validamos que sea el día exacto
@@ -81,7 +83,7 @@ public class SubscriptionService {
             Agreement agreement = new Agreement();
             agreement.setId(subscription.getPayment().getBillingAgreementId());
             agreement = Agreement.execute(apiContext, null);
-    
+
             return "Active".equalsIgnoreCase(agreement.getState());
         } catch (PayPalRESTException e) {
             e.printStackTrace();
@@ -89,7 +91,8 @@ public class SubscriptionService {
         }
     }
 
-    public String createSubscriptionPlan(String planId) throws PayPalRESTException, MalformedURLException, UnsupportedEncodingException {
+    public String createSubscriptionPlan(String planId)
+            throws PayPalRESTException, MalformedURLException, UnsupportedEncodingException {
         Agreement agreement = new Agreement();
         agreement.setName("Suscripción Mensual");
         agreement.setDescription("Acceso premium a la plataforma");
@@ -105,9 +108,7 @@ public class SubscriptionService {
 
         Agreement createdAgreement = agreement.create(apiContext);
 
-        return createdAgreement.getLinks().stream()
-                .filter(link -> "approval_url".equals(link.getRel()))
-                .findFirst()
+        return createdAgreement.getLinks().stream().filter(link -> "approval_url".equals(link.getRel())).findFirst()
                 .map(link -> link.getHref())
                 .orElseThrow(() -> new RuntimeException("No se encontró la URL de aprobación"));
     }
@@ -143,7 +144,7 @@ public class SubscriptionService {
         paymentExecution.setPayerId(payerId);
 
         Payment executedPayment = payment.execute(apiContext, paymentExecution);
-        
+
         if ("approved".equalsIgnoreCase(executedPayment.getState())) {
             Subscription subscription = new Subscription();
             subscription.setPrice(4.99); // Precio de ejemplo, se puede parametrizar
@@ -186,7 +187,5 @@ public class SubscriptionService {
             }
         }
     }
-
-    
 
 }
