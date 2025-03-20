@@ -1,6 +1,5 @@
 package com.isppG8.infantem.infantem.vaccine;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class VaccineService {
     private final VaccineRepository vaccineRepository;
     private final BabyRepository babyRepository;
     private final UserService userService;
-
+    
     @Autowired
     public VaccineService(VaccineRepository vaccineRepository, BabyRepository babyRepository, UserService userService) {
         this.vaccineRepository = vaccineRepository;
@@ -41,18 +40,8 @@ public class VaccineService {
 
     @Transactional
     public Vaccine save(Vaccine vaccine) {
-        List<Baby> attachedBabies = resolveBabies(vaccine.getBabies());
-
-        vaccine.setBabies(new ArrayList<>());
-        vaccine = vaccineRepository.save(vaccine);
-
-        for (Baby baby : attachedBabies) {
-            baby.getVaccines().add(vaccine);
-        }
-
-        babyRepository.saveAll(attachedBabies);
-
-        return vaccine;
+        checkOwnership(vaccine);
+        return this.vaccineRepository.save(vaccine);
     }
 
     @Transactional
@@ -61,25 +50,12 @@ public class VaccineService {
         this.vaccineRepository.deleteById(id);
     }
 
-    private List<Baby> resolveBabies(List<Baby> babies) {
-        User currentUser = userService.findCurrentUser();
-        return babies.stream().map(baby -> resolveSingleBaby(baby, currentUser)).toList();
-    }
-
-    private Baby resolveSingleBaby(Baby baby, User user) {
-        if (baby.getId() == null) {
-            throw new IllegalArgumentException("Cannot create a new baby while associating to a vaccine");
-        }
-        Baby existingBaby = babyRepository.findById(baby.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Baby", "id", baby.getId()));
-        checkOwnership(existingBaby, user);
-        return existingBaby;
-    }
-
-    private void checkOwnership(Baby existingBaby, User user) {
-        if (!existingBaby.getUsers().contains(user)) {
-            throw new ResourceNotOwnedException(existingBaby);
+    private void checkOwnership(Vaccine vaccine) {
+        User user = this.userService.findCurrentUser();
+        Baby baby = this.babyRepository.findById(vaccine.getBaby().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Baby", "id", vaccine.getBaby().getId()));
+        if (!baby.getUsers().contains(user)) {
+            throw new ResourceNotOwnedException(vaccine.getBaby());
         }
     }
-
 }
