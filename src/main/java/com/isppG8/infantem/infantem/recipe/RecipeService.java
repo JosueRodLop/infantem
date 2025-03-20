@@ -23,13 +23,19 @@ public class RecipeService {
         this.userService = userService;
     }
 
+    @Transactional(readOnly = true)
+    public List<Recipe> getAllRecommendedRecipes() {
+        return this.recipeRepository.findAllRecommendedRecipes();
+    }
+
     // TODO: change age to babyId
     @Transactional(readOnly = true)
     public List<Recipe> getRecommendedRecipes(Integer age) {
         return this.recipeRepository.findRecommendedRecipes(age);
     }
 
-    // TODO: Valorate if it is necessary to change the method to just get the recipes of the current user
+    // TODO: Valorate if it is necessary to change the method to just get the
+    // recipes of the current user
     @Transactional(readOnly = true)
     public List<Recipe> getRecipesByUserId(Long userId) {
         return this.recipeRepository.findRecipesByUserId(userId);

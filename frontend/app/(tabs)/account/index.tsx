@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActivityIndicator, Modal, TextInput, Alert } from "react-native";
+import { ActivityIndicator, Modal, TextInput, Alert,ImageBackground } from "react-native";
 import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -89,65 +89,52 @@ export default function Account() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100 }]}>
-        <TouchableOpacity style={{ position: 'absolute', top: 20, left: 20, zIndex: 10 }} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
+    <ImageBackground
+      source={require("../../../static/images/Background.png")}
+      style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center" }}
+      imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
+    >      
+    <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor:"transparent" }]}>
+    <Image source={require("../../../static/images/Bib.png")} style={{ position: 'absolute', top: "20%", right: "72%", width: 120, height: 120,transform: [{ rotate: '-15deg' }] }} />
 
-        <Text style={gs.headerText}>Perfil</Text>
-        <Text style={gs.subHeaderText}>Información de usuario</Text>
+
+        <Text style={[gs.headerText, { color: "#1565C0" }]}>Perfil</Text>
 
         <TouchableOpacity style={gs.profileImageContainer} onPress={() => isEditing && setModalVisible(true)} disabled={!isEditing}>
-          <Image source={user && user.profilePhotoRoute ? { uri: user.profilePhotoRoute } : avatarOptions[0]} style={gs.profileImage} />
+          <Image source={user?.profilePhotoRoute ? { uri: user.profilePhotoRoute } : avatarOptions[0]} style={gs.profileImage} />
         </TouchableOpacity>
 
         {user && (
           <>
-            <Text style={gs.inputLabel}>Nombre</Text>
-            <TextInput
-              style={gs.card}
-              value={user.name}
-              editable={isEditing}
-              onChangeText={(text) => setUser({ ...user, name: text })}
-            />
-            <Text style={gs.inputLabel}>Apellido</Text>
-            <TextInput
-              style={gs.card}
-              value={user.surname}
-              editable={isEditing}
-              onChangeText={(text) => setUser({ ...user, surname: text })}
-            />
-            <Text style={gs.inputLabel}>Nombre de Usuario</Text>
-            <TextInput
-              style={gs.card}
-              value={user.username}
-              editable={isEditing}
-              onChangeText={(text) => setUser({ ...user, username: text })}
-            />
-            <Text style={gs.inputLabel}>Correo Electrónico</Text>
-            <TextInput
-              style={gs.card}
-              value={user.email}
-              editable={isEditing}
-              onChangeText={(text) => setUser({ ...user, email: text })}
-            />
+            <Text style={[gs.inputLabel,{width:"80%",paddingLeft:10,color: "#1565C0", fontWeight: "bold"}]}>Nombre</Text>
+            <TextInput 
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+            value={user.name} editable={isEditing} onChangeText={(text) => setUser({ ...user, name: text })} />
+
+            <Text style={[gs.inputLabel,{width:"80%",paddingLeft:10,color: "#1565C0", fontWeight: "bold"}]}>Apellido</Text>
+            <TextInput 
+             style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+            value={user.surname} editable={isEditing} onChangeText={(text) => setUser({ ...user, surname: text })} />
+
+            <Text style={[gs.inputLabel,{width:"80%",paddingLeft:10,color: "#1565C0", fontWeight: "bold"}]}>Nombre de Usuario</Text>
+            <TextInput 
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              value={user.username} editable={isEditing} onChangeText={(text) => setUser({ ...user, username: text })} />
+
+            <Text style={[gs.inputLabel,{width:"80%",paddingLeft:10,color: "#1565C0", fontWeight: "bold"}]}>Correo Electrónico</Text>
+            <TextInput 
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+              value={user.email} editable={isEditing} onChangeText={(text) => setUser({ ...user, email: text })} />
           </>
         )}
 
-        {isEditing ? (
-          <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleSaveChanges}>
-            <Text style={gs.mainButtonText}>Guardar Cambios</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleEditProfile}>
-            <Text style={gs.mainButtonText}>Editar Perfil</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity style={[gs.mainButton, { backgroundColor: "#1565C0" }]} onPress={isEditing ? handleSaveChanges : handleEditProfile}>
+          <Text style={gs.mainButtonText}>{isEditing ? "Guardar Cambios" : "Editar Perfil"}</Text>
+        </TouchableOpacity>
 
-        {<TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
-          <Text style={gs.secondaryButtonText}>Cerrar Sesión</Text>
-        </TouchableOpacity>}
+        <TouchableOpacity style={[gs.secondaryButton, { marginTop: 10}]} onPress={handleLogout}>
+          <Text style={[gs.secondaryButtonText]}>Cerrar Sesión</Text>
+        </TouchableOpacity>
 
         <Modal visible={modalVisible} animationType="fade" transparent={true}>
           <View style={gs.modalOverlay}>
@@ -170,7 +157,6 @@ export default function Account() {
           </View>
         </Modal>
       </ScrollView>
-    </View>
+    </ImageBackground>
   );
 }
-
