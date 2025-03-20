@@ -142,10 +142,14 @@ export default function Page() {
       style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center" }}
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
-      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor: "transparent" }]}>
+      <ScrollView   
+      ref={scrollRef}
+      scrollEventThrottle={16}  
+      onScroll={handleScroll}
+      contentContainerStyle={[gs.container, { backgroundColor: "transparent" }]}>
         <Image source={require("../../../static/images/Bottle.png")} style={{ position: 'absolute', top: "0%", right: "70%", width: 150, height: 150, transform: [{ rotate: '15deg' }] }} />
 
-        <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginTop: -5 }}>
+        <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginTop: 50 }}>
           Recetas Recomendadas 
         </Text>
         <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginTop: -5 }}>
@@ -185,7 +189,7 @@ export default function Page() {
           <Text>No se encontraron recetas.</Text>
         ) : (
       <View
-      style= {{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 20}}
+      style= {{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -80}}
       >
       <ScrollView
         ref={scrollRef}
@@ -194,7 +198,7 @@ export default function Page() {
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={16}
-        style={{ paddingVertical: 150,width:1000, marginLeft: 10,marginTop: -50 }}
+        style={{ paddingVertical: 150,width:1000, marginLeft: 10,marginTop: 0 }}
       >
         {allFilteredRecipes.map((recipe, index) => (
           <TouchableOpacity key={index} onPress={() => router.push(`/recipes/detail?recipeId=${recipe.id}`)}>
@@ -241,12 +245,16 @@ export default function Page() {
       
     </View>
         )}
+  {/*DE AQUI PARA ABAJO------------------------------------------------------------------------------------- */}
 
-        <Text style={[gs.headerText, { marginTop: 50 }]}>Recetas recomendadas según la edad</Text>
+        <Image source={require("../../../static/images/Diaper.png")} style={{ position: 'absolute', top: "160%", right: "10%", width: 150, height: 80, transform: [{ rotate: '15deg' }] }} />
+
+
+        <Text style={[gs.headerText, { color: "#1565C0",fontSize:38 }]}>Recetas recomendadas según la edad</Text>
 
         <TextInput
-          style={[gs.input, { width: "25%", marginHorizontal: "auto" }]}
-          placeholder="Introduce la edad"
+          style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"50%"}]} 
+          placeholder="Introduce la edad de tu bebé"
           keyboardType="numeric"
           value={age !== null ? age.toString() : ""}
           onChangeText={(text) => {
@@ -259,11 +267,11 @@ export default function Page() {
         />
 
         {recommendedFilteredRecipes.length === 0 ? (
-          <Text>No se encontraron recetas.</Text>
+          <Text style={{ color: "#1565C0" }}>No se encontraron recetas 😥 </Text>
         ) : (
           recommendedFilteredRecipes.map((recipe: Recipe) => (
             <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
-              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
+              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10,width:"100%", marginBottom: 10 }]}>
                 <View>
                   <Image
                     source={require('frontend/assets/adaptive-icon.png')}
@@ -279,14 +287,14 @@ export default function Page() {
           ))
         )}
 
-        <Text style={[gs.headerText, { marginTop: 50 }]}>Todas tus recetas</Text>
+        <Text style={[gs.headerText, { color: "#1565C0",fontSize:38, marginTop:30 }]}>Todas tus recetas</Text>
 
         {userFilteredRecipes.length === 0 ? (
-          <Text>No se encontraron recetas.</Text>
+          <Text style={{ color: "#1565C0" }}>No se encontraron recetas 😥 </Text>
         ) : (
           userFilteredRecipes.map((recipe: Recipe) => (
             <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
-              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
+              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10, width:"100%" }]}>
                 <View>
                   <Image
                     source={require('frontend/assets/adaptive-icon.png')}
