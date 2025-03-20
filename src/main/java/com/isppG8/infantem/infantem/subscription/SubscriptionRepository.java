@@ -12,8 +12,11 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     @Query("SELECT s FROM Subscription s WHERE s.startDate >= :firstDayOfMonth AND s.startDate < :nextMonth")
     List<Subscription> findSubscriptionsExpiringThisMonth(@Param("firstDayOfMonth") LocalDate firstDayOfMonth,
-            @Param("nextMonth") LocalDate nextMonth);
+                                                          @Param("nextMonth") LocalDate nextMonth);
 
     @Query("SELECT s FROM Subscription s WHERE s.user = :user AND s.active = true")
-    Optional<Subscription> findByUserAndActiveTrue(User user);
+    Optional<Subscription> findByUserAndActiveTrue(@Param("user") User user);
+
+    @Query("SELECT s FROM Subscription s WHERE s.user = :user")
+    Optional<Subscription> findByUser(@Param("user") User user);
 }
