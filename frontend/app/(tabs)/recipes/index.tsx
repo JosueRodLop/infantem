@@ -180,12 +180,6 @@ export default function Page() {
             />
             <Image source={require("../../../static/images/MagnifyingGlass.png")} style={{ width: 40, height: 40, opacity: searchQuery.trim() === "" ? 1 : 1 }} />
           </View>
-
-          <View style={{ gap: 10, marginTop: 40, alignSelf: "flex-start", alignItems: "center", width: "100%" }}>
-            <Link style={gs.mainButton} href={"/recipes/add"}>
-              <Text style={gs.mainButtonText}>Añade una receta</Text>
-            </Link>
-          </View>
         </View>
 
 
@@ -253,7 +247,7 @@ export default function Page() {
         <Image source={require("../../../static/images/Diaper.png")} style={{ position: 'absolute', top: "50%", right: "10%", width: 150, height: 80, transform: [{ rotate: '15deg' }] }} />
 
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
-          <Text style={[gs.headerText, { color: "#1565C0", fontSize: 38 }]}>Recetas recomendadas según la edad</Text>
+          <Text style={[gs.headerText, { color: "#1565C0", fontSize: 38, marginHorizontal: 15 }]}>Recetas recomendadas según la edad</Text>
           <TextInput
             style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.8, width: "50%" }]}
             placeholder="Introduce la edad de tu bebé"
@@ -294,6 +288,12 @@ export default function Page() {
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
 
           <Text style={[gs.headerText, { color: "#1565C0", fontSize: 38, marginTop: 30 }]}>Todas tus recetas</Text>
+
+          <View style={{ gap: 10, marginVertical: 20, alignSelf: "flex-start", alignItems: "center", width: "100%" }}>
+            <Link style={gs.mainButton} href={"/recipes/add"}>
+              <Text style={gs.mainButtonText}>Añade una receta</Text>
+            </Link>
+          </View>
 
           {userFilteredRecipes.length === 0 ? (
             <Text style={{ color: "#1565C0" }}>No se encontraron recetas 😥 </Text>
