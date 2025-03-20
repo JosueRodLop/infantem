@@ -92,7 +92,6 @@ public class BabyService {
         existingBaby.setIntakes(updatedBaby.getIntakes());
         existingBaby.setNutritionalContribution(updatedBaby.getNutritionalContribution());
         existingBaby.setMilestonesCompleted(updatedBaby.getMilestonesCompleted());
-        existingBaby.setVaccines(updatedBaby.getVaccines());
 
         existingBaby.getSleep().clear();
         if (updatedBaby.getSleep() != null) {
