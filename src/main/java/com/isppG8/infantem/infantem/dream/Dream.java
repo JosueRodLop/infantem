@@ -3,6 +3,7 @@ package com.isppG8.infantem.infantem.dream;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isppG8.infantem.infantem.baby.Baby;
 
@@ -48,6 +49,7 @@ public class Dream {
     private Baby baby;
 
     @AssertTrue(message = "The end date must be after the start date")
+    @JsonIgnore
     public boolean isDateValid() {
         if (dateStart == null || dateEnd == null) {
             return true;
