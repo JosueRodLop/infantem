@@ -40,10 +40,8 @@ public class SubscriptionService {
         String customerId;
         if (existingSubscription.isEmpty() || existingSubscription.get().getStripeCustomerId() == null) {
             // Si el usuario no tiene cliente en Stripe, lo creamos
-            CustomerCreateParams customerParams = CustomerCreateParams.builder()
-                .setEmail(user.getEmail())
-                .setName(user.getName())
-                .build();
+            CustomerCreateParams customerParams = CustomerCreateParams.builder().setEmail(user.getEmail())
+                    .setName(user.getName()).build();
             Customer stripeCustomer = Customer.create(customerParams);
             customerId = stripeCustomer.getId();
         } else {
@@ -51,10 +49,8 @@ public class SubscriptionService {
         }
 
         // 🔹 Crear suscripción en Stripe
-        SubscriptionCreateParams subscriptionParams = SubscriptionCreateParams.builder()
-            .setCustomer(customerId)
-            .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
-            .build();
+        SubscriptionCreateParams subscriptionParams = SubscriptionCreateParams.builder().setCustomer(customerId)
+                .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build()).build();
         Subscription stripeSubscription = Subscription.create(subscriptionParams);
 
         // 🔹 Guardar la suscripción en la base de datos
