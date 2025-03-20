@@ -15,13 +15,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isppG8.infantem.infantem.allergen.Allergen;
-import com.isppG8.infantem.infantem.disease.Disease;
+
 import com.isppG8.infantem.infantem.dream.Dream;
 import com.isppG8.infantem.infantem.intake.Intake;
 import com.isppG8.infantem.infantem.milestoneCompleted.MilestoneCompleted;
 import com.isppG8.infantem.infantem.nutritionalContribution.NutritionalContribution;
 import com.isppG8.infantem.infantem.user.User;
-import com.isppG8.infantem.infantem.vaccine.Vaccine;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -94,15 +93,8 @@ public class Baby {
     @ManyToMany(mappedBy = "babies")
     private List<Allergen> allergen = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "babies", cascade = CascadeType.ALL)
-    private List<Disease> disease = new ArrayList<>(); // Relación con enfermedades
-
     @ManyToMany
-    @JoinTable(name = "vaccine_baby", joinColumns = @JoinColumn(name = "vaccine_id"), inverseJoinColumns = @JoinColumn(name = "baby_id"))
-    private List<Vaccine> vaccines = new ArrayList<>(); // Relación con vacuna
-
-    @ManyToMany
-    @JoinTable(name = "user_baby", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "baby_id"))
+    @JoinTable(name = "user_baby", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Size(min = 1, max = 2, message = "A baby should have 1 or 2 users")
     private List<User> users = new ArrayList<>();
 }

@@ -55,20 +55,12 @@ INSERT INTO dream_table (baby_id, date_start, date_end, num_wakeups, dream_type)
 (2, '2024-03-04 23:15:00', '2024-03-05 07:00:00', 3, 2);
 
 -- Inserción de vacunas
-INSERT INTO vaccine_table (type, vaccination_date) VALUES
-('MMR', '2023-06-01'),
-('DTaP', '2023-07-01'),
-('HepB', '2023-08-01'),
-('Polio', '2023-09-01'),
-('Hib', '2023-10-01');
-
--- Relación entre vacunas y bebés
-INSERT INTO vaccine_baby (vaccine_id, baby_id) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5);
+INSERT INTO vaccine_table (type, vaccination_date, baby_id) VALUES
+('MMR', '2023-06-01', 1),
+('DTaP', '2023-07-01', 2),
+('HepB', '2023-08-01', 3),
+('Polio', '2023-09-01', 4),
+('Hib', '2023-10-01', 5);
 
 -- Relación entre usuarios y bebés
 INSERT INTO user_baby (user_id, baby_id) VALUES
