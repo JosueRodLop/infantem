@@ -1,21 +1,21 @@
 package com.isppG8.infantem.infantem.subscription;
 
-import com.isppG8.infantem.infantem.payment.Payment;
-import com.isppG8.infantem.infantem.payment.PaymentService;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 import com.stripe.exception.StripeException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/subscriptions")
 public class SubscriptionController {
 
+    @Autowired
     private final SubscriptionService subscriptionService;
+
+    @Autowired
     private final UserService userService;
 
     public SubscriptionController(SubscriptionService subscriptionService, UserService userService) {
