@@ -18,10 +18,10 @@ public class Payment {
 
     @NonNull
     @Enumerated(EnumType.STRING)
-    private PaymentType paymentType;  // CARD, OTHER
+    private PaymentType paymentType; // CARD, OTHER
 
     @NonNull
-    private String stripeCustomerId;  // ID del cliente en Stripe
+    private String stripeCustomerId; // ID del cliente en Stripe
 
     private Boolean isDefault;
 
@@ -29,4 +29,3 @@ public class Payment {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
-

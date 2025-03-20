@@ -14,4 +14,3 @@ public class PaymentService {
         return paymentRepository.findByUserId(userId);
     }
 }
-

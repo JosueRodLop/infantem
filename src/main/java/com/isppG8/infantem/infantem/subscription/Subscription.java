@@ -9,7 +9,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "subscription_table")
-@Getter @Setter
+@Getter
+@Setter
 public class Subscription {
 
     @Id
