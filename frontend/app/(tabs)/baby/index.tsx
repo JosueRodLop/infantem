@@ -139,6 +139,11 @@ export default function BabyInfo() {
     setIsEditing(true);
   }
 
+  const handleCancelBaby = () => {
+    setSelectedBaby(null);
+    setIsEditing(false);
+  }
+
   return (
     <ImageBackground
       source={require("../../../static/images/Background.png")}
@@ -217,6 +222,9 @@ export default function BabyInfo() {
 
             <TouchableOpacity style={gs.mainButton} onPress={handleSaveBaby}>
               <Text style={gs.mainButtonText}>{selectedBaby?.id ? "Actualizar" : "Guardar"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[gs.mainButton, { backgroundColor: "red", marginTop: 10 }]} onPress={handleCancelBaby}>
+              <Text style={gs.mainButtonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         )}
