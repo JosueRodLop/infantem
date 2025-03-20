@@ -30,7 +30,7 @@ export default function Page() {
 
   const obtainAllRecommendedRecipes = async (): Promise<boolean> => {
     try {
-      const response = await fetch(`${apiUrl}/api/v1/recipes/recommended/all`, {
+      const response = await fetch(`${apiUrl}/api/v1/recipes/recommended`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -82,7 +82,7 @@ export default function Page() {
   const fetchRecommendedRecipes = async () => {
     if (age === null) return;
     try {
-      const response = await fetch(`${apiUrl}/api/v1/recipes/recommended?age=${age}`, {
+      const response = await fetch(`${apiUrl}/api/v1/recipes/recommended/${age}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,

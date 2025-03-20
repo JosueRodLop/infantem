@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -29,14 +28,14 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping("/recommended/all")
+    @GetMapping("/recommended")
     public ResponseEntity<List<Recipe>> getAllRecommendedRecipes() {
         List<Recipe> recipes = recipeService.getAllRecommendedRecipes();
         return ResponseEntity.ok(recipes);
     }
 
-    @GetMapping("/recommended")
-    public ResponseEntity<List<Recipe>> getRecommendedRecipes(@RequestParam Integer age) {
+    @GetMapping("/recommended/{age}")
+    public ResponseEntity<List<Recipe>> getRecommendedRecipes(@PathVariable Integer age) {
         List<Recipe> recipes = recipeService.getRecommendedRecipes(age);
         return ResponseEntity.ok(recipes);
     }
