@@ -2,7 +2,6 @@ package com.isppG8.infantem.infantem.disease;
 
 import java.time.LocalDate;
 
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
