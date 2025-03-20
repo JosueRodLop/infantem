@@ -223,7 +223,7 @@ export default function Page() {
       {/* Flecha Izq */}
       <TouchableOpacity 
         onPress={() => goToSlide(activeIndex - 1)} 
-        style={{ position: 'absolute', right: 100,width:"100%", top: '50%', zIndex: 1 }}
+        style={{ position: 'absolute', right: 110,width:"100%", top: '50%', zIndex: 1 }}
       >
         <Image 
           source={require('../../../static/images/left-arrow.png')} 

@@ -151,27 +151,31 @@ export default function BabyInfo() {
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
-        <Image source={require("../../../static/images/BodySuit.png")} style={{ position: 'absolute', top: "20%", right: "7%", width: 110, height: 110, transform: [{ rotate: '15deg' }] }} />
+        <Image source={require("../../../static/images/BodySuit.png")} style={{ position: 'absolute', top: "10%", right: "7%", width: 110, height: 110, transform: [{ rotate: '15deg' }] }} />
         <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
           Información de los <Text style={{ fontStyle: "italic" }}>bebés</Text>
         </Text>
 
-        <Text style={{ color: "#1565C0", textAlign: "center", fontSize: 16, marginBottom: 20 }}>
-          Revisa y gestiona la información de tu bebé.
+        <Text style={{ color: "#1565C0", textAlign: "center", fontSize: 16, marginBottom: 5,marginTop: 10 }}>
+          Revisa y gestiona 
         </Text>
-
+        <Text style={{ color: "#1565C0", textAlign: "center", fontSize: 16, marginBottom: 20 }}>
+          la información de tu bebé.
+        </Text>
+      <View style={{alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
         {/* FORMULARIO */}
         {isEditing && (
-          <View style={[gs.card, { padding: 20 }]}>
+          <View style={[gs.card, { padding: 20,alignItems: "center", justifyContent: "center", marginBottom: 20,backgroundColor: "rgba(227, 242, 253, 0.8)", borderRadius: 15, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 10, elevation: 5 }]}>
+            <Image source={require("../../../static/images/baby-placeholder.png")} style={{ width: 100, height: 100, borderRadius: 50, marginBottom: 20 }} />
             <Text style={gs.cardTitle}>{selectedBaby?.id ? "Editar bebé" : "Añadir bebé"}</Text>
             <TextInput
-              style={gs.input}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
               placeholder="Nombre"
               value={selectedBaby?.name || ""}
               onChangeText={(text) => setSelectedBaby({ ...selectedBaby!, name: text })}
             />
             <TextInput
-              style={gs.input}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
               placeholder="Fecha de nacimiento (AAAA-MM-DD)"
               value={selectedBaby?.birthDate || ""}
               onChangeText={handleBirthDateChange}
@@ -181,7 +185,7 @@ export default function BabyInfo() {
             {/* Campo para el género */}
             <Picker
               selectedValue={selectedBaby?.genre || "OTHER"}
-              style={gs.input}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
               onValueChange={(itemValue) => setSelectedBaby({ ...selectedBaby!, genre: itemValue })}
             >
               <Picker.Item label="Niño" value="MALE" />
@@ -190,7 +194,7 @@ export default function BabyInfo() {
             </Picker>
 
             <TextInput
-              style={gs.input}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
               placeholder="Peso (kg)"
               keyboardType="decimal-pad"
               value={selectedBaby?.weight?.toString() || ""}
@@ -198,7 +202,7 @@ export default function BabyInfo() {
             />
 
             <TextInput
-              style={gs.input}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
               placeholder="Altura (cm)"
               keyboardType="decimal-pad"
               value={selectedBaby?.height?.toString() || ""}
@@ -206,7 +210,7 @@ export default function BabyInfo() {
             />
 
             <TextInput
-              style={gs.input}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
               placeholder="Perímetro cefálico (cm)"
               keyboardType="decimal-pad"
               value={selectedBaby?.cephalicPerimeter?.toString() || ""}
@@ -214,7 +218,7 @@ export default function BabyInfo() {
             />
 
             <TextInput
-              style={gs.input}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
               placeholder="Preferencias alimentarias"
               value={selectedBaby?.foodPreference || ""}
               onChangeText={(text) => setSelectedBaby({ ...selectedBaby!, foodPreference: text })}
@@ -228,6 +232,7 @@ export default function BabyInfo() {
             </TouchableOpacity>
           </View>
         )}
+        </View>
 
         {/* LISTADO DE BEBÉS */}
         <Text style={[gs.subHeaderText, { color: "#1565C0", marginBottom: 10, fontWeight: "bold" }]}>Mis bebés registrados</Text>
@@ -253,12 +258,15 @@ export default function BabyInfo() {
                 <Text style={gs.cardContent}>📏 Altura: {baby.height} cm</Text>
               </View>
 
+              <View style={{ flexDirection: "column", alignItems: "center", gap: 10 }}>
               <TouchableOpacity style={gs.mainButton} onPress={() => handleEditBaby(baby)}>
                 <Text style={gs.mainButtonText}>Editar</Text>
               </TouchableOpacity>
+              
               <TouchableOpacity style={[gs.mainButton, { backgroundColor: "red" }]} onPress={() => handleDeleteBaby(baby.id!)}>
                 <Text style={gs.mainButtonText}>Eliminar</Text>
               </TouchableOpacity>
+              </View>
             </View>
           )))}
         {!isEditing && (
