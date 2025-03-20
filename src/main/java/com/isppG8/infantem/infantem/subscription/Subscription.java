@@ -20,6 +20,9 @@ public class Subscription {
     private String stripeSubscriptionId;
 
     @NonNull
+    private String stripeCustomerId;
+
+    @NonNull
     private LocalDate startDate;
 
     @NonNull
