@@ -23,49 +23,54 @@ public class SubscriptionService {
 
     public SubscriptionService(SubscriptionRepository subscriptionRepository) {
         this.subscriptionRepository = subscriptionRepository;
+        Stripe.apiKey = stripeApiKey; // Configurar Stripe solo una vez
     }
 
     @Transactional
     public String createSubscription(User user, String priceId) throws StripeException {
-        Stripe.apiKey = stripeApiKey;
-
-        // 🔹 Buscar si el usuario ya tiene una suscripción activa
-        Optional<Subscription> existingSubscription = subscriptionRepository.findByUserAndActiveTrue(user);
-
+        // 🔹 Verificar si el usuario ya tiene una suscripción activa en la base de datos
+        Optional<com.isppG8.infantem.infantem.subscription.Subscription> existingSubscription = subscriptionRepository.findByUserAndActiveTrue(user);
         if (existingSubscription.isPresent()) {
             throw new IllegalStateException("El usuario ya tiene una suscripción activa.");
         }
 
-        // 🔹 Buscar si ya existe un cliente en Stripe para este usuario
-        String customerId;
-        if (existingSubscription.isEmpty() || existingSubscription.get().getStripeCustomerId() == null) {
-            // Si el usuario no tiene cliente en Stripe, lo creamos
-            CustomerCreateParams customerParams = CustomerCreateParams.builder()
-                .setEmail(user.getEmail())
-                .setName(user.getName())
-                .build();
-            Customer stripeCustomer = Customer.create(customerParams);
-            customerId = stripeCustomer.getId();
-        } else {
-            customerId = existingSubscription.get().getStripeCustomerId();
-        }
+        // 🔹 Buscar o crear un cliente en Stripe
+        String customerId = findOrCreateStripeCustomer(user);
 
         // 🔹 Crear suscripción en Stripe
         SubscriptionCreateParams subscriptionParams = SubscriptionCreateParams.builder()
             .setCustomer(customerId)
             .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
             .build();
+
         Subscription stripeSubscription = Subscription.create(subscriptionParams);
 
         // 🔹 Guardar la suscripción en la base de datos
-        Subscription subscription = new Subscription();
-        subscription.setUser(user);
-        subscription.setStripeSubscriptionId(stripeSubscription.getId());
-        subscription.setStripeCustomerId(customerId);
-        subscription.setStartDate(LocalDate.now());
-        subscription.setActive(true);
+        com.isppG8.infantem.infantem.subscription.Subscription newSubscription = new com.isppG8.infantem.infantem.subscription.Subscription();
+        newSubscription.setUser(user);
+        newSubscription.setStripeSubscriptionId(stripeSubscription.getId());
+        newSubscription.setStripeCustomerId(customerId); // ⚠ Asegúrate de que existe este campo en la entidad
+        newSubscription.setStartDate(LocalDate.now());
+        newSubscription.setActive(true);
 
-        subscriptionRepository.save(subscription);
+        subscriptionRepository.save(newSubscription);
         return stripeSubscription.getId();
+    }
+
+    private String findOrCreateStripeCustomer(User user) throws StripeException {
+        Optional<com.isppG8.infantem.infantem.subscription.Subscription> existingSubscription = subscriptionRepository.findByUser(user);
+
+        if (existingSubscription.isPresent() && existingSubscription.get().getStripeCustomerId() != null) {
+            return existingSubscription.get().getStripeCustomerId();
+        }
+
+        // Crear nuevo cliente en Stripe
+        CustomerCreateParams customerParams = CustomerCreateParams.builder()
+            .setEmail(user.getEmail())
+            .setName(user.getName())
+            .build();
+
+        Customer stripeCustomer = Customer.create(customerParams);
+        return stripeCustomer.getId();
     }
 }
