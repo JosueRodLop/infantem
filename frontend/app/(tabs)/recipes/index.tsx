@@ -184,7 +184,9 @@ export default function Page() {
         {allFilteredRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
-          <View>
+      <View
+      style= {{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 20}}
+      >
       <ScrollView
         ref={scrollRef}
         horizontal
@@ -221,7 +223,7 @@ export default function Page() {
       >
         <Image 
           source={require('../../../static/images/left-arrow.png')} 
-          style={{ width: 100, height: 100 }} 
+          style={{ width: 90, height: 90 }} 
         />
       </TouchableOpacity>
 
@@ -232,7 +234,7 @@ export default function Page() {
       >
         <Image 
           source={require('../../../static/images/rigth-arrow.png')} 
-          style={{ width: 100, height: 100 }} 
+          style={{ width: 90, height: 90 }} 
         />
       </TouchableOpacity>
 
