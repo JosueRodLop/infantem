@@ -1,4 +1,5 @@
 package com.isppG8.infantem.infantem.subscription;
+
 import com.stripe.model.Subscription;
 import com.stripe.param.SubscriptionCreateParams;
 import com.stripe.Stripe;
@@ -15,10 +16,8 @@ public class SubscriptionService {
     public String createSubscription(String customerId, String priceId) throws StripeException {
         Stripe.apiKey = stripeApiKey;
 
-        SubscriptionCreateParams params = SubscriptionCreateParams.builder()
-            .setCustomer(customerId)
-            .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
-            .build();
+        SubscriptionCreateParams params = SubscriptionCreateParams.builder().setCustomer(customerId)
+                .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build()).build();
 
         Subscription subscription = Subscription.create(params);
         return subscription.getId();

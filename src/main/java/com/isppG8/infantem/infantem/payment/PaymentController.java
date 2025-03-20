@@ -16,7 +16,7 @@ public class PaymentController {
     public ResponseEntity<String> getStripeCustomerId(@PathVariable Long userId) {
         Optional<Payment> payment = paymentService.getPaymentByUserId(userId);
         return payment.map(p -> ResponseEntity.ok(p.getStripeCustomerId()))
-                      .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    
+
 }

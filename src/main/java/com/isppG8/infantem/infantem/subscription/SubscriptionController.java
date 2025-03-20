@@ -28,7 +28,8 @@ public class SubscriptionController {
         }
 
         try {
-            String subscriptionId = subscriptionService.createSubscription(payment.get().getStripeCustomerId(), priceId);
+            String subscriptionId = subscriptionService.createSubscription(payment.get().getStripeCustomerId(),
+                    priceId);
             return ResponseEntity.ok("Suscripción creada con éxito. ID: " + subscriptionId);
         } catch (StripeException e) {
             return ResponseEntity.badRequest().body("Error al crear suscripción: " + e.getMessage());

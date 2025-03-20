@@ -12,8 +12,8 @@ public class StripeWebhookController {
     private static final String STRIPE_WEBHOOK_SECRET = "whsec_tu_clave_secreta";
 
     @PostMapping
-    public ResponseEntity<String> handleWebhook(@RequestBody String payload, 
-                                                @RequestHeader("Stripe-Signature") String signatureHeader) {
+    public ResponseEntity<String> handleWebhook(@RequestBody String payload,
+            @RequestHeader("Stripe-Signature") String signatureHeader) {
         try {
             Event event = Webhook.constructEvent(payload, signatureHeader, STRIPE_WEBHOOK_SECRET);
 
