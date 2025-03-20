@@ -29,7 +29,8 @@ public class SubscriptionService {
     @Transactional
     public String createSubscription(User user, String priceId) throws StripeException {
         // 🔹 Verificar si el usuario ya tiene una suscripción activa en la base de datos
-        Optional<com.isppG8.infantem.infantem.subscription.Subscription> existingSubscription = subscriptionRepository.findByUserAndActiveTrue(user);
+        Optional<com.isppG8.infantem.infantem.subscription.Subscription> existingSubscription = subscriptionRepository
+                .findByUserAndActiveTrue(user);
         if (existingSubscription.isPresent()) {
             throw new IllegalStateException("El usuario ya tiene una suscripción activa.");
         }
@@ -38,10 +39,8 @@ public class SubscriptionService {
         String customerId = findOrCreateStripeCustomer(user);
 
         // 🔹 Crear suscripción en Stripe
-        SubscriptionCreateParams subscriptionParams = SubscriptionCreateParams.builder()
-            .setCustomer(customerId)
-            .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
-            .build();
+        SubscriptionCreateParams subscriptionParams = SubscriptionCreateParams.builder().setCustomer(customerId)
+                .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build()).build();
 
         Subscription stripeSubscription = Subscription.create(subscriptionParams);
 
@@ -58,17 +57,16 @@ public class SubscriptionService {
     }
 
     private String findOrCreateStripeCustomer(User user) throws StripeException {
-        Optional<com.isppG8.infantem.infantem.subscription.Subscription> existingSubscription = subscriptionRepository.findByUser(user);
+        Optional<com.isppG8.infantem.infantem.subscription.Subscription> existingSubscription = subscriptionRepository
+                .findByUser(user);
 
         if (existingSubscription.isPresent() && existingSubscription.get().getStripeCustomerId() != null) {
             return existingSubscription.get().getStripeCustomerId();
         }
 
         // Crear nuevo cliente en Stripe
-        CustomerCreateParams customerParams = CustomerCreateParams.builder()
-            .setEmail(user.getEmail())
-            .setName(user.getName())
-            .build();
+        CustomerCreateParams customerParams = CustomerCreateParams.builder().setEmail(user.getEmail())
+                .setName(user.getName()).build();
 
         Customer stripeCustomer = Customer.create(customerParams);
         return stripeCustomer.getId();
