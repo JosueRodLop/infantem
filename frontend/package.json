@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~4.0.1",
     "@react-native-picker/picker": "^2.11.0",
+    "@stripe/stripe-js": "^1.49.0",
     "expo": "~52.0.31",
     "expo-constants": "~17.0.7",
     "expo-linking": "~7.0.5",
