@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("api/v1/disease")
 public class DiseaseController {
-    
+
     private final DiseaseService diseaseService;
 
     @Autowired
