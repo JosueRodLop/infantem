@@ -8,7 +8,8 @@ import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "payment_table")
-@Getter @Setter
+@Getter
+@Setter
 public class Payment {
 
     @Id
