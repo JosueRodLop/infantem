@@ -3,7 +3,7 @@ import { ActivityIndicator, Modal, TextInput, Alert } from "react-native";
 import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, Link  } from "expo-router";
 import { useAuth } from "../../../context/AuthContext";
 
 const avatarOptions = [
@@ -148,6 +148,10 @@ export default function Account() {
         {<TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
           <Text style={gs.secondaryButtonText}>Cerrar Sesión</Text>
         </TouchableOpacity>}
+
+        <Link href="/PaymentView" style={[gs.secondaryButton, { marginTop: 20 }]}>
+           <Text style={gs.secondaryButtonText}>¿Ya eres usuario Premium?</Text>
+        </Link>
 
         <Modal visible={modalVisible} animationType="fade" transparent={true}>
           <View style={gs.modalOverlay}>
