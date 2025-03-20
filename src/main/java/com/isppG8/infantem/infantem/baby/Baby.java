@@ -22,7 +22,6 @@ import com.isppG8.infantem.infantem.milestoneCompleted.MilestoneCompleted;
 import com.isppG8.infantem.infantem.nutritionalContribution.NutritionalContribution;
 import com.isppG8.infantem.infantem.user.User;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

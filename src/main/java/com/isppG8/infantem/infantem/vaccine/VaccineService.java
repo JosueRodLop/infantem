@@ -19,7 +19,7 @@ public class VaccineService {
     private final VaccineRepository vaccineRepository;
     private final BabyRepository babyRepository;
     private final UserService userService;
-    
+
     @Autowired
     public VaccineService(VaccineRepository vaccineRepository, BabyRepository babyRepository, UserService userService) {
         this.vaccineRepository = vaccineRepository;
