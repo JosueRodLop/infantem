@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { Text, View, TextInput, ScrollView, Image } from "react-native";
-import { Link } from "expo-router";
+import { useState, useEffect,useRef  } from "react";
+import { Text, View, TextInput, ScrollView, Image, ImageBackground,Dimensions,TouchableOpacity  } from "react-native";
+import { Link,useRouter } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -22,6 +22,11 @@ export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
 
   const { user, token } = useAuth();
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const router = useRouter();
+  const scrollRef = useRef(null);
+  const screenWidth = Dimensions.get('window').width;
 
   useEffect(() => {
     obtainAllRecommendedRecipes();
@@ -120,24 +125,63 @@ export default function Page() {
 
   };
 
-  return (
-    <View style={{ flex: 1 }}>
+  const handleScroll = (event) => {
+    const slideIndex = Math.round(event.nativeEvent.contentOffset.x / screenWidth);
+    setActiveIndex(slideIndex);
+  };
 
-      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, flexGrow: 1 }]}>
-        <Text style={gs.headerText}>Recetas de nuestros expertos en nutrición</Text>
-        <Text style={gs.bodyText}>
-          Encuentre recetas adecuadas en función de la edad y las preferencias de su bebé
+  const goToSlide = (index) => {
+    scrollRef.current?.scrollTo({ x: index * screenWidth, animated: true });
+    setActiveIndex(index);
+  };
+
+  return (
+
+    <ImageBackground
+      source={require("../../../static/images/Background.png")}
+      style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center" }}
+      imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
+    >
+      <ScrollView   
+      ref={scrollRef}
+      scrollEventThrottle={16}  
+      onScroll={handleScroll}
+      contentContainerStyle={ { backgroundColor: "transparent" }}>
+        <Image source={require("../../../static/images/Bottle.png")} style={{ position: 'absolute', top: "0%", right: "65%", width: 150, height: 150, transform: [{ rotate: '15deg' }] }} />
+        <View
+          style={{
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 50,
+          }}>
+        <Text style={{ color: "#1565C0", fontSize: 36,width:"90%", fontWeight: "bold", textAlign: "center", marginTop: 70 }}>
+          Recetas Recomendadas 
+        </Text>
+        <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginTop: -5 }}>
+          Por Nuestros Expertos
         </Text>
 
-        <View style={{ width: "90%" }}>
-          <TextInput
-            style={gs.input}
-            placeholder="Busca recetas..."
-            value={searchQuery}
-            onChangeText={handleSearch}
-          />
 
-          <View style={{ flexDirection: "row", gap: 10, marginVertical: 10, alignSelf: "flex-start" }}>
+        <Text style={[gs.bodyText, { color: "#1565C0" }]}>
+          ¡Encuentre recetas perfectas para su bebé!
+        </Text>
+        <Text style={[gs.bodyText, { color: "#1565C0" }]}>
+          Adecuadas en función de su edad y preferencias
+        </Text>
+        </View>
+        <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
+          <View style={{ flexDirection: "row", width: "90%",backgroundColor:"white", alignItems: "center", borderWidth: 1, borderColor: "#1565C0", borderRadius: 8, opacity: 0.8, paddingHorizontal: 10 }}>
+            <TextInput
+              style={{ flex: 1, padding: 12 }}
+              placeholder="Busca recetas..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+            <Image source={require("../../../static/images/MagnifyingGlass.png")} style={{ width: 40, height: 40, opacity: searchQuery.trim() === "" ? 1 : 1 }} />
+          </View>
+
+          <View style={{ gap: 10, marginVertical: 10, alignSelf: "flex-start", alignItems: "center", width: "100%" }}>
             <Link style={gs.mainButton} href={"/recipes/add"}>
               <Text style={gs.mainButtonText}>Añade una receta</Text>
             </Link>
@@ -145,35 +189,76 @@ export default function Page() {
         </View>
         <View>
         </View>
+        
 
         {allFilteredRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
-          allFilteredRecipes.map((recipe: Recipe) => (
-            <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
-              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
-                <View>
-                  <Image
-                    source={require('frontend/assets/adaptive-icon.png')}
-                    style={{ width: 50, height: 50 }}
-                  />
-                </View>
-                <View>
-                  <Text style={gs.cardTitle}>{recipe.name}</Text>
-                  <Text style={gs.cardContent}>{recipe.description}</Text>
-                </View>
+      <View
+      style= {{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -80}}
+      >
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        style={{ paddingVertical: 150, marginLeft: 0,marginTop: 0 }}
+      >
+        {allFilteredRecipes.map((recipe, index) => (
+          <TouchableOpacity key={index} onPress={() => router.push(`/recipes/detail?recipeId=${recipe.id}`)}>
+            <View>
+              <Image
+                source={require('frontend/assets/adaptive-icon.png')}
+                style={{ width: 200, height: 200, borderRadius: 10, marginRight: 40,marginLeft: 40 }}
+              />
+              <View style={{
+                position: 'absolute', top: 160, left: 40, right: 60, bottom: 0, width:200,
+                justifyContent: 'center', alignItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.4)', borderRadius: 10
+              }}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white', textAlign: 'center' }}>
+                  {recipe.name}
+                </Text>
               </View>
-            </Link>
-          ))
-        )
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      {/* Flecha Izq */}
+      <TouchableOpacity 
+        onPress={() => goToSlide(activeIndex - 1)} 
+        style={{ position: 'absolute', right: 0,width:1200, top: '70%', zIndex: 1 }}
+      >
+        <Image 
+          source={require('../../../static/images/left-arrow.png')} 
+          style={{ width: 90, height: 90 }} 
+        />
+      </TouchableOpacity>
 
-        }
+      {/* Flecha derecha */}
+      <TouchableOpacity 
+        onPress={() => goToSlide(activeIndex + 1)} 
+        style={{ position: 'absolute', right: -1100,width:"100%", top: '70%', zIndex: 1 }}
+      >
+        <Image 
+          source={require('../../../static/images/rigth-arrow.png')} 
+          style={{ width: 90, height: 90 }} 
+        />
+      </TouchableOpacity>
 
-        <Text style={[gs.headerText, { marginTop: 50 }]}>Recetas recomendadas según la edad</Text>
+      
+    </View>
+        )}
 
+        <Image source={require("../../../static/images/Diaper.png")} style={{ position: 'absolute', top: "50%", right: "10%", width: 150, height: 80, transform: [{ rotate: '15deg' }] }} />
+
+        <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
+        <Text style={[gs.headerText, { color: "#1565C0",fontSize:38 }]}>Recetas recomendadas según la edad</Text>
         <TextInput
-          style={[gs.input, { width: "25%", marginHorizontal: "auto" }]}
-          placeholder="Introduce la edad"
+          style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"50%"}]} 
+          placeholder="Introduce la edad de tu bebé"
           keyboardType="numeric"
           value={age !== null ? age.toString() : ""}
           onChangeText={(text) => {
@@ -184,13 +269,14 @@ export default function Page() {
           onSubmitEditing={fetchRecommendedRecipes}
           returnKeyType="done"
         />
+        
 
         {recommendedFilteredRecipes.length === 0 ? (
-          <Text>No se encontraron recetas.</Text>
+          <Text style={{ color: "#1565C0" }}>No se encontraron recetas 😥 </Text>
         ) : (
           recommendedFilteredRecipes.map((recipe: Recipe) => (
             <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
-              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
+              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10,width:"100%", marginBottom: 10 }]}>
                 <View>
                   <Image
                     source={require('frontend/assets/adaptive-icon.png')}
@@ -205,15 +291,18 @@ export default function Page() {
             </Link>
           ))
         )}
+        </View>
 
-        <Text style={[gs.headerText, { marginTop: 50 }]}>Todas tus recetas</Text>
+        <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
+
+        <Text style={[gs.headerText, { color: "#1565C0",fontSize:38, marginTop:30 }]}>Todas tus recetas</Text>
 
         {userFilteredRecipes.length === 0 ? (
-          <Text>No se encontraron recetas.</Text>
+          <Text style={{ color: "#1565C0" }}>No se encontraron recetas 😥 </Text>
         ) : (
           userFilteredRecipes.map((recipe: Recipe) => (
             <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
-              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
+              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10, width:"100%" }]}>
                 <View>
                   <Image
                     source={require('frontend/assets/adaptive-icon.png')}
@@ -228,7 +317,8 @@ export default function Page() {
             </Link>
           ))
         )}
+        </View>
       </ScrollView>
-    </View>
+    </ImageBackground>
   );
 }
