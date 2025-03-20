@@ -30,8 +30,6 @@
 		<java.version>21</java.version>
 		<checkstyle.config.location>/checkstyle.xml</checkstyle.config.location>
   	</properties>
-		<checkstyle.config.location>/checkstyle.xml</checkstyle.config.location>
-  	</properties>
 	<profiles>
 		<profile>
 			<id>development</id>
