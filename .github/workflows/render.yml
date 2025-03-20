@@ -1,7 +1,7 @@
 services:
   - name: backend
     type: web
-    env: static  # Si usas Docker, cambia a "docker". Si no, usa "static"
+    env: java
     repo: https://github.com/ISPP-G-8/infantem.git
     branch: feat/payment_platform_and_subscription_model
     buildCommand: "./mvnw clean package -DskipTests"
