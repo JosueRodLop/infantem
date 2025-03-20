@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { Text, View, TextInput, ScrollView, Image, ImageBackground } from "react-native";
-import { Link } from "expo-router";
+import { useState, useEffect,useRef  } from "react";
+import { Text, View, TextInput, ScrollView, Image, ImageBackground,Dimensions,TouchableOpacity  } from "react-native";
+import { Link,useRouter } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -22,6 +22,11 @@ export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
 
   const { user, token } = useAuth();
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const router = useRouter();
+  const scrollRef = useRef(null);
+  const screenWidth = Dimensions.get('window').width;
 
   useEffect(() => {
     obtainAllRecommendedRecipes();
@@ -120,6 +125,16 @@ export default function Page() {
 
   };
 
+  const handleScroll = (event) => {
+    const slideIndex = Math.round(event.nativeEvent.contentOffset.x / screenWidth);
+    setActiveIndex(slideIndex);
+  };
+
+  const goToSlide = (index) => {
+    scrollRef.current?.scrollTo({ x: index * screenWidth, animated: true });
+    setActiveIndex(index);
+  };
+
   return (
 
     <ImageBackground
@@ -131,7 +146,10 @@ export default function Page() {
         <Image source={require("../../../static/images/Bottle.png")} style={{ position: 'absolute', top: "0%", right: "70%", width: 150, height: 150, transform: [{ rotate: '15deg' }] }} />
 
         <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginTop: -5 }}>
-          Recetas Recomendadas Por Nuestros Expertos
+          Recetas Recomendadas 
+        </Text>
+        <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginTop: -5 }}>
+          Por Nuestros Expertos
         </Text>
 
 
@@ -143,7 +161,7 @@ export default function Page() {
         </Text>
 
         <View style={{ width: "100%" }}>
-          <View style={{ flexDirection: "row", alignItems: "center", borderWidth: 1, borderColor: "#1565C0", borderRadius: 8, opacity: 0.8, paddingHorizontal: 10 }}>
+          <View style={{ flexDirection: "row",backgroundColor:"white", alignItems: "center", borderWidth: 1, borderColor: "#1565C0", borderRadius: 8, opacity: 0.8, paddingHorizontal: 10 }}>
             <TextInput
               style={{ flex: 1, padding: 12 }}
               placeholder="Busca recetas..."
@@ -161,29 +179,66 @@ export default function Page() {
         </View>
         <View>
         </View>
+        
 
         {allFilteredRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
-          allFilteredRecipes.map((recipe: Recipe) => (
-            <Link href={`/recipes/detail?recipeId=${recipe.id}`}>
-              <View style={[gs.card, { display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }]}>
-                <View>
-                  <Image
-                    source={require('frontend/assets/adaptive-icon.png')}
-                    style={{ width: 50, height: 50 }}
-                  />
-                </View>
-                <View>
-                  <Text style={gs.cardTitle}>{recipe.name}</Text>
-                  <Text style={gs.cardContent}>{recipe.description}</Text>
-                </View>
+          <View>
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        style={{ paddingVertical: 150,width:1000, marginLeft: 10,marginTop: -50 }}
+      >
+        {allFilteredRecipes.map((recipe, index) => (
+          <TouchableOpacity key={index} onPress={() => router.push(`/recipes/detail?recipeId=${recipe.id}`)}>
+            <View>
+              <Image
+                source={require('frontend/assets/adaptive-icon.png')}
+                style={{ width: 200, height: 200, borderRadius: 10, marginRight: 50 }}
+              />
+              <View style={{
+                position: 'absolute', top: 150, left: 0, right: 50, bottom: 0,
+                justifyContent: 'center', alignItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.4)', borderRadius: 10
+              }}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white', textAlign: 'center' }}>
+                  {recipe.name}
+                </Text>
               </View>
-            </Link>
-          ))
-        )
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      {/* Flecha Izq */}
+      <TouchableOpacity 
+        onPress={() => goToSlide(activeIndex - 1)} 
+        style={{ position: 'absolute', right: 100,width:"100%", top: '50%', zIndex: 1 }}
+      >
+        <Image 
+          source={require('../../../static/images/left-arrow.png')} 
+          style={{ width: 100, height: 100 }} 
+        />
+      </TouchableOpacity>
 
-        }
+      {/* Flecha derecha */}
+      <TouchableOpacity 
+        onPress={() => goToSlide(activeIndex + 1)} 
+        style={{ position: 'absolute', right: -1000,width:"100%", top: '50%', zIndex: 1 }}
+      >
+        <Image 
+          source={require('../../../static/images/rigth-arrow.png')} 
+          style={{ width: 100, height: 100 }} 
+        />
+      </TouchableOpacity>
+
+      
+    </View>
+        )}
 
         <Text style={[gs.headerText, { marginTop: 50 }]}>Recetas recomendadas según la edad</Text>
 
