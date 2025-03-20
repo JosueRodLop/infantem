@@ -1,10 +1,12 @@
 services:
   - name: backend
     type: web
-    env: java
+    env: ubuntu  # Esto obliga a Render a usar un entorno Linux base
     repo: https://github.com/ISPP-G-8/infantem.git
     branch: feat/payment_platform_and_subscription_model
-    buildCommand: "./mvnw clean package -DskipTests"
+    buildCommand: |
+      sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
+      ./mvnw clean package -DskipTests
     startCommand: "java -jar target/*.jar"
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -14,7 +16,7 @@ services:
       - key: PAYPAL_CLIENT_SECRET
         sync: false  # Lo defines en Render
       - key: JAVA_HOME
-        value: /opt/render/project/java21
+        value: /usr/lib/jvm/java-21-openjdk
     plan: free  # Puedes cambiarlo a "starter" si quieres más recursos
 
   - name: frontend
