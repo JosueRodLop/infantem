@@ -8,11 +8,13 @@ services:
     startCommand: "java -jar target/*.jar"
     envVars:
       - key: SPRING_PROFILES_ACTIVE
-        value: prod
+        value: production
       - key: PAYPAL_CLIENT_ID
         sync: false  # Lo defines en Render
       - key: PAYPAL_CLIENT_SECRET
         sync: false  # Lo defines en Render
+      - key: JAVA_HOME
+        value: /opt/render/project/java21
     plan: free  # Puedes cambiarlo a "starter" si quieres más recursos
 
   - name: frontend
