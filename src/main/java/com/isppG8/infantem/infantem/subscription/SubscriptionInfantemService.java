@@ -5,6 +5,8 @@ import com.stripe.model.Subscription;
 import com.stripe.param.CustomerCreateParams;
 import com.stripe.param.SubscriptionCreateParams;
 import com.isppG8.infantem.infantem.user.User;
+import com.stripe.param.checkout.SessionCreateParams;
+import com.stripe.model.checkout.Session;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,6 +88,44 @@ public class SubscriptionInfantemService {
             SubscriptionInfantem subscription = subOpt.get();
             subscription.setActive(isActive);
             subscriptionInfantemRepository.save(subscription);
+        }
+    }
+
+    public String crearClienteStripe(String email) {
+        Stripe.apiKey = "TU_SECRET_KEY";
+    
+        CustomerCreateParams params = CustomerCreateParams.builder()
+            .setEmail(email)
+            .build();
+    
+        try {
+            Customer customer = Customer.create(params);
+            return customer.getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    
+    public String crearCheckoutSession(String customerId, String priceId) {
+        SessionCreateParams params = SessionCreateParams.builder()
+            .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
+            .setCustomer(customerId)
+            .setSuccessUrl("https://tuapp.com/success")
+            .setCancelUrl("https://tuapp.com/cancel")
+            .addLineItem(SessionCreateParams.LineItem.builder()
+                .setPrice(priceId)
+                .setQuantity(1L)
+                .build())
+            .build();
+
+        try {
+            Session session = Session.create(params);
+            return session.getUrl();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
