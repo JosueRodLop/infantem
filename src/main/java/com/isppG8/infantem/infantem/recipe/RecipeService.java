@@ -42,31 +42,29 @@ public class RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public Recipe getRecipeById(Long recipeId) {
+    public Recipe getRecipeById(Long recipeId, Integer userId) {
         Recipe recipe = this.recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe", "id", recipeId));
-        User user = userService.findCurrentUser();
-        if (recipe.getUser() != null && recipe.getUser().getId() != user.getId()) {
+
+        if (recipe.getUser() != null && recipe.getUser().getId() != userId) {
             throw new ResourceNotOwnedException(recipe);
         }
         return recipe;
     }
 
     @Transactional
-    public Recipe createRecipe(Recipe recipe) {
-        User user = userService.findCurrentUser();
+    public Recipe createRecipe(Recipe recipe, User user) {
         recipe.setUser(user);
         return this.recipeRepository.save(recipe);
     }
 
     @Transactional
-    public Recipe updateRecipe(Long recipeId, Recipe recipeDetails) {
+    public Recipe updateRecipe(Long recipeId, Recipe recipeDetails, Integer userId) {
         Recipe recipe = this.recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe", "id", recipeId));
-        User user = userService.findCurrentUser();
 
         // If the recipe does not belong to the current user, throw an exception
-        if (recipe.getUser() == null || recipe.getUser().getId() != user.getId()) {
+        if (recipe.getUser() == null || recipe.getUser().getId() != userId) {
             throw new ResourceNotOwnedException(recipe);
         }
 
@@ -81,12 +79,11 @@ public class RecipeService {
     }
 
     @Transactional
-    public void deleteRecipe(Long recipeId) {
+    public void deleteRecipe(Long recipeId, Integer userId) {
         Recipe recipe = this.recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe", "id", recipeId));
-        User user = userService.findCurrentUser();
 
-        if (recipe.getUser() == null || recipe.getUser().getId() != user.getId()) {
+        if (recipe.getUser() == null || recipe.getUser().getId() != userId) {
             throw new ResourceNotOwnedException(recipe);
         }
         this.recipeRepository.delete(recipe);

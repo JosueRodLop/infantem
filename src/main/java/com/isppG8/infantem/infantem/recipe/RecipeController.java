@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isppG8.infantem.infantem.user.User;
+import com.isppG8.infantem.infantem.user.UserService;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -25,9 +28,12 @@ public class RecipeController {
 
     private RecipeService recipeService;
 
+    private UserService userService;
+
     @Autowired
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, UserService userService) {
         this.recipeService = recipeService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -84,7 +90,8 @@ public class RecipeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-        Recipe recipe = recipeService.getRecipeById(id);
+        User user = userService.findCurrentUser();
+        Recipe recipe = recipeService.getRecipeById(id, user.getId());
         return ResponseEntity.ok(recipe);
     }
 
@@ -110,20 +117,22 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipe) {
-
-        Recipe createdRecipe = recipeService.createRecipe(recipe);
+        User user = userService.findCurrentUser();
+        Recipe createdRecipe = recipeService.createRecipe(recipe, user);
         return ResponseEntity.status(201).body(createdRecipe);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @Valid @RequestBody Recipe recipeDetails) {
-        Recipe updatedRecipe = recipeService.updateRecipe(id, recipeDetails);
+        User user = userService.findCurrentUser();
+        Recipe updatedRecipe = recipeService.updateRecipe(id, recipeDetails, user.getId());
         return ResponseEntity.ok(updatedRecipe);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRecipe(@PathVariable Long id) {
-        recipeService.deleteRecipe(id);
+        User user = userService.findCurrentUser();
+        recipeService.deleteRecipe(id, user.getId());
         return ResponseEntity.ok().build();
     }
 
