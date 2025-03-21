@@ -66,4 +66,26 @@ public class RecipeServiceTest {
         assertEquals(allRecipes, noFilteredRecipes, "All recipes should have min age greater than 0");
     }
 
+    @Test
+    public void recipeFilterByNutrientTest() {
+        final String EXISTING_NUTRIENT = "zanahoria";
+        final String NON_EXISTING_NUTRIENT = "chocolate";
+
+        List<Recipe> recipesWithNutrient = recipeService.getRecipesByNutrient(EXISTING_NUTRIENT);
+        assertTrue(recipesWithNutrient.size() > 0, "Recipes containing the nutrient should exist.");
+
+        boolean allRecipesContainNutrient = recipesWithNutrient.stream()
+                .allMatch(recipe -> recipe.getIngredients().toLowerCase().contains(EXISTING_NUTRIENT));
+        assertTrue(allRecipesContainNutrient, "All returned recipes should contain the nutrient " + EXISTING_NUTRIENT);
+
+        List<Recipe> recipesWithNonExistingNutrient = recipeService.getRecipesByNutrient(NON_EXISTING_NUTRIENT);
+        assertTrue(recipesWithNonExistingNutrient.isEmpty(), "No recipes should contain the nutrient " + NON_EXISTING_NUTRIENT);
+
+        List<Recipe> recipesWithNullNutrient = recipeService.getRecipesByNutrient(null);
+        assertTrue(recipesWithNullNutrient.isEmpty(), "No recipes should be returned for null nutrient.");
+
+        List<Recipe> recipesWithEmptyNutrient = recipeService.getRecipesByNutrient("");
+        assertTrue(recipesWithEmptyNutrient.isEmpty(), "No recipes should be returned for empty nutrient.");
+    }
+
 }
