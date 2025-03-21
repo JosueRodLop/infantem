@@ -54,7 +54,7 @@ public class SubscriptionInfantemService {
         return stripeSubscription.getId();
     }
 
-    private String findOrCreateStripeCustomer(User user) throws StripeException {
+    String findOrCreateStripeCustomer(User user) throws StripeException {
         Optional<SubscriptionInfantem> existingSubscription = subscriptionInfantemRepository.findByUser(user);
 
         if (existingSubscription.isPresent() && existingSubscription.get().getStripeCustomerId() != null) {
