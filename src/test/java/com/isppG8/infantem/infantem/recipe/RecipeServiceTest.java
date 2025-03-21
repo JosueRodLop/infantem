@@ -1,22 +1,17 @@
 package com.isppG8.infantem.infantem.recipe;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Disabled;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
-@SuppressWarnings("unused")
 @SpringBootTest
+@ActiveProfiles("test")
 @Transactional
 public class RecipeServiceTest {
     private RecipeService recipeService;
@@ -26,34 +21,26 @@ public class RecipeServiceTest {
         this.recipeService = recipeService;
     }
 
-    /*
-     * @Test public void testGetRecommendedRecipesWithOutAllergens() { //Añadir test para null pointer List<Recipe>
-     * recipes = recipeService.getRecommendedRecipes(1); assertNotNull(recipes); assertEquals(recipes.size(), 4); }
-     */
+    final int BABY_AGE = 6;
+    final int HUGE_BABY_AGE = 999;
 
-    // @Test
-    // @Disabled
-    /*
-     * This test cannot be executed yet because Food entity still has no relationship with allergen
-     */
+    @Test
+    public void recipeFilterByMinAgeTest() {
+        final List<Recipe> allRecipes = recipeService.findAllRecipes();
 
-    /*
-     * public void testGetRecommendedRecipesWithAllergens() { List<Recipe> recipes =
-     * recipeService.getRecommendedRecipes(2); assertNotNull(recipes); assertFalse(recipes.isEmpty()); }
-     */
+        List<Recipe> filtered_recipes = recipeService.getRecipeByMinAge(BABY_AGE);
+        assertTrue(filtered_recipes.size() < allRecipes.size(), "Filtered recipe list size should be less than original list");
 
-    /*
-     * @Test public void testUserBabyNotFoundInRecipeRecommendations() { ResponseStatusException exception =
-     * assertThrows(ResponseStatusException.class, () -> recipeService.getRecommendedRecipes(3423423));
-     * assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode()); }
-     * @Test public void testSearchRecipes() { List<Recipe> recipes = recipeService.searchRecipes("Pollo");
-     * assertNotNull(recipes); assertFalse(recipes.isEmpty()); assertEquals(recipes.size(), 1); }
-     * @Test public void testSaveFavoriteRecipe() { Long userId = 1L; Long recipeId = 1L;
-     * recipeService.saveFavoriteRecipe(userId, recipeId); List<Recipe> favoriteRecipes =
-     * recipeService.getFavoriteRecipes(userId); assertTrue(favoriteRecipes.stream().anyMatch(recipe ->
-     * recipe.getId().equals(recipeId))); }
-     * @Test public void testGetFavoriteRecipes() { Long userId = 1L; List<Recipe> favoriteRecipes =
-     * recipeService.getFavoriteRecipes(userId); assertNotNull(favoriteRecipes); assertFalse(favoriteRecipes.isEmpty());
-     * assertEquals(favoriteRecipes.size(), 2); }
-     */
+        Boolean allRecipesHasCorrectMinAge = filtered_recipes.stream()
+                .allMatch(recipe -> BABY_AGE >= recipe.getMinRecommendedAge());
+
+        assertTrue(allRecipesHasCorrectMinAge, "All recipes should has min recommended age less than " + BABY_AGE);
+
+        List<Recipe> emptyFilteredRecipe = recipeService.getRecipeByMinAge(0);
+        assertTrue(emptyFilteredRecipe.isEmpty(), "This filtered list should be empty: " + emptyFilteredRecipe);
+
+        List<Recipe> noFilteredRecipes = recipeService.getRecipeByMinAge(HUGE_BABY_AGE);
+        assertEquals(allRecipes, noFilteredRecipes, "All recipes should have min age greater than 0");
+    }
+
 }
