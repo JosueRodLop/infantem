@@ -26,4 +26,7 @@ public interface SubscriptionInfantemRepository extends JpaRepository<Subscripti
 
     @Query("SELECT s FROM SubscriptionInfantem s WHERE s.stripeSubscriptionId = :stripeSubscriptionId")
     Optional<SubscriptionInfantem> findByStripeSubscriptionId(@Param("stripeSubscriptionId") String stripeSubscriptionId);
+
+    @Query("SELECT s FROM SubscriptionInfantem s WHERE s.stripeCustomerId = :stripeCustomerId")
+    Optional<User> findByStripeCustomerId(String stripeCustomerId);
 }
