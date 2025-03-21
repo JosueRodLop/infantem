@@ -23,7 +23,7 @@ public class IntakeController {
         return intakeService.getAllIntakes();
     }
 
-        @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public Optional<Intake> getIntakeById(@PathVariable Long id) {
         return intakeService.getIntakeById(id);
     }
@@ -37,7 +37,5 @@ public class IntakeController {
     public void deleteIntake(@PathVariable Long id) {
         intakeService.deleteIntake(id);
     }
-    
+
 }
-
-

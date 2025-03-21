@@ -116,6 +116,7 @@ module.exports = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     marginVertical: 10,
+    marginHorizontal: 10,
   },
   cardTitle: {
     fontSize: 18,

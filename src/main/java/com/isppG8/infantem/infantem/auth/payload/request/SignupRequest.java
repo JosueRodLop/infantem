@@ -19,7 +19,7 @@ public class SignupRequest {
 
     @NotBlank
     private String password;
-    
+
     @Email
     @NotBlank
     private String email;

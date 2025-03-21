@@ -8,14 +8,20 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.recipe.Recipe;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@JsonIdentityInfo(scope = Allergen.class,generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Allergen.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 public class Allergen {
 
@@ -29,17 +35,10 @@ public class Allergen {
     @ManyToMany(mappedBy = "allergens")
     private List<Recipe> recipes = new ArrayList<>();
 
-    
-
     @ManyToMany
-    @JoinTable(
-        name = "baby_allergen",
-        joinColumns = @JoinColumn(name = "baby_id"),
-        inverseJoinColumns = @JoinColumn(name = "allergen_id")
-    )
+    @JoinTable(name = "baby_allergen", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "allergen_id"))
     private List<Baby> babies = new ArrayList<>();
 
-   
     public Allergen() {
     }
 
@@ -48,4 +47,3 @@ public class Allergen {
         this.description = description;
     }
 }
-

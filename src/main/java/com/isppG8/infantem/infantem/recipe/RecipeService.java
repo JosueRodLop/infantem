@@ -10,13 +10,11 @@ import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 
-
 @Service
 public class RecipeService {
-    
+
     private RecipeRepository recipeRepository;
     private UserService userService;
-
 
     @Autowired
     public RecipeService(RecipeRepository recipeRepository, UserService userService) {
@@ -24,13 +22,19 @@ public class RecipeService {
         this.userService = userService;
     }
 
-    //TODO: change age to babyId
+    @Transactional(readOnly = true)
+    public List<Recipe> getAllRecommendedRecipes() {
+        return this.recipeRepository.findAllRecommendedRecipes();
+    }
+
+    // TODO: change age to babyId
     @Transactional(readOnly = true)
     public List<Recipe> getRecommendedRecipes(Integer age) {
         return this.recipeRepository.findRecommendedRecipes(age);
     }
 
-    //TODO: Valorate if it is necessary to change the method to just get the recipes of the current user
+    // TODO: Valorate if it is necessary to change the method to just get the
+    // recipes of the current user
     @Transactional(readOnly = true)
     public List<Recipe> getRecipesByUserId(Long userId) {
         return this.recipeRepository.findRecipesByUserId(userId);
@@ -41,7 +45,7 @@ public class RecipeService {
         Recipe recipe = this.recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe", "id", recipeId));
         User user = userService.findCurrentUser();
-        if(recipe.getUser() != null && recipe.getUser().getId() != user.getId()) {
+        if (recipe.getUser() != null && recipe.getUser().getId() != user.getId()) {
             throw new ResourceNotOwnedException(recipe);
         }
         return recipe;
@@ -88,7 +92,3 @@ public class RecipeService {
     }
 
 }
-
-
-
-

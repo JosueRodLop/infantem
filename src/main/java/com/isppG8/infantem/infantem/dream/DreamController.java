@@ -5,14 +5,28 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/dream")
 public class DreamController {
-    
-    @Autowired
+
     private DreamService dreamService;
+
+    @Autowired
+    public DreamController(DreamService dreamService) {
+        this.dreamService = dreamService;
+    }
 
     @GetMapping
     public List<Dream> getAllDreams() {
@@ -26,14 +40,14 @@ public class DreamController {
     }
 
     @PostMapping
-    public Dream createDream(@RequestBody Dream dream) {
-        return dreamService.createDream(dream);
+    public ResponseEntity<Dream> createDream(@Valid @RequestBody Dream dream) {
+        return ResponseEntity.ok(dreamService.createDream(dream));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Dream> updateDream(@PathVariable Long id, @RequestBody Dream dreamDetails) {
-        Optional<Dream> updatedDream = dreamService.updateDream(id, dreamDetails);
-        return updatedDream.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Dream> updateDream(@PathVariable Long id, @Valid @RequestBody Dream dreamDetails) {
+        Dream updatedDream = dreamService.updateDream(id, dreamDetails);
+        return ResponseEntity.ok(updatedDream);
     }
 
     @DeleteMapping("/{id}")
