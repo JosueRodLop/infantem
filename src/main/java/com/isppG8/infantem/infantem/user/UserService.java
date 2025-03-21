@@ -106,5 +106,4 @@ public class UserService {
         return userRepository.findByStripeCustomerId(stripeCustomerId);
     }
 
-
 }

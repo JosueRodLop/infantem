@@ -29,17 +29,16 @@ public class SubscriptionInfantemService {
     public String createSubscription(User user, String priceId) throws StripeException {
         Stripe.apiKey = stripeApiKey; // Configurar Stripe en cada transacción si es necesario
 
-        Optional<SubscriptionInfantem> existingSubscription = subscriptionInfantemRepository.findByUserAndActiveTrue(user);
+        Optional<SubscriptionInfantem> existingSubscription = subscriptionInfantemRepository
+                .findByUserAndActiveTrue(user);
         if (existingSubscription.isPresent()) {
             throw new IllegalStateException("El usuario ya tiene una suscripción activa.");
         }
 
         String customerId = findOrCreateStripeCustomer(user);
 
-        SubscriptionCreateParams subscriptionParams = SubscriptionCreateParams.builder()
-                .setCustomer(customerId)
-                .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
-                .build();
+        SubscriptionCreateParams subscriptionParams = SubscriptionCreateParams.builder().setCustomer(customerId)
+                .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build()).build();
 
         Subscription stripeSubscription = Subscription.create(subscriptionParams);
 
@@ -61,10 +60,8 @@ public class SubscriptionInfantemService {
             return existingSubscription.get().getStripeCustomerId();
         }
 
-        CustomerCreateParams customerParams = CustomerCreateParams.builder()
-                .setEmail(user.getEmail())
-                .setName(user.getName())
-                .build();
+        CustomerCreateParams customerParams = CustomerCreateParams.builder().setEmail(user.getEmail())
+                .setName(user.getName()).build();
 
         Customer stripeCustomer = Customer.create(customerParams);
         return stripeCustomer.getId();
@@ -72,7 +69,7 @@ public class SubscriptionInfantemService {
 
     public void activateSubscription(User user, String subscriptionId) {
         Optional<SubscriptionInfantem> subOpt = subscriptionInfantemRepository.findByUser(user);
-    
+
         if (subOpt.isPresent()) {
             SubscriptionInfantem subscription = subOpt.get();
             subscription.setStripeSubscriptionId(subscriptionId);
@@ -80,10 +77,11 @@ public class SubscriptionInfantemService {
             subscriptionInfantemRepository.save(subscription);
         }
     }
-    
+
     public void updateSubscriptionStatus(String stripeSubscriptionId, boolean isActive) {
-        Optional<SubscriptionInfantem> subOpt = subscriptionInfantemRepository.findByStripeSubscriptionId(stripeSubscriptionId);
-    
+        Optional<SubscriptionInfantem> subOpt = subscriptionInfantemRepository
+                .findByStripeSubscriptionId(stripeSubscriptionId);
+
         if (subOpt.isPresent()) {
             SubscriptionInfantem subscription = subOpt.get();
             subscription.setActive(isActive);

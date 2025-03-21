@@ -66,17 +66,20 @@ public class StripeService {
     // 🔹 Manejar cuando un usuario completa un pago exitoso en Stripe
     public void handleCheckoutSessionCompleted(Event event) throws StripeException {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-        if (!dataObjectDeserializer.getObject().isPresent()) return;
+        if (!dataObjectDeserializer.getObject().isPresent())
+            return;
 
         Session session = (Session) dataObjectDeserializer.getObject().get();
         String customerId = session.getCustomer();
         String subscriptionId = session.getSubscription();
 
-        if (customerId == null || subscriptionId == null) return;
+        if (customerId == null || subscriptionId == null)
+            return;
 
         // Buscar usuario en la BD basado en el customerId de Stripe
         Optional<User> userOpt = userService.getUserByStripeCustomerId(customerId);
-        if (userOpt.isEmpty()) return;
+        if (userOpt.isEmpty())
+            return;
 
         User user = userOpt.get();
         subscriptionService.activateSubscription(user, subscriptionId);
@@ -85,12 +88,14 @@ public class StripeService {
     // 🔹 Manejar cuando se paga correctamente una factura de suscripción
     public void handleInvoicePaymentSucceeded(Event event) {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-        if (!dataObjectDeserializer.getObject().isPresent()) return;
+        if (!dataObjectDeserializer.getObject().isPresent())
+            return;
 
         Invoice invoice = (Invoice) dataObjectDeserializer.getObject().get();
         String subscriptionId = invoice.getSubscription();
 
-        if (subscriptionId == null) return;
+        if (subscriptionId == null)
+            return;
 
         // Marcar la suscripción como activa en la BD
         subscriptionService.updateSubscriptionStatus(subscriptionId, true);
@@ -99,12 +104,14 @@ public class StripeService {
     // 🔹 Manejar cuando una suscripción es cancelada
     public void handleSubscriptionCanceled(Event event) {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-        if (!dataObjectDeserializer.getObject().isPresent()) return;
+        if (!dataObjectDeserializer.getObject().isPresent())
+            return;
 
         Subscription subscription = (Subscription) dataObjectDeserializer.getObject().get();
         String subscriptionId = subscription.getId();
 
-        if (subscriptionId == null) return;
+        if (subscriptionId == null)
+            return;
 
         // Marcar la suscripción como cancelada en la BD
         subscriptionService.updateSubscriptionStatus(subscriptionId, false);

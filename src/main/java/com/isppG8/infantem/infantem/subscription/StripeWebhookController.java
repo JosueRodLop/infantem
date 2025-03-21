@@ -25,7 +25,8 @@ public class StripeWebhookController {
     }
 
     @PostMapping
-    public ResponseEntity<String> handleWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) throws StripeException {
+    public ResponseEntity<String> handleWebhook(@RequestBody String payload,
+            @RequestHeader("Stripe-Signature") String sigHeader) throws StripeException {
         if (sigHeader == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Falta la firma del webhook");
         }
