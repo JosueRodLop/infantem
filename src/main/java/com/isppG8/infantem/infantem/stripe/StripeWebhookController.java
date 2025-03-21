@@ -45,6 +45,9 @@ public class StripeWebhookController {
                 case "customer.subscription.deleted":
                     stripeService.handleSubscriptionCanceled(event);
                     break;
+                case "customer.subscription.created":
+                    stripeService.handleSubscriptionCreated(event);
+                    break;
                 default:
                     System.out.println("Evento no manejado: " + event.getType());
             }
@@ -56,30 +59,5 @@ public class StripeWebhookController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payload inválido");
         }
     }
-
-    @PostMapping
-    public String manejarEventoStripe(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
-        Stripe.apiKey = "TU_SECRET_KEY";
-
-        try {
-            Event evento = Webhook.constructEvent(payload, sigHeader, endpointSecret
-            );
-
-            if ("customer.subscription.created".equals(evento.getType())) {
-                Subscription sub = (Subscription) evento.getDataObjectDeserializer().getObject().orElse(null);
-                if (sub != null) {
-                    String stripeSubscriptionId = sub.getId();
-                    String customerId = sub.getCustomer();
-
-                    // Aquí actualizarías tu entidad subscriptionInfantem
-                    System.out.println("Suscripción creada: " + stripeSubscriptionId + " para el cliente: " + customerId);
-                }
-            }
-
-            return "Evento procesado";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error procesando el evento";
-        }
-    }
 }
+
