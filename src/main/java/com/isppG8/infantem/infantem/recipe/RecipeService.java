@@ -9,18 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
 import com.isppG8.infantem.infantem.user.User;
-import com.isppG8.infantem.infantem.user.UserService;
 
 @Service
 public class RecipeService {
 
     private RecipeRepository recipeRepository;
-    private UserService userService;
 
     @Autowired
-    public RecipeService(RecipeRepository recipeRepository, UserService userService) {
+    public RecipeService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
-        this.userService = userService;
     }
 
     @Transactional(readOnly = true)

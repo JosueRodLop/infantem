@@ -98,7 +98,6 @@ public class RecipeServiceTest {
         assertTrue(recipesWithEmptyNutrient.isEmpty(), "No recipes should be returned for empty nutrient.");
     }
 
-
     @Test
     public void getAllRecommendedRecipesTest() {
         List<Recipe> recommendRecipes = recipeService.getAllRecommendedRecipes();
@@ -108,37 +107,40 @@ public class RecipeServiceTest {
     @Test
     public void getRecipesByUserIdTest() {
         List<Recipe> recipesUser1 = recipeService.getRecipesByUserId(1L);
-        assertEquals(5, recipesUser1.size(),"The number of recipes found for user 1 should be 5");
+        assertEquals(5, recipesUser1.size(), "The number of recipes found for user 1 should be 5");
         assertTrue(recipesUser1.stream().allMatch(recipe -> recipe.getUser().getId() == 1L),
                 "All recipes should belong to user 1");
 
         List<Recipe> recipesUser2 = recipeService.getRecipesByUserId(2L);
-        assertEquals(3, recipesUser2.size(),"The number of recipes found for user 2 should be 3");
+        assertEquals(3, recipesUser2.size(), "The number of recipes found for user 2 should be 3");
         assertTrue(recipesUser2.stream().allMatch(recipe -> recipe.getUser().getId() == 2L),
                 "All recipes should belong to user 2");
     }
 
     @Test
     public void getRecipeByIdTest() {
-        Recipe recipeId1 = recipeService.getRecipeById(1L,1);
+        Recipe recipeId1 = recipeService.getRecipeById(1L, 1);
         assertEquals(1L, recipeId1.getId(), "The recipe id should be 1");
-        assertTrue(recipeId1.getDescription().contains("Puré de zanahoria"), "The recipe description should contain 'Puré de zanahoria'");
+        assertTrue(recipeId1.getDescription().contains("Puré de zanahoria"),
+                "The recipe description should contain 'Puré de zanahoria'");
 
-        Recipe recipeId6 = recipeService.getRecipeById(6L,2);
+        Recipe recipeId6 = recipeService.getRecipeById(6L, 2);
         assertEquals(6L, recipeId6.getId(), "The recipe id should be 6");
-        assertTrue(recipeId6.getDescription().contains("Puré de pollo"), "The recipe description should contain 'Puré de pollo'");
+        assertTrue(recipeId6.getDescription().contains("Puré de pollo"),
+                "The recipe description should contain 'Puré de pollo'");
     }
-
 
     @Test
     public void getRecipeByIdNotFoundTest() {
-        assertThrows(ResourceNotFoundException.class, () -> recipeService.getRecipeById(999L,1), "Recipe 999 should not be found");
+        assertThrows(ResourceNotFoundException.class, () -> recipeService.getRecipeById(999L, 1),
+                "Recipe 999 should not be found");
     }
 
     @Test
     public void getRecipeByIdNotOwnedTest() {
         // User 2 tries to get recipe 1
-        assertThrows(ResourceNotOwnedException.class, () -> recipeService.getRecipeById(1L,2), "User 2 should not be able to get recipe 1");
+        assertThrows(ResourceNotOwnedException.class, () -> recipeService.getRecipeById(1L, 2),
+                "User 2 should not be able to get recipe 1");
     }
 
     @Test
@@ -156,11 +158,16 @@ public class RecipeServiceTest {
         Recipe createdRecipe = recipeService.createRecipe(recipe, user);
         assertEquals(16, createdRecipe.getId(), "The recipe id should be 16");
         assertEquals(recipe.getName(), createdRecipe.getName(), "The recipe name should be 'Test Recipe'");
-        assertEquals(recipe.getDescription(), createdRecipe.getDescription(), "The recipe description should be 'Test Description'");
-        assertEquals(recipe.getIngredients(), createdRecipe.getIngredients(), "The recipe ingredients should be 'Test Ingredients'");
-        assertEquals(recipe.getMinRecommendedAge(), createdRecipe.getMinRecommendedAge(), "The recipe min recommended age should be 1");
-        assertEquals(recipe.getMaxRecommendedAge(), createdRecipe.getMaxRecommendedAge(), "The recipe max recommended age should be 2");
-        assertEquals(recipe.getElaboration(), createdRecipe.getElaboration(), "The recipe elaboration should be 'Test Elaboration'");
+        assertEquals(recipe.getDescription(), createdRecipe.getDescription(),
+                "The recipe description should be 'Test Description'");
+        assertEquals(recipe.getIngredients(), createdRecipe.getIngredients(),
+                "The recipe ingredients should be 'Test Ingredients'");
+        assertEquals(recipe.getMinRecommendedAge(), createdRecipe.getMinRecommendedAge(),
+                "The recipe min recommended age should be 1");
+        assertEquals(recipe.getMaxRecommendedAge(), createdRecipe.getMaxRecommendedAge(),
+                "The recipe max recommended age should be 2");
+        assertEquals(recipe.getElaboration(), createdRecipe.getElaboration(),
+                "The recipe elaboration should be 'Test Elaboration'");
     }
 
     @Test
@@ -177,10 +184,14 @@ public class RecipeServiceTest {
 
         assertEquals(1L, updatedRecipe.getId(), "The recipe id should be 1");
         assertEquals(recipe.getName(), updatedRecipe.getName(), "The recipe name should be 'Updated Recipe'");
-        assertEquals(recipe.getDescription(), updatedRecipe.getDescription(), "The recipe description should be 'Updated Description'");
-        assertEquals(recipe.getIngredients(), updatedRecipe.getIngredients(), "The recipe ingredients should be 'Updated Ingredients'");
-        assertEquals(recipe.getMinRecommendedAge(), updatedRecipe.getMinRecommendedAge(), "The recipe min recommended age should be 3");
-        assertEquals(recipe.getMaxRecommendedAge(), updatedRecipe.getMaxRecommendedAge(), "The recipe max recommended age should be 4");
+        assertEquals(recipe.getDescription(), updatedRecipe.getDescription(),
+                "The recipe description should be 'Updated Description'");
+        assertEquals(recipe.getIngredients(), updatedRecipe.getIngredients(),
+                "The recipe ingredients should be 'Updated Ingredients'");
+        assertEquals(recipe.getMinRecommendedAge(), updatedRecipe.getMinRecommendedAge(),
+                "The recipe min recommended age should be 3");
+        assertEquals(recipe.getMaxRecommendedAge(), updatedRecipe.getMaxRecommendedAge(),
+                "The recipe max recommended age should be 4");
     }
 
     @Test
@@ -193,7 +204,8 @@ public class RecipeServiceTest {
         recipe.setMaxRecommendedAge(4);
         recipe.setElaboration("Updated Elaboration");
 
-        assertThrows(ResourceNotFoundException.class, () -> recipeService.updateRecipe(999L, recipe, 1), "Recipe 999 should not be found");
+        assertThrows(ResourceNotFoundException.class, () -> recipeService.updateRecipe(999L, recipe, 1),
+                "Recipe 999 should not be found");
     }
 
     @Test
@@ -205,24 +217,28 @@ public class RecipeServiceTest {
         recipe.setMinRecommendedAge(3);
         recipe.setMaxRecommendedAge(4);
         recipe.setElaboration("Updated Elaboration");
-        
-        assertThrows(ResourceNotOwnedException.class, () -> recipeService.updateRecipe(1L, recipe, 2), "User 2 should not be able to update recipe 1");
+
+        assertThrows(ResourceNotOwnedException.class, () -> recipeService.updateRecipe(1L, recipe, 2),
+                "User 2 should not be able to update recipe 1");
     }
 
     @Test
     public void deleteRecipeTest() {
         recipeService.deleteRecipe(1L, 1);
-        assertThrows(ResourceNotFoundException.class, () -> recipeService.getRecipeById(1L,1), "Recipe 1 should not be found");
+        assertThrows(ResourceNotFoundException.class, () -> recipeService.getRecipeById(1L, 1),
+                "Recipe 1 should not be found");
     }
 
     @Test
     public void deleteRecipeNotFoundTest() {
-        assertThrows(ResourceNotFoundException.class, () -> recipeService.deleteRecipe(999L, 1), "Recipe 999 should not be found");
+        assertThrows(ResourceNotFoundException.class, () -> recipeService.deleteRecipe(999L, 1),
+                "Recipe 999 should not be found");
     }
 
     @Test
     public void deleteRecipeNotOwnedTest() {
-        assertThrows(ResourceNotOwnedException.class, () -> recipeService.deleteRecipe(1L, 2), "User 2 should not be able to delete recipe 1");
+        assertThrows(ResourceNotOwnedException.class, () -> recipeService.deleteRecipe(1L, 2),
+                "User 2 should not be able to delete recipe 1");
     }
 
 }
