@@ -79,7 +79,8 @@ public class RecipeServiceTest {
         assertTrue(allRecipesContainNutrient, "All returned recipes should contain the nutrient " + EXISTING_NUTRIENT);
 
         List<Recipe> recipesWithNonExistingNutrient = recipeService.getRecipesByNutrient(NON_EXISTING_NUTRIENT);
-        assertTrue(recipesWithNonExistingNutrient.isEmpty(), "No recipes should contain the nutrient " + NON_EXISTING_NUTRIENT);
+        assertTrue(recipesWithNonExistingNutrient.isEmpty(),
+                "No recipes should contain the nutrient " + NON_EXISTING_NUTRIENT);
 
         List<Recipe> recipesWithNullNutrient = recipeService.getRecipesByNutrient(null);
         assertTrue(recipesWithNullNutrient.isEmpty(), "No recipes should be returned for null nutrient.");
