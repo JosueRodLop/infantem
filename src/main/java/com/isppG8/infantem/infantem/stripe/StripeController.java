@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.subscription;
+package com.isppG8.infantem.infantem.stripe;
 
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;

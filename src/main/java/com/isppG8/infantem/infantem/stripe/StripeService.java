@@ -1,10 +1,11 @@
-package com.isppG8.infantem.infantem.subscription;
+package com.isppG8.infantem.infantem.stripe;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.*;
 import com.stripe.param.SubscriptionCreateParams;
 import com.isppG8.infantem.infantem.payment.Payment;
 import com.isppG8.infantem.infantem.payment.PaymentService;
+import com.isppG8.infantem.infantem.subscription.SubscriptionInfantemService;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 import com.stripe.model.Subscription;
