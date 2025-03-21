@@ -29,7 +29,8 @@ public class RecipeServiceTest {
         final List<Recipe> allRecipes = recipeService.findAllRecipes();
 
         List<Recipe> filtered_recipes = recipeService.getRecipeByMinAge(BABY_AGE);
-        assertTrue(filtered_recipes.size() < allRecipes.size(), "Filtered recipe list size should be less than original list");
+        assertTrue(filtered_recipes.size() < allRecipes.size(),
+                "Filtered recipe list size should be less than original list");
 
         Boolean allRecipesHasCorrectMinAge = filtered_recipes.stream()
                 .allMatch(recipe -> BABY_AGE >= recipe.getMinRecommendedAge());
