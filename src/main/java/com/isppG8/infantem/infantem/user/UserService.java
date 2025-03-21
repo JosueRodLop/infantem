@@ -102,4 +102,9 @@ public class UserService {
         return Optional.empty();
     }
 
+    public Optional<User> getUserByStripeCustomerId(String stripeCustomerId) {
+        return userRepository.findByStripeCustomerId(stripeCustomerId);
+    }
+
+
 }
