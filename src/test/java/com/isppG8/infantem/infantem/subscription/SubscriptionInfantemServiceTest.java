@@ -1,6 +1,5 @@
 package com.isppG8.infantem.infantem.subscription;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -73,11 +72,10 @@ class SubscriptionInfantemServiceTest {
         SubscriptionInfantem existingSubscription = new SubscriptionInfantem();
         existingSubscription.setActive(true);
 
-        when(subscriptionRepository.findByUserAndActiveTrue(testUser))
-            .thenReturn(Optional.of(existingSubscription));
+        when(subscriptionRepository.findByUserAndActiveTrue(testUser)).thenReturn(Optional.of(existingSubscription));
 
-        Exception exception = assertThrows(IllegalStateException.class, 
-            () -> subscriptionService.createSubscription(testUser, "price_ABC"));
+        Exception exception = assertThrows(IllegalStateException.class,
+                () -> subscriptionService.createSubscription(testUser, "price_ABC"));
 
         assertEquals("El usuario ya tiene una suscripción activa.", exception.getMessage());
     }
@@ -106,4 +104,3 @@ class SubscriptionInfantemServiceTest {
         assertEquals("cus_654321", customerId);
     }
 }
-
