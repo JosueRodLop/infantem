@@ -22,7 +22,7 @@ jobs:
           MYSQL_DATABASE: infantem_db
           MYSQL_USER: spring_user
           MYSQL_PASSWORD: StrongPassword123!
-          SPRING_PROFILES_ACTIVE: development
+          SPRING_PROFILES_ACTIVE: test
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping --silent" --health-timeout=5s --health-retries=3
