@@ -110,5 +110,4 @@ public class UserService {
         return subscriptionInfantemRepository.findByStripeCustomerId(stripeCustomerId);
     }
 
-
 }
