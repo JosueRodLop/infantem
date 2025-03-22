@@ -1,10 +1,13 @@
 package com.isppG8.infantem.infantem.calendar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +16,7 @@ import lombok.Setter;
 @Setter
 public class Calendar {
     private Integer babyId;
-    private Map<Date, List<String>> events;
+    private Map<String, Set<String>> events;
 
     public Calendar() {
     }
@@ -26,13 +29,32 @@ public class Calendar {
 
     public void addDreamEvents(List<Date> dreamDates) {
         for (Date date : dreamDates) {
-            if (!this.events.containsKey(date)) {
-                List<String> event = new ArrayList<>();
+            String formattedDate = parseDate(date);
+            if (!this.events.containsKey(formattedDate)) {
+                Set<String> event = new HashSet<>();
                 event.add("Dream");
-                this.events.put(date, event);
+                this.events.put(formattedDate, event);
             } else {
-                this.events.get(date).add("Dream");
+                this.events.get(formattedDate).add("Dream");
             }
         }
+    }
+
+    public void addDiseaseEvents(List<Date> diseaseDates) {
+        for (Date date : diseaseDates) {
+            String formattedDate = parseDate(date);
+            if (!this.events.containsKey(formattedDate)) {
+                Set<String> event = new HashSet<>();
+                event.add("Disease");
+                this.events.put(formattedDate, event);
+            } else {
+                this.events.get(formattedDate).add("Disease");
+            }
+        }
+    }
+
+    private String parseDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
     }
 }

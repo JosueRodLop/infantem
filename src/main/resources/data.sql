@@ -51,8 +51,11 @@ INSERT INTO baby_allergen (allergen_id, baby_id) VALUES
 
 -- Inserción de registros de sueño
 INSERT INTO dream_table (baby_id, date_start, date_end, num_wakeups, dream_type) VALUES
-(1, '2024-03-03 22:00:00', '2024-03-04 06:30:00', 2, 1),
-(2, '2024-03-04 23:15:00', '2024-03-05 07:00:00', 3, 2);
+(1, '2025-03-03 22:00:00', '2025-03-04 06:30:00', 2, 1),
+(1, '2025-03-04 23:15:00', '2025-03-05 07:00:00', 3, 1),
+(1, '2025-03-05 21:30:00', '2025-03-06 06:45:00', 1, 2),
+(4, '2025-03-06 22:45:00', '2025-03-07 07:30:00', 2, 3),
+(5, '2025-03-07 23:00:00', '2025-03-08 07:15:00', 1, 1);
 
 -- Inserción de vacunas
 INSERT INTO vaccine_table (type, vaccination_date, baby_id) VALUES
@@ -91,3 +94,11 @@ INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, desc
 (10, 7, null, 'Pescado blanco al vapor con verduras', 'Cocinar pescado blanco y verduras al vapor.', 'Pescado blanco, verduras', 'Pescado al Vapor', 'a'),
 (12, 9, null, 'Mini hamburguesas de ternera', 'Carne de ternera picada, formar mini hamburguesas y cocinar a la plancha.', 'Ternera picada', 'Mini Hamburguesas', 'a'),
 (11, 8, null, 'Pasta corta con verduras', 'Cocinar pasta corta, mezclar con verduras al vapor y triturar ligeramente.', 'Pasta corta, verduras', 'Pasta con Verduras', 'a');
+
+-- Inserción de enfermedades en la tabla disease_table
+INSERT INTO disease_table (id, name, start_date, end_date, symptoms, extra_observations, baby_id) VALUES
+(1, 'Varicela', '2025-03-01', '2025-03-10', 'Erupción cutánea, fiebre', 'Se recomienda mantener al bebé hidratado.', 1),
+(2, 'Gripe', '2025-03-03', '2025-03-09', 'Fiebre, tos, congestión nasal', 'Administrar medicamentos según indicación médica.', 1),
+(3, 'Otitis', '2025-01-10', '2025-01-15', 'Dolor de oído, fiebre', 'Evitar exponer al bebé al agua durante el tratamiento.', 1),
+(4, 'Bronquitis', '2025-03-05', '2025-03-15', 'Tos persistente, dificultad para respirar', 'Se recomienda usar humidificador.', 2),
+(5, 'Conjuntivitis', '2025-03-12', '2025-03-14', 'Ojos rojos, secreción ocular', 'Limpiar los ojos con solución salina.', 2);

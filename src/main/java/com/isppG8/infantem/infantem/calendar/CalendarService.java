@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isppG8.infantem.infantem.disease.DiseaseService;
 import com.isppG8.infantem.infantem.dream.DreamService;
 import com.isppG8.infantem.infantem.user.User;
 
@@ -14,10 +15,12 @@ import com.isppG8.infantem.infantem.user.User;
 public class CalendarService {
     
     private DreamService dreamService;
+    private DiseaseService diseaseService;
 
     @Autowired
-    public CalendarService(DreamService dreamService) {
+    public CalendarService(DreamService dreamService, DiseaseService diseaseService) {
         this.dreamService = dreamService;
+        this.diseaseService = diseaseService;
         
     }
 
@@ -28,9 +31,13 @@ public class CalendarService {
         
         for (Integer babyId : babiesId) {
             Calendar babyCalendar = new Calendar(babyId);
-            
+            // Check dream events
             List<Date> dreamDates = this.dreamService.getDreamsByBabyIdAndDate(babyId, start, end);
             babyCalendar.addDreamEvents(dreamDates);
+
+            // Check diseases events
+            List<Date> diseaseDates = this.diseaseService.getDiseasesByBabyIdAndDate(babyId, start, end);
+            babyCalendar.addDiseaseEvents(diseaseDates);
             calendar.add(babyCalendar);
         }
         return calendar;
