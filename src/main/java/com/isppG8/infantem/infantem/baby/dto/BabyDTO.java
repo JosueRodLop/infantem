@@ -52,7 +52,7 @@ public class BabyDTO {
     public BabyDTO() {
     }
 
-    public BabyDTO(Baby baby){
+    public BabyDTO(Baby baby) {
         this.id = baby.getId();
         this.name = baby.getName();
         this.birthDate = baby.getBirthDate();

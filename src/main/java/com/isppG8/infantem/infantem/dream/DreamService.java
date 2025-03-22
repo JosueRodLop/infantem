@@ -1,7 +1,6 @@
 package com.isppG8.infantem.infantem.dream;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,7 @@ public class DreamService {
 
     @Transactional
     public void deleteDream(Long id) {
-        if(!dreamRepository.existsById(id)) {
+        if (!dreamRepository.existsById(id)) {
             throw new ResourceNotFoundException("Dream", "id", id);
         }
         dreamRepository.deleteById(id);

@@ -11,7 +11,7 @@ import lombok.Setter;
 public class AllergenDTO {
 
     private Long id;
-    
+
     @NotBlank
     private String name;
 
@@ -21,7 +21,7 @@ public class AllergenDTO {
     public AllergenDTO() {
     }
 
-    public AllergenDTO(Allergen allergen){
+    public AllergenDTO(Allergen allergen) {
         this.id = allergen.getId();
         this.name = allergen.getName();
         this.description = allergen.getDescription();

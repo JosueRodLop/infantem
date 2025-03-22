@@ -44,7 +44,7 @@ public class AllergenService {
 
     @Transactional
     public void deleteAllergen(Long id) {
-        if(!allergenRepository.existsById(id)) {
+        if (!allergenRepository.existsById(id)) {
             throw new ResourceNotFoundException("Allergen", "id", id);
         }
         allergenRepository.deleteById(id);

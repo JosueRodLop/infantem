@@ -17,7 +17,6 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("api/v1/allergens")
 public class AllergenController {
@@ -43,7 +42,8 @@ public class AllergenController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AllergenDTO> updateAllergen(@PathVariable Long id, @Valid @RequestBody Allergen allergenDetails) {
+    public ResponseEntity<AllergenDTO> updateAllergen(@PathVariable Long id,
+            @Valid @RequestBody Allergen allergenDetails) {
         Allergen updatedAllergen = allergenService.updateAllergen(id, allergenDetails);
         return ResponseEntity.ok(new AllergenDTO(updatedAllergen));
     }
