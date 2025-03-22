@@ -59,7 +59,7 @@ public class DreamService {
 
     @Transactional
     public void deleteDream(Long id) {
-        if(!dreamRepository.existsById(id)) {
+        if (!dreamRepository.existsById(id)) {
             throw new ResourceNotFoundException("Dream", "id", id);
         }
         dreamRepository.deleteById(id);
