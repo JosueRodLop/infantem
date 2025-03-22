@@ -1,5 +1,7 @@
 package com.isppG8.infantem.infantem.vaccine;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +59,13 @@ public class VaccineService {
         if (!baby.getUsers().contains(user)) {
             throw new ResourceNotOwnedException(vaccine.getBaby());
         }
+    }
+
+    // Methods for calendar
+    public List<Date> getVaccinesByBabyIdAndDate(Integer babyId, Date start, Date end) {
+        LocalDate startLocalDate = start.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        LocalDate endLocalDate = end.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+        return this.vaccineRepository.getVaccinesByBabyIdAndDate(babyId, startLocalDate, endLocalDate);
     }
 }

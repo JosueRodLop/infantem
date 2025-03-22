@@ -63,7 +63,13 @@ INSERT INTO vaccine_table (type, vaccination_date, baby_id) VALUES
 ('DTaP', '2023-07-01', 2),
 ('HepB', '2023-08-01', 3),
 ('Polio', '2023-09-01', 4),
-('Hib', '2023-10-01', 5);
+('Hib', '2023-10-01', 5),
+('Rotavirus', '2023-11-01', 1),
+('PCV', '2025-03-03', 1),
+('HepA', '2024-01-01', 1),
+('Varicela', '2024-02-01', 4),
+('Meningococo', '2024-03-01', 5);
+
 
 -- Relación entre usuarios y bebés
 INSERT INTO user_baby (user_id, baby_id) VALUES

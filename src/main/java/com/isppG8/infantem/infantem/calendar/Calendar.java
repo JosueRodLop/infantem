@@ -1,7 +1,6 @@
 package com.isppG8.infantem.infantem.calendar;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,8 +51,22 @@ public class Calendar {
         }
     }
 
+    public void addVaccineEvents(List<Date> vaccineDates) {
+        for (Date date : vaccineDates) {
+            String formattedDate = parseDate(date);
+            if (!this.events.containsKey(formattedDate)) {
+                Set<String> event = new HashSet<>();
+                event.add("Vaccine");
+                this.events.put(formattedDate, event);
+            } else {
+                this.events.get(formattedDate).add("Vaccine");
+            }
+        }
+    }
+
     private String parseDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(date);
     }
+
 }
