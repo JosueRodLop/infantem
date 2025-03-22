@@ -25,10 +25,10 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
     @Query("SELECT r FROM Recipe r WHERE r.maxRecommendedAge >= :age")
     List<Recipe> findRecipeByMaxAge(@Param("age") Integer age);
 
-    @Query("SELECT r FROM Recipe r WHERE CAST(FUNCTION('FIND_IN_SET', :ingredient, r.ingredients) AS integer) > 0")
+    @Query("SELECT r FROM Recipe r WHERE :ingredient IS NOT NULL AND :ingredient <> '' AND LOWER(r.ingredients) LIKE LOWER(CONCAT('%', :ingredient, '%'))")
     List<Recipe> findRecipeByIngredient(String ingredient);
 
-    @Query("SELECT r FROM Recipe r WHERE :nutrientName IS NOT NULL AND :nutrientName <> '' AND LOWER(r.ingredients) LIKE LOWER(CONCAT('%', :nutrientName, '%'))")
+    @Query("SELECT DISTINCT r FROM Recipe r JOIN r.foodNutrients fn JOIN fn.nutrient n WHERE n.name = :nutrientName")
     List<Recipe> findRecipeByNutrient(@Param("nutrientName") String nutrientName);
 
     @Query("SELECT r FROM Recipe r WHERE NOT EXISTS (SELECT 1 FROM r.allergens a WHERE a.name IN :allergens)")
