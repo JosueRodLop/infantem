@@ -1,5 +1,8 @@
 package com.isppG8.infantem.infantem.dream;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,5 +76,16 @@ public class DreamService {
         if (!baby.getUsers().contains(user)) {
             throw new ResourceNotOwnedException(dream.getBaby());
         }
+    }
+
+
+    // Methods for calendar
+
+    @Transactional(readOnly = true)
+    public List<Date> getDreamsByBabyIdAndDate(Integer babyId, Date start, Date end) {
+        LocalDateTime startDateTime = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime endDateTime = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        return dreamRepository.findDreamDatesByBabyIdAndDate(babyId, startDateTime, endDateTime);
     }
 }
