@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -76,26 +77,26 @@ public class RecipeServiceTest {
     }
 
     @Test
-    public void recipeFilterByNutrientTest() {
-        final String EXISTING_NUTRIENT = "zanahoria";
-        final String NON_EXISTING_NUTRIENT = "chocolate";
+    public void recipeFilterByIngredientTest() {
+        final List<String> EXISTING_INGREDIENT = List.of("zanahoria");
+        final List<String> NON_EXISTING_INGREDIENT = List.of("chocolate");
 
-        List<Recipe> recipesWithNutrient = recipeService.getRecipesByNutrient(EXISTING_NUTRIENT);
-        assertTrue(recipesWithNutrient.size() > 0, "Recipes containing the nutrient should exist.");
+        List<Recipe> recipesWithIngredient = recipeService.getRecipeByIngredients(EXISTING_INGREDIENT);
+        recipesWithIngredient.forEach(r -> r.setIngredients(r.getIngredients().toLowerCase()));
+        assertTrue(recipesWithIngredient.size() > 0, "Recipes containing the nutrient should exist.");
 
-        boolean allRecipesContainNutrient = recipesWithNutrient.stream()
-                .allMatch(recipe -> recipe.getIngredients().toLowerCase().contains(EXISTING_NUTRIENT));
-        assertTrue(allRecipesContainNutrient, "All returned recipes should contain the nutrient " + EXISTING_NUTRIENT);
+        boolean allRecipesContainIngredient = recipesWithIngredient.stream()
+                .allMatch(recipe -> recipe.getIngredients().toLowerCase().contains(EXISTING_INGREDIENT.get(0)));
 
-        List<Recipe> recipesWithNonExistingNutrient = recipeService.getRecipesByNutrient(NON_EXISTING_NUTRIENT);
-        assertTrue(recipesWithNonExistingNutrient.isEmpty(),
-                "No recipes should contain the nutrient " + NON_EXISTING_NUTRIENT);
+        assertTrue(allRecipesContainIngredient,
+                "All returned recipes should contain the ingredient " + recipesWithIngredient + EXISTING_INGREDIENT);
 
-        List<Recipe> recipesWithNullNutrient = recipeService.getRecipesByNutrient(null);
-        assertTrue(recipesWithNullNutrient.isEmpty(), "No recipes should be returned for null nutrient.");
+        List<Recipe> recipesWithNonExistingIngredient = recipeService.getRecipeByIngredients(NON_EXISTING_INGREDIENT);
+        assertTrue(recipesWithNonExistingIngredient.isEmpty(),
+                "No recipes should contain the nutrient " + NON_EXISTING_INGREDIENT);
 
-        List<Recipe> recipesWithEmptyNutrient = recipeService.getRecipesByNutrient("");
-        assertTrue(recipesWithEmptyNutrient.isEmpty(), "No recipes should be returned for empty nutrient.");
+        List<Recipe> recipesWithEmptyIngredient = recipeService.getRecipeByIngredients(List.of(""));
+        assertTrue(recipesWithEmptyIngredient.isEmpty(), "No recipes should be returned for empty ingredient.");
     }
 
     @Test
