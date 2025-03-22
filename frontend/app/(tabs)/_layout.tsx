@@ -59,6 +59,17 @@ export default function TabLayout() {
         }}
         />
         <Tabs.Screen
+        name="calendar"
+        options={{
+          lazy: true,
+          headerShown: false,
+          tabBarLabel: "Calendario",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name='calendar' color={color} size={24} />
+          ),
+        }}
+        />
+        <Tabs.Screen
         name="baby"
         options={{
           lazy: true,
