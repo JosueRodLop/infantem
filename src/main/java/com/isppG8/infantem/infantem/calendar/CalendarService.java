@@ -13,7 +13,7 @@ import com.isppG8.infantem.infantem.user.User;
 
 @Service
 public class CalendarService {
-    
+
     private DreamService dreamService;
     private DiseaseService diseaseService;
 
@@ -28,7 +28,7 @@ public class CalendarService {
         List<Integer> babiesId = user.getBabies().stream().map(baby -> baby.getId()).toList();
 
         List<Calendar> calendar = new ArrayList<>();
-        
+
         for (Integer babyId : babiesId) {
             Calendar babyCalendar = new Calendar(babyId);
             // Check dream events

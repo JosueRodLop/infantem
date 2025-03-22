@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface DreamRepository extends JpaRepository<Dream, Long> {
-    
+
     @Query("SELECT DISTINCT FUNCTION('DATE', d.dateStart) FROM Dream d WHERE d.baby.id = ?1 AND d.dateStart BETWEEN ?2 AND ?3")
     List<Date> findDreamDatesByBabyIdAndDate(Integer babyId, LocalDateTime start, LocalDateTime end);
 }

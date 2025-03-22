@@ -1,6 +1,5 @@
 package com.isppG8.infantem.infantem.calendar;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -36,14 +35,14 @@ public class CalendarController {
         calendar.set(java.util.Calendar.MONTH, month - 1);
         calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
         Date start = calendar.getTime();
-    
+
         // Calculate end of month
         calendar.set(java.util.Calendar.DAY_OF_MONTH, calendar.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
         Date end = calendar.getTime();
 
         List<Calendar> calendarData = calendarService.getCalendarByUserId(user, start, end);
-        
+
         return calendarData;
     }
-    
+
 }
