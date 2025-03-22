@@ -78,7 +78,6 @@ public class DreamService {
         }
     }
 
-
     // Methods for calendar
 
     @Transactional(readOnly = true)

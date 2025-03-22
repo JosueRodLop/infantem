@@ -12,23 +12,23 @@ import com.isppG8.infantem.infantem.user.User;
 
 @Service
 public class CalendarService {
-    
+
     private DreamService dreamService;
 
     @Autowired
     public CalendarService(DreamService dreamService) {
         this.dreamService = dreamService;
-        
+
     }
 
     public List<Calendar> getCalendarByUserId(User user, Date start, Date end) {
         List<Integer> babiesId = user.getBabies().stream().map(baby -> baby.getId()).toList();
 
         List<Calendar> calendar = new ArrayList<>();
-        
+
         for (Integer babyId : babiesId) {
             Calendar babyCalendar = new Calendar(babyId);
-            
+
             List<Date> dreamDates = this.dreamService.getDreamsByBabyIdAndDate(babyId, start, end);
             babyCalendar.addDreamEvents(dreamDates);
             calendar.add(babyCalendar);

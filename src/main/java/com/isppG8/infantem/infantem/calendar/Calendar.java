@@ -22,7 +22,6 @@ public class Calendar {
         this.babyId = babyId;
         this.events = new HashMap<>();
     }
-    
 
     public void addDreamEvents(List<Date> dreamDates) {
         for (Date date : dreamDates) {
