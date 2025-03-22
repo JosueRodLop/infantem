@@ -21,7 +21,7 @@ public class CalendarService {
     public CalendarService(DreamService dreamService, DiseaseService diseaseService) {
         this.dreamService = dreamService;
         this.diseaseService = diseaseService;
-        
+
     }
 
     public List<Calendar> getCalendarByUserId(User user, Date start, Date end) {
