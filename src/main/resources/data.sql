@@ -61,7 +61,7 @@ INSERT INTO dream_table (baby_id, date_start, date_end, num_wakeups, dream_type)
 INSERT INTO vaccine_table (type, vaccination_date, baby_id) VALUES
 ('MMR', '2023-06-01', 1),
 ('DTaP', '2023-07-01', 2),
-('HepB', '2023-08-01', 3),
+('HepB', '2025-03-04', 3),
 ('Polio', '2023-09-01', 4),
 ('Hib', '2023-10-01', 5),
 ('Rotavirus', '2023-11-01', 1),
@@ -73,7 +73,7 @@ INSERT INTO vaccine_table (type, vaccination_date, baby_id) VALUES
 
 -- Relación entre usuarios y bebés
 INSERT INTO user_baby (user_id, baby_id) VALUES
-(1, 1), (2, 2);
+(1, 1), (2, 2), (1,3);
 
 -- Inserción de hitos
 INSERT INTO milestone (name, description) VALUES

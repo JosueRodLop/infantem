@@ -7,7 +7,9 @@ const gs = require("../../../static/styles/globalStyles");
 
 const CalendarTab = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [events, setEvents] = useState<{ [key: string]: string[] }>({});
+  const [currentMonth, setCurrentMonth] = useState<string>(new Date().toISOString().split("T")[0]); // Estado para el mes visible
+  const [events, setEvents] = useState<{ [key: string]: { [babyId: string]: string[] } }>({});
+  const [babies, setBabies] = useState<{ [babyId: string]: string }>({}); // Estado para almacenar los nombres de los bebés
   const [loading, setLoading] = useState<boolean>(true);
   const [jwt, setJwt] = useState<string | null>(null); // Estado para almacenar el token JWT
 
@@ -16,6 +18,7 @@ const CalendarTab = () => {
   // Manejar la selección de un día en el calendario
   const handleDayPress = (day: { dateString: string }) => {
     setSelectedDate(day.dateString);
+    setCurrentMonth(day.dateString); // Actualizar el mes visible al mes del día seleccionado
   };
 
   // Obtener los eventos del calendario desde el backend
@@ -46,13 +49,21 @@ const CalendarTab = () => {
       const data = await response.json();
 
       // Transformar los datos en un formato adecuado para el marcado del calendario
-      const transformedEvents: { [key: string]: string[] } = {};
+      const transformedEvents: { [key: string]: { [babyId: string]: string[] } } = {};
       data.forEach((calendar: any) => {
         Object.keys(calendar.events).forEach((date) => {
-          if (!transformedEvents[date]) {
-            transformedEvents[date] = [];
+          // Convertir la fecha del backend al formato YYYY-MM-DD
+          const formattedDate = new Date(date).toISOString().split("T")[0];
+          if (!transformedEvents[formattedDate]) {
+            transformedEvents[formattedDate] = {};
           }
-          transformedEvents[date] = [...transformedEvents[date], ...calendar.events[date]];
+          if (!transformedEvents[formattedDate][calendar.babyId]) {
+            transformedEvents[formattedDate][calendar.babyId] = [];
+          }
+          transformedEvents[formattedDate][calendar.babyId] = [
+            ...transformedEvents[formattedDate][calendar.babyId],
+            ...calendar.events[date],
+          ];
         });
       });
 
@@ -61,6 +72,38 @@ const CalendarTab = () => {
       console.error("Error al obtener los eventos del calendario:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Obtener los nombres de los bebés desde el backend
+  const fetchBabies = async () => {
+    try {
+      if (!jwt) {
+        console.error("No se encontró el token JWT");
+        return;
+      }
+
+      const response = await fetch(`${apiUrl}/api/v1/babies`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`, // Incluir el token JWT en las cabeceras
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al obtener los datos de los bebés");
+      }
+
+      const data = await response.json();
+
+      // Transformar los datos en un formato adecuado para el estado
+      const babyMap: { [babyId: string]: string } = {};
+      data.forEach((baby: any) => {
+        babyMap[baby.id] = baby.name;
+      });
+
+      setBabies(babyMap);
+    } catch (error) {
+      console.error("Error al obtener los datos de los bebés:", error);
     }
   };
 
@@ -74,40 +117,55 @@ const CalendarTab = () => {
     fetchToken();
   }, []);
 
-  // Obtener los eventos del calendario cuando se tenga el token JWT
+  // Obtener los eventos del calendario y los nombres de los bebés cuando se tenga el token JWT
   useEffect(() => {
     if (jwt) {
       fetchCalendarEvents();
+      fetchBabies();
     }
   }, [jwt]);
 
-  // Obtener los eventos del día seleccionado
-  useEffect(() => {
-    if (selectedDate && jwt) {
-      fetchCalendarEvents();
-    }
-  }, [selectedDate]);
-
   // Renderizar el componente del calendario
   const renderCalendar = () => (
-    <View style={gs.card}>
+    <View style={[gs.card, { width: "30%", padding: 10 }]}>
       <Calendar
+        current={currentMonth} // Establecer el mes visible
         onDayPress={handleDayPress}
-        markedDates={Object.keys(events).reduce((acc, date) => {
-          acc[date] = {
-            marked: true,
-            selected: date === selectedDate,
-            selectedColor: "#00adf5",
-          };
-          return acc;
-        }, {} as { [key: string]: any })}
+        markedDates={{
+          ...Object.keys(events).reduce((acc, date) => {
+            acc[date] = {
+              marked: true,
+              selected: date === selectedDate,
+              selectedColor: "#00adf5",
+            };
+            return acc;
+          }, {} as { [key: string]: any }),
+          ...(selectedDate
+            ? {
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: "#00adf5",
+                  customStyles: {
+                    text: {
+                      color: "#003366", // Azul oscuro para el día seleccionado
+                    },
+                  },
+                },
+              }
+            : {}),
+        }}
         theme={{
           selectedDayBackgroundColor: "#00adf5",
+          selectedDayTextColor: "#003366", // Azul oscuro para el texto del día seleccionado
           todayTextColor: "#00adf5",
           arrowColor: "#00adf5",
           textDayFontWeight: "bold",
           textMonthFontWeight: "bold",
           textDayHeaderFontWeight: "bold",
+        }}
+        
+        onMonthChange={(month) => {
+          setCurrentMonth(month.dateString); // Actualizar el mes visible cuando el usuario cambia de mes
         }}
       />
     </View>
@@ -115,22 +173,30 @@ const CalendarTab = () => {
 
   // Renderizar la información del día seleccionado
   const renderSelectedDateInfo = () => (
-    <View style={gs.card}>
+    <View style={[gs.card, { width: "90%", padding: 10 }]}>
       {selectedDate ? (
-        events[selectedDate] ? (
-          <View>
-            <Text style={gs.headerText}>Eventos del día {selectedDate}:</Text>
-            {events[selectedDate].map((event, index) => (
-              <Text key={index} style={gs.bodyText}>
-                - {event}
-              </Text>
-            ))}
-          </View>
-        ) : (
-          <Text style={gs.bodyText}>No hay eventos para el día seleccionado.</Text>
-        )
+        <View>
+          <Text style={[gs.headerText, { textAlign: "center" }]}>Eventos del día {selectedDate}:</Text>
+          {events[selectedDate] ? (
+            Object.keys(events[selectedDate]).map((babyId) => (
+              <View key={babyId} style={{ marginTop: 10 }}>
+                <Text style={[gs.bodyText, { fontWeight: "bold", textAlign: "center" }]}>
+                  {babies.name || `Bebé desconocido (${babyId})`}:
+                </Text>
+                {events[selectedDate][babyId].map((event, index) => (
+                  <Text key={index} style={[gs.bodyText, { textAlign: "center" }]}>
+                    - {event}
+                  </Text>
+                ))}
+                
+              </View>
+            ))
+          ) : (
+            <Text style={[gs.bodyText, { textAlign: "center" }]}>No hay eventos para el día seleccionado.</Text>
+          )}
+        </View>
       ) : (
-        <Text style={gs.bodyText}>Selecciona un día para ver información</Text>
+        <Text style={[gs.bodyText, { textAlign: "center" }]}>Selecciona un día para ver información</Text>
       )}
     </View>
   );
@@ -142,9 +208,9 @@ const CalendarTab = () => {
       style={{ flex: 1, width: "100%", height: "100%" }}
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
-        <Text style={gs.headerText}>Calendario</Text>
-        <Text style={gs.bodyText}>Selecciona una fecha para ver información</Text>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center", padding: 20 }}>
+        <Text style={[gs.headerText, { textAlign: "center" }]}>Calendario</Text>
+        <Text style={[gs.bodyText, { textAlign: "center" }]}>Selecciona una fecha para ver información</Text>
         {loading ? (
           <ActivityIndicator size="large" color="#00adf5" />
         ) : (
