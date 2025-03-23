@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.isppG8.infantem.infantem.calendar.dto.CalendarDay;
 import com.isppG8.infantem.infantem.calendar.dto.CalendarEvents;
 import com.isppG8.infantem.infantem.disease.DiseaseService;
+import com.isppG8.infantem.infantem.disease.dto.DiseaseSummary;
 import com.isppG8.infantem.infantem.dream.DreamService;
 import com.isppG8.infantem.infantem.dream.dto.DreamSummary;
 import com.isppG8.infantem.infantem.intake.IntakeService;
@@ -75,11 +76,14 @@ public class CalendarService {
         List<CalendarDay> events = new ArrayList<>();
         for (Integer babyId : babiesId) {
             CalendarDay calendarDay = new CalendarDay(babyId);
-            
+
             // Get dream summary
             List<DreamSummary> dreamSummary = this.dreamService.getDreamSummaryByBabyIdAndDate(babyId, day);
             calendarDay.setDreams(dreamSummary);
 
+            // Get diseases summary
+            List<DiseaseSummary> diseaseSummary = this.diseaseService.getDiseaseSummaryByBabyIdAndDate(babyId, day);
+            calendarDay.setDiseases(diseaseSummary);
 
             events.add(calendarDay);
         }

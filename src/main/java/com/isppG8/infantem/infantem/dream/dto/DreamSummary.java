@@ -1,6 +1,5 @@
 package com.isppG8.infantem.infantem.dream.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.isppG8.infantem.infantem.dream.Dream;
@@ -25,5 +24,5 @@ public class DreamSummary {
         this.numWakeups = dream.getNumWakeups();
         this.DreamType = dream.getDreamType();
     }
-    
+
 }

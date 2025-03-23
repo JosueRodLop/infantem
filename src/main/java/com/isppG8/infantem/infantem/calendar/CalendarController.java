@@ -49,7 +49,6 @@ public class CalendarController {
         return calendarData;
     }
 
-
     @GetMapping("/{day}")
     public List<CalendarDay> getCalendarDayByUserId(@PathVariable LocalDate day) {
         User user = userService.findCurrentUser();

@@ -1,7 +1,6 @@
 package com.isppG8.infantem.infantem.disease;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -10,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.baby.BabyRepository;
+import com.isppG8.infantem.infantem.disease.dto.DiseaseSummary;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
+import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 
 @Service
@@ -76,9 +76,16 @@ public class DiseaseService {
         }
     }
 
+    // Methods for calendar
+    @Transactional(readOnly = true)
     public List<Date> getDiseasesByBabyIdAndDate(Integer babyId, Date start, Date end) {
         LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return diseaseRepository.findDiseaseDatesByBabyIdAndDate(babyId, startDate, endDate);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DiseaseSummary> getDiseaseSummaryByBabyIdAndDate(Integer babyId, LocalDate day) {
+        return diseaseRepository.findDiseaseSummaryByBabyIdAndDate(babyId, day);
     }
 }
