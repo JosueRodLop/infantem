@@ -49,6 +49,12 @@ public class Calendar {
         }
     }
 
+    public void addMetricEvents(List<Date> metricDates) {
+        for (Date date : metricDates) {
+            addEvent(date, "Metric");
+        }
+    }
+
     private String parseDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(date);

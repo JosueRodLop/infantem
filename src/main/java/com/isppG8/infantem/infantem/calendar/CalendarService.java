@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.isppG8.infantem.infantem.disease.DiseaseService;
 import com.isppG8.infantem.infantem.dream.DreamService;
 import com.isppG8.infantem.infantem.intake.IntakeService;
+import com.isppG8.infantem.infantem.metric.MetricService;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.vaccine.VaccineService;
 
@@ -20,14 +21,16 @@ public class CalendarService {
     private DiseaseService diseaseService;
     private VaccineService vaccineService;
     private IntakeService intakeService;
+    private MetricService metricService;
 
     @Autowired
     public CalendarService(DreamService dreamService, DiseaseService diseaseService, VaccineService vaccineService,
-            IntakeService intakeService) {
+            IntakeService intakeService, MetricService metricService) {
         this.dreamService = dreamService;
         this.diseaseService = diseaseService;
         this.vaccineService = vaccineService;
         this.intakeService = intakeService;
+        this.metricService = metricService;
 
     }
 
@@ -53,6 +56,10 @@ public class CalendarService {
             // Check intake events
             List<Date> intakeDates = this.intakeService.getIntakesByBabyIdAndDate(babyId, start, end);
             babyCalendar.addIntakeEvents(intakeDates);
+
+            // Check metric events
+            List<Date> metricDates = this.metricService.getMetricsByUserIdAndDate(babyId, start, end);
+            babyCalendar.addMetricEvents(metricDates);
 
             calendar.add(babyCalendar);
         }
