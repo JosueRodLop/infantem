@@ -37,7 +37,7 @@ public class StripeWebhookController {
             Event event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
             switch (event.getType()) {
                 case "checkout.session.completed":
-                subscriptionService.handleCheckoutSessionCompleted(event);
+                    subscriptionService.handleCheckoutSessionCompleted(event);
                     break;
                 case "invoice.payment_succeeded":
                     subscriptionService.handleInvoicePaymentSucceeded(event);
@@ -60,4 +60,3 @@ public class StripeWebhookController {
         }
     }
 }
-

@@ -24,9 +24,7 @@ public class SubscriptionInfantemController {
 
     // Crear una suscripción
     @PostMapping("/create")
-    public ResponseEntity<?> createSubscription(
-            @RequestParam String customerId,
-            @RequestParam String priceId,
+    public ResponseEntity<?> createSubscription(@RequestParam String customerId, @RequestParam String priceId,
             @RequestParam String paymentMethodId) {
         try {
             Subscription subscription = subscriptionService.createSubscription(customerId, priceId, paymentMethodId);
@@ -49,8 +47,7 @@ public class SubscriptionInfantemController {
 
     // Activar una suscripción
     @PostMapping("/activate")
-    public ResponseEntity<?> activateSubscription(
-            @RequestParam String userId, @RequestParam String subscriptionId) {
+    public ResponseEntity<?> activateSubscription(@RequestParam String userId, @RequestParam String subscriptionId) {
         try {
             User user = userService.getUserById(Long.parseLong(userId));
             subscriptionService.activateSubscription(user, subscriptionId);
@@ -84,9 +81,7 @@ public class SubscriptionInfantemController {
 
     // Crear un cliente en Stripe
     @PostMapping("/create-customer")
-    public ResponseEntity<?> createCustomer(
-            @RequestParam String email,
-            @RequestParam String name,
+    public ResponseEntity<?> createCustomer(@RequestParam String email, @RequestParam String name,
             @RequestParam String description) {
         try {
             Customer customer = subscriptionService.createCustomer(email, name, description);
@@ -98,11 +93,8 @@ public class SubscriptionInfantemController {
 
     // Crear un método de pago (tarjeta)
     @PostMapping("/create-payment-method")
-    public ResponseEntity<?> createPaymentMethod(
-            @RequestParam String cardNumber,
-            @RequestParam int expMonth,
-            @RequestParam int expYear,
-            @RequestParam String cvc) {
+    public ResponseEntity<?> createPaymentMethod(@RequestParam String cardNumber, @RequestParam int expMonth,
+            @RequestParam int expYear, @RequestParam String cvc) {
         try {
             PaymentMethod paymentMethod = subscriptionService.createPaymentMethod(cardNumber, expMonth, expYear, cvc);
             return ResponseEntity.ok(paymentMethod);
@@ -113,11 +105,11 @@ public class SubscriptionInfantemController {
 
     // Asociar un método de pago a un cliente
     @PostMapping("/attach-payment-method")
-    public ResponseEntity<?> attachPaymentMethodToCustomer(
-            @RequestParam String paymentMethodId,
+    public ResponseEntity<?> attachPaymentMethodToCustomer(@RequestParam String paymentMethodId,
             @RequestParam String customerId) {
         try {
-            PaymentMethod attachedPaymentMethod = subscriptionService.attachPaymentMethodToCustomer(paymentMethodId, customerId);
+            PaymentMethod attachedPaymentMethod = subscriptionService.attachPaymentMethodToCustomer(paymentMethodId,
+                    customerId);
             return ResponseEntity.ok(attachedPaymentMethod);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al asociar método de pago: " + e.getMessage());
@@ -126,8 +118,7 @@ public class SubscriptionInfantemController {
 
     // Actualizar estado de una suscripción
     @PostMapping("/update-status")
-    public ResponseEntity<?> updateSubscriptionStatus(
-            @RequestParam String subscriptionId,
+    public ResponseEntity<?> updateSubscriptionStatus(@RequestParam String subscriptionId,
             @RequestParam boolean isActive) {
         try {
             subscriptionService.updateSubscriptionStatus(subscriptionId, isActive);
