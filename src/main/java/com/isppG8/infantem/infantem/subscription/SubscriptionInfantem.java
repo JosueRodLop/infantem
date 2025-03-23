@@ -23,6 +23,7 @@ public class SubscriptionInfantem {
 
     private String stripeSubscriptionId;
     private String stripeCustomerId;
+    private String stripePaymentMethodId;
     private LocalDate startDate;
     private boolean active;
 
