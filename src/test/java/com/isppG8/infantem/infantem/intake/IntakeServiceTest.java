@@ -37,33 +37,27 @@ public class IntakeServiceTest {
 
     // Simulate that the user with id 1 is the current user.
     private User currentUser;
-    // According to data.sql, the baby with id 1 belongs to the user with id 1.
     private Baby testBaby;
-    // Create an intake associated with the baby.
     private Intake testIntake;
 
     @BeforeEach
     public void setUp() {
-        // Configure the current user (e.g., "user1" from data.sql with id 1)
+
         currentUser = new User();
         currentUser.setId(1);
         currentUser.setUsername("user1");
 
-        // Configure a baby that belongs to currentUser (according to data.sql, baby_id=1 is related to user_id=1)
         testBaby = new Baby();
         testBaby.setId(1);
         testBaby.setName("Juan");
-        // Simulate the relationship loaded in user_baby
+
         testBaby.setUsers(new ArrayList<>(Arrays.asList(currentUser)));
 
-        // Configure an intake associated with the baby (e.g., the first record in intake_table)
         testIntake = new Intake();
         testIntake.setId(1L);
-        // Use an example date, quantity, and observations according to data.sql
         testIntake.setDate(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         testIntake.setQuantity(200);
         testIntake.setObservations("Breakfast: the baby ate well, no issues.");
-        // Other fields can be assigned as per the implementation (recipes, intakeSymptom, etc.)
         testIntake.setBaby(testBaby);
     }
 
@@ -106,8 +100,7 @@ public class IntakeServiceTest {
         Long id = 99L;
         when(intakeRepository.findById(id)).thenReturn(Optional.empty());
 
-        // Calling .get() on an empty Optional throws NoSuchElementException
-        assertThrows(NoSuchElementException.class, () -> intakeService.getIntakeById(id));
+        assertThrows(ResourceNotFoundException.class, () -> intakeService.getIntakeById(id));
     }
 
     // Test for getIntakeById when the current user does not own the resource

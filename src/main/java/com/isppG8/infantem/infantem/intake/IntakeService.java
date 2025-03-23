@@ -34,8 +34,10 @@ public class IntakeService {
 
     @Transactional(readOnly = true)
     public Intake getIntakeById(Long id) {
-        checkOwnerShip(this.intakeRepository.findById(id).get());
-        return this.intakeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Intake", "id", id));
+        Intake intake = this.intakeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Intake", "id", id)); // Ensure this is executed first
+        checkOwnerShip(intake);
+        return intake;
     }
 
     @Transactional
