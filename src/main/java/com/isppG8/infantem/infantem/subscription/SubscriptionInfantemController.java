@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/subscriptions")
+@RequestMapping("/api/v1/subscriptions")
 public class SubscriptionInfantemController {
 
     @Autowired
@@ -60,25 +60,22 @@ public class SubscriptionInfantemController {
         }
     }
 
-    // Obtener clientes por email
+    // Obtener cliente por email
     @GetMapping("/customers")
-    public ResponseEntity<?> getCustomersByEmail(@RequestParam String email) {
+    public ResponseEntity<?> getCustomersByEmail(@RequestParam String email, @RequestParam Integer lasts4) {
         try {
+            Customer customerFinal = null;
             List<Customer> customers = subscriptionService.getCustomersByEmail(email);
-            return ResponseEntity.ok(customers);
+            for (Customer customer : customers) {
+                Boolean isCustomere = subscriptionService.getPaymentMethodsByCustomer(customer.getId(), lasts4);
+                if (isCustomere) {
+                    customerFinal = customer;
+                    break;
+                }
+            }
+            return ResponseEntity.ok(customerFinal);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al obtener clientes: " + e.getMessage());
-        }
-    }
-
-    // Obtener métodos de pago por ID de cliente
-    @GetMapping("/payment-methods")
-    public ResponseEntity<?> getPaymentMethodsByCustomer(@RequestParam String customerId) {
-        try {
-            List<PaymentMethod> paymentMethods = subscriptionService.getPaymentMethodsByCustomer(customerId);
-            return ResponseEntity.ok(paymentMethods);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al obtener métodos de pago: " + e.getMessage());
         }
     }
 
