@@ -21,6 +21,7 @@ import com.isppG8.infantem.infantem.intake.Intake;
 import com.isppG8.infantem.infantem.milestoneCompleted.MilestoneCompleted;
 import com.isppG8.infantem.infantem.nutritionalContribution.NutritionalContribution;
 import com.isppG8.infantem.infantem.user.User;
+import com.isppG8.infantem.infantem.vaccine.Vaccine;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -89,6 +90,9 @@ public class Baby {
 
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<Intake> intakes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
+    private List<Vaccine> vaccines = new ArrayList<>();
 
     @ManyToMany(mappedBy = "babies")
     private List<Allergen> allergen = new ArrayList<>();
