@@ -67,24 +67,18 @@ public class SubscriptionInfantemService {
 
     // 1. Crear un cliente en Stripe
     public Customer createCustomer(String email, String name, String description) throws Exception {
-        CustomerCreateParams params = CustomerCreateParams.builder()
-                .setEmail(email)
-                .setName(name)
-                .setDescription(description)
-                .build();
+        CustomerCreateParams params = CustomerCreateParams.builder().setEmail(email).setName(name)
+                .setDescription(description).build();
         return Customer.create(params);
     }
 
     // 2. Crear un método de pago (Tarjeta)
-    public PaymentMethod createPaymentMethod(String cardNumber, int expMonth, int expYear, String cvc) throws Exception {
+    public PaymentMethod createPaymentMethod(String cardNumber, int expMonth, int expYear, String cvc)
+            throws Exception {
         PaymentMethodCreateParams params = PaymentMethodCreateParams.builder()
                 .setType(PaymentMethodCreateParams.Type.CARD)
-                .setCard(PaymentMethodCreateParams.CardDetails.builder()
-                        .setNumber(cardNumber)
-                        .setExpMonth((long) expMonth)
-                        .setExpYear((long) expYear)
-                        .setCvc(cvc)
-                        .build())
+                .setCard(PaymentMethodCreateParams.CardDetails.builder().setNumber(cardNumber)
+                        .setExpMonth((long) expMonth).setExpYear((long) expYear).setCvc(cvc).build())
                 .build();
         return PaymentMethod.create(params);
     }
@@ -92,58 +86,48 @@ public class SubscriptionInfantemService {
     // 3. Asociar método de pago al cliente
     public PaymentMethod attachPaymentMethodToCustomer(String paymentMethodId, String customerId) throws Exception {
         PaymentMethod paymentMethod = PaymentMethod.retrieve(paymentMethodId);
-        PaymentMethodAttachParams params = PaymentMethodAttachParams.builder()
-                .setCustomer(customerId)
-                .build();
+        PaymentMethodAttachParams params = PaymentMethodAttachParams.builder().setCustomer(customerId).build();
         return paymentMethod.attach(params);
     }
 
     // 4. Crear una suscripción
     public Subscription createSubscription(String customerId, String priceId, String paymentMethodId) throws Exception {
         // Crear los parámetros de la suscripción
-        SubscriptionCreateParams params = SubscriptionCreateParams.builder()
-                .setCustomer(customerId)
-                .addItem(SubscriptionCreateParams.Item.builder()
-                        .setPrice(priceId)
-                        .build())
-                .setDefaultPaymentMethod(paymentMethodId)
-                .build();
-    
+        SubscriptionCreateParams params = SubscriptionCreateParams.builder().setCustomer(customerId)
+                .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
+                .setDefaultPaymentMethod(paymentMethodId).build();
+
         // Crear la suscripción en Stripe y obtener el resultado
         Subscription stripeSubscription = Subscription.create(params);
-    
+
         // Obtener el usuario asociado al cliente de Stripe
         User user = userService.getUserByStripeCustomerId(customerId).orElseThrow();
-    
+
         // Crear y guardar la suscripción en la base de datos
         SubscriptionInfantem newSubscription = new SubscriptionInfantem();
         newSubscription.setUser(user);
         newSubscription.setStartDate(LocalDate.now());
         newSubscription.setActive(true);
         newSubscription.setStripePaymentMethodId(paymentMethodId);
-        newSubscription.setStripeSubscriptionId(stripeSubscription.getId()); // Aquí obtenemos el ID de la suscripción de Stripe
+        newSubscription.setStripeSubscriptionId(stripeSubscription.getId()); // Aquí obtenemos el ID de la suscripción
+                                                                             // de Stripe
         newSubscription.setStripeCustomerId(customerId);
-    
+
         subscriptionInfantemRepository.save(newSubscription);
-    
+
         return stripeSubscription; // Devolvemos la suscripción creada en Stripe
     }
-    
 
     // 5. Cancelar una suscripción
     public Subscription cancelSubscription(String subscriptionId) throws Exception {
         Subscription subscription = Subscription.retrieve(subscriptionId);
-        SubscriptionUpdateParams params = SubscriptionUpdateParams.builder()
-                .setCancelAtPeriodEnd(true)
-                .build();
+        SubscriptionUpdateParams params = SubscriptionUpdateParams.builder().setCancelAtPeriodEnd(true).build();
         return subscription.update(params);
     }
 
     // 6. Conseguir usuarios por email
     public List<Customer> getCustomersByEmail(String email) throws Exception {
-        CustomerListParams params = CustomerListParams.builder()
-                .setEmail(email)
-                .build();
+        CustomerListParams params = CustomerListParams.builder().setEmail(email).build();
         return Customer.list(params).getData();
     }
 
@@ -166,16 +150,17 @@ public class SubscriptionInfantemService {
     }
     
 
-
     public void handleCheckoutSessionCompleted(Event event) throws StripeException {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-        if (!dataObjectDeserializer.getObject().isPresent()) return;
+        if (!dataObjectDeserializer.getObject().isPresent())
+            return;
 
         Session session = (Session) dataObjectDeserializer.getObject().get();
         String customerId = session.getCustomer();
         String subscriptionId = session.getSubscription();
 
-        if (customerId == null || subscriptionId == null) return;
+        if (customerId == null || subscriptionId == null)
+            return;
 
         Optional<User> userOpt = userService.getUserByStripeCustomerId(customerId);
         userOpt.ifPresent(user -> activateSubscription(user, subscriptionId));
@@ -184,11 +169,13 @@ public class SubscriptionInfantemService {
     // 🔹 Manejar cuando se paga correctamente una factura de suscripción
     public void handleInvoicePaymentSucceeded(Event event) {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-        if (!dataObjectDeserializer.getObject().isPresent()) return;
+        if (!dataObjectDeserializer.getObject().isPresent())
+            return;
 
         Invoice invoice = (Invoice) dataObjectDeserializer.getObject().get();
         String subscriptionId = invoice.getSubscription();
-        if (subscriptionId == null) return;
+        if (subscriptionId == null)
+            return;
 
         updateSubscriptionStatus(subscriptionId, true);
     }
@@ -196,11 +183,13 @@ public class SubscriptionInfantemService {
     // 🔹 Manejar cuando una suscripción es cancelada
     public void handleSubscriptionCanceled(Event event) {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-        if (!dataObjectDeserializer.getObject().isPresent()) return;
+        if (!dataObjectDeserializer.getObject().isPresent())
+            return;
 
         Subscription subscription = (Subscription) dataObjectDeserializer.getObject().get();
         String subscriptionId = subscription.getId();
-        if (subscriptionId == null) return;
+        if (subscriptionId == null)
+            return;
 
         updateSubscriptionStatus(subscriptionId, false);
     }
@@ -208,12 +197,14 @@ public class SubscriptionInfantemService {
     // 🔹 Manejar cuando una suscripción es creada
     public void handleSubscriptionCreated(Event event) {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-        if (!dataObjectDeserializer.getObject().isPresent()) return;
+        if (!dataObjectDeserializer.getObject().isPresent())
+            return;
 
         Subscription subscription = (Subscription) dataObjectDeserializer.getObject().get();
         String subscriptionId = subscription.getId();
         String customerId = subscription.getCustomer();
-        if (subscriptionId == null || customerId == null) return;
+        if (subscriptionId == null || customerId == null)
+            return;
 
         Optional<User> userOpt = userService.getUserByStripeCustomerId(customerId);
         userOpt.ifPresent(user -> activateSubscription(user, subscriptionId));
