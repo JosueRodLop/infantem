@@ -25,8 +25,8 @@ public class AdvertisementService {
 
     @Transactional(readOnly = true)
     public Advertisement getAdvertisementById(Long advertisementId) {
-        Advertisement ad = this.advertisementRepository.findById(advertisementId).orElseThrow(
-                () -> new ResourceNotFoundException("Advertisement", "id", advertisementId));
+        Advertisement ad = this.advertisementRepository.findById(advertisementId)
+                .orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", advertisementId));
         return ad;
     }
 
