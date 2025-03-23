@@ -44,7 +44,7 @@ public class RecipeController {
             @RequestParam(value = "nutrient", required = false) String nutrient,
             @RequestParam(value = "allergens", required = false) List<String> allergens) {
 
-        List<Recipe> recipes = new ArrayList<>(recipeService.findAllRecipes());
+        List<Recipe> recipes = new ArrayList<>(recipeService.getCurrentUserRecipes());
 
         if (maxAge != null) {
             List<Recipe> recipesByMaxAge = recipeService.getRecipeByMaxAge(maxAge);
@@ -76,43 +76,17 @@ public class RecipeController {
         return ResponseEntity.ok(recipes);
     }
 
-    @GetMapping("/recommended/{age}")
-    public ResponseEntity<List<Recipe>> getRecommendedRecipes(@PathVariable Integer age) {
-        List<Recipe> recipes = recipeService.getRecommendedRecipes(age);
-        return ResponseEntity.ok(recipes);
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Recipe>> getRecipesByUserId(@PathVariable Long userId) {
-        List<Recipe> recipes = recipeService.getRecipesByUserId(userId);
+    @GetMapping("/recommended/{babyId}")
+    public ResponseEntity<List<Recipe>> getRecommendedRecipes(@PathVariable Integer babyId) {
+        List<Recipe> recipes = recipeService.getRecommendedRecipes(babyId);
         return ResponseEntity.ok(recipes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-        User user = userService.findCurrentUser();
-        Recipe recipe = recipeService.getRecipeById(id, user.getId());
+
+        Recipe recipe = recipeService.getRecipeById(id);
         return ResponseEntity.ok(recipe);
-    }
-
-    @GetMapping("/minAge")
-    public ResponseEntity<List<Recipe>> getRecipeByMinAge(@RequestParam Integer age) {
-        List<Recipe> recipes = recipeService.getRecipeByMinAge(age);
-        return ResponseEntity.ok(recipes);
-    }
-
-    @GetMapping("/maxAge")
-    public ResponseEntity<List<Recipe>> getRecipeByMaxAge(@RequestParam Integer age) {
-        List<Recipe> recipes = recipeService.getRecipeByMaxAge(age);
-        return ResponseEntity.ok(recipes);
-    }
-
-    @GetMapping("/ingredients")
-    public ResponseEntity<List<Recipe>> getRecipesByIngredients(@RequestParam List<String> ingredients) {
-        System.out.println("CONTROLLER");
-        System.out.println("LISTA POR PARAMETRO" + ingredients);
-        List<Recipe> recipes = recipeService.getRecipeByIngredients(ingredients);
-        return ResponseEntity.ok(recipes);
     }
 
     @PostMapping
