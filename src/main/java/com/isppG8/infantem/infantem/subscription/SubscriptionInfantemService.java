@@ -133,22 +133,19 @@ public class SubscriptionInfantemService {
 
     // 7. Encontrar método de pago del cliente
     public Boolean getPaymentMethodsByCustomer(String customerId, Integer last4) throws Exception {
-        PaymentMethodListParams params = PaymentMethodListParams.builder()
-                .setCustomer(customerId)
-                .setType(PaymentMethodListParams.Type.CARD)
-                .build();
-        
+        PaymentMethodListParams params = PaymentMethodListParams.builder().setCustomer(customerId)
+                .setType(PaymentMethodListParams.Type.CARD).build();
+
         List<PaymentMethod> paymentMethods = PaymentMethod.list(params).getData();
-    
+
         for (PaymentMethod paymentMethod : paymentMethods) {
             if (paymentMethod.getCard() != null && paymentMethod.getCard().getLast4().equals(last4.toString())) {
                 return true; // Coincidencia encontrada
             }
         }
-    
+
         return false; // No se encontró coincidencia
     }
-    
 
     public void handleCheckoutSessionCompleted(Event event) throws StripeException {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
