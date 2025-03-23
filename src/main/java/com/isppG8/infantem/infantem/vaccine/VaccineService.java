@@ -14,6 +14,7 @@ import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
+import com.isppG8.infantem.infantem.vaccine.dto.VaccineSummary;
 
 @Service
 public class VaccineService {
@@ -67,5 +68,9 @@ public class VaccineService {
         LocalDate endLocalDate = end.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 
         return this.vaccineRepository.getVaccinesByBabyIdAndDate(babyId, startLocalDate, endLocalDate);
+    }
+
+    public List<VaccineSummary> getVaccineSummaryByBabyIdAndDate(Integer babyId, LocalDate day) {
+        return this.vaccineRepository.getVaccineSummaryByBabyIdAndDate(babyId, day);
     }
 }

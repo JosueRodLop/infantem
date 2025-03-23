@@ -18,6 +18,7 @@ import com.isppG8.infantem.infantem.intake.IntakeService;
 import com.isppG8.infantem.infantem.metric.MetricService;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.vaccine.VaccineService;
+import com.isppG8.infantem.infantem.vaccine.dto.VaccineSummary;
 
 @Service
 public class CalendarService {
@@ -84,6 +85,10 @@ public class CalendarService {
             // Get diseases summary
             List<DiseaseSummary> diseaseSummary = this.diseaseService.getDiseaseSummaryByBabyIdAndDate(babyId, day);
             calendarDay.setDiseases(diseaseSummary);
+
+            // Get vaccine summary
+            List<VaccineSummary> vaccineSummary = this.vaccineService.getVaccineSummaryByBabyIdAndDate(babyId, day);
+            calendarDay.setVaccines(vaccineSummary);
 
             events.add(calendarDay);
         }
