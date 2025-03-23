@@ -58,6 +58,16 @@ public class AdvertisementService {
     }
 
     @Transactional
+    public Advertisement updateAdvertisementClicks(Long advertisementId) {
+        Advertisement advertisement = this.advertisementRepository.findById(advertisementId)
+                .orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", advertisementId));
+
+        advertisement.setTotalClicks(advertisement.getTotalClicks() + 1);
+
+        return this.advertisementRepository.save(advertisement);
+    }
+
+    @Transactional
     public void deleteAdvertisement(Long advertisementId) {
         Advertisement advertisement = this.advertisementRepository.findById(advertisementId)
                 .orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", advertisementId));
