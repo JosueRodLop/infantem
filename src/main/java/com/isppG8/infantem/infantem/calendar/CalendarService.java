@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.isppG8.infantem.infantem.disease.DiseaseService;
 import com.isppG8.infantem.infantem.dream.DreamService;
+import com.isppG8.infantem.infantem.intake.IntakeService;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.vaccine.VaccineService;
 
@@ -18,13 +19,16 @@ public class CalendarService {
     private DreamService dreamService;
     private DiseaseService diseaseService;
     private VaccineService vaccineService;
+    private IntakeService intakeService;
 
     @Autowired
-    public CalendarService(DreamService dreamService, DiseaseService diseaseService, VaccineService vaccineService) {
+    public CalendarService(DreamService dreamService, DiseaseService diseaseService, VaccineService vaccineService,
+            IntakeService intakeService) {
         this.dreamService = dreamService;
         this.diseaseService = diseaseService;
         this.vaccineService = vaccineService;
-        
+        this.intakeService = intakeService;
+
     }
 
     public List<Calendar> getCalendarByUserId(User user, Date start, Date end) {
@@ -45,6 +49,11 @@ public class CalendarService {
             // Check vaccines events
             List<Date> vaccineDates = this.vaccineService.getVaccinesByBabyIdAndDate(babyId, start, end);
             babyCalendar.addVaccineEvents(vaccineDates);
+
+            // Check intake events
+            List<Date> intakeDates = this.intakeService.getIntakesByBabyIdAndDate(babyId, start, end);
+            babyCalendar.addIntakeEvents(intakeDates);
+
             calendar.add(babyCalendar);
         }
         return calendar;

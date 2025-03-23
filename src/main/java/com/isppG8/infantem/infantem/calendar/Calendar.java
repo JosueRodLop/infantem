@@ -27,46 +27,42 @@ public class Calendar {
 
     public void addDreamEvents(List<Date> dreamDates) {
         for (Date date : dreamDates) {
-            String formattedDate = parseDate(date);
-            if (!this.events.containsKey(formattedDate)) {
-                Set<String> event = new HashSet<>();
-                event.add("Dream");
-                this.events.put(formattedDate, event);
-            } else {
-                this.events.get(formattedDate).add("Dream");
-            }
+            addEvent(date, "Dream");
         }
     }
 
     public void addDiseaseEvents(List<Date> diseaseDates) {
         for (Date date : diseaseDates) {
-            String formattedDate = parseDate(date);
-            if (!this.events.containsKey(formattedDate)) {
-                Set<String> event = new HashSet<>();
-                event.add("Disease");
-                this.events.put(formattedDate, event);
-            } else {
-                this.events.get(formattedDate).add("Disease");
-            }
+            addEvent(date, "Disease");
         }
     }
 
     public void addVaccineEvents(List<Date> vaccineDates) {
         for (Date date : vaccineDates) {
-            String formattedDate = parseDate(date);
-            if (!this.events.containsKey(formattedDate)) {
-                Set<String> event = new HashSet<>();
-                event.add("Vaccine");
-                this.events.put(formattedDate, event);
-            } else {
-                this.events.get(formattedDate).add("Vaccine");
-            }
+            addEvent(date, "Vaccine");
+        }
+    }
+
+    public void addIntakeEvents(List<Date> intakeDates) {
+        for (Date date : intakeDates) {
+            addEvent(date, "Intake");
         }
     }
 
     private String parseDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(date);
+    }
+
+    private void addEvent(Date date, String event) {
+        String formattedDate = parseDate(date);
+        if (!this.events.containsKey(formattedDate)) {
+            Set<String> events = new HashSet<>();
+            events.add(event);
+            this.events.put(formattedDate, events);
+        } else {
+            this.events.get(formattedDate).add(event);
+        }
     }
 
 }
