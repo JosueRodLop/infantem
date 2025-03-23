@@ -26,11 +26,9 @@ public class RecipeServiceTest {
     @MockitoBean
     private UserService userService;
 
-
     @Autowired
     private RecipeService recipeService;
 
-    
     final int HUGE_BABY_AGE = 999;
 
     @Test
