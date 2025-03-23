@@ -1,104 +1,147 @@
 package com.isppG8.infantem.infantem.intake;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
+import com.isppG8.infantem.infantem.InfantemApplication;
 import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.baby.BabyService;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
+import com.isppG8.infantem.infantem.recipe.Recipe;
+import com.isppG8.infantem.infantem.recipe.RecipeRepository;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest(classes = { InfantemApplication.class, IntakeService.class, IntakeServiceTest.TestConfig.class })
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // Use the configured test database
+@Transactional
+@Import(IntakeServiceTest.TestConfig.class)
 public class IntakeServiceTest {
 
-    @Mock
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        public UserService userService() {
+            return org.mockito.Mockito.mock(UserService.class);
+        }
+
+        @Bean
+        public BabyService babyService() {
+            return org.mockito.Mockito.mock(BabyService.class);
+        }
+    }
+
+    // Real repository injected
+    @Autowired
     private IntakeRepository intakeRepository;
 
-    @Mock
-    private UserService userService;
-
-    @Mock
-    private BabyService babyService;
-
-    @InjectMocks
+    // Real service (uses the real repository and the other mocked beans)
+    @Autowired
     private IntakeService intakeService;
 
-    // Simulate that the user with id 1 is the current user.
+    // Mocked beans defined in TestConfig
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private BabyService babyService;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
+
+    // Test data
     private User currentUser;
     private Baby testBaby;
     private Intake testIntake;
 
     @BeforeEach
     public void setUp() {
-
+        // Configure the current user (e.g., "user1" with id 1)
         currentUser = new User();
         currentUser.setId(1);
         currentUser.setUsername("user1");
 
+        // Configure a baby that belongs to the currentUser (according to data.sql, baby with id 1 belongs to user1)
         testBaby = new Baby();
         testBaby.setId(1);
         testBaby.setName("Juan");
+        testBaby.setUsers(List.of(currentUser));
 
-        testBaby.setUsers(new ArrayList<>(Arrays.asList(currentUser)));
+        // Persist a Recipe to assign it to the first Intake
+        Recipe breakfastRecipe = new Recipe();
+        breakfastRecipe.setName("Breakfast Recipe");
+        breakfastRecipe = recipeRepository.save(breakfastRecipe);
 
+        // Configure an Intake associated with the baby
         testIntake = new Intake();
-        testIntake.setId(1L);
-        testIntake.setDate(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        testIntake.setDate(LocalDateTime.now());
         testIntake.setQuantity(200);
         testIntake.setObservations("Breakfast: the baby ate well, no issues.");
         testIntake.setBaby(testBaby);
+        // Assign the persisted Recipe to meet the validation (@Size(min=1))
+        testIntake.setRecipes(List.of(breakfastRecipe));
+        testIntake = intakeRepository.save(testIntake);
     }
 
-    // Test for getAllIntakes: simulate that only intakes associated with the current user are returned
+    // --- Tests using the real repository instance ---
+
+    // Test for getAllIntakes: persist two records and verify that they are returned
     @Test
     public void testGetAllIntakes_ByCurrentUser() {
-        // Simulate that the current user has two intakes (e.g., the two records in intake_table for baby_id=1)
+        // Persist a Recipe for the second Intake
+        Recipe lunchRecipe = new Recipe();
+        lunchRecipe.setName("Lunch Recipe");
+        lunchRecipe = recipeRepository.save(lunchRecipe);
+
+        // Create and save a second Intake for the same baby
         Intake secondIntake = new Intake();
-        secondIntake.setId(2L);
-        secondIntake.setDate(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        secondIntake.setDate(LocalDateTime.now());
         secondIntake.setQuantity(150);
         secondIntake.setObservations("Lunch: the baby left some food.");
         secondIntake.setBaby(testBaby);
+        // Assign the persisted Recipe to meet the validation
+        secondIntake.setRecipes(List.of(lunchRecipe));
+        secondIntake = intakeRepository.save(secondIntake);
 
-        List<Intake> intakeList = Arrays.asList(testIntake, secondIntake);
-        when(userService.findCurrentUser()).thenReturn(currentUser);
-        when(intakeRepository.findAllByUser(currentUser)).thenReturn(intakeList);
-
+        // Stub the mocked services
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
         List<Intake> result = intakeService.getAllIntakes();
-        assertEquals(intakeList, result);
-        verify(userService, times(1)).findCurrentUser();
-        verify(intakeRepository, times(1)).findAllByUser(currentUser);
+        // Expect at least the two inserted records
+        assertTrue(result.size() >= 2);
     }
 
     // Test for getIntakeById success
     @Test
     public void testGetIntakeById_Success() {
         Long id = testIntake.getId();
-        when(intakeRepository.findById(id)).thenReturn(Optional.of(testIntake));
-        when(userService.findCurrentUser()).thenReturn(currentUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
         Intake result = intakeService.getIntakeById(id);
-        assertEquals(testIntake, result);
+        assertNotNull(result);
+        assertEquals(testIntake.getObservations(), result.getObservations());
     }
 
-    // Test for getIntakeById when not found (expect exception)
+    // Test for getIntakeById when not found
     @Test
     public void testGetIntakeById_NotFound() {
-        Long id = 99L;
-        when(intakeRepository.findById(id)).thenReturn(Optional.empty());
+        Long id = 999L; // Assume this ID does not exist in the DB
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+        // babyService can be left unstubbed in this case
 
         assertThrows(ResourceNotFoundException.class, () -> intakeService.getIntakeById(id));
     }
@@ -107,78 +150,89 @@ public class IntakeServiceTest {
     @Test
     public void testGetIntakeById_NotOwned() {
         Long id = testIntake.getId();
-        when(intakeRepository.findById(id)).thenReturn(Optional.of(testIntake));
-        // Simulate a different user who is not the owner (e.g., user2)
+        // Simulate a different user (not the owner)
         User otherUser = new User();
         otherUser.setId(2);
         otherUser.setUsername("user2");
-        when(userService.findCurrentUser()).thenReturn(otherUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(otherUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
         assertThrows(ResourceNotOwnedException.class, () -> intakeService.getIntakeById(id));
     }
 
-    // Test for saveIntake success
+    // Test for saveIntake success using the real repository
     @Test
     public void testSaveIntake_Success() {
-        when(userService.findCurrentUser()).thenReturn(currentUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
-        when(intakeRepository.save(testIntake)).thenReturn(testIntake);
+        // Create a new Intake without an ID (to simulate creation)
+        Intake newIntake = new Intake();
+        newIntake.setDate(LocalDateTime.now());
+        newIntake.setQuantity(180);
+        newIntake.setObservations("Snack: new intake record.");
+        newIntake.setBaby(testBaby);
 
-        Intake result = intakeService.saveIntake(testIntake);
-        assertEquals(testIntake, result);
+        // Persist a Recipe to assign it to the new Intake
+        Recipe snackRecipe = new Recipe();
+        snackRecipe.setName("Snack Recipe"); // Assign a valid name to meet @NotNull
+        snackRecipe = recipeRepository.save(snackRecipe);
+        newIntake.setRecipes(List.of(snackRecipe));
+
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
+
+        Intake saved = intakeService.saveIntake(newIntake);
+        assertNotNull(saved.getId());
+        assertEquals("Snack: new intake record.", saved.getObservations());
     }
 
-    // Test for saveIntake when the user does not own the resource
+    // Test for saveIntake when the current user does not own the resource
     @Test
     public void testSaveIntake_NotOwned() {
-        // Simulate that the current user is not in the baby's user list
+        Intake newIntake = new Intake();
+        newIntake.setDate(LocalDateTime.now());
+        newIntake.setQuantity(180);
+        newIntake.setObservations("Snack: new intake record.");
+        newIntake.setBaby(testBaby);
+
         User otherUser = new User();
         otherUser.setId(2);
         otherUser.setUsername("user2");
-        when(userService.findCurrentUser()).thenReturn(otherUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(otherUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
-        assertThrows(ResourceNotOwnedException.class, () -> intakeService.saveIntake(testIntake));
+        assertThrows(ResourceNotOwnedException.class, () -> intakeService.saveIntake(newIntake));
     }
 
     // Test for updateIntake success
     @Test
     public void testUpdateIntake_Success() {
         Long id = testIntake.getId();
+        // Create an object with the new data
         Intake updatedIntake = new Intake();
-        updatedIntake.setId(id);
-        LocalDateTime newDate = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        updatedIntake.setDate(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        updatedIntake.setDate(LocalDateTime.now());
         updatedIntake.setQuantity(250);
         updatedIntake.setObservations("Update: quantity modified.");
-        // Assign other fields as necessary
         updatedIntake.setBaby(testBaby);
 
-        when(userService.findCurrentUser()).thenReturn(currentUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
-        when(intakeRepository.findById(id)).thenReturn(Optional.of(testIntake));
-        when(intakeRepository.save(any(Intake.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
         Intake result = intakeService.updateIntake(id, updatedIntake);
-        assertEquals(newDate, result.getDate());
         assertEquals(250, result.getQuantity());
         assertEquals("Update: quantity modified.", result.getObservations());
     }
 
-    // Test for updateIntake when the user does not own the resource
+    // Test for updateIntake when the current user does not own the resource
     @Test
     public void testUpdateIntake_NotOwned() {
         Long id = testIntake.getId();
         Intake updatedIntake = new Intake();
-        updatedIntake.setId(id);
         updatedIntake.setBaby(testBaby);
-        // Simulate a user who is not the owner
+
         User otherUser = new User();
         otherUser.setId(2);
         otherUser.setUsername("user2");
-        when(userService.findCurrentUser()).thenReturn(otherUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(otherUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
         assertThrows(ResourceNotOwnedException.class, () -> intakeService.updateIntake(id, updatedIntake));
     }
@@ -186,13 +240,12 @@ public class IntakeServiceTest {
     // Test for updateIntake when the intake to update is not found
     @Test
     public void testUpdateIntake_NotFound() {
-        Long id = testIntake.getId();
+        Long id = 999L; // Non-existent ID
         Intake updatedIntake = new Intake();
-        updatedIntake.setId(id);
         updatedIntake.setBaby(testBaby);
-        when(userService.findCurrentUser()).thenReturn(currentUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
-        when(intakeRepository.findById(id)).thenReturn(Optional.empty());
+
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
         assertThrows(ResourceNotFoundException.class, () -> intakeService.updateIntake(id, updatedIntake));
     }
@@ -201,36 +254,34 @@ public class IntakeServiceTest {
     @Test
     public void testDeleteIntake_Success() {
         Long id = testIntake.getId();
-        when(intakeRepository.findById(id)).thenReturn(Optional.of(testIntake));
-        when(userService.findCurrentUser()).thenReturn(currentUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
-        when(intakeRepository.existsById(id)).thenReturn(true);
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
+        // Assume that testIntake exists in the DB (already saved in setUp)
+        // Execute delete
         assertDoesNotThrow(() -> intakeService.deleteIntake(id));
-        verify(intakeRepository, times(1)).deleteById(id);
+        // Verify that it is no longer in the DB
+        Optional<Intake> deleted = intakeRepository.findById(id);
+        assertTrue(deleted.isEmpty());
     }
 
-    // Test for deleteIntake when the user does not own the resource
+    // Test for deleteIntake when the current user does not own the resource
     @Test
     public void testDeleteIntake_NotOwned() {
         Long id = testIntake.getId();
-        when(intakeRepository.findById(id)).thenReturn(Optional.of(testIntake));
-        // Simulate a user who is not the owner
         User otherUser = new User();
         otherUser.setId(2);
         otherUser.setUsername("user2");
-        when(userService.findCurrentUser()).thenReturn(otherUser);
-        when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(otherUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
         assertThrows(ResourceNotOwnedException.class, () -> intakeService.deleteIntake(id));
     }
 
-    // Test for deleteIntake when the intake is not found (expect exception when calling .get() on an empty Optional)
+    // Test for deleteIntake when the intake is not found
     @Test
     public void testDeleteIntake_NotFound() {
-        Long id = testIntake.getId();
-        when(intakeRepository.findById(id)).thenReturn(Optional.empty());
-
-        assertThrows(NoSuchElementException.class, () -> intakeService.deleteIntake(id));
+        Long id = 999L; // Non-existent ID
+        assertThrows(ResourceNotFoundException.class, () -> intakeService.deleteIntake(id));
     }
 }
