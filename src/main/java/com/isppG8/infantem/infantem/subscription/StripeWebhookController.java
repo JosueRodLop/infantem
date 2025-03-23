@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.stripe;
+package com.isppG8.infantem.infantem.subscription;
 
 import com.google.gson.JsonSyntaxException;
 import com.stripe.Stripe;
@@ -20,10 +20,10 @@ public class StripeWebhookController {
     @Value("${stripe.webhook.secret}")
     private String endpointSecret;
 
-    private final StripeService stripeService;
+    private final SubscriptionInfantemService subscriptionService;
 
-    public StripeWebhookController(StripeService stripeService) {
-        this.stripeService = stripeService;
+    public StripeWebhookController(SubscriptionInfantemService subscriptionService) {
+        this.subscriptionService = subscriptionService;
     }
 
     @PostMapping
@@ -37,16 +37,16 @@ public class StripeWebhookController {
             Event event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
             switch (event.getType()) {
                 case "checkout.session.completed":
-                    stripeService.handleCheckoutSessionCompleted(event);
+                subscriptionService.handleCheckoutSessionCompleted(event);
                     break;
                 case "invoice.payment_succeeded":
-                    stripeService.handleInvoicePaymentSucceeded(event);
+                    subscriptionService.handleInvoicePaymentSucceeded(event);
                     break;
                 case "customer.subscription.deleted":
-                    stripeService.handleSubscriptionCanceled(event);
+                    subscriptionService.handleSubscriptionCanceled(event);
                     break;
                 case "customer.subscription.created":
-                    stripeService.handleSubscriptionCreated(event);
+                    subscriptionService.handleSubscriptionCreated(event);
                     break;
                 default:
                     System.out.println("Evento no manejado: " + event.getType());
