@@ -17,6 +17,7 @@ import com.isppG8.infantem.infantem.dream.dto.DreamSummary;
 import com.isppG8.infantem.infantem.intake.IntakeService;
 import com.isppG8.infantem.infantem.intake.dto.IntakeSummary;
 import com.isppG8.infantem.infantem.metric.MetricService;
+import com.isppG8.infantem.infantem.metric.dto.MetricSummary;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.vaccine.VaccineService;
 import com.isppG8.infantem.infantem.vaccine.dto.VaccineSummary;
@@ -94,6 +95,10 @@ public class CalendarService {
             // Get intake summary
             List<IntakeSummary> intakeSummary = this.intakeService.getIntakeSummaryByBabyIdAndDate(babyId, day);
             calendarDay.setIntakes(intakeSummary);
+
+            // Get metric summary
+            List<MetricSummary> metricSummary = this.metricService.getMetricSummaryByBabyIdAndDate(babyId, day);
+            calendarDay.setMetrics(metricSummary);
 
             events.add(calendarDay);
         }
