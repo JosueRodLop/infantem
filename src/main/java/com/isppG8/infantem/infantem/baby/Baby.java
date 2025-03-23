@@ -85,6 +85,9 @@ public class Baby {
     private List<Dream> sleep = new ArrayList<>();
 
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
+    private List<Dream> metrics = new ArrayList<>();
+
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<MilestoneCompleted> milestonesCompleted = new ArrayList<>();
 
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
