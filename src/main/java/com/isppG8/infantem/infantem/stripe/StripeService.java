@@ -4,8 +4,6 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.*;
 import com.stripe.param.SubscriptionCreateParams;
 import com.stripe.param.CustomerCreateParams;
-import com.isppG8.infantem.infantem.payment.Payment;
-import com.isppG8.infantem.infantem.payment.PaymentService;
 import com.isppG8.infantem.infantem.subscription.SubscriptionInfantemService;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
@@ -26,9 +24,6 @@ public class StripeService {
     private String stripeSecretKey;
 
     @Autowired
-    private PaymentService paymentService;
-
-    @Autowired
     private UserService userService; // Para actualizar el estado de suscripción en la BD
 
     @Autowired
@@ -42,34 +37,6 @@ public class StripeService {
                 .build();
         Customer customer = Customer.create(params);
         return customer.getId();
-    }
-
-    // 🔹 Crear suscripción para un usuario existente en tu base de datos
-    public String createSubscription(User user, String priceId) throws StripeException {
-        Optional<Payment> paymentOpt = paymentService.getPaymentByUserId((long) user.getId());
-
-        String customerId = paymentOpt.map(Payment::getStripeCustomerId)
-                .orElseGet(() -> {
-                    try {
-                        return createCustomer(user);
-                    } catch (StripeException e) {
-                        throw new RuntimeException("Error creando cliente en Stripe", e);
-                    }
-                });
-
-        SubscriptionCreateParams params = SubscriptionCreateParams.builder()
-                .setCustomer(customerId)
-                .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
-                .build();
-
-        Subscription subscription = Subscription.create(params);
-        return subscription.getId();
-    }
-
-    public void cancelSubscription(String subscriptionId) throws StripeException {
-        Subscription subscription = Subscription.retrieve(subscriptionId);
-        SubscriptionCancelParams params = SubscriptionCancelParams.builder().build();
-        subscription.cancel(params);
     }
 
     // 🔹 Manejar cuando un usuario completa un pago exitoso en Stripe
