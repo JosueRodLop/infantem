@@ -1,5 +1,6 @@
 package com.isppG8.infantem.infantem.calendar;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,8 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isppG8.infantem.infantem.calendar.dto.CalendarDay;
+import com.isppG8.infantem.infantem.calendar.dto.CalendarEvents;
 import com.isppG8.infantem.infantem.disease.DiseaseService;
 import com.isppG8.infantem.infantem.dream.DreamService;
+import com.isppG8.infantem.infantem.dream.dto.DreamSummary;
 import com.isppG8.infantem.infantem.intake.IntakeService;
 import com.isppG8.infantem.infantem.metric.MetricService;
 import com.isppG8.infantem.infantem.user.User;
@@ -34,13 +38,13 @@ public class CalendarService {
 
     }
 
-    public List<Calendar> getCalendarByUserId(User user, Date start, Date end) {
+    public List<CalendarEvents> getCalendarByUserId(User user, Date start, Date end) {
         List<Integer> babiesId = user.getBabies().stream().map(baby -> baby.getId()).toList();
 
-        List<Calendar> calendar = new ArrayList<>();
+        List<CalendarEvents> calendar = new ArrayList<>();
 
         for (Integer babyId : babiesId) {
-            Calendar babyCalendar = new Calendar(babyId);
+            CalendarEvents babyCalendar = new CalendarEvents(babyId);
             // Check dream events
             List<Date> dreamDates = this.dreamService.getDreamsByBabyIdAndDate(babyId, start, end);
             babyCalendar.addDreamEvents(dreamDates);
@@ -64,5 +68,21 @@ public class CalendarService {
             calendar.add(babyCalendar);
         }
         return calendar;
+    }
+
+    public List<CalendarDay> getCalendarDayByUserId(User user, LocalDate day) {
+        List<Integer> babiesId = user.getBabies().stream().map(baby -> baby.getId()).toList();
+        List<CalendarDay> events = new ArrayList<>();
+        for (Integer babyId : babiesId) {
+            CalendarDay calendarDay = new CalendarDay(babyId);
+            
+            // Get dream summary
+            List<DreamSummary> dreamSummary = this.dreamService.getDreamSummaryByBabyIdAndDate(babyId, day);
+            calendarDay.setDreams(dreamSummary);
+
+
+            events.add(calendarDay);
+        }
+        return events;
     }
 }

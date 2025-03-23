@@ -11,4 +11,7 @@ public interface DreamRepository extends JpaRepository<Dream, Long> {
 
     @Query("SELECT DISTINCT FUNCTION('DATE', d.dateStart) FROM Dream d WHERE d.baby.id = ?1 AND d.dateStart BETWEEN ?2 AND ?3")
     List<Date> findDreamDatesByBabyIdAndDate(Integer babyId, LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT d FROM Dream d WHERE d.baby.id = ?1 AND d.dateStart BETWEEN ?2 AND ?3")
+    List<Dream> findDreamSummaryByBabyIdAndDate(Integer babyId, LocalDateTime start, LocalDateTime end);
 }

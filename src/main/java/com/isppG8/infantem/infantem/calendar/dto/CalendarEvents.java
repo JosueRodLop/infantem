@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.calendar;
+package com.isppG8.infantem.infantem.calendar.dto;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,14 +13,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Calendar {
+public class CalendarEvents {
     private Integer babyId;
     private Map<String, Set<String>> events;
 
-    public Calendar() {
+    public CalendarEvents() {
     }
 
-    public Calendar(Integer babyId) {
+    public CalendarEvents(Integer babyId) {
         this.babyId = babyId;
         this.events = new HashMap<>();
     }

@@ -1,5 +1,6 @@
 package com.isppG8.infantem.infantem.dream;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.baby.BabyRepository;
+import com.isppG8.infantem.infantem.dream.dto.DreamSummary;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
 import com.isppG8.infantem.infantem.user.User;
@@ -86,5 +88,14 @@ public class DreamService {
         LocalDateTime endDateTime = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
         return dreamRepository.findDreamDatesByBabyIdAndDate(babyId, startDateTime, endDateTime);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DreamSummary> getDreamSummaryByBabyIdAndDate(Integer babyId, LocalDate day) {
+        LocalDateTime startDateTime = day.atStartOfDay();
+        LocalDateTime endDateTime = day.atTime(23, 59, 59);
+        List<Dream> dreams = dreamRepository.findDreamSummaryByBabyIdAndDate(babyId, startDateTime, endDateTime);
+
+        return dreams.stream().map(DreamSummary::new).toList();
     }
 }

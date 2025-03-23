@@ -1,14 +1,18 @@
 package com.isppG8.infantem.infantem.calendar;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isppG8.infantem.infantem.calendar.dto.CalendarDay;
+import com.isppG8.infantem.infantem.calendar.dto.CalendarEvents;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 
@@ -26,7 +30,7 @@ public class CalendarController {
     }
 
     @GetMapping
-    public List<Calendar> getCalendarByUserId(@RequestParam Integer month, @RequestParam Integer year) {
+    public List<CalendarEvents> getCalendarByUserId(@RequestParam Integer month, @RequestParam Integer year) {
         User user = userService.findCurrentUser();
 
         // Calculate start date
@@ -40,9 +44,19 @@ public class CalendarController {
         calendar.set(java.util.Calendar.DAY_OF_MONTH, calendar.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
         Date end = calendar.getTime();
 
-        List<Calendar> calendarData = calendarService.getCalendarByUserId(user, start, end);
+        List<CalendarEvents> calendarData = calendarService.getCalendarByUserId(user, start, end);
 
         return calendarData;
+    }
+
+
+    @GetMapping("/{day}")
+    public List<CalendarDay> getCalendarDayByUserId(@PathVariable LocalDate day) {
+        User user = userService.findCurrentUser();
+
+        List<CalendarDay> calendarDayData = calendarService.getCalendarDayByUserId(user, day);
+
+        return calendarDayData;
     }
 
 }
