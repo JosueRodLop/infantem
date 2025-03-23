@@ -61,11 +61,13 @@ public class IntakeService {
 
     @Transactional
     public void deleteIntake(Long id) {
-        checkOwnerShip(this.intakeRepository.findById(id).get());
         if (!this.intakeRepository.existsById(id)) {
             throw new ResourceNotFoundException("Intake", "id", id);
+        } else {
+            Intake intake = this.intakeRepository.findById(id).get();
+            checkOwnerShip(intake);
+            this.intakeRepository.deleteById(id);
         }
-        this.intakeRepository.deleteById(id);
     }
 
     private void checkOwnerShip(Intake intake) {
