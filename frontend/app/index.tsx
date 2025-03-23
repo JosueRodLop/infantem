@@ -1,16 +1,11 @@
 import { Link, Redirect } from "expo-router";
-import { View, Text, ImageBackground, Image, ActivityIndicator } from "react-native";
+import { View, Text, ImageBackground, Image } from "react-native";
 import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
 
 export default function Index() {
-  const { isAuthenticated, checkAuth } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const gs = require("../static/styles/globalStyles");
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
 
   if (isAuthenticated)
     return <Redirect href="recipes" />
