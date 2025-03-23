@@ -10,6 +10,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isppG8.infantem.infantem.intake.dto.IntakeSummary;
+
 @Service
 public class IntakeService {
 
@@ -36,5 +38,12 @@ public class IntakeService {
         LocalDateTime startDateTime = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime endDateTime = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         return intakeRepository.getIntakesByBabyIdAndDate(babyId, startDateTime, endDateTime);
+    }
+
+    public List<IntakeSummary> getIntakeSummaryByBabyIdAndDate(Integer babyId, LocalDate day) {
+        LocalDateTime start = day.atStartOfDay();
+        LocalDateTime end = day.atTime(23, 59, 59);
+        List<Intake> intakes = this.intakeRepository.getIntakeSummaryByBabyIdAndDate(babyId, start, end);
+        return intakes.stream().map(IntakeSummary::new).toList();
     }
 }
