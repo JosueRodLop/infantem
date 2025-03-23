@@ -95,7 +95,11 @@ export default function Account() {
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 
-        <Text style={gs.headerText}>Perfil</Text>
+        <Link href={"/account/premiumplan"} style={[gs.mainButton, { marginTop: 10, width: 400, textAlign:"center"}]}>
+          <Text style={[gs.mainButtonText, {fontSize:30}]}>¡HAZTE PREMIUM!</Text>
+        </Link>
+
+        <Text style={[gs.headerText, { marginTop: 20 }]}>Perfil</Text>
         <Text style={gs.subHeaderText}>Información de usuario</Text>
 
         <TouchableOpacity style={gs.profileImageContainer} onPress={() => isEditing && setModalVisible(true)} disabled={!isEditing}>
@@ -145,13 +149,12 @@ export default function Account() {
           </TouchableOpacity>
         )}
 
-        {<TouchableOpacity style={[gs.secondaryButton, { marginTop: 20 }]} onPress={handleLogout}>
+        {<TouchableOpacity style={[gs.secondaryButton, { marginTop: 60 }]} onPress={handleLogout}>
           <Text style={gs.secondaryButtonText}>Cerrar Sesión</Text>
         </TouchableOpacity>}
 
-        <Link href="/PaymentView" style={[gs.secondaryButton, { marginTop: 20 }]}>
-           <Text style={gs.secondaryButtonText}>¿Ya eres usuario Premium?</Text>
-        </Link>
+        
+
 
         <Modal visible={modalVisible} animationType="fade" transparent={true}>
           <View style={gs.modalOverlay}>
