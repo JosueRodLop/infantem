@@ -3,6 +3,7 @@ import { Text, View, TextInput, ScrollView, Image, ImageBackground, Dimensions, 
 import { Link, useRouter } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
 import { useAuth } from "../../../context/AuthContext";
+import AdBanner from "../../../components/AdBanner";
 
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -285,7 +286,10 @@ export default function Page() {
           )}
         </View>
 
+
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
+
+          <AdBanner id={1} brand={"Nestle"} sentence={"Buy nestle"}/>
 
           <Text style={[gs.headerText, { color: "#1565C0", fontSize: 38, marginTop: 30 }]}>Todas tus recetas</Text>
 
