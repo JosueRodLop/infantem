@@ -27,9 +27,9 @@ public class IntakeService {
         this.babyService = babyService;
     }
 
-    @Transactional(readOnly = true)
     public List<Intake> getAllIntakes() {
-        return intakeRepository.findAll();
+        User user = this.userService.findCurrentUser();
+        return this.intakeRepository.findAllByUser(user);
     }
 
     @Transactional(readOnly = true)
