@@ -41,4 +41,8 @@ public class Advertisement {
     @Min(0)
     private Integer timeSeen;
 
+    @NotNull
+    @Min(0)
+    private Integer totalClicks;
+
 }
