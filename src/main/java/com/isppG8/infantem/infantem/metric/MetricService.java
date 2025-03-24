@@ -1,7 +1,6 @@
 package com.isppG8.infantem.infantem.metric;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class MetricService {
 
     // Methods for calendar
 
-    public List<Date> getMetricsByUserIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
+    public List<LocalDate> getMetricsByUserIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
         return this.metricRepository.findMetricsByUserIdAndDate(babyId, start, end);
     }
 

@@ -1,8 +1,6 @@
 package com.isppG8.infantem.infantem.calendar.dto;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,43 +30,27 @@ public class CalendarEvents {
         }
     }
 
-    public void addDiseaseEvents(List<Date> diseaseDates) {
-        for (Date date : diseaseDates) {
+    public void addDiseaseEvents(Set<LocalDate> diseaseDates) {
+        for (LocalDate date : diseaseDates) {
             addEvent(date, "Disease");
         }
     }
 
-    public void addVaccineEvents(List<Date> vaccineDates) {
-        for (Date date : vaccineDates) {
+    public void addVaccineEvents(List<LocalDate> vaccineDates) {
+        for (LocalDate date : vaccineDates) {
             addEvent(date, "Vaccine");
         }
     }
 
-    public void addIntakeEvents(List<Date> intakeDates) {
-        for (Date date : intakeDates) {
+    public void addIntakeEvents(List<LocalDate> intakeDates) {
+        for (LocalDate date : intakeDates) {
             addEvent(date, "Intake");
         }
     }
 
-    public void addMetricEvents(List<Date> metricDates) {
-        for (Date date : metricDates) {
+    public void addMetricEvents(List<LocalDate> metricDates) {
+        for (LocalDate date : metricDates) {
             addEvent(date, "Metric");
-        }
-    }
-
-    private String parseDate(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(date);
-    }
-
-    private void addEvent(Date date, String event) {
-        String formattedDate = parseDate(date);
-        if (!this.events.containsKey(formattedDate)) {
-            Set<String> events = new HashSet<>();
-            events.add(event);
-            this.events.put(formattedDate, events);
-        } else {
-            this.events.get(formattedDate).add(event);
         }
     }
 

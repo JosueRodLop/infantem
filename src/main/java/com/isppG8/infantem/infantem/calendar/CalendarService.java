@@ -2,7 +2,6 @@ package com.isppG8.infantem.infantem.calendar;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -55,19 +54,19 @@ public class CalendarService {
             babyCalendar.addDreamEvents(dreamDates);
 
             // Check diseases events
-            List<Date> diseaseDates = this.diseaseService.getDiseasesByBabyIdAndDate(babyId, start, end);
+            Set<LocalDate> diseaseDates = this.diseaseService.getDiseasesByBabyIdAndDate(babyId, start, end);
             babyCalendar.addDiseaseEvents(diseaseDates);
 
             // Check vaccines events
-            List<Date> vaccineDates = this.vaccineService.getVaccinesByBabyIdAndDate(babyId, start, end);
+            List<LocalDate> vaccineDates = this.vaccineService.getVaccinesByBabyIdAndDate(babyId, start, end);
             babyCalendar.addVaccineEvents(vaccineDates);
 
             // Check intake events
-            List<Date> intakeDates = this.intakeService.getIntakesByBabyIdAndDate(babyId, start, end);
+            List<LocalDate> intakeDates = this.intakeService.getIntakesByBabyIdAndDate(babyId, start, end);
             babyCalendar.addIntakeEvents(intakeDates);
 
             // Check metric events
-            List<Date> metricDates = this.metricService.getMetricsByUserIdAndDate(babyId, start, end);
+            List<LocalDate> metricDates = this.metricService.getMetricsByUserIdAndDate(babyId, start, end);
             babyCalendar.addMetricEvents(metricDates);
 
             calendar.add(babyCalendar);

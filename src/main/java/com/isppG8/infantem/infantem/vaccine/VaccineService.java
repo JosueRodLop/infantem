@@ -1,7 +1,6 @@
 package com.isppG8.infantem.infantem.vaccine;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +62,7 @@ public class VaccineService {
     }
 
     // Methods for calendar
-    public List<Date> getVaccinesByBabyIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
-
+    public List<LocalDate> getVaccinesByBabyIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
         return this.vaccineRepository.getVaccinesByBabyIdAndDate(babyId, start, end);
     }
 
