@@ -1,7 +1,6 @@
 package com.isppG8.infantem.infantem.disease;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -78,10 +77,8 @@ public class DiseaseService {
 
     // Methods for calendar
     @Transactional(readOnly = true)
-    public List<Date> getDiseasesByBabyIdAndDate(Integer babyId, Date start, Date end) {
-        LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return diseaseRepository.findDiseaseDatesByBabyIdAndDate(babyId, startDate, endDate);
+    public List<Date> getDiseasesByBabyIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
+        return diseaseRepository.findDiseaseDatesByBabyIdAndDate(babyId, start, end);
     }
 
     @Transactional(readOnly = true)

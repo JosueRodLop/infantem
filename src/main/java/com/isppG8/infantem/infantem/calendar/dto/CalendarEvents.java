@@ -1,6 +1,7 @@
 package com.isppG8.infantem.infantem.calendar.dto;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,8 +26,8 @@ public class CalendarEvents {
         this.events = new HashMap<>();
     }
 
-    public void addDreamEvents(List<Date> dreamDates) {
-        for (Date date : dreamDates) {
+    public void addDreamEvents(Set<LocalDate> dreamDates) {
+        for (LocalDate date : dreamDates) {
             addEvent(date, "Dream");
         }
     }
@@ -62,6 +63,17 @@ public class CalendarEvents {
 
     private void addEvent(Date date, String event) {
         String formattedDate = parseDate(date);
+        if (!this.events.containsKey(formattedDate)) {
+            Set<String> events = new HashSet<>();
+            events.add(event);
+            this.events.put(formattedDate, events);
+        } else {
+            this.events.get(formattedDate).add(event);
+        }
+    }
+
+    private void addEvent(LocalDate date, String event) {
+        String formattedDate = date.toString();
         if (!this.events.containsKey(formattedDate)) {
             Set<String> events = new HashSet<>();
             events.add(event);

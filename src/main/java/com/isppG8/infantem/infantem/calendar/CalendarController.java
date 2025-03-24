@@ -1,7 +1,6 @@
 package com.isppG8.infantem.infantem.calendar;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +33,10 @@ public class CalendarController {
         User user = userService.findCurrentUser();
 
         // Calculate start date
-        java.util.Calendar calendar = java.util.Calendar.getInstance();
-        calendar.set(java.util.Calendar.YEAR, year);
-        calendar.set(java.util.Calendar.MONTH, month - 1);
-        calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
-        Date start = calendar.getTime();
+        LocalDate start = LocalDate.of(year, month, 1);
 
         // Calculate end of month
-        calendar.set(java.util.Calendar.DAY_OF_MONTH, calendar.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
-        Date end = calendar.getTime();
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 
         List<CalendarEvents> calendarData = calendarService.getCalendarByUserId(user, start, end);
 

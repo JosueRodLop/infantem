@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class CalendarService {
 
     }
 
-    public List<CalendarEvents> getCalendarByUserId(User user, Date start, Date end) {
+    public List<CalendarEvents> getCalendarByUserId(User user, LocalDate start, LocalDate end) {
         List<Integer> babiesId = user.getBabies().stream().map(baby -> baby.getId()).toList();
 
         List<CalendarEvents> calendar = new ArrayList<>();
@@ -50,7 +51,7 @@ public class CalendarService {
         for (Integer babyId : babiesId) {
             CalendarEvents babyCalendar = new CalendarEvents(babyId);
             // Check dream events
-            List<Date> dreamDates = this.dreamService.getDreamsByBabyIdAndDate(babyId, start, end);
+            Set<LocalDate> dreamDates = this.dreamService.getDreamsByBabyIdAndDate(babyId, start, end);
             babyCalendar.addDreamEvents(dreamDates);
 
             // Check diseases events

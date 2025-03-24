@@ -63,11 +63,9 @@ public class VaccineService {
     }
 
     // Methods for calendar
-    public List<Date> getVaccinesByBabyIdAndDate(Integer babyId, Date start, Date end) {
-        LocalDate startLocalDate = start.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-        LocalDate endLocalDate = end.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+    public List<Date> getVaccinesByBabyIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
 
-        return this.vaccineRepository.getVaccinesByBabyIdAndDate(babyId, startLocalDate, endLocalDate);
+        return this.vaccineRepository.getVaccinesByBabyIdAndDate(babyId, start, end);
     }
 
     public List<VaccineSummary> getVaccineSummaryByBabyIdAndDate(Integer babyId, LocalDate day) {

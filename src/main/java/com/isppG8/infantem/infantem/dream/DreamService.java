@@ -2,10 +2,10 @@ package com.isppG8.infantem.infantem.dream;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
+import com.isppG8.infantem.infantem.util.Tuple;
 
 @Service
 public class DreamService {
@@ -83,11 +84,28 @@ public class DreamService {
     // Methods for calendar
 
     @Transactional(readOnly = true)
-    public List<Date> getDreamsByBabyIdAndDate(Integer babyId, Date start, Date end) {
-        LocalDateTime startDateTime = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        LocalDateTime endDateTime = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    public Set<LocalDate> getDreamsByBabyIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
+        LocalDateTime startDateTime = start.atStartOfDay();
+        LocalDateTime endDateTime = end.atTime(23, 59, 59);
 
-        return dreamRepository.findDreamDatesByBabyIdAndDate(babyId, startDateTime, endDateTime);
+        List<Tuple<LocalDateTime, LocalDateTime>> dreamDates = dreamRepository.findDreamDatesByBabyIdAndDate(babyId,
+                startDateTime, endDateTime);
+
+        Set<LocalDate> dates = new HashSet<>();
+        for (Tuple<LocalDateTime, LocalDateTime> t : dreamDates) {
+            LocalDate startDate = t.first().toLocalDate();
+            LocalDate endDate = t.second().toLocalDate();
+
+            // Check if startDate and endDate are on the same month to only add dates on the asked month
+            startDate = startDate.isAfter(start) ? startDate : start;
+            endDate = endDate.isBefore(end) ? endDate : end;
+            while (!startDate.isAfter(endDate)) {
+                dates.add(startDate);
+                startDate = startDate.plusDays(1);
+            }
+        }
+
+        return dates;
     }
 
     @Transactional(readOnly = true)

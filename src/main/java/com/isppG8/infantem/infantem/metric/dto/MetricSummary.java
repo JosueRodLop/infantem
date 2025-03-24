@@ -10,7 +10,7 @@ public class MetricSummary {
     private Double weight;
     private Double height;
     private Integer cephalicPerimeter;
-    
+
     public MetricSummary(Integer id, Double weight, Double height, Integer cephalicPerimeter) {
         this.id = id;
         this.weight = weight;

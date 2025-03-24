@@ -2,7 +2,6 @@ package com.isppG8.infantem.infantem.intake;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,9 +33,9 @@ public class IntakeService {
         intakeRepository.deleteById(id);
     }
 
-    public List<Date> getIntakesByBabyIdAndDate(Integer babyId, Date start, Date end) {
-        LocalDateTime startDateTime = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        LocalDateTime endDateTime = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    public List<Date> getIntakesByBabyIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
+        LocalDateTime startDateTime = start.atStartOfDay();
+        LocalDateTime endDateTime = end.atTime(23, 59, 59);
         return intakeRepository.getIntakesByBabyIdAndDate(babyId, startDateTime, endDateTime);
     }
 

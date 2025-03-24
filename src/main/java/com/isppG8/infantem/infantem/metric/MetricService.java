@@ -1,7 +1,6 @@
 package com.isppG8.infantem.infantem.metric;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -24,10 +23,8 @@ public class MetricService {
 
     // Methods for calendar
 
-    public List<Date> getMetricsByUserIdAndDate(Integer babyId, Date start, Date end) {
-        LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return this.metricRepository.findMetricsByUserIdAndDate(babyId, startDate, endDate);
+    public List<Date> getMetricsByUserIdAndDate(Integer babyId, LocalDate start, LocalDate end) {
+        return this.metricRepository.findMetricsByUserIdAndDate(babyId, start, end);
     }
 
     public List<MetricSummary> getMetricSummaryByBabyIdAndDate(Integer babyId, LocalDate day) {
