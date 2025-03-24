@@ -46,10 +46,9 @@ public class IntakeControllerTest {
     @Autowired
     private IntakeService intakeService;
 
-    // Dummy token to simulate authentication (e.g., JWT)
+    // Dummy token to simulate authentication
     private final String token = "dummy-token";
 
-    // Helper method to create a dummy Intake with all required fields
     private Intake createDummyIntake(Long id) {
         Intake intake = new Intake();
         intake.setId(id);
@@ -57,16 +56,13 @@ public class IntakeControllerTest {
         intake.setQuantity(10);
         intake.setObservations("Test observations");
 
-        // At least one recipe is required in the list
         Recipe recipe = new Recipe();
         intake.setRecipes(Collections.singletonList(recipe));
 
-        // Set a dummy baby (assuming the Baby class has at least an id)
         Baby baby = new Baby();
         baby.setId(1);
         intake.setBaby(baby);
 
-        // IntakeSymptom is optional according to the DTO, it can be null or assigned a dummy if required
         intake.setIntakeSymptom(null);
 
         return intake;
@@ -95,7 +91,6 @@ public class IntakeControllerTest {
 
     @Test
     public void testCreateIntake() throws Exception {
-        // Example valid JSON for creation
         String intakeJson = """
                 {
                     "date": "2025-03-23T10:15:30",
@@ -117,7 +112,6 @@ public class IntakeControllerTest {
 
     @Test
     public void testUpdateIntake() throws Exception {
-        // Example valid JSON for update
         String intakeJson = """
                 {
                     "date": "2025-03-23T10:15:30",
@@ -150,7 +144,6 @@ public class IntakeControllerTest {
 
     @Test
     public void testCreateIntake_Invalid() throws Exception {
-        // Enviamos un JSON vacío (faltan campos obligatorios) para provocar error de validación.
         String invalidJson = "{}";
 
         mockMvc.perform(post("/api/v1/intake").header("Authorization", "Bearer " + token).with(csrf())
@@ -160,7 +153,6 @@ public class IntakeControllerTest {
 
     @Test
     public void testUpdateIntake_Invalid() throws Exception {
-        // Enviamos datos inválidos: cantidad negativa y observaciones vacías.
         String invalidJson = """
                 {
                     "date": "2025-03-23T10:15:30",
@@ -177,21 +169,17 @@ public class IntakeControllerTest {
 
     @Test
     public void testGetIntakeById_NotFound() throws Exception {
-        // Simulamos que al buscar un intake inexistente el servicio lanza una excepción.
         Mockito.when(intakeService.getIntakeById(999L)).thenThrow(new ResourceNotFoundException("Not Found"));
 
         mockMvc.perform(get("/api/v1/intake/999").header("Authorization", "Bearer " + token))
-                // Al no existir manejador global, se espera un error 500.
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void testDeleteIntake_NotFound() throws Exception {
-        // Simulamos que al eliminar un intake inexistente se lanza una excepción.
         Mockito.doThrow(new ResourceNotFoundException("Not Found")).when(intakeService).deleteIntake(999L);
 
         mockMvc.perform(delete("/api/v1/intake/999").header("Authorization", "Bearer " + token).with(csrf()))
-                // Al no existir manejador global, se espera un error 500.
                 .andExpect(status().isNotFound());
     }
 }

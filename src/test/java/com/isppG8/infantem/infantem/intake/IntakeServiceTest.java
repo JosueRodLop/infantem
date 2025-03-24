@@ -46,15 +46,12 @@ public class IntakeServiceTest {
         }
     }
 
-    // Real repository injected
     @Autowired
     private IntakeRepository intakeRepository;
 
-    // Real service (uses the real repository and the other mocked beans)
     @Autowired
     private IntakeService intakeService;
 
-    // Mocked beans defined in TestConfig
     @Autowired
     private UserService userService;
     @Autowired
@@ -70,57 +67,49 @@ public class IntakeServiceTest {
 
     @BeforeEach
     public void setUp() {
-        // Configure the current user (e.g., "user1" with id 1)
+
         currentUser = new User();
         currentUser.setId(1);
         currentUser.setUsername("user1");
 
-        // Configure a baby that belongs to the currentUser (according to data.sql, baby with id 1 belongs to user1)
         testBaby = new Baby();
         testBaby.setId(1);
         testBaby.setName("Juan");
         testBaby.setUsers(List.of(currentUser));
 
-        // Persist a Recipe to assign it to the first Intake
         Recipe breakfastRecipe = new Recipe();
         breakfastRecipe.setName("Breakfast Recipe");
         breakfastRecipe = recipeRepository.save(breakfastRecipe);
 
-        // Configure an Intake associated with the baby
         testIntake = new Intake();
         testIntake.setDate(LocalDateTime.now());
         testIntake.setQuantity(200);
         testIntake.setObservations("Breakfast: the baby ate well, no issues.");
         testIntake.setBaby(testBaby);
-        // Assign the persisted Recipe to meet the validation (@Size(min=1))
         testIntake.setRecipes(List.of(breakfastRecipe));
         testIntake = intakeRepository.save(testIntake);
     }
 
-    // --- Tests using the real repository instance ---
-
     // Test for getAllIntakes: persist two records and verify that they are returned
     @Test
     public void testGetAllIntakes_ByCurrentUser() {
-        // Persist a Recipe for the second Intake
+
         Recipe lunchRecipe = new Recipe();
         lunchRecipe.setName("Lunch Recipe");
         lunchRecipe = recipeRepository.save(lunchRecipe);
 
-        // Create and save a second Intake for the same baby
         Intake secondIntake = new Intake();
         secondIntake.setDate(LocalDateTime.now());
         secondIntake.setQuantity(150);
         secondIntake.setObservations("Lunch: the baby left some food.");
         secondIntake.setBaby(testBaby);
-        // Assign the persisted Recipe to meet the validation
+
         secondIntake.setRecipes(List.of(lunchRecipe));
         secondIntake = intakeRepository.save(secondIntake);
 
-        // Stub the mocked services
         org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
         List<Intake> result = intakeService.getAllIntakes();
-        // Expect at least the two inserted records
+
         assertTrue(result.size() >= 2);
     }
 
@@ -139,9 +128,8 @@ public class IntakeServiceTest {
     // Test for getIntakeById when not found
     @Test
     public void testGetIntakeById_NotFound() {
-        Long id = 999L; // Assume this ID does not exist in the DB
+        Long id = 999L;
         org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
-        // babyService can be left unstubbed in this case
 
         assertThrows(ResourceNotFoundException.class, () -> intakeService.getIntakeById(id));
     }
@@ -150,7 +138,7 @@ public class IntakeServiceTest {
     @Test
     public void testGetIntakeById_NotOwned() {
         Long id = testIntake.getId();
-        // Simulate a different user (not the owner)
+
         User otherUser = new User();
         otherUser.setId(2);
         otherUser.setUsername("user2");
@@ -163,16 +151,15 @@ public class IntakeServiceTest {
     // Test for saveIntake success using the real repository
     @Test
     public void testSaveIntake_Success() {
-        // Create a new Intake without an ID (to simulate creation)
+
         Intake newIntake = new Intake();
         newIntake.setDate(LocalDateTime.now());
         newIntake.setQuantity(180);
         newIntake.setObservations("Snack: new intake record.");
         newIntake.setBaby(testBaby);
 
-        // Persist a Recipe to assign it to the new Intake
         Recipe snackRecipe = new Recipe();
-        snackRecipe.setName("Snack Recipe"); // Assign a valid name to meet @NotNull
+        snackRecipe.setName("Snack Recipe");
         snackRecipe = recipeRepository.save(snackRecipe);
         newIntake.setRecipes(List.of(snackRecipe));
 
@@ -184,7 +171,6 @@ public class IntakeServiceTest {
         assertEquals("Snack: new intake record.", saved.getObservations());
     }
 
-    // Test for saveIntake when the current user does not own the resource
     @Test
     public void testSaveIntake_NotOwned() {
         Intake newIntake = new Intake();
@@ -206,7 +192,7 @@ public class IntakeServiceTest {
     @Test
     public void testUpdateIntake_Success() {
         Long id = testIntake.getId();
-        // Create an object with the new data
+
         Intake updatedIntake = new Intake();
         updatedIntake.setDate(LocalDateTime.now());
         updatedIntake.setQuantity(250);
@@ -257,10 +243,8 @@ public class IntakeServiceTest {
         org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
         org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
-        // Assume that testIntake exists in the DB (already saved in setUp)
-        // Execute delete
         assertDoesNotThrow(() -> intakeService.deleteIntake(id));
-        // Verify that it is no longer in the DB
+
         Optional<Intake> deleted = intakeRepository.findById(id);
         assertTrue(deleted.isEmpty());
     }
@@ -281,7 +265,7 @@ public class IntakeServiceTest {
     // Test for deleteIntake when the intake is not found
     @Test
     public void testDeleteIntake_NotFound() {
-        Long id = 999L; // Non-existent ID
+        Long id = 999L;
         assertThrows(ResourceNotFoundException.class, () -> intakeService.deleteIntake(id));
     }
 }
