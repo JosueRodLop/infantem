@@ -1,6 +1,7 @@
 package com.isppG8.infantem.infantem.intake;
 
 import com.isppG8.infantem.infantem.baby.Baby;
+import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.recipe.Recipe;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -145,5 +146,52 @@ public class IntakeControllerTest {
 
         mockMvc.perform(delete("/api/v1/intake/1").header("Authorization", "Bearer " + token).with(csrf()))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void testCreateIntake_Invalid() throws Exception {
+        // Enviamos un JSON vacío (faltan campos obligatorios) para provocar error de validación.
+        String invalidJson = "{}";
+
+        mockMvc.perform(post("/api/v1/intake").header("Authorization", "Bearer " + token).with(csrf())
+                .contentType(MediaType.APPLICATION_JSON).content(invalidJson))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    public void testUpdateIntake_Invalid() throws Exception {
+        // Enviamos datos inválidos: cantidad negativa y observaciones vacías.
+        String invalidJson = """
+                {
+                    "date": "2025-03-23T10:15:30",
+                    "quantity": -5,
+                    "observations": "",
+                    "recipes": [{"id":1}],
+                    "baby": {"id": 1}
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/intake/1").header("Authorization", "Bearer " + token).with(csrf())
+                .contentType(MediaType.APPLICATION_JSON).content(invalidJson)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetIntakeById_NotFound() throws Exception {
+        // Simulamos que al buscar un intake inexistente el servicio lanza una excepción.
+        Mockito.when(intakeService.getIntakeById(999L)).thenThrow(new ResourceNotFoundException("Not Found"));
+
+        mockMvc.perform(get("/api/v1/intake/999").header("Authorization", "Bearer " + token))
+                // Al no existir manejador global, se espera un error 500.
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testDeleteIntake_NotFound() throws Exception {
+        // Simulamos que al eliminar un intake inexistente se lanza una excepción.
+        Mockito.doThrow(new ResourceNotFoundException("Not Found")).when(intakeService).deleteIntake(999L);
+
+        mockMvc.perform(delete("/api/v1/intake/999").header("Authorization", "Bearer " + token).with(csrf()))
+                // Al no existir manejador global, se espera un error 500.
+                .andExpect(status().isNotFound());
     }
 }
