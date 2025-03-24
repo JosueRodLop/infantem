@@ -62,7 +62,7 @@ public class RecipeServiceTest {
 
         List<Recipe> noFilteredRecipes = recipeService.getRecipeByMinAge(HUGE_BABY_AGE);
         assertEquals(allRecipes, noFilteredRecipes, "All recipes should have min age less than" + HUGE_BABY_AGE);
-        
+
         Mockito.when(userService.findCurrentUser()).thenReturn(user2);
     }
 
@@ -133,7 +133,7 @@ public class RecipeServiceTest {
 
     @Test
     public void getRecipeByIdTest() {
-        
+
         Mockito.when(userService.findCurrentUser()).thenReturn(user1);
         Recipe recipeId1 = recipeService.getRecipeById(1L);
         assertEquals(1L, recipeId1.getId(), "The recipe id should be 1");
@@ -148,7 +148,7 @@ public class RecipeServiceTest {
 
     @Test
     public void getRecipeByIdNotFoundTest() {
-        
+
         Mockito.when(userService.findCurrentUser()).thenReturn(user1);
         assertThrows(ResourceNotFoundException.class, () -> recipeService.getRecipeById(999L),
                 "Recipe 999 should not be found");
