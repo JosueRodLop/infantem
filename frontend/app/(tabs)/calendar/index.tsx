@@ -83,7 +83,7 @@ const CalendarTab = () => {
         return;
       }
 
-      const response = await fetch(`${apiUrl}/api/v1/babies`, {
+      const response = await fetch(`${apiUrl}/api/v1/baby`, {
         headers: {
           Authorization: `Bearer ${jwt}`, // Incluir el token JWT en las cabeceras
         },
@@ -127,7 +127,7 @@ const CalendarTab = () => {
 
   // Renderizar el componente del calendario
   const renderCalendar = () => (
-    <View style={[gs.card, { width: "30%", padding: 10 }]}>
+    <View style={[gs.card, { width: "40%", padding: 10 }]}>
       <Calendar
         current={currentMonth} // Establecer el mes visible
         onDayPress={handleDayPress}
@@ -173,7 +173,7 @@ const CalendarTab = () => {
 
   // Renderizar la información del día seleccionado
   const renderSelectedDateInfo = () => (
-    <View style={[gs.card, { width: "90%", padding: 10 }]}>
+    <View style={[gs.card, { width: "40%", padding: 10 }]}>
       {selectedDate ? (
         <View>
           <Text style={[gs.headerText, { textAlign: "center" }]}>Eventos del día {selectedDate}:</Text>
@@ -181,7 +181,7 @@ const CalendarTab = () => {
             Object.keys(events[selectedDate]).map((babyId) => (
               <View key={babyId} style={{ marginTop: 10 }}>
                 <Text style={[gs.bodyText, { fontWeight: "bold", textAlign: "center" }]}>
-                  {babies.name || `Bebé desconocido (${babyId})`}:
+                  {babies[babyId] || `Bebé desconocido (${babyId})`}:
                 </Text>
                 {events[selectedDate][babyId].map((event, index) => (
                   <Text key={index} style={[gs.bodyText, { textAlign: "center" }]}>
