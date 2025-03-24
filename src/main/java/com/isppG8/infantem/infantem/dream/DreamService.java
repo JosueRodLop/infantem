@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +39,8 @@ public class DreamService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Dream> getDreamById(Long id) {
-        return dreamRepository.findById(id);
+    public Dream getDreamById(Long id) {
+        return dreamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dream", "id", id));
     }
 
     @Transactional
@@ -64,12 +63,11 @@ public class DreamService {
     }
 
     @Transactional
-    public boolean deleteDream(Long id) {
-        if (dreamRepository.existsById(id)) {
-            dreamRepository.deleteById(id);
-            return true;
+    public void deleteDream(Long id) {
+        if (!dreamRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Dream", "id", id);
         }
-        return false;
+        dreamRepository.deleteById(id);
     }
 
     private void checkOwnership(Dream dream) {
