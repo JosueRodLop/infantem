@@ -31,25 +31,26 @@ export default function PremiumPlan() {
     };
 
     return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 20, backgroundColor: "#f4f4f4" }}>
-            <View style={{ backgroundColor: "#fff", padding: 20, borderRadius: 10, shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 5 }}>
-                <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>Hazte Premium</Text>
-                <Text style={{ fontSize: 16, marginBottom: 10 }}>Disfruta de beneficios exclusivos:</Text>
-                <Text style={{ marginBottom: 5 }}>🔹 Acceso ilimitado a contenido premium</Text>
-                <Text style={{ marginBottom: 5 }}>🔹 Métricas avanzadas y reportes</Text>
-                <Text style={{ marginBottom: 5 }}>🔹 Soporte prioritario</Text>
-                <Text style={{ marginBottom: 5 }}>🔹 Contenido sin anuncios</Text>
-                <Text style={{ marginBottom: 15, color: "#ff4500", fontWeight: "bold" }}>¡Todo esto por solo 9,99€/mes!</Text>
+        <View style={{ flex: 1, justifyContent: "center", padding: 50, backgroundColor: "#f4f4f4" }}>
+            <View style={{ backgroundColor: "#fff", padding: 50, borderRadius: 10, shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 5 }}>
+                <Text style={{ fontSize: 100, fontWeight: "bold", marginBottom: 20, textAlign: "left" }}>Hazte Premium</Text>
+                <Text style={{ fontSize: 50, marginBottom: 20, textAlign: "left" }}>Disfruta de beneficios exclusivos:</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Eliminación de anuncios</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Recordatorios inteligentes</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Cupones de descuentos en productos del Marketplace.</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Seguimiento del crecimiento del bebe mediante métricas avanzadas</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Recetas personalizadas mediante filtrado por diferentes métricas adicionales</Text>
+                <Text style={{ fontSize: 50, marginBottom: 30, color: "#ff4500", fontWeight: "bold" }}>¡Todo esto por solo 4,99€/mes!</Text>
 
                 <TouchableOpacity
                     onPress={handleSubscribe}
-                    style={{ backgroundColor: "#0070BA", padding: 10, borderRadius: 5, alignItems: "center" }}
+                    style={{ backgroundColor: "#0070BA", padding: 15, borderRadius: 10, alignItems: "center" }}
                     disabled={loading}
                 >
                     {loading ? (
                         <ActivityIndicator color="white" />
                     ) : (
-                        <Text style={{ color: "white", fontWeight: "bold" }}>Suscribirse ahora</Text>
+                        <Text style={{ color: "white", fontSize: 22, fontWeight: "bold" }}>Suscribirse ahora</Text>
                     )}
                 </TouchableOpacity>
             </View>
