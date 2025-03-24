@@ -1,6 +1,6 @@
-import { Link } from "expo-router";
+import { Link, useFocusEffect } from "expo-router";
 import { Text, View, ScrollView, TouchableOpacity, TextInput,ImageBackground } from "react-native";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { questions } from "../../../hardcoded_data/questionsData";
 
 export default function Allergens() {

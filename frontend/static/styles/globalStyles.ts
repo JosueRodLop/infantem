@@ -200,6 +200,30 @@ module.exports = StyleSheet.create({
     flex: 1,
     paddingTop: 80, // Ajuste para que no quede oculto en iPhone
   }, 
+
+  bannerContainer: {
+    backgroundColor: "#f9f9f9",
+    padding: 16,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
+    margin: 16,
+    alignItems: "center",
+  },
+  brandText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 8,
+  },
+  sentenceText: {
+    fontSize: 16,
+    color: "#666",
+    textAlign: "center",
+  },
   
 
 });
