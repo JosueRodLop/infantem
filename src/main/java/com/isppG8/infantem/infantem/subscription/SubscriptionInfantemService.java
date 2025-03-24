@@ -38,7 +38,6 @@ public class SubscriptionInfantemService {
 
     @Value("${stripe.secret.key}")
     private String stripeApiKey;
-    
 
     @Autowired
     private UserService userService;
@@ -79,57 +78,45 @@ public class SubscriptionInfantemService {
 
     // 1. Crear un cliente en Stripe
     public String createCustomer(String email, String name, String description) throws Exception {
-        CustomerCreateParams params = CustomerCreateParams.builder()
-                .setEmail(email)
-                .setName(name)
-                .setDescription(description)
-                .build();
-    
+        CustomerCreateParams params = CustomerCreateParams.builder().setEmail(email).setName(name)
+                .setDescription(description).build();
+
         Customer customer = Customer.create(params);
         return customer.getId(); // Devuelve solo el ID del cliente creado en Stripe
     }
-    
 
     // 2. Crear un método de pago (Tarjeta)
     public String createPaymentMethod(String cardNumber, int expMonth, int expYear, String cvc) throws Exception {
         PaymentMethodCreateParams params = PaymentMethodCreateParams.builder()
                 .setType(PaymentMethodCreateParams.Type.CARD)
-                .setCard(PaymentMethodCreateParams.CardDetails.builder()
-                        .setNumber(cardNumber)
-                        .setExpMonth((long) expMonth)
-                        .setExpYear((long) expYear)
-                        .setCvc(cvc)
-                        .build())
+                .setCard(PaymentMethodCreateParams.CardDetails.builder().setNumber(cardNumber)
+                        .setExpMonth((long) expMonth).setExpYear((long) expYear).setCvc(cvc).build())
                 .build();
-    
+
         PaymentMethod paymentMethod = PaymentMethod.create(params);
-        return paymentMethod.getId();  // Devuelve solo el ID del método de pago
+        return paymentMethod.getId(); // Devuelve solo el ID del método de pago
     }
 
     // 3. Asociar método de pago al cliente
     public String attachPaymentMethodToCustomer(String paymentMethodId, String customerId) throws Exception {
         PaymentMethod paymentMethod = PaymentMethod.retrieve(paymentMethodId);
-        PaymentMethodAttachParams params = PaymentMethodAttachParams.builder()
-                .setCustomer(customerId)
-                .build();
+        PaymentMethodAttachParams params = PaymentMethodAttachParams.builder().setCustomer(customerId).build();
         paymentMethod.attach(params);
-        return paymentMethod.getId();  // Devuelve solo el ID del método de pago
+        return paymentMethod.getId(); // Devuelve solo el ID del método de pago
     }
-    
 
     // 4. Crear una suscripción
-    public SubscriptionInfantem createSubscription(Long userId, String customerId, String priceId, String paymentMethodId) throws Exception {
+    public SubscriptionInfantem createSubscription(Long userId, String customerId, String priceId,
+            String paymentMethodId) throws Exception {
         // Crear los parámetros de la suscripción en Stripe
-        SubscriptionCreateParams params = SubscriptionCreateParams.builder()
-                .setCustomer(customerId)
+        SubscriptionCreateParams params = SubscriptionCreateParams.builder().setCustomer(customerId)
                 .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
-                .setDefaultPaymentMethod(paymentMethodId)
-                .build();
-    
+                .setDefaultPaymentMethod(paymentMethodId).build();
+
         // Crear la suscripción en Stripe
         Subscription stripeSubscription = Subscription.create(params);
         User user = userService.getUserById(userId);
-    
+
         // Crear la suscripción en la base de datos
         SubscriptionInfantem newSubscription = new SubscriptionInfantem();
         newSubscription.setUser(user); // Solo se necesita el ID del usuario
@@ -138,11 +125,10 @@ public class SubscriptionInfantemService {
         newSubscription.setStripePaymentMethodId(paymentMethodId);
         newSubscription.setStripeSubscriptionId(stripeSubscription.getId()); // Extrae solo el ID
         newSubscription.setStripeCustomerId(customerId);
-    
+
         // Guardar en la base de datos
         return subscriptionInfantemRepository.save(newSubscription);
     }
-    
 
     // 5. Cancelar una suscripción
     public Subscription cancelSubscription(String subscriptionId) throws Exception {
@@ -155,25 +141,22 @@ public class SubscriptionInfantemService {
     public List<Map<String, Object>> getCustomersByEmail(String email) throws Exception {
         CustomerListParams params = CustomerListParams.builder().setEmail(email).build();
         List<Customer> customers = Customer.list(params).getData();
-    
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-    
-        return customers.stream()
-            .map(customer -> objectMapper.convertValue(customer, Map.class))
-            .collect(Collectors.toList());
+
+        return customers.stream().map(customer -> objectMapper.convertValue(customer, Map.class))
+                .collect(Collectors.toList());
     }
-    
+
     @SuppressWarnings("unchecked")
     public Map<String, Object> getPaymentMethodsByCustomer(String customerId, Integer last4) {
         try {
-            PaymentMethodListParams params = PaymentMethodListParams.builder()
-                    .setCustomer(customerId)
-                    .setType(PaymentMethodListParams.Type.CARD)
-                    .build();
-    
+            PaymentMethodListParams params = PaymentMethodListParams.builder().setCustomer(customerId)
+                    .setType(PaymentMethodListParams.Type.CARD).build();
+
             List<PaymentMethod> paymentMethods = PaymentMethod.list(params).getData();
-    
+
             for (PaymentMethod paymentMethod : paymentMethods) {
                 if (paymentMethod.getCard() != null && paymentMethod.getCard().getLast4() != null
                         && paymentMethod.getCard().getLast4().equals(last4.toString())) {
@@ -184,10 +167,9 @@ public class SubscriptionInfantemService {
         } catch (Exception e) {
             System.err.println("Error al obtener métodos de pago: " + e.getMessage());
         }
-    
+
         return null;
     }
-    
 
     public void handleCheckoutSessionCompleted(Event event) throws StripeException {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();

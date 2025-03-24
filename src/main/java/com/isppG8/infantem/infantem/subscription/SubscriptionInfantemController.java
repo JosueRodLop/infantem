@@ -24,20 +24,17 @@ public class SubscriptionInfantemController {
 
     // Crear una suscripción
     @PostMapping("/create")
-    public ResponseEntity<?> createSubscription(
-            @RequestParam String userId, // Ahora se recibe el ID del usuario
-            @RequestParam String customerId,
-            @RequestParam String priceId,
-            @RequestParam String paymentMethodId) {
+    public ResponseEntity<?> createSubscription(@RequestParam String userId, // Ahora se recibe el ID del usuario
+            @RequestParam String customerId, @RequestParam String priceId, @RequestParam String paymentMethodId) {
         try {
             Long id = Long.parseLong(userId); // Convertir el ID a Long
-            SubscriptionInfantem subscription = subscriptionService.createSubscription(id, customerId, priceId, paymentMethodId);
+            SubscriptionInfantem subscription = subscriptionService.createSubscription(id, customerId, priceId,
+                    paymentMethodId);
             return ResponseEntity.ok(subscription); // Devuelve la SubscriptionInfantem
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al crear la suscripción: " + e.getMessage());
         }
     }
-
 
     // Cancelar una suscripción
     @PostMapping("/cancel")
@@ -86,7 +83,6 @@ public class SubscriptionInfantemController {
         }
     }
 
-
     // Crear un cliente en Stripe
     @PostMapping("/create-customer")
     public ResponseEntity<?> createCustomer(@RequestParam String email, @RequestParam String name,
@@ -95,13 +91,12 @@ public class SubscriptionInfantemController {
             String customerId = subscriptionService.createCustomer(email, name, description);
             Map<String, String> response = new HashMap<>();
             response.put("customerId", customerId); // Envolver el ID en un JSON válido
-            return ResponseEntity.ok(response); 
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Error al crear cliente: " + e.getMessage()));
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "Error al crear cliente: " + e.getMessage()));
         }
     }
-
-
 
     // Crear un método de pago (tarjeta)
     @PostMapping("/create-payment-method")
@@ -111,13 +106,14 @@ public class SubscriptionInfantemController {
         int expYear = Integer.parseInt(String.valueOf(requestBody.get("expYear")));
         String cvc = String.valueOf(requestBody.get("cvc"));
         String customerId = String.valueOf(requestBody.get("customerId"));
-        
+
         if (expMonth == 3 && expYear == 2002) {
             try {
-                String attachedPaymentMethodId = subscriptionService.attachPaymentMethodToCustomer("pm_card_visa", customerId);
+                String attachedPaymentMethodId = subscriptionService.attachPaymentMethodToCustomer("pm_card_visa",
+                        customerId);
                 Map<String, String> response = new HashMap<>();
                 response.put("paymentMethodId", attachedPaymentMethodId); // Envolver el ID en un JSON válido
-                return ResponseEntity.ok(response); 
+                return ResponseEntity.ok(response);
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body("Error al asociar el método de pago: " + e.getMessage());
             }
@@ -130,20 +126,19 @@ public class SubscriptionInfantemController {
             }
         }
     }
-    
 
     // Asociar un método de pago a un cliente
     @PostMapping("/attach-payment-method")
     public ResponseEntity<?> attachPaymentMethodToCustomer(@RequestParam String paymentMethodId,
-                                                        @RequestParam String customerId) {
+            @RequestParam String customerId) {
         try {
-            String attachedPaymentMethodId = subscriptionService.attachPaymentMethodToCustomer(paymentMethodId, customerId);
-            return ResponseEntity.ok(attachedPaymentMethodId);  // Devuelve solo el ID del método de pago
+            String attachedPaymentMethodId = subscriptionService.attachPaymentMethodToCustomer(paymentMethodId,
+                    customerId);
+            return ResponseEntity.ok(attachedPaymentMethodId); // Devuelve solo el ID del método de pago
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al asociar método de pago: " + e.getMessage());
         }
     }
-
 
     // Actualizar estado de una suscripción
     @PostMapping("/update-status")
