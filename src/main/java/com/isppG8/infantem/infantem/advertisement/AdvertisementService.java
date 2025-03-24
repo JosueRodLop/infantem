@@ -55,7 +55,6 @@ public class AdvertisementService {
         return this.advertisementRepository.save(advertisement);
     }
 
-    @Transactional
     public void startViewingAdvertisement(Long id) {
         Integer userId = userService.findCurrentUser().getId();
 
