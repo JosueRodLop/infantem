@@ -18,7 +18,7 @@ import com.isppG8.infantem.infantem.intake.IntakeService;
 import com.isppG8.infantem.infantem.intake.dto.IntakeSummary;
 import com.isppG8.infantem.infantem.metric.MetricService;
 import com.isppG8.infantem.infantem.metric.dto.MetricSummary;
-import com.isppG8.infantem.infantem.user.User;
+import com.isppG8.infantem.infantem.user.UserService;
 import com.isppG8.infantem.infantem.vaccine.VaccineService;
 import com.isppG8.infantem.infantem.vaccine.dto.VaccineSummary;
 
@@ -30,20 +30,21 @@ public class CalendarService {
     private VaccineService vaccineService;
     private IntakeService intakeService;
     private MetricService metricService;
+    private UserService userService;
 
     @Autowired
     public CalendarService(DreamService dreamService, DiseaseService diseaseService, VaccineService vaccineService,
-            IntakeService intakeService, MetricService metricService) {
+            IntakeService intakeService, MetricService metricService, UserService userService) {
         this.dreamService = dreamService;
         this.diseaseService = diseaseService;
         this.vaccineService = vaccineService;
         this.intakeService = intakeService;
         this.metricService = metricService;
-
+        this.userService = userService;
     }
 
-    public List<CalendarEvents> getCalendarByUserId(User user, LocalDate start, LocalDate end) {
-        List<Integer> babiesId = user.getBabies().stream().map(baby -> baby.getId()).toList();
+    public List<CalendarEvents> getCalendarByUserId(LocalDate start, LocalDate end) {
+        List<Integer> babiesId = this.userService.findCurrentUser().getBabies().stream().map(baby -> baby.getId()).toList();
 
         List<CalendarEvents> calendar = new ArrayList<>();
 
@@ -74,8 +75,8 @@ public class CalendarService {
         return calendar;
     }
 
-    public List<CalendarDay> getCalendarDayByUserId(User user, LocalDate day) {
-        List<Integer> babiesId = user.getBabies().stream().map(baby -> baby.getId()).toList();
+    public List<CalendarDay> getCalendarDayByUserId(LocalDate day) {
+        List<Integer> babiesId = this.userService.findCurrentUser().getBabies().stream().map(baby -> baby.getId()).toList();
         List<CalendarDay> events = new ArrayList<>();
         for (Integer babyId : babiesId) {
             CalendarDay calendarDay = new CalendarDay(babyId);

@@ -12,43 +12,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isppG8.infantem.infantem.calendar.dto.CalendarDay;
 import com.isppG8.infantem.infantem.calendar.dto.CalendarEvents;
-import com.isppG8.infantem.infantem.user.User;
-import com.isppG8.infantem.infantem.user.UserService;
 
 @RestController
 @RequestMapping("/api/v1/calendar")
 public class CalendarController {
 
     private CalendarService calendarService;
-    private UserService userService;
 
     @Autowired
-    public CalendarController(CalendarService calendarService, UserService userService) {
+    public CalendarController(CalendarService calendarService) {
         this.calendarService = calendarService;
-        this.userService = userService;
     }
 
     @GetMapping
     public List<CalendarEvents> getCalendarByUserId(@RequestParam Integer month, @RequestParam Integer year) {
-        User user = userService.findCurrentUser();
-
+        //TODO: add validation for valid month and year
         // Calculate start date
         LocalDate start = LocalDate.of(year, month, 1);
 
         // Calculate end of month
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 
-        List<CalendarEvents> calendarData = calendarService.getCalendarByUserId(user, start, end);
+        List<CalendarEvents> calendarData = calendarService.getCalendarByUserId(start, end);
 
         return calendarData;
     }
 
     @GetMapping("/{day}")
     public List<CalendarDay> getCalendarDayByUserId(@PathVariable LocalDate day) {
-        User user = userService.findCurrentUser();
-
-        List<CalendarDay> calendarDayData = calendarService.getCalendarDayByUserId(user, day);
-
+        List<CalendarDay> calendarDayData = calendarService.getCalendarDayByUserId(day);
         return calendarDayData;
     }
 
