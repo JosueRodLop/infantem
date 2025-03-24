@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.advertising;
+package com.isppG8.infantem.infantem.advertisement;
 
 import java.util.List;
 

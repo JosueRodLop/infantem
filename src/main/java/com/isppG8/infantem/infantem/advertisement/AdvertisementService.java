@@ -1,21 +1,29 @@
-package com.isppG8.infantem.infantem.advertising;
+package com.isppG8.infantem.infantem.advertisement;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
+import com.isppG8.infantem.infantem.user.UserService;
 
 @Service
 public class AdvertisementService {
 
     private AdvertisementRepository advertisementRepository;
+    private UserService userService;
+
+    private final Map<Long, Map<Integer, Long>> viewActivity = new HashMap<>();
 
     @Autowired
-    public AdvertisementService(AdvertisementRepository advertisementRepository) {
+    public AdvertisementService(AdvertisementRepository advertisementRepository, UserService userService) {
         this.advertisementRepository = advertisementRepository;
+        this.userService = userService;
     }
 
     @Transactional(readOnly = true)
@@ -48,13 +56,30 @@ public class AdvertisementService {
     }
 
     @Transactional
-    public Advertisement updateAdvertisementMinutes(Long advertisementId) {
-        Advertisement advertisement = this.advertisementRepository.findById(advertisementId)
-                .orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", advertisementId));
+    public void startViewingAdvertisement(Long id) {
+        Integer userId = userService.findCurrentUser().getId();
 
-        advertisement.setTimeSeen(advertisement.getTimeSeen() + 1);
+        viewActivity.putIfAbsent(id, new ConcurrentHashMap<>());
+        viewActivity.get(id).put(userId, System.currentTimeMillis());
+    }
 
-        return this.advertisementRepository.save(advertisement);
+    @Transactional
+    public Advertisement stopViewingAdvertisement(Long id) {
+        Integer userId = userService.findCurrentUser().getId();
+
+        if (!viewActivity.containsKey(id) || !viewActivity.get(id).containsKey(userId))
+            throw new IllegalStateException("No se ha registrado la visualización del anuncio");
+
+        long startViewingTime = viewActivity.get(id).remove(userId);
+        long viewingTime = (System.currentTimeMillis() - startViewingTime) / 1000 / 60;
+
+        Advertisement advertisement = this.advertisementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", id));
+
+        advertisement.setTimeSeen(advertisement.getTimeSeen() + (int) viewingTime);
+        advertisementRepository.save(advertisement);
+
+        return advertisement;
     }
 
     @Transactional

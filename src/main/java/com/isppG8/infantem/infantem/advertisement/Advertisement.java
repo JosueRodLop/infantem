@@ -1,4 +1,4 @@
-package com.isppG8.infantem.infantem.advertising;
+package com.isppG8.infantem.infantem.advertisement;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
