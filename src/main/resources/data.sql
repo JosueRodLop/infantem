@@ -101,6 +101,37 @@ INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, desc
 (12, 9, null, 'Mini hamburguesas de ternera', 'Carne de ternera picada, formar mini hamburguesas y cocinar a la plancha.', 'Ternera picada', 'Mini Hamburguesas', 'a'),
 (11, 8, null, 'Pasta corta con verduras', 'Cocinar pasta corta, mezclar con verduras al vapor y triturar ligeramente.', 'Pasta corta, verduras', 'Pasta con Verduras', 'a');
 
+
+-- Inserción de síntomas relacionados con las ingestas
+INSERT INTO intake_symptom (description, date) VALUES
+('El bebé no presentó ningún síntoma.', '2025-03-01 08:00:00'),
+('El bebé rechazó la comida ofrecida.', '2025-03-01 12:30:00'),
+('El bebé mostró signos de malestar estomacal.', '2025-03-01 18:00:00'),
+('El bebé presentó una reacción alérgica leve.', '2025-03-02 08:30:00'),
+('El bebé presentó una reacción alérgica severa.', '2025-03-02 13:00:00'),
+('El bebé vomitó después de la ingesta.', '2025-03-02 15:00:00'),
+('El bebé tuvo diarrea después de la ingesta.', '2025-03-02 18:00:00'),
+('El bebé presentó fiebre después de la ingesta.', '2025-03-03 08:00:00'),
+('El bebé presentó erupciones en la piel.', '2025-03-03 12:00:00'),
+('Otros síntomas no especificados.', '2025-03-03 18:00:00');
+
+-- Inserción de ingestas
+INSERT INTO intake_table (date, quantity, observations, baby_id, intake_symptom_id) VALUES
+('2025-03-01 08:00:00', 200, 'Desayuno: el bebé comió bien, sin problemas.', 1, 1),
+('2025-03-01 12:30:00', 150, 'Almuerzo: el bebé dejó un poco de comida.', 1, 2),
+('2025-03-01 18:00:00', 180, 'Merienda: el bebé disfrutó la comida.', 2, 3),
+('2025-03-02 08:30:00', 220, 'Desayuno: el bebé comió todo.', 3, 1),
+('2025-03-02 13:00:00', 160, 'Almuerzo: el bebé tuvo un poco de malestar.', 4, 4);
+
+-- Relación entre intake y recetas
+INSERT INTO intake_recipe (intake_id, recipe_id) VALUES
+(1, 1), (1, 2), 
+(2, 3),        
+(3, 4), (3, 5),
+(4, 6),         
+(5, 7), (5, 8); 
+
+
 -- Inserción de enfermedades en la tabla disease_table
 INSERT INTO disease_table (id, name, start_date, end_date, symptoms, extra_observations, baby_id) VALUES
 (1, 'Varicela', '2025-03-01', '2025-03-10', 'Erupción cutánea, fiebre', 'Se recomienda mantener al bebé hidratado.', 1),
