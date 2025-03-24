@@ -44,7 +44,8 @@ public class CalendarService {
     }
 
     public List<CalendarEvents> getCalendarByUserId(LocalDate start, LocalDate end) {
-        List<Integer> babiesId = this.userService.findCurrentUser().getBabies().stream().map(baby -> baby.getId()).toList();
+        List<Integer> babiesId = this.userService.findCurrentUser().getBabies().stream().map(baby -> baby.getId())
+                .toList();
 
         List<CalendarEvents> calendar = new ArrayList<>();
 
@@ -76,7 +77,8 @@ public class CalendarService {
     }
 
     public List<CalendarDay> getCalendarDayByUserId(LocalDate day) {
-        List<Integer> babiesId = this.userService.findCurrentUser().getBabies().stream().map(baby -> baby.getId()).toList();
+        List<Integer> babiesId = this.userService.findCurrentUser().getBabies().stream().map(baby -> baby.getId())
+                .toList();
         List<CalendarDay> events = new ArrayList<>();
         for (Integer babyId : babiesId) {
             CalendarDay calendarDay = new CalendarDay(babyId);

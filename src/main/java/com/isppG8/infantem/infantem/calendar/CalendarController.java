@@ -26,7 +26,7 @@ public class CalendarController {
 
     @GetMapping
     public List<CalendarEvents> getCalendarByUserId(@RequestParam Integer month, @RequestParam Integer year) {
-        //TODO: add validation for valid month and year
+        // TODO: add validation for valid month and year
         // Calculate start date
         LocalDate start = LocalDate.of(year, month, 1);
 
