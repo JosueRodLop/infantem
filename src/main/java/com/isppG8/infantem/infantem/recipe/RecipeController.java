@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 
+import com.isppG8.infantem.infantem.recipe.dto.RecipeDTO;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -40,7 +42,7 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Recipe>> getAllRecipes(@RequestParam(value = "maxAge", required = false) Integer maxAge,
+    public ResponseEntity<Page<RecipeDTO>> getAllRecipes(@RequestParam(value = "maxAge", required = false) Integer maxAge,
             @RequestParam(value = "minAge", required = false) Integer minAge,
             @RequestParam(value = "ingredients", required = false) List<String> ingredients,
             @RequestParam(value = "allergens", required = false) List<String> allergens,
@@ -70,11 +72,11 @@ public class RecipeController {
         int end = Math.min((start + pageable.getPageSize()), recipes.size());
         Page<Recipe> paginatedRecipes = new PageImpl<>(recipes.subList(start, end), pageable, recipes.size());
 
-        return ResponseEntity.ok(paginatedRecipes);
+        return ResponseEntity.ok(paginatedRecipes.map(RecipeDTO::new));
     }
 
     @GetMapping("/recommended")
-    public ResponseEntity<Page<Recipe>> getAllRecommendedRecipes(
+    public ResponseEntity<Page<RecipeDTO>> getAllRecommendedRecipes(
             @RequestParam(value = "maxAge", required = false) Integer maxAge,
             @RequestParam(value = "minAge", required = false) Integer minAge,
             @RequestParam(value = "ingredients", required = false) List<String> ingredients,
@@ -105,13 +107,13 @@ public class RecipeController {
         int end = Math.min((start + pageable.getPageSize()), recipes.size());
         Page<Recipe> paginatedRecipes = new PageImpl<>(recipes.subList(start, end), pageable, recipes.size());
 
-        return ResponseEntity.ok(paginatedRecipes);
+        return ResponseEntity.ok(paginatedRecipes.map(RecipeDTO::new));
     }
 
     @GetMapping("/recommended/{babyId}")
-    public ResponseEntity<List<Recipe>> getRecommendedRecipes(@PathVariable Integer babyId) {
+    public ResponseEntity<List<RecipeDTO>> getRecommendedRecipes(@PathVariable Integer babyId) {
         List<Recipe> recipes = recipeService.getRecommendedRecipes(babyId);
-        return ResponseEntity.ok(recipes);
+        return ResponseEntity.ok(recipes.stream().map(RecipeDTO::new).toList());
     }
 
     @GetMapping("/{id}")
