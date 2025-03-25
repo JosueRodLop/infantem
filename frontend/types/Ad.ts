@@ -1,7 +1,12 @@
 export type Ad = {
   id: number;
-  brand: string;
-  sentence: string;
-  link: string;
+  companyName: string;
+  title: string;
+  targetUrl: string;
+  photoRoute: string;
+  timeSeen: number;
+  totalClicks: number;
+  maxMinutes: number;
+  isCompleted: boolean;
 }
 

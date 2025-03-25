@@ -1,9 +1,7 @@
-import { Link, useFocusEffect } from "expo-router";
 import { Text, View, ScrollView, TouchableOpacity, TextInput,ImageBackground } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { questions } from "../../../hardcoded_data/questionsData";
-import { Ad } from "../../../types";
-import AdBanner from "../../../components/AdBanner";
+import AdvertisementFetcher from "../../../components/AdvertisementFetcher";
 
 export default function Allergens() {
   
@@ -14,11 +12,6 @@ export default function Allergens() {
 
   // TODO: This must be retrieved from the back. The JSON is temporary
   //const [questions, setQuestions] = useState([]);
-
-  
-  // TODO: This must be managed by the backend
-  const ad: Ad = { id: 1, brand: "Nestle", sentence: "Buy Nestle!", link: "https://nestle.com"}
-
 
   const handleAnswer = (answer: string) => {
     setAnswers((prev) => ({ ...prev, [questions[currentQuestion].id]: answer }));
@@ -80,7 +73,7 @@ export default function Allergens() {
           </View>
         )}
       </ScrollView>
-      <AdBanner {...ad}/> 
+      <AdvertisementFetcher />
       </ImageBackground>
     </View>
   );

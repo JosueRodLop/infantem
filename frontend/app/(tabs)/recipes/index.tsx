@@ -3,7 +3,6 @@ import { Text, View, TextInput, ScrollView, Image, ImageBackground, Dimensions, 
 import { Link, useRouter } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
 import { useAuth } from "../../../context/AuthContext";
-import AdBanner from "../../../components/AdBanner";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 

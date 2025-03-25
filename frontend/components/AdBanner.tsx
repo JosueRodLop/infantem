@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { Linking, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useFocusEffect } from "expo-router";
 import { Ad } from "../types";
 
-export default function AdBanner({id, brand, sentence, link}: Ad) {
+export default function AdBanner(props: Ad) {
+  const {id, companyName, title, targetUrl} = props;
   const gs = require("../static/styles/globalStyles");
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const { token } = useAuth();
@@ -61,13 +62,13 @@ export default function AdBanner({id, brand, sentence, link}: Ad) {
 
   const handlePress = async () => {
     try {
-      const supported = await Linking.canOpenURL(link);
+      const supported = await Linking.canOpenURL(targetUrl);
       
       if (supported) {
         await fetchClicked();
-        await Linking.openURL(link);
+        await Linking.openURL(targetUrl);
       } else {
-        console.warn(`Cannot open URL: ${link}`);
+        console.warn(`Cannot open URL: ${targetUrl}`);
       }
     } catch (error) {
       console.error('An error occurred', error);
@@ -100,8 +101,8 @@ export default function AdBanner({id, brand, sentence, link}: Ad) {
       onPress={handlePress}
       activeOpacity={0.7} 
     >
-      <Text style={gs.brandText}>{brand}</Text>
-      <Text style={gs.sentenceText}>{sentence}</Text>
+      <Text style={gs.brandText}>{companyName}</Text>
+      <Text style={gs.sentenceText}>{title}</Text>
     </TouchableOpacity>
       );
 }
