@@ -1,29 +1,28 @@
 package com.isppG8.infantem.infantem.subscription;
 
 import com.google.gson.JsonSyntaxException;
-import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
-
-import org.springframework.beans.factory.annotation.Value;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.stripe.model.Subscription;
 
 @RestController
 @RequestMapping("/stripe/webhook")
 public class StripeWebhookController {
 
-    @Value("${stripe.webhook.secret}")
-    private String endpointSecret;
-
+    private final String endpointSecret;
     private final SubscriptionInfantemService subscriptionService;
 
     public StripeWebhookController(SubscriptionInfantemService subscriptionService) {
         this.subscriptionService = subscriptionService;
+        
+        // Cargar el secreto desde .env
+        Dotenv dotenv = Dotenv.load();
+        this.endpointSecret = dotenv.get("STRIPE_WEBHOOK_SECRET");
     }
 
     @PostMapping
