@@ -46,9 +46,7 @@ public class AdvertisementController {
     @GetMapping("/toShow")
     public ResponseEntity<Advertisement> getAdvertisementToShow() {
         Optional<Advertisement> adToShow = advertisementService.getAdvertisementToShow();
-        return adToShow
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.noContent().build());
+        return adToShow.map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
     }
 
     @PutMapping("/{id}")
