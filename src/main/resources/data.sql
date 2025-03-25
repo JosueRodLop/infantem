@@ -135,14 +135,14 @@ INSERT INTO intake_table (date, quantity, observations, baby_id, intake_symptom_
 INSERT INTO intake_recipe (intake_id, recipe_id) VALUES
 (1, 1), (1, 2), 
 (2, 3),        
-(3, 4), (3, 5)
+(3, 4), (3, 5);
 
 
 -- Inserción de enfermedades en la tabla disease_table
 INSERT INTO disease_table (id, name, start_date, end_date, symptoms, extra_observations, baby_id) VALUES
-(1, 'Varicela', '2025-03-01', '2025-03-10', 'Erupción cutánea, fiebre', 'Se recomienda mantener al bebé hidratado.', 1),
-(2, 'Gripe', '2025-03-03', '2025-03-09', 'Fiebre, tos, congestión nasal', 'Administrar medicamentos según indicación médica.', 1),
-(3, 'Otitis', '2025-01-10', '2025-01-15', 'Dolor de oído, fiebre', 'Evitar exponer al bebé al agua durante el tratamiento.', 1),
+(1, 'Varicela', '2025-03-01', '2025-03-09', 'Erupción cutánea, fiebre', 'Se recomienda mantener al bebé hidratado.', 1),
+(2, 'Gripe', '2025-02-03', '2025-03-02', 'Fiebre, tos, congestión nasal', 'Administrar medicamentos según indicación médica.', 1),
+(3, 'Otitis', '2024-01-10', '2025-01-15', 'Dolor de oído, fiebre', 'Evitar exponer al bebé al agua durante el tratamiento.', 1),
 (4, 'Bronquitis', '2025-03-05', '2025-03-15', 'Tos persistente, dificultad para respirar', 'Se recomienda usar humidificador.', 2),
 (5, 'Conjuntivitis', '2025-03-12', '2025-03-14', 'Ojos rojos, secreción ocular', 'Limpiar los ojos con solución salina.', 2);
 
