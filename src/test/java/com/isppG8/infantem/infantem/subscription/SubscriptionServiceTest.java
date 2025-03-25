@@ -24,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@SpringBootTest(classes = {InfantemApplication.class, SubscriptionInfantemService.class, SubscriptionServiceTest.TestConfig.class})
+@SpringBootTest(classes = { InfantemApplication.class, SubscriptionInfantemService.class,
+        SubscriptionServiceTest.TestConfig.class })
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
@@ -85,7 +86,8 @@ public class SubscriptionServiceTest {
         Customer mockCustomer = mock(Customer.class);
         when(mockCustomer.getId()).thenReturn("cus_123");
 
-        CustomerCreateParams params = CustomerCreateParams.builder().setEmail(email).setName(name).setDescription(description).build();
+        CustomerCreateParams params = CustomerCreateParams.builder().setEmail(email).setName(name)
+                .setDescription(description).build();
         when(Customer.create(params)).thenReturn(mockCustomer);
 
         String customerId = subscriptionService.createCustomer(email, name, description);
