@@ -12,6 +12,7 @@ export default function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar contraseña
 
@@ -31,6 +32,13 @@ export default function Signup() {
     return false;
   };
 
+  const validPassword = (password) => {
+    if (password.match(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)) {
+      return true;
+    }
+    return false;
+  }
+
   const handleSubmit = async () => {
     if (!name || !surname || !username || !email || !password) {
       setErrorMessage("Debes rellenar todos los campos.");
@@ -46,6 +54,12 @@ export default function Signup() {
       return;
     } else if (username.length < 3) {
       setErrorMessage("Tu nombre de usuario debe tener al menos 3 caracteres.");
+      return;
+    } else if (!validPassword(password)) {
+      setErrorMessage("La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial.");
+      return;
+    } else if (password !== repeatPassword) {
+      setErrorMessage("Las contraseñas no coinciden.");
       return;
     } else {
       try {
@@ -99,17 +113,6 @@ export default function Signup() {
 
   };
 
-  const handleAcceptTerms = () => {
-    setAcceptedTerms(true);
-    setModalVisible(false);
-    setOpenedTerms(true);
-  };
-
-  const handleDeclineTerms = () => {
-    setAcceptedTerms(false);
-    setModalVisible(false);
-  };
-
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View style={[gs.container, { justifyContent: "center", alignItems: "center", backgroundColor: "#E3F2FD", flex: 1, paddingVertical: 40 }]}>
@@ -142,6 +145,22 @@ export default function Signup() {
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword} // Alternar visibilidad
+            />
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={{ position: "absolute", right: 50, top: 20 }} // Icono alineado
+            >
+              <Ionicons name={showPassword ? "eye-off" : "eye"} size={24} color="#1565C0" />
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ position: "relative" }}>
+            <TextInput
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6 }]}
+              placeholder="Repite la contraseña"
+              value={repeatPassword}
+              onChangeText={setRepeatPassword}
+              secureTextEntry={!showPassword}
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
