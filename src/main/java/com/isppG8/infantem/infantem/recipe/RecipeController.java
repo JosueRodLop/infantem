@@ -55,7 +55,7 @@ public class RecipeController {
             recipes.retainAll(recipesByMaxAge);
         }
         if (minAge != null) {
-            List<Recipe> recipesByMinAge = recipeService.getRecipeByMaxAge(maxAge);
+            List<Recipe> recipesByMinAge = recipeService.getRecipeByMinAge(minAge);
             recipes.retainAll(recipesByMinAge);
         }
         if (ingredients != null && !ingredients.isEmpty()) {
