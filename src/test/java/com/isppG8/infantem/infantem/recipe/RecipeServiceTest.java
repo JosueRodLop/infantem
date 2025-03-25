@@ -228,6 +228,9 @@ public class RecipeServiceTest {
 
         assertThrows(ResourceNotOwnedException.class, () -> recipeService.updateRecipe(1L, recipe, 2),
                 "User 2 should not be able to update recipe 1");
+
+        assertThrows(ResourceNotOwnedException.class, () -> recipeService.updateRecipe(6L, recipe, 2),
+                "User 2 should not be able to update recipe 6");
     }
 
     @Test
@@ -249,6 +252,9 @@ public class RecipeServiceTest {
     public void deleteRecipeNotOwnedTest() {
         assertThrows(ResourceNotOwnedException.class, () -> recipeService.deleteRecipe(1L, 2),
                 "User 2 should not be able to delete recipe 1");
+
+        assertThrows(ResourceNotOwnedException.class, () -> recipeService.deleteRecipe(6L, 2),
+                "User 2 should not be able to delete recipe 6");
     }
 
 }
