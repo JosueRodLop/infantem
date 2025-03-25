@@ -38,9 +38,7 @@ public class SubscriptionInfantemController {
     }
 
     @PostMapping("/create/new")
-    public ResponseEntity<?> createSubscriptionNew(
-            @RequestParam String userId,
-            @RequestParam String priceId,
+    public ResponseEntity<?> createSubscriptionNew(@RequestParam String userId, @RequestParam String priceId,
             @RequestParam String paymentMethodId) {
         try {
             Long id = Long.parseLong(userId); // Convertir el ID a Long
@@ -75,7 +73,6 @@ public class SubscriptionInfantemController {
         }
     }
 
-
     // Actualizar estado de una suscripción
     @PostMapping("/update-status")
     public ResponseEntity<?> updateSubscriptionStatus(@RequestParam String subscriptionId,
@@ -100,11 +97,11 @@ public class SubscriptionInfantemController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Object> getSubscription(@PathVariable Long id){
+    public ResponseEntity<Object> getSubscription(@PathVariable Long id) {
         Optional<SubscriptionInfantem> subscriptionUser = subscriptionService.getSubscriptionUserById(id);
-        if(subscriptionUser.isPresent()){
+        if (subscriptionUser.isPresent()) {
             return ResponseEntity.ok(true);
-        }else{
+        } else {
             return ResponseEntity.ok(false);
         }
     }

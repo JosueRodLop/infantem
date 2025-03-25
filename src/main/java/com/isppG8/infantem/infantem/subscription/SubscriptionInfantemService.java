@@ -119,20 +119,19 @@ public class SubscriptionInfantemService {
         return subscriptionInfantemRepository.save(newSubscription);
     }
 
-    public SubscriptionInfantem createSubscriptionNew(Long userId, String priceId, String paymentMethodId) throws Exception {
+    public SubscriptionInfantem createSubscriptionNew(Long userId, String priceId, String paymentMethodId)
+            throws Exception {
         User user = userService.getUserById(userId);
         String customerId = createCustomer(user.getEmail(), user.getName(), "Cliente creado por Infantem");
-        String paymentMethod =  attachPaymentMethodToCustomer(paymentMethodId, customerId);
+        String paymentMethod = attachPaymentMethodToCustomer(paymentMethodId, customerId);
 
-        SubscriptionCreateParams params = SubscriptionCreateParams.builder()
-                .setCustomer(customerId)
+        SubscriptionCreateParams params = SubscriptionCreateParams.builder().setCustomer(customerId)
                 .addItem(SubscriptionCreateParams.Item.builder().setPrice(priceId).build())
-                .setDefaultPaymentMethod(paymentMethod)
-                .build();
-    
+                .setDefaultPaymentMethod(paymentMethod).build();
+
         // Crear la suscripción en Stripe
         Subscription stripeSubscription = Subscription.create(params);
-    
+
         // Crear la suscripción en la base de datos
         SubscriptionInfantem newSubscription = new SubscriptionInfantem();
         newSubscription.setUser(user); // Solo se necesita el ID del usuario
@@ -141,11 +140,10 @@ public class SubscriptionInfantemService {
         newSubscription.setStripePaymentMethodId(paymentMethodId);
         newSubscription.setStripeSubscriptionId(stripeSubscription.getId()); // Extrae solo el ID
         newSubscription.setStripeCustomerId(customerId);
-    
+
         // Guardar en la base de datos
         return subscriptionInfantemRepository.save(newSubscription);
     }
-    
 
     // 5. Cancelar una suscripción
     public Subscription cancelSubscription(String subscriptionId) throws Exception {
@@ -248,7 +246,7 @@ public class SubscriptionInfantemService {
         userOpt.ifPresent(user -> activateSubscription(user, subscriptionId));
     }
 
-    public Optional<SubscriptionInfantem>  getSubscriptionUserById(Long userId) {
+    public Optional<SubscriptionInfantem> getSubscriptionUserById(Long userId) {
         Optional<SubscriptionInfantem> subscription = subscriptionInfantemRepository.findSubscriptionByUserId(userId);
         return subscription;
     }
