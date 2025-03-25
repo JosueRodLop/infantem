@@ -25,14 +25,12 @@ public class SubscriptionInfantemController {
 
     // Crear una suscripción
     @PostMapping("/create")
-    public ResponseEntity<?> createSubscription(
-            @RequestParam String userId, // Ahora se recibe el ID del usuario
-            @RequestParam String customerId,
-            @RequestParam String priceId,
-            @RequestParam String paymentMethodId) {
+    public ResponseEntity<?> createSubscription(@RequestParam String userId, // Ahora se recibe el ID del usuario
+            @RequestParam String customerId, @RequestParam String priceId, @RequestParam String paymentMethodId) {
         try {
             Long id = Long.parseLong(userId); // Convertir el ID a Long
-            SubscriptionInfantem subscription = subscriptionService.createSubscription(id, customerId, priceId, paymentMethodId);
+            SubscriptionInfantem subscription = subscriptionService.createSubscription(id, customerId, priceId,
+                    paymentMethodId);
             return ResponseEntity.ok(subscription); // Devuelve la SubscriptionInfantem
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al crear la suscripción: " + e.getMessage());
