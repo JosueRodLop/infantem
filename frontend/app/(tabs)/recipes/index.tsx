@@ -4,8 +4,6 @@ import { Link, useRouter } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
 import { useAuth } from "../../../context/AuthContext";
 import AdBanner from "../../../components/AdBanner";
-import { Ad } from "../../../types";
-
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -29,9 +27,6 @@ export default function Page() {
   const router = useRouter();
   const scrollRef = useRef(null);
   const screenWidth = Dimensions.get('window').width;
-
-  // TODO: This must be managed by the backend
-  const ad: Ad = { id: 1, brand: "Nestle", sentence: "Buy Nestle!"}
 
   useEffect(() => {
     obtainAllRecommendedRecipes();
@@ -292,8 +287,6 @@ export default function Page() {
 
 
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
-
-          <AdBanner {...ad}/> 
 
           <Text style={[gs.headerText, { color: "#1565C0", fontSize: 38, marginTop: 30 }]}>Todas tus recetas</Text>
 
