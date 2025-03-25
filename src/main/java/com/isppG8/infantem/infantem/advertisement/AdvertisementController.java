@@ -61,6 +61,12 @@ public class AdvertisementController {
         return ResponseEntity.ok(updatedAdvertisement);
     }
 
+    @PostMapping("/complete/{id}")
+    public ResponseEntity<Advertisement> completeAdvertisement(@PathVariable Long id) {
+        Advertisement updatedAdvertisement = advertisementService.completeAdvertisement(id);
+        return ResponseEntity.ok(updatedAdvertisement);
+    }
+
     @PutMapping("/clicks/{id}")
     public ResponseEntity<Advertisement> updateAdvertisementClicks(@PathVariable Long id) {
         Advertisement updatedAdvertisement = advertisementService.updateAdvertisementClicks(id);

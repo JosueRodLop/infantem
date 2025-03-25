@@ -93,14 +93,14 @@ INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, desc
 (11, 8, null, 'Pasta corta con verduras', 'Cocinar pasta corta, mezclar con verduras al vapor y triturar ligeramente.', 'Pasta corta, verduras', 'Pasta con Verduras', 'a');
 
 -- Inserción de anuncios
-INSERT INTO advertisement_table(company_name, title, photo_route, time_seen, total_clicks) VALUES 
-('Nestlé', 'Papillas de frutas', 'a', 0, 0),
-('Hero', 'Leche de continuación', 'a', 0, 0),
-('Dodot', 'Pañales', 'a', 0, 0),
-('Chicco', 'Biberones', 'a', 0, 0),
-('Suavinex', 'Chupetes', 'a', 0, 0),
-('Johnsons', 'Toallitas húmedas', 'a', 0, 0),
-('Blemil', 'Leche de inicio', 'a', 0, 0),
-('Nutribén', 'Potitos de verduras', 'a', 0, 0),
-('Avent', 'Esterilizador de biberones', 'a', 0, 0),
-('Babymoov', 'Cuna de viaje', 'a', 0, 0);
+INSERT INTO advertisement_table(company_name, title, target_url, photo_route, time_seen, total_clicks, max_minutes, is_completed) VALUES 
+('Nestlé', 'Papillas de frutas', 'google.com', 'a', 0, 0, 1, false),
+('Hero', 'Leche de continuación', 'google.com', 'a', 0, 0, 1, false),
+('Dodot', 'Pañales', 'google.com', 'a', 0, 0, 1, false),
+('Chicco', 'Biberones', 'google.com', 'a', 0, 0, 1, false),
+('Suavinex', 'Chupetes', 'google.com', 'a', 0, 0, 1, false),
+('Johnsons', 'Toallitas húmedas', 'google.com', 'a', 0, 0, 1, false),
+('Blemil', 'Leche de inicio', 'google.com', 'a', 0, 0, 1, false),
+('Nutribén', 'Potitos de verduras', 'google.com', 'a', 0, 0, 1, false),
+('Avent', 'Esterilizador de biberones', 'google.com', 'a', 0, 0, 1, false),
+('Babymoov', 'Cuna de viaje', 'google.com', 'a', 0, 0, 1, false);

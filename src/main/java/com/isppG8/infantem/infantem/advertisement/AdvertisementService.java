@@ -64,6 +64,9 @@ public class AdvertisementService {
 
     @Transactional
     public Advertisement stopViewingAdvertisement(Long id) {
+        Advertisement advertisement = this.advertisementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", id));
+
         Integer userId = userService.findCurrentUser().getId();
 
         if (!viewActivity.containsKey(id) || !viewActivity.get(id).containsKey(userId))
@@ -72,12 +75,21 @@ public class AdvertisementService {
         long startViewingTime = viewActivity.get(id).remove(userId);
         long viewingTime = (System.currentTimeMillis() - startViewingTime) / 1000 / 60;
 
-        Advertisement advertisement = this.advertisementRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", id));
-
         advertisement.setTimeSeen(advertisement.getTimeSeen() + (int) viewingTime);
         advertisementRepository.save(advertisement);
 
+        return advertisement;
+    }
+
+    @Transactional
+    public Advertisement completeAdvertisement(Long id) {
+        Advertisement advertisement = this.advertisementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", id));
+
+        if (advertisement.getTimeSeen() >= advertisement.getMaxMinutes()) {
+            advertisement.setIsCompleted(true);
+            this.advertisementRepository.save(advertisement);
+        }
         return advertisement;
     }
 

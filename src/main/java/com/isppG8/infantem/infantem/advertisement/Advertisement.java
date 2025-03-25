@@ -34,6 +34,9 @@ public class Advertisement {
     @Size(min = 3, max = 50)
     private String title;
 
+    @NotNull
+    private String targetUrl;
+
     @Size(max = 255)
     private String photoRoute;
 
@@ -44,5 +47,12 @@ public class Advertisement {
     @NotNull
     @Min(0)
     private Integer totalClicks;
+
+    @NotNull
+    @Min(0)
+    private Integer maxMinutes;
+
+    @NotNull
+    private Boolean isCompleted;
 
 }
