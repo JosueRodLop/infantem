@@ -93,6 +93,14 @@ INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, desc
 (11, 8, null, 'Pasta corta con verduras', 'Cocinar pasta corta, mezclar con verduras al vapor y triturar ligeramente.', 'Pasta corta, verduras', 'Pasta con Verduras', 'a');
 
 
+INSERT INTO recipe_allergen(allergen_id,recipe_id) VALUES
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,5);
+
+
 -- Inserción de síntomas relacionados con las ingestas
 INSERT INTO intake_symptom (description, date) VALUES
 ('El bebé no presentó ningún síntoma.', '2024-03-01 08:00:00'),
@@ -118,46 +126,5 @@ INSERT INTO intake_table (date, quantity, observations, baby_id, intake_symptom_
 INSERT INTO intake_recipe (intake_id, recipe_id) VALUES
 (1, 1), (1, 2), 
 (2, 3),        
-(3, 4), (3, 5),
-(4, 6),         
-(5, 7), (5, 8); 
+(3, 4), (3, 5)
 
-
-INSERT INTO nutrient_table(id,type,name,unit) VALUES
-(1,'MACRONUTRIENTE','nutriente1','g'),
-(2,'MICRONUTRIENTE','nutriente2','mg'),
-(3,'MACRONUTRIENTE','nutriente3','mg'),
-(4,'MICRONUTRIENTE','nutriente4','g'),
-(5,'MACRONUTRIENTE','nutriente5','g'),
-(6,'MICRONUTRIENTE','nutriente6','mg'),
-(7,'MACRONUTRIENTE','nutriente7','mg'),
-(8,'MICRONUTRIENTE','nutriente8','g');
-
-
-INSERT INTO food_nutrient_table(id, amount, nutrient_id, recipe_id) VALUES
-(1, 10, 1, 1),
-(2, 5, 2, 1),
-(3, 8, 3, 2),
-(4, 12, 4, 2),
-(5, 7, 5, 3),
-(6, 9, 6, 3),
-(7, 11, 7, 4),
-(8, 6, 8, 4),
-(9, 15, 1, 5),
-(10, 4, 2, 5),
-(11, 13, 3, 6),
-(12, 3, 4, 6),
-(13, 14, 5, 7),
-(14, 2, 6, 7),
-(15, 16, 7, 8),
-(16, 1, 8, 8),
-(17, 18, 1, 9),
-(18, 20, 2, 9);
-
-
-INSERT INTO recipe_allergen(allergen_id,recipe_id) VALUES
-(1,1),
-(2,2),
-(3,3),
-(4,4),
-(5,5);
