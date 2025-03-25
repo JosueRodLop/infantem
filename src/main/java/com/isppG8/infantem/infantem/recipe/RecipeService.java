@@ -28,8 +28,8 @@ public class RecipeService {
         this.babyService = babyService;
     }
 
-    private Integer getCurrentUserId() throws ResourceNotFoundException {
-        return this.userService.findCurrentUser().getId();
+    private Integer getCurrentUserId() {
+        return this.userService.findCurrentUserId();
     }
 
     @Transactional(readOnly = true)

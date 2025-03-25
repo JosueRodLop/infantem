@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +31,10 @@ public class RecipeServiceTest {
 
     final int HUGE_BABY_AGE = 999;
 
-    User user1 = new User();
-    User user2 = new User();
-
-    @BeforeEach
-    void setUp() {
-        user1.setId(1);
-        user2.setId(2);
-    }
-
     @Test
     public void recipeFilterByMinAgeTest() {
         final int BABY_AGE = 6;
-        Mockito.when(userService.findCurrentUser()).thenReturn(user1);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
 
         final List<Recipe> allRecipes = recipeService.getCurrentUserRecipes();
         List<Recipe> filtered_recipes = recipeService.getRecipeByMinAge(BABY_AGE);
@@ -63,13 +52,12 @@ public class RecipeServiceTest {
         List<Recipe> noFilteredRecipes = recipeService.getRecipeByMinAge(HUGE_BABY_AGE);
         assertEquals(allRecipes, noFilteredRecipes, "All recipes should have min age less than" + HUGE_BABY_AGE);
 
-        Mockito.when(userService.findCurrentUser()).thenReturn(user2);
     }
 
     @Test
     public void recipeFilterByMaxAgeTest() {
 
-        Mockito.when(userService.findCurrentUser()).thenReturn(user1);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         final List<Recipe> allRecipes = recipeService.getCurrentUserRecipes();
         final int BABY_AGE = 10;
 
@@ -93,7 +81,7 @@ public class RecipeServiceTest {
     @Test
     public void recipeFilterByIngredientTest() {
 
-        Mockito.when(userService.findCurrentUser()).thenReturn(user1);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         final List<String> EXISTING_INGREDIENT = List.of("zanahoria");
         final List<String> NON_EXISTING_INGREDIENT = List.of("chocolate");
 
@@ -124,7 +112,7 @@ public class RecipeServiceTest {
     @Test
     public void getRecipesByCurrentUserTest() {
 
-        Mockito.when(userService.findCurrentUser()).thenReturn(user1);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         List<Recipe> recipesUser = recipeService.getCurrentUserRecipes();
         assertEquals(5, recipesUser.size(), "The number of recipes found for user 1 should be 5");
         assertTrue(recipesUser.stream().allMatch(recipe -> recipe.getUser().getId() == 1L),
@@ -134,7 +122,7 @@ public class RecipeServiceTest {
     @Test
     public void getRecipeByIdTest() {
 
-        Mockito.when(userService.findCurrentUser()).thenReturn(user1);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         Recipe recipeId1 = recipeService.getRecipeById(1L);
         assertEquals(1L, recipeId1.getId(), "The recipe id should be 1");
         assertTrue(recipeId1.getDescription().contains("Puré de zanahoria"),
@@ -149,7 +137,7 @@ public class RecipeServiceTest {
     @Test
     public void getRecipeByIdNotFoundTest() {
 
-        Mockito.when(userService.findCurrentUser()).thenReturn(user1);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         assertThrows(ResourceNotFoundException.class, () -> recipeService.getRecipeById(999L),
                 "Recipe 999 should not be found");
     }
@@ -157,7 +145,7 @@ public class RecipeServiceTest {
     @Test
     public void getRecipeByIdNotOwnedTest() {
 
-        Mockito.when(userService.findCurrentUser()).thenReturn(user2);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(2);
         assertThrows(ResourceNotOwnedException.class, () -> recipeService.getRecipeById(1L),
                 "User 2 should not be able to get recipe 1");
     }
@@ -244,7 +232,7 @@ public class RecipeServiceTest {
     @Test
     public void deleteRecipeTest() {
 
-        Mockito.when(userService.findCurrentUser()).thenReturn(user1);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         recipeService.deleteRecipe(1L, 1);
         assertThrows(ResourceNotFoundException.class, () -> recipeService.getRecipeById(1L),
                 "Recipe 1 should not be found");
