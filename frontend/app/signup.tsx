@@ -1,9 +1,10 @@
 import { Link, router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, Image, ScrollView, Modal, Pressable } from "react-native";
 import { storeToken } from "../utils/jwtStorage";
 import { Ionicons } from "@expo/vector-icons"; // Importamos iconos de Expo
-import CheckBox from 'react-native-check-box'
+import TermsConditionsModal from "../components/TermsConditionsModal";
+import CheckBox from 'react-native-check-box';
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -13,8 +14,9 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar contraseña
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+
   const [modalVisible, setModalVisible] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [openedTerms, setOpenedTerms] = useState(false);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -67,6 +69,17 @@ export default function Signup() {
     }
   };
 
+  const handleAcceptTerms = () => {
+    setAcceptedTerms(true);
+    setModalVisible(false);
+    setOpenedTerms(true);
+  };
+
+  const handleDeclineTerms = () => {
+    setAcceptedTerms(false);
+    setModalVisible(false);
+  };
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View style={[gs.container, { justifyContent: "center", alignItems: "center", backgroundColor: "#E3F2FD", flex: 1, paddingVertical: 40 }]}>
@@ -112,7 +125,7 @@ export default function Signup() {
 
           <View style={gs.checkboxView}>
             <CheckBox
-              onClick={()=>{
+              onClick={() => {
                 setAcceptedTerms(!acceptedTerms)
               }}
               isChecked={acceptedTerms}
@@ -131,41 +144,12 @@ export default function Signup() {
             </Text>
           </View>
 
-          <Modal
-            animationType="slide"
-            transparent={true}
+          <TermsConditionsModal
             visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View style={gs.centeredView}>
-              <View style={gs.modalView}>
-                <View style={{ margin: 20 }}>
-                  <Pressable
-                    style={[gs.button, gs.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={gs.textStyle}>X</Text>
-                  </Pressable>
-                  <View style={{ flex: 1 }}>
-
-                    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={true}>
-                      <Text style={gs.modalText}>
-                        Hello World!{"\n\n"}
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-                        {"\n\n"}
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-                        {"\n\n"}
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-                      </Text>
-                    </ScrollView>
-                  </View>
-                </View>
-                
-              </View>
-            </View>
-          </Modal>
-
+            onClose={() => setModalVisible(false)}
+            onAccept={handleAcceptTerms}
+            onDecline={handleDeclineTerms}
+          />
           <Link href={"/signin"} style={{ marginTop: 10, textAlign: "center" }}>
             <Text style={{ color: "#007AFF", fontSize: 14 }}>¿Ya tienes cuenta? ¡Inicia sesión!</Text>
           </Link>
