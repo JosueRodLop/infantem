@@ -10,11 +10,11 @@ import {
 
 const TermsConditionsModal = ({ 
   visible, 
-  onClose, 
-  onAccept, 
-  onDecline 
+  onClose
 }) => {
+
   const [modalVisible, setModalVisible] = useState(false);
+  const gs = require("../static/styles/globalStyles");
 
   const termsContent = `
 
@@ -105,22 +105,22 @@ return (
       visible={visible}
       onRequestClose={onClose}
     >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>Términos y condiciones</Text>
+      <View style={gs.centeredView}>
+        <View style={gs.modalView}>
+          <Text style={gs.modalTitle}>Términos y condiciones</Text>
           
-          <ScrollView style={styles.scrollView}>
-            <Text style={styles.termsText}>
+          <ScrollView style={gs.scrollView}>
+            <Text style={gs.termsText}>
               {termsContent}
             </Text>
           </ScrollView>
           
-          <View style={styles.buttonContainer}>
+          <View style={gs.buttonContainer}>
             <TouchableOpacity
-              style={[styles.button, styles.buttonDecline]}
-              onPress={onDecline}
+              style={[gs.button, gs.buttonClose]}
+              onPress={onClose}
             >
-              <Text style={styles.textStyle}>Entendido</Text>
+              <Text style={gs.buttonTextStyle}>Entendido</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -129,68 +129,5 @@ return (
   );
 };
 
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)'
-  },
-  modalView: {
-    width: '90%',
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    maxHeight: '80%'
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    textAlign: 'center'
-  },
-  scrollView: {
-    width: '100%',
-    marginBottom: 15
-  },
-  termsText: {
-    fontSize: 14,
-    lineHeight: 22
-  },
-  buttonContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%'
-  },
-  button: {
-    borderRadius: 10,
-    padding: 10,
-    elevation: 2,
-    width: '48%'
-  },
-  buttonDecline: {
-    backgroundColor: '#2196F3'
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  openButton: {
-    backgroundColor: '#2196F3',
-    borderRadius: 10,
-    padding: 10,
-    elevation: 2
-  }
-});
 
 export default TermsConditionsModal;

@@ -41,6 +41,9 @@ export default function Signup() {
       if (!signupResponse.ok) {
         setErrorMessage("Algo no ha ido bien.");
         return;
+      } else if (!acceptedTerms) {
+        setErrorMessage("Debes leer y aceptar los términos y condiciones.");
+        return;
       }
 
       // Autologin después del registro
@@ -149,8 +152,6 @@ export default function Signup() {
           <TermsConditionsModal
             visible={modalVisible}
             onClose={() => setModalVisible(false)}
-            onAccept={handleAcceptTerms}
-            onDecline={handleDeclineTerms}
           />
           <Link href={"/signin"} style={{ marginTop: 10, textAlign: "center" }}>
             <Text style={{ color: "#007AFF", fontSize: 14 }}>¿Ya tienes cuenta? ¡Inicia sesión!</Text>

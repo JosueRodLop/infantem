@@ -91,51 +91,66 @@ module.exports = StyleSheet.create({
 //////////////
 
   centeredView: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)'
   },
   modalView: {
-    margin: 20,
+    width: '90%',
     backgroundColor: 'white',
     borderRadius: 20,
-    width: '80%',
-    maxHeight: '80%',
+    padding: 20,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    flex: 1
+    maxHeight: '80%'
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    textAlign: 'center'
+  },
+  scrollView: {
+    width: '100%',
+    marginBottom: 15
+  },
+  termsText: {
+    fontSize: 14,
+    lineHeight: 22
+  },
+  buttonContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%'
   },
   button: {
-    marginRight: '90%',
-    borderRadius: 20,
-    height: 30,
-    width: 30,
+    borderRadius: 10,
+    padding: 10,
     elevation: 2,
-    marginVertical: 1,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+    width: '48%'
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#2196F3'
   },
-  textStyle: {
+  buttonTextStyle: {
     color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 'auto'
+    textAlign: 'center'
   },
-  modalText: {
-    margin: 15,
-    textAlign: 'left',
+  openButton: {
+    backgroundColor: '#2196F3',
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2
   },
-
 /////////////
 
   input: {
