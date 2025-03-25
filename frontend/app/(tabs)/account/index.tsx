@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, Modal, TextInput, Alert } from "react-native";
 import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -16,6 +16,7 @@ export default function Account() {
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const navigation = useNavigation();
+  const [subscription, setSubscription] = useState(false);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -49,9 +50,10 @@ export default function Account() {
       },
       body: JSON.stringify(userData)
     })
-      .then(response => {
+      .then(async response => {
         if (!response.ok) {
-          return response.json().then(err => { throw new Error(JSON.stringify(err)); });
+          const err = await response.json();
+          throw new Error(JSON.stringify(err));
         }
         return response.json();
       })
@@ -65,6 +67,25 @@ export default function Account() {
         Alert.alert("Error", `No se pudo guardar los cambios: ${error.message}`);
       });
   };
+
+  useEffect(() => {
+    if (user && user.id) {
+      fetch(`${apiUrl}/api/v1/subscriptions/user/${user.id}`, {  // Corregido "subscriptions"
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log("Subscription data:", data);
+          setSubscription(data)}
+        )
+        .catch(error => console.error("Error fetching subscription:", error));
+    }
+  }, [user, apiUrl, token]); // Se ejecuta cuando user, apiUrl o token cambian
+
 
   const handleLogout = signOut;
 
@@ -95,9 +116,11 @@ export default function Account() {
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 
+        {user && !subscription &&(
         <Link href={"/account/premiumplan"} style={[gs.mainButton, { marginTop: 10, width: 400, textAlign:"center"}]}>
           <Text style={[gs.mainButtonText, {fontSize:30}]}>¡HAZTE PREMIUM!</Text>
         </Link>
+        )}
 
         <Text style={[gs.headerText, { marginTop: 20 }]}>Perfil</Text>
         <Text style={gs.subHeaderText}>Información de usuario</Text>
@@ -147,6 +170,10 @@ export default function Account() {
           <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleEditProfile}>
             <Text style={gs.mainButtonText}>Editar Perfil</Text>
           </TouchableOpacity>
+        )}
+
+        {user && subscription &&(
+          <Text style={[gs.mainButtonText, {fontSize:30, color:"black"}]}>¡Felicidades eres premium!</Text>
         )}
 
         {<TouchableOpacity style={[gs.secondaryButton, { marginTop: 60 }]} onPress={handleLogout}>
