@@ -26,5 +26,7 @@ public class SubscriptionInfantem {
     private String stripePaymentMethodId;
     private LocalDate startDate;
     private boolean active;
+    private LocalDate endDate;
+    private String currentPeriodEnd;
 
 }
