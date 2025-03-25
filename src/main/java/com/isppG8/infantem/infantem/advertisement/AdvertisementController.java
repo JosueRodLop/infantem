@@ -1,6 +1,7 @@
 package com.isppG8.infantem.infantem.advertisement;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,14 @@ public class AdvertisementController {
     public ResponseEntity<List<Advertisement>> getAdvertisementsByCompanyName(@PathVariable String companyName) {
         List<Advertisement> advertisements = advertisementService.getAdvertisementByCompanyName(companyName);
         return ResponseEntity.ok(advertisements);
+    }
+
+    @GetMapping("/toShow")
+    public ResponseEntity<Advertisement> getAdvertisementToShow() {
+        Optional<Advertisement> adToShow = advertisementService.getAdvertisementToShow();
+        return adToShow
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.noContent().build());
     }
 
     @PutMapping("/{id}")

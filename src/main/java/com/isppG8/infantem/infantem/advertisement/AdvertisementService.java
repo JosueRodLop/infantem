@@ -3,6 +3,7 @@ package com.isppG8.infantem.infantem.advertisement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,11 @@ public class AdvertisementService {
     @Transactional(readOnly = true)
     public List<Advertisement> getAdvertisementByCompanyName(String companyName) {
         return this.advertisementRepository.findAdvertisementsByCompanyName(companyName);
+    }
+
+    public Optional<Advertisement> getAdvertisementToShow() {
+        Optional<Advertisement> adToShow = this.advertisementRepository.findAdvertisementToShow();
+        return adToShow;
     }
 
     @Transactional
