@@ -141,11 +141,22 @@ public class RecipeControllerTest {
     }
 
     @Test
+    void testFilterRecipesByMinxAge() throws Exception {
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
+        mockMvc.perform(get("/api/v1/recipes").param("minAge", "6").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(4))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Zanahoria y Batata"));
+    }
+
+    @Test
     void testFilterRecipesByIngredients() throws Exception {
         Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         mockMvc.perform(
                 get("/api/v1/recipes").param("ingredients", "zanahoria").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(3))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Zanahoria y Batata"));
+        mockMvc.perform(get("/api/v1/recipes").param("ingredients", "").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(5))
                 .andExpect(jsonPath("$.content[0].name").value("Puré de Zanahoria y Batata"));
     }
 
@@ -155,5 +166,63 @@ public class RecipeControllerTest {
         mockMvc.perform(get("/api/v1/recipes").param("allergens", "Gluten").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(4))
                 .andExpect(jsonPath("$.content[0].name").value("Crema de Calabaza y Calabacín"));
+        mockMvc.perform(get("/api/v1/recipes").param("allergens", "").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(5))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Zanahoria y Batata"));
     }
+
+    @Test
+    void testCreateRecipeWithEmptyName() throws Exception {
+        String recipeJsonWithEmptyName = """
+                    {
+                        "name": "",
+                        "description": "Descripción válida",
+                        "ingredients": "Ingredientes válidos",
+                        "minRecommendedAge": 6,
+                        "maxRecommendedAge": 12,
+                        "elaboration": "Elaboración válida"
+                    }
+                """;
+
+        mockMvc.perform(
+                post("/api/v1/recipes").contentType(MediaType.APPLICATION_JSON).content(recipeJsonWithEmptyName))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCreateRecipeWithInvalidMinRecommendedAge() throws Exception {
+        String recipeJsonWithInvalidMinAge = """
+                    {
+                        "name": "Nombre válido",
+                        "description": "Descripción válida",
+                        "ingredients": "Ingredientes válidos",
+                        "minRecommendedAge": -1,
+                        "maxRecommendedAge": 12,
+                        "elaboration": "Elaboración válida"
+                    }
+                """;
+
+        mockMvc.perform(
+                post("/api/v1/recipes").contentType(MediaType.APPLICATION_JSON).content(recipeJsonWithInvalidMinAge))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCreateRecipeWithInvalidMaxRecommendedAge() throws Exception {
+        String recipeJsonWithInvalidMaxAge = """
+                    {
+                        "name": "Nombre válido",
+                        "description": "Descripción válida",
+                        "ingredients": "Ingredientes válidos",
+                        "minRecommendedAge": 6,
+                        "maxRecommendedAge": 37,
+                        "elaboration": "Elaboración válida"
+                    }
+                """;
+
+        mockMvc.perform(
+                post("/api/v1/recipes").contentType(MediaType.APPLICATION_JSON).content(recipeJsonWithInvalidMaxAge))
+                .andExpect(status().isBadRequest());
+    }
+
 }
