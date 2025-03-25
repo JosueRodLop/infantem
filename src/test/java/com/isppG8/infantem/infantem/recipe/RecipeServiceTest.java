@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,15 +68,60 @@ public class RecipeServiceTest {
                 "Filtered recipe list size should be less than original list, Filtered size: " + filtered_recipes.size()
                         + "Original size: " + allRecipes.size());
 
-        Boolean allRecipesHasCorrectMinAge = filtered_recipes.stream()
+        Boolean allRecipesHasCorrectMaxAge = filtered_recipes.stream()
                 .allMatch(recipe -> BABY_AGE <= recipe.getMaxRecommendedAge());
 
-        assertTrue(allRecipesHasCorrectMinAge, "All recipes should has min recommended age greater than " + BABY_AGE);
+        assertTrue(allRecipesHasCorrectMaxAge, "All recipes should has max recommended age greater than " + BABY_AGE);
 
         List<Recipe> emptyFilteredRecipe = recipeService.getRecipeByMaxAge(HUGE_BABY_AGE);
         assertTrue(emptyFilteredRecipe.isEmpty(), "This filtered list should be empty: " + emptyFilteredRecipe);
 
         List<Recipe> noFilteredRecipes = recipeService.getRecipeByMaxAge(0);
+        assertEquals(allRecipes, noFilteredRecipes, "All recipes should have max age greater than 0");
+    }
+
+    @Test
+    public void recommendedRecipeFilterByMinAgeTest() {
+        final int BABY_AGE = 6;
+
+        final List<Recipe> allRecipes = recipeService.getAllRecommendedRecipes();
+        List<Recipe> filtered_recipes = recipeService.getRecommendedRecipeByMinAge(BABY_AGE);
+        assertTrue(filtered_recipes.size() < allRecipes.size(),
+                "Filtered recipe list size should be less than original list");
+
+        Boolean allRecipesHasCorrectMinAge = filtered_recipes.stream()
+                .allMatch(recipe -> BABY_AGE >= recipe.getMinRecommendedAge());
+
+        assertTrue(allRecipesHasCorrectMinAge, "All recipes should has min recommended age less than " + BABY_AGE);
+
+        List<Recipe> emptyFilteredRecipe = recipeService.getRecommendedRecipeByMinAge(0);
+        assertTrue(emptyFilteredRecipe.isEmpty(), "This filtered list should be empty: " + emptyFilteredRecipe);
+
+        List<Recipe> noFilteredRecipes = recipeService.getRecommendedRecipeByMinAge(HUGE_BABY_AGE);
+        assertEquals(allRecipes, noFilteredRecipes, "All recipes should have min age less than" + HUGE_BABY_AGE);
+
+    }
+
+    @Test
+    public void recommendedRecipeFilterByMaxAgeTest() {
+
+        final List<Recipe> allRecipes = recipeService.getAllRecommendedRecipes();
+        final int BABY_AGE = 10;
+
+        List<Recipe> filtered_recipes = recipeService.getRecommendedRecipeByMaxAge(BABY_AGE);
+        assertTrue(filtered_recipes.size() <= allRecipes.size(),
+                "Filtered recipe list size should be less than original list, Filtered size: " + filtered_recipes.size()
+                        + "Original size: " + allRecipes.size());
+
+        Boolean allRecipesHasCorrectMinAge = filtered_recipes.stream()
+                .allMatch(recipe -> BABY_AGE <= recipe.getMaxRecommendedAge());
+
+        assertTrue(allRecipesHasCorrectMinAge, "All recipes should has min recommended age greater than " + BABY_AGE);
+
+        List<Recipe> emptyFilteredRecipe = recipeService.getRecommendedRecipeByMaxAge(HUGE_BABY_AGE);
+        assertTrue(emptyFilteredRecipe.isEmpty(), "This filtered list should be empty: " + emptyFilteredRecipe);
+
+        List<Recipe> noFilteredRecipes = recipeService.getRecommendedRecipeByMaxAge(0);
         assertEquals(allRecipes, noFilteredRecipes, "All recipes should have min age greater than 0");
     }
 
@@ -101,6 +148,62 @@ public class RecipeServiceTest {
 
         List<Recipe> recipesWithEmptyIngredient = recipeService.getRecipeByIngredients(List.of(""));
         assertTrue(recipesWithEmptyIngredient.isEmpty(), "No recipes should be returned for empty ingredient.");
+    }
+
+    @Test
+    public void recommendedRecipeFilterByIngredientTest() {
+
+        final List<String> EXISTING_INGREDIENT = List.of("pollo");
+        final List<String> NON_EXISTING_INGREDIENT = List.of("chocolate");
+
+        List<Recipe> recipesWithIngredient = recipeService.getRecommendedRecipeByIngredients(EXISTING_INGREDIENT);
+        recipesWithIngredient.forEach(r -> r.setIngredients(r.getIngredients().toLowerCase()));
+        assertTrue(recipesWithIngredient.size() > 0, "Recipes containing the nutrient should exist.");
+
+        boolean allRecipesContainIngredient = recipesWithIngredient.stream()
+                .allMatch(recipe -> recipe.getIngredients().toLowerCase().contains(EXISTING_INGREDIENT.get(0)));
+
+        assertTrue(allRecipesContainIngredient,
+                "All returned recipes should contain the ingredient " + recipesWithIngredient + EXISTING_INGREDIENT);
+
+        List<Recipe> recipesWithNonExistingIngredient = recipeService
+                .getRecommendedRecipeByIngredients(NON_EXISTING_INGREDIENT);
+        assertTrue(recipesWithNonExistingIngredient.isEmpty(),
+                "No recipes should contain the nutrient " + NON_EXISTING_INGREDIENT);
+
+        List<Recipe> recipesWithEmptyIngredient = recipeService.getRecommendedRecipeByIngredients(List.of(""));
+        assertTrue(recipesWithEmptyIngredient.isEmpty(), "No recipes should be returned for empty ingredient.");
+    }
+
+    @Test
+    public void recipeFilterByAllergenTest() {
+
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
+        final List<String> ALLERGEN = List.of("Gluten");
+
+        List<Recipe> recipesWithIngredient = recipeService.getRecipesFilteringAllergens(ALLERGEN);
+        assertTrue(recipesWithIngredient.size() > 0, "Recipes without containing the allergen should exist.");
+
+        boolean allRecipesContainIngredient = recipesWithIngredient.stream().noneMatch(recipe -> recipe.getAllergens()
+                .stream().map(allergen -> allergen.getName()).collect(Collectors.toList()).contains(ALLERGEN.get(0)));
+
+        assertTrue(allRecipesContainIngredient,
+                "All returned recipes should not contain the allergen " + recipesWithIngredient + ALLERGEN);
+    }
+
+    @Test
+    public void recommendedRecipeFilterByAllergenTest() {
+
+        final List<String> ALLERGEN = List.of("Huevo");
+
+        List<Recipe> recipesWithIngredient = recipeService.getRecommendedRecipesFilteringAllergens(ALLERGEN);
+        assertTrue(recipesWithIngredient.size() > 0, "Recipes containing the allergen should exist.");
+
+        boolean allRecipesContainIngredient = recipesWithIngredient.stream().noneMatch(recipe -> recipe.getAllergens()
+                .stream().map(allergen -> allergen.getName()).collect(Collectors.toList()).contains(ALLERGEN.get(0)));
+
+        assertTrue(allRecipesContainIngredient,
+                "All returned recipes should not contain the allergen " + recipesWithIngredient + ALLERGEN);
     }
 
     @Test

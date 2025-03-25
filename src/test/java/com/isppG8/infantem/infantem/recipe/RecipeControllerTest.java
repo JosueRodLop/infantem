@@ -121,8 +121,8 @@ public class RecipeControllerTest {
     @Test
     void testGetAllRecommendedRecipes() throws Exception {
         mockMvc.perform(get("/api/v1/recipes/recommended").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(7))
-                .andExpect(jsonPath("$[0].name").value("Puré de Pollo con Verduras"));
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(7))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Pollo con Verduras"));
     }
 
     @Test
@@ -141,11 +141,27 @@ public class RecipeControllerTest {
     }
 
     @Test
+    void testFilterRecommendedRecipesByMaxAge() throws Exception {
+        mockMvc.perform(
+                get("/api/v1/recipes/recommended").param("maxAge", "11").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(4))
+                .andExpect(jsonPath("$.content[0].name").value("Croquetas de Pescado"));
+    }
+
+    @Test
     void testFilterRecipesByMinxAge() throws Exception {
         Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         mockMvc.perform(get("/api/v1/recipes").param("minAge", "6").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(4))
                 .andExpect(jsonPath("$.content[0].name").value("Puré de Zanahoria y Batata"));
+    }
+
+    @Test
+    void testFilterRecommendedRecipesByMinxAge() throws Exception {
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
+        mockMvc.perform(get("/api/v1/recipes/recommended").param("minAge", "7").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(3))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Pollo con Verduras"));
     }
 
     @Test
@@ -161,6 +177,19 @@ public class RecipeControllerTest {
     }
 
     @Test
+    void testFilterRecommendedRecipesByIngredients() throws Exception {
+        Mockito.when(userService.findCurrentUserId()).thenReturn(1);
+        mockMvc.perform(get("/api/v1/recipes/recommended").param("ingredients", "Pollo")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(2))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Pollo con Verduras"));
+        mockMvc.perform(
+                get("/api/v1/recipes/recommended").param("ingredients", "").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(7))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Pollo con Verduras"));
+    }
+
+    @Test
     void testFilterRecipesByAllergens() throws Exception {
         Mockito.when(userService.findCurrentUserId()).thenReturn(1);
         mockMvc.perform(get("/api/v1/recipes").param("allergens", "Gluten").contentType(MediaType.APPLICATION_JSON))
@@ -169,6 +198,18 @@ public class RecipeControllerTest {
         mockMvc.perform(get("/api/v1/recipes").param("allergens", "").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(5))
                 .andExpect(jsonPath("$.content[0].name").value("Puré de Zanahoria y Batata"));
+    }
+
+    @Test
+    void testFilterRecommendedRecipesByAllergens() throws Exception {
+        mockMvc.perform(
+                get("/api/v1/recipes/recommended").param("allergens", "Gluten").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(7))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Pollo con Verduras"));
+        mockMvc.perform(
+                get("/api/v1/recipes/recommended").param("allergens", "").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(7))
+                .andExpect(jsonPath("$.content[0].name").value("Puré de Pollo con Verduras"));
     }
 
     @Test
