@@ -44,7 +44,7 @@ export default function SubscriptionWeb() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`,
+                "Authorization": `Bearer ${jwt}`,
             }
             });
             if (response.ok) {
@@ -68,7 +68,7 @@ export default function SubscriptionWeb() {
                     method:"POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${jwt}`,
+                        "Authorization": `Bearer ${jwt}`,
                     },
                 });
                 if (response.ok) {
