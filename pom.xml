@@ -118,8 +118,7 @@
         	<artifactId>spring-security-test</artifactId>
         	<scope>test</scope>
     	</dependency>
-		</dependency>
-
+		
 		<dependency>
     		<groupId>com.stripe</groupId>
     		<artifactId>stripe-java</artifactId>
