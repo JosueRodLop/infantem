@@ -48,7 +48,8 @@ public class SubscriptionInfantemService {
 
     private final SubscriptionInfantemRepository subscriptionInfantemRepository;
 
-    public SubscriptionInfantemService(SubscriptionInfantemRepository subscriptionRepository, StripeConfig stripeConfig) {
+    public SubscriptionInfantemService(SubscriptionInfantemRepository subscriptionRepository,
+            StripeConfig stripeConfig) {
         this.subscriptionInfantemRepository = subscriptionRepository;
         this.stripeConfig = stripeConfig;
     }
@@ -158,9 +159,8 @@ public class SubscriptionInfantemService {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
-        return customers.stream()
-        .map(customer -> (Map<String, Object>) objectMapper.convertValue(customer, Map.class))
-        .collect(Collectors.toList());
+        return customers.stream().map(customer -> (Map<String, Object>) objectMapper.convertValue(customer, Map.class))
+                .collect(Collectors.toList());
 
     }
 
