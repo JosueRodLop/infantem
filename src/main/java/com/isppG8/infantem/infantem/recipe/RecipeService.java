@@ -125,20 +125,9 @@ public class RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Recipe> getRecipesByNutrient(String nutrientName) throws ResourceNotFoundException {
-        Integer userId = this.getCurrentUserId();
-        return recipeRepository.findRecipeByNutrient(nutrientName, userId);
-    }
-
-    @Transactional(readOnly = true)
     public List<Recipe> getRecipesFilteringAllergens(List<String> allergens) throws ResourceNotFoundException {
         Integer userId = this.getCurrentUserId();
         return recipeRepository.findRecipesWithoutAllergen(allergens, userId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Recipe> findAllRecipes() {
-        return (List<Recipe>) recipeRepository.findAll();
     }
 
 }

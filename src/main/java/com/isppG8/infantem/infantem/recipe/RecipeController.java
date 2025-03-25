@@ -43,7 +43,6 @@ public class RecipeController {
     public ResponseEntity<Page<Recipe>> getAllRecipes(@RequestParam(value = "maxAge", required = false) Integer maxAge,
             @RequestParam(value = "minAge", required = false) Integer minAge,
             @RequestParam(value = "ingredients", required = false) List<String> ingredients,
-            @RequestParam(value = "nutrient", required = false) String nutrient,
             @RequestParam(value = "allergens", required = false) List<String> allergens,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size) {
@@ -62,10 +61,6 @@ public class RecipeController {
         if (ingredients != null && !ingredients.isEmpty()) {
             List<Recipe> recipesByIngredients = recipeService.getRecipeByIngredients(ingredients);
             recipes.retainAll(recipesByIngredients);
-        }
-        if (nutrient != null && !nutrient.isBlank()) {
-            List<Recipe> recipesByNutrient = recipeService.getRecipesByNutrient(nutrient);
-            recipes.retainAll(recipesByNutrient);
         }
         if (allergens != null && !allergens.isEmpty()) {
             List<Recipe> recipesByAllergens = recipeService.getRecipesFilteringAllergens(allergens);
