@@ -18,7 +18,7 @@ public interface AdvertisementRepository extends CrudRepository<Advertisement, L
 
     // I used native SQL since JPQL doesn't support LIMIT (as far as I know).
     // I felt it was better to handle it at the SQL level rather than filtering in Java.
-    // If you find a better approach, please let me know. Javier 
-    @Query(value="SELECT * FROM advertisement_table WHERE NOT is_completed ORDER BY (time_seen/ max_minutes) LIMIT 1", nativeQuery=true)
+    // If you find a better approach, please let me know. Javier
+    @Query(value = "SELECT * FROM advertisement_table WHERE NOT is_completed ORDER BY (time_seen/ max_minutes) LIMIT 1", nativeQuery = true)
     public Optional<Advertisement> findAdvertisementToShow();
 }
