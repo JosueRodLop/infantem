@@ -26,8 +26,7 @@ export default function PremiumPlan() {
     }, []);
 
     const handleSubscribe = () => { 
-        console.log("Navegando a /account/subscription");
-        router.push('/account/subscription') 
+        router.push('/account/subscriptionweb') 
     };
 
     return (
