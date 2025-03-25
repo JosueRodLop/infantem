@@ -9,7 +9,6 @@ import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.baby.BabyService;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
-import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 import java.time.LocalDate;
 import java.time.Period;
@@ -66,8 +65,8 @@ public class RecipeService {
     }
 
     @Transactional
-    public Recipe createRecipe(Recipe recipe, User user) {
-        recipe.setUser(user);
+    public Recipe createRecipe(Recipe recipe) {
+        recipe.setUser(userService.findCurrentUser());
         return this.recipeRepository.save(recipe);
     }
 

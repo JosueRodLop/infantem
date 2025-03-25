@@ -99,8 +99,7 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipe) {
-        User user = userService.findCurrentUser();
-        Recipe createdRecipe = recipeService.createRecipe(recipe, user);
+        Recipe createdRecipe = recipeService.createRecipe(recipe);
         return ResponseEntity.status(201).body(createdRecipe);
     }
 

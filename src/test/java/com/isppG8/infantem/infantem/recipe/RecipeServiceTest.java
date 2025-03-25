@@ -152,6 +152,9 @@ public class RecipeServiceTest {
 
     @Test
     public void createRecipeTest() {
+        User user = new User();
+        user.setId(1);
+        Mockito.when(userService.findCurrentUser()).thenReturn(user);
         Recipe recipe = new Recipe();
         recipe.setName("Test Recipe");
         recipe.setDescription("Test Description");
@@ -160,9 +163,7 @@ public class RecipeServiceTest {
         recipe.setMaxRecommendedAge(2);
         recipe.setElaboration("Test Elaboration");
 
-        User user = userService.getUserById(1L);
-
-        Recipe createdRecipe = recipeService.createRecipe(recipe, user);
+        Recipe createdRecipe = recipeService.createRecipe(recipe);
         assertEquals(16, createdRecipe.getId(), "The recipe id should be 16");
         assertEquals(recipe.getName(), createdRecipe.getName(), "The recipe name should be 'Test Recipe'");
         assertEquals(recipe.getDescription(), createdRecipe.getDescription(),
