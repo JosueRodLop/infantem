@@ -9,7 +9,6 @@ import com.stripe.model.Subscription;
 import com.stripe.param.CustomerCreateParams;
 import com.stripe.param.CustomerListParams;
 import com.stripe.param.PaymentMethodAttachParams;
-import com.stripe.param.PaymentMethodCreateParams;
 import com.stripe.param.PaymentMethodListParams;
 import com.stripe.param.SubscriptionCreateParams;
 import com.stripe.param.SubscriptionUpdateParams;
@@ -18,10 +17,10 @@ import jakarta.annotation.PostConstruct;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.isppG8.infantem.infantem.config.StripeConfig;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 import com.stripe.model.checkout.Session;
-import com.stripe.model.tax.Registration.CountryOptions.Us;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 
@@ -37,22 +36,21 @@ import java.util.stream.Collectors;
 @Service
 public class SubscriptionInfantemService {
 
-    @Value("${stripe.secret.key}")
-    private String stripeApiKey;
+    private final StripeConfig stripeConfig;
+
+    public void processPayment() {
+        String apiKey = stripeConfig.getStripeApiKey();
+        System.out.println("Usando clave de Stripe: " + apiKey);
+    }
 
     @Autowired
     private UserService userService;
 
     private final SubscriptionInfantemRepository subscriptionInfantemRepository;
 
-    @PostConstruct
-    public void init() {
-        Stripe.apiKey = stripeApiKey;
-    }
-
-    public SubscriptionInfantemService(SubscriptionInfantemRepository subscriptionRepository) {
+    public SubscriptionInfantemService(SubscriptionInfantemRepository subscriptionRepository, StripeConfig stripeConfig) {
         this.subscriptionInfantemRepository = subscriptionRepository;
-        Stripe.apiKey = stripeApiKey;
+        this.stripeConfig = stripeConfig;
     }
 
     public void activateSubscription(User user, String subscriptionId) {
@@ -160,8 +158,10 @@ public class SubscriptionInfantemService {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
-        return customers.stream().map(customer -> objectMapper.convertValue(customer, Map.class))
-                .collect(Collectors.toList());
+        return customers.stream()
+        .map(customer -> (Map<String, Object>) objectMapper.convertValue(customer, Map.class))
+        .collect(Collectors.toList());
+
     }
 
     @SuppressWarnings("unchecked")
