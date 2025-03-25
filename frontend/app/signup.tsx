@@ -125,11 +125,12 @@ export default function Signup() {
 
           <View style={gs.checkboxView}>
             <CheckBox
+              style={[{ padding: 10 }]}
               onClick={() => {
                 setAcceptedTerms(!acceptedTerms)
               }}
               isChecked={acceptedTerms}
-              disabled={openedTerms}
+              disabled={!openedTerms}
             />
             <Text style={{ marginLeft: 10 }}>
               Acepto los&nbsp;
@@ -137,6 +138,7 @@ export default function Signup() {
                 style={{ color: "#007AFF", fontSize: 14 }}
                 onPress={() => {
                   setModalVisible(true)
+                  setOpenedTerms(true)
                 }}
               >
                 términos y condiciones

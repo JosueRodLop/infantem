@@ -17,37 +17,86 @@ const TermsConditionsModal = ({
   const [modalVisible, setModalVisible] = useState(false);
 
   const termsContent = `
-1. Acceptance of Terms
-By accessing and using this application, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the application.
 
-2. User Eligibility
-You must be at least 18 years old to use this application. By using the app, you represent and warrant that you meet this age requirement.
+  TÉRMINOS Y CONDICIONES LEGALES
 
-3. User Account
-- You are responsible for maintaining the confidentiality of your account
-- You agree to accept responsibility for all activities that occur under your account
-- You must provide accurate and complete information during registration
+  1. ACEPTACIÓN DE LOS TÉRMINOS
+  Al acceder o utilizar la aplicación Infantem ("la App"), el usuario acepta cumplir con estos Términos y Condiciones y con nuestra Política de Privacidad. Si no está de acuerdo con alguna de las disposiciones de estos términos, debe abstenerse de usar la App.
 
-4. Privacy
-We are committed to protecting your privacy. Please review our Privacy Policy to understand our practices.
+  2. OBJETO
+  Infantem es una aplicación móvil diseñada para asistir a padres y madres en el seguimiento de la alimentación, el crecimiento y los hitos de desarrollo de sus hijos. La App incluye, entre otras funcionalidades, recomendaciones de recetas personalizadas, detección de alergias e intolerancias alimentarias, un marketplace de productos recomendados, y un sistema de seguimiento de hitos del desarrollo.
+  
+  3. FUNCIONALIDADES DE LA APLICACIÓN
+  3.1 Recomendaciones Personalizadas de Recetas
+  La App recomienda recetas y menús basados en la edad del bebé y los alimentos que puede ir introduciendo a su dieta. Las recomendaciones se ajustan según las preferencias del usuario, incluyendo alergias o intolerancias alimentarias.
+  
+  3.2 Detección de Alergias e Intolerancias
+  La aplicación proporciona un sistema de preguntas para ayudar a los padres a detectar posibles alergias o intolerancias a alimentos. En caso de sospecha de alergia o intolerancia, la App recomienda una consulta médica para confirmar el diagnóstico.
 
-5. Intellectual Property
-All content, features, and functionality are and will remain the exclusive property of [Company Name] and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
+  3.3 Registro de Alimentación
+  La App permite a los usuarios registrar las comidas de sus hijos, llevando un seguimiento de los alimentos introducidos y proporcionando recomendaciones adicionales basadas en la dieta del bebé.
+  
+  3.4 Marketplace
+  El Marketplace de la App redirige a los usuarios a plataformas de terceros para adquirir productos recomendados, tales como alimentos o accesorios para el bebé. Los productos serán proporcionados por empresas afiliadas, y los usuarios deberán seguir sus términos y condiciones al realizar compras.
 
-6. Limitation of Liability
-- The application is provided "as is" without any representations or warranties
-- We shall not be liable for any damages arising from the use of this application
-- Our total liability is limited to the maximum extent permitted by law
+  3.5 Calendario y Recordatorios Inteligentes
+  La App incluye un calendario interactivo donde los usuarios pueden marcar las recetas y objetivos de su bebé. Además, la App enviará recordatorios inteligentes sobre los hitos y las tareas relacionadas con la alimentación y el crecimiento del bebé.
 
-7. Modifications to Terms
-We reserve the right to modify these Terms and Conditions at any time. Continued use of the application after changes constitutes acceptance of the new terms.
+  3.6 Seguimiento del Crecimiento
+  La App realiza un seguimiento del crecimiento del bebé, utilizando percentiles de peso, altura y otros indicadores. Esta información no constituye un diagnóstico médico.
 
-8. Governing Law
-These Terms and Conditions are governed by and construed in accordance with the laws of [Your Jurisdiction].
+  3.7 Hitos de Desarrollo
+  Los usuarios pueden registrar y realizar un seguimiento de los hitos del desarrollo de su bebé, como el inicio de la marcha o el habla, basándose en un sistema de hitos predefinidos y personalizables.
 
-9. Contact Information
-If you have any questions about these Terms, please contact us at [contact email/address].
-`;
+  3.8 Diferenciación entre Plan Básico y Premium
+  La App ofrece dos modalidades de uso:
+  
+      - Plan Básico: Incluye funcionalidades esenciales como la detección de alergias, recetas generales y acceso al Marketplace.
+  
+      - Plan Premium: Amplía estas funciones con recetas personalizadas, seguimiento detallado de la salud y desarrollo del bebé, y recordatorios inteligentes.
+  
+  4. USO DE LA APLICACIÓN
+  4.1 Requisitos de Edad
+  El usuario debe ser mayor de 18 años para utilizar la App. En el caso de usuarios menores de 18 años, la App solo debe ser utilizada con la supervisión de un adulto responsable.
+
+  4.2 Información proporcionada por el usuario
+  Para utilizar ciertas funcionalidades de la App, como las recomendaciones de recetas o el seguimiento de alergias, el usuario deberá proporcionar información personal sobre su bebé, incluidos datos de salud como alergias e intolerancias alimentarias, así como información de crecimiento.
+
+  4.3 Responsabilidad del Usuario
+  El usuario es responsable de mantener la confidencialidad de sus credenciales de acceso a la App y de toda la actividad realizada bajo su cuenta. El usuario se compromete a no utilizar la App con fines ilegales o no autorizados.
+
+  5. PROTECCIÓN DE DATOS
+  5.1 Tratamiento de Datos Personales
+  En cumplimiento con el Reglamento General de Protección de Datos (RGPD) y la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD), Infantem se compromete a proteger la privacidad de los datos personales de los usuarios.
+  
+  Los datos personales proporcionados por los usuarios, como los relacionados con la salud del bebé, serán procesados exclusivamente para los fines de proporcionar las funcionalidades de la App, como el seguimiento del crecimiento, la personalización de recetas, y la detección de alergias.
+
+  5.2 Consentimiento
+  Al usar la App, el usuario consiente el tratamiento de sus datos personales conforme a nuestra Política de Privacidad. El usuario podrá retirar este consentimiento en cualquier momento, aunque la retirada del consentimiento podría impedir el uso de algunas funcionalidades de la App.
+
+  5.3 Compartición de Datos
+  La información personal proporcionada por los usuarios solo será compartida con empresas afiliadas en el contexto del Marketplace, y con profesionales médicos en el caso de que se realice una consulta a través de la App, conforme a las leyes de protección de datos vigentes.
+
+  6. EXONERACIÓN DE RESPONSABILIDAD
+  6.1 Exactitud de la Información
+  La información y recomendaciones proporcionadas por la App son generadas de acuerdo con datos estadísticos y algoritmos basados en la edad y los datos de salud introducidos por el usuario. Sin embargo, Infantem no garantiza que dicha información sea exacta, completa o esté libre de errores. Las recomendaciones de recetas, el seguimiento de alergias y el crecimiento del bebé no sustituyen el consejo médico profesional.
+
+  6.2 Limitación de Responsabilidad
+  Infantem no será responsable por daños directos, indirectos, incidentales o consecuentes derivados del uso de la aplicación, incluyendo, pero no limitado a, pérdidas de datos, daños a dispositivos móviles, o la incapacidad para acceder a la App.
+
+  6.3 Salud del Bebé
+  Infantem no se hace responsable de las consecuencias derivadas del uso de las recomendaciones de la App, especialmente en lo que respecta a la salud del bebé. Cualquier cambio en la dieta o el seguimiento de salud debe ser supervisado por un profesional médico.
+
+  7. MODIFICACIONES
+  Infantem se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento, sin necesidad de aviso previo. Cualquier cambio será publicado en esta página y entrará en vigor inmediatamente después de su publicación. El uso continuado de la App después de dicha publicación constituye la aceptación de los nuevos términos.
+
+  8. LEY APLICABLE Y JURISDICCIÓN
+  Estos Términos y Condiciones se regirán e interpretarán de acuerdo con la legislación española. Cualquier disputa derivada del uso de la App será resuelta ante los tribunales competentes de Sevilla, España.
+
+  9. CONTACTO  
+  Si tiene alguna pregunta sobre estos Términos y Condiciones, puede ponerse en contacto con nosotros a través de la dirección de correo electrónico: soporte@infantem.com.
+`
+;
 
 return (
     <Modal
@@ -58,7 +107,7 @@ return (
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>Terms and Conditions</Text>
+          <Text style={styles.modalTitle}>Términos y condiciones</Text>
           
           <ScrollView style={styles.scrollView}>
             <Text style={styles.termsText}>
@@ -71,14 +120,7 @@ return (
               style={[styles.button, styles.buttonDecline]}
               onPress={onDecline}
             >
-              <Text style={styles.textStyle}>Decline</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity
-              style={[styles.button, styles.buttonAccept]}
-              onPress={onAccept}
-            >
-              <Text style={styles.textStyle}>Accept</Text>
+              <Text style={styles.textStyle}>Entendido</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,8 +167,8 @@ const styles = StyleSheet.create({
     lineHeight: 22
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'center',
     width: '100%'
   },
   button: {
@@ -136,10 +178,7 @@ const styles = StyleSheet.create({
     width: '48%'
   },
   buttonDecline: {
-    backgroundColor: '#f44336'
-  },
-  buttonAccept: {
-    backgroundColor: '#4CAF50'
+    backgroundColor: '#2196F3'
   },
   textStyle: {
     color: 'white',
