@@ -10,17 +10,25 @@ export default function RecipeDetails() {
 
   const { recipeId } = useLocalSearchParams();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
+  const [isOwned, setIsOwned] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const gs = require('../../../static/styles/globalStyles');
 
-  const { token } = useAuth();
+  const { token, user } = useAuth();
 
   useEffect(() => {
-    obtainRecipe();
+    obtainRecipeAndUserRecipes();
   }, []);
 
-  const obtainRecipe = async (): Promise<boolean> => {
+  useEffect(() => {
+    handleOwnership();
+  }, [isLoading]);
+
+  const obtainRecipeAndUserRecipes = async (): Promise<boolean> => {
     try {
       const response = await fetch(`${apiUrl}/api/v1/recipes/${recipeId}`, {
         method: 'GET',
@@ -40,17 +48,47 @@ export default function RecipeDetails() {
           ingredients: recipeData.ingredients,
           elaboration: recipeData.elaboration
         });
-        return true;
-      } else {
-        return false;
       }
-
     } catch (error) {
       console.error('Error fetching recipe: ', error);
       setRecipe(null);
+    }
+    try {
+      let responseReceived = false;
+      if (token && user) {
+        const response = await fetch(`${apiUrl}/api/v1/recipes/user/${user.id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const recipesData = await response.json();
+          setUserRecipes(recipesData);
+          setIsLoading(false);
+          responseReceived = true;
+        }
+      }
+      return responseReceived ? true : false;
+    } catch (error) {
+      console.error('Error fetching user recipes: ', error);
+      setUserRecipes([]);
       return false;
     }
+
   };
+
+  const handleOwnership = async () => {
+    console.log(recipe, userRecipes)
+    if (recipe && userRecipes && userRecipes.length > 0) {
+      const owned = userRecipes.some((userRecipe: Recipe) => userRecipe.id === recipe.id);
+      setIsOwned(owned);
+      console.log(owned);
+    } else {
+      setIsOwned(false);
+    }
+  };
+
 
   const handleEditRecipe = () => {
     setIsEditing(true);
@@ -167,11 +205,12 @@ export default function RecipeDetails() {
             editable={isEditing}
             onChangeText={(text) => setRecipe({ ...recipe, elaboration: text })}
           />
-          {isEditing ? (
+          {isEditing && (
             <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleSaveChanges}>
               <Text style={gs.mainButtonText}>Guardar Cambios</Text>
             </TouchableOpacity>
-          ) : (
+          )}
+          {isOwned && !isEditing && (
             <TouchableOpacity style={[gs.mainButton, { marginBottom: 20 }]} onPress={handleEditRecipe}>
               <Text style={gs.mainButtonText}>Editar Receta</Text>
             </TouchableOpacity>

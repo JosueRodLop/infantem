@@ -55,20 +55,12 @@ INSERT INTO dream_table (baby_id, date_start, date_end, num_wakeups, dream_type)
 (2, '2024-03-04 23:15:00', '2024-03-05 07:00:00', 3, 2);
 
 -- Inserción de vacunas
-INSERT INTO vaccine_table (type, vaccination_date) VALUES
-('MMR', '2023-06-01'),
-('DTaP', '2023-07-01'),
-('HepB', '2023-08-01'),
-('Polio', '2023-09-01'),
-('Hib', '2023-10-01');
-
--- Relación entre vacunas y bebés
-INSERT INTO vaccine_baby (vaccine_id, baby_id) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5);
+INSERT INTO vaccine_table (type, vaccination_date, baby_id) VALUES
+('MMR', '2023-06-01', 1),
+('DTaP', '2023-07-01', 2),
+('HepB', '2023-08-01', 3),
+('Polio', '2023-09-01', 4),
+('Hib', '2023-10-01', 5);
 
 -- Relación entre usuarios y bebés
 INSERT INTO user_baby (user_id, baby_id) VALUES
@@ -99,3 +91,34 @@ INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, desc
 (10, 7, null, 'Pescado blanco al vapor con verduras', 'Cocinar pescado blanco y verduras al vapor.', 'Pescado blanco, verduras', 'Pescado al Vapor', 'a'),
 (12, 9, null, 'Mini hamburguesas de ternera', 'Carne de ternera picada, formar mini hamburguesas y cocinar a la plancha.', 'Ternera picada', 'Mini Hamburguesas', 'a'),
 (11, 8, null, 'Pasta corta con verduras', 'Cocinar pasta corta, mezclar con verduras al vapor y triturar ligeramente.', 'Pasta corta, verduras', 'Pasta con Verduras', 'a');
+
+
+-- Inserción de síntomas relacionados con las ingestas
+INSERT INTO intake_symptom (description, date) VALUES
+('El bebé no presentó ningún síntoma.', '2024-03-01 08:00:00'),
+('El bebé rechazó la comida ofrecida.', '2024-03-01 12:30:00'),
+('El bebé mostró signos de malestar estomacal.', '2024-03-01 18:00:00'),
+('El bebé presentó una reacción alérgica leve.', '2024-03-02 08:30:00'),
+('El bebé presentó una reacción alérgica severa.', '2024-03-02 13:00:00'),
+('El bebé vomitó después de la ingesta.', '2024-03-02 15:00:00'),
+('El bebé tuvo diarrea después de la ingesta.', '2024-03-02 18:00:00'),
+('El bebé presentó fiebre después de la ingesta.', '2024-03-03 08:00:00'),
+('El bebé presentó erupciones en la piel.', '2024-03-03 12:00:00'),
+('Otros síntomas no especificados.', '2024-03-03 18:00:00');
+
+-- Inserción de ingestas
+INSERT INTO intake_table (date, quantity, observations, baby_id, intake_symptom_id) VALUES
+('2024-03-01 08:00:00', 200, 'Desayuno: el bebé comió bien, sin problemas.', 1, 1),
+('2024-03-01 12:30:00', 150, 'Almuerzo: el bebé dejó un poco de comida.', 1, 2),
+('2024-03-01 18:00:00', 180, 'Merienda: el bebé disfrutó la comida.', 2, 3),
+('2024-03-02 08:30:00', 220, 'Desayuno: el bebé comió todo.', 3, 1),
+('2024-03-02 13:00:00', 160, 'Almuerzo: el bebé tuvo un poco de malestar.', 4, 4);
+
+-- Relación entre intake y recetas
+INSERT INTO intake_recipe (intake_id, recipe_id) VALUES
+(1, 1), (1, 2), 
+(2, 3),        
+(3, 4), (3, 5),
+(4, 6),         
+(5, 7), (5, 8); 
+
