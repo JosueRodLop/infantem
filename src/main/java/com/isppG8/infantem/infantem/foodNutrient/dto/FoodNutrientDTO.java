@@ -20,11 +20,11 @@ public class FoodNutrientDTO {
     public FoodNutrientDTO() {
 
     }
-    
+
     public FoodNutrientDTO(FoodNutrient foodNutrient) {
-	this.id = foodNutrient.getId();
-	this.amount = foodNutrient.getAmount();
-	this.recipe = foodNutrient.getRecipe().getId();
-	this.nutrient = new NutrientDTO(foodNutrient.getNutrient());
+        this.id = foodNutrient.getId();
+        this.amount = foodNutrient.getAmount();
+        this.recipe = foodNutrient.getRecipe().getId();
+        this.nutrient = new NutrientDTO(foodNutrient.getNutrient());
     }
 }

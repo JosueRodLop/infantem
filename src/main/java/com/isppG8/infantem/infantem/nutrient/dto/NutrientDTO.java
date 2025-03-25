@@ -23,10 +23,10 @@ public class NutrientDTO {
     }
 
     public NutrientDTO(Nutrient nutrient) {
-	this.id = nutrient.getId();
-	this.name = nutrient.getName();
-	this.type = nutrient.getType();
-	this.unit = nutrient.getUnit();
+        this.id = nutrient.getId();
+        this.name = nutrient.getName();
+        this.type = nutrient.getType();
+        this.unit = nutrient.getUnit();
     }
 
 }

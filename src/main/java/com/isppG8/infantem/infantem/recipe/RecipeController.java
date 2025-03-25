@@ -42,7 +42,8 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<RecipeDTO>> getAllRecipes(@RequestParam(value = "maxAge", required = false) Integer maxAge,
+    public ResponseEntity<Page<RecipeDTO>> getAllRecipes(
+            @RequestParam(value = "maxAge", required = false) Integer maxAge,
             @RequestParam(value = "minAge", required = false) Integer minAge,
             @RequestParam(value = "ingredients", required = false) List<String> ingredients,
             @RequestParam(value = "allergens", required = false) List<String> allergens,

@@ -41,21 +41,21 @@ public class RecipeDTO {
     }
 
     public RecipeDTO(Recipe recipe) {
-	this.id = recipe.getId();
-	this.name = recipe.getName();
-	this.description = recipe.getDescription();
-	this.ingredients = recipe.getIngredients();
-	this.minRecommendedAge = recipe.getMinRecommendedAge();
-	this.maxRecommendedAge = recipe.getMaxRecommendedAge();
-	this.elaboration = recipe.getElaboration();
-	if (recipe.getUser()==null) {
-		this.user = null;
-	} else {
-		this.user = recipe.getUser().getId();
-	}
-	this.allergens = recipe.getAllergens().stream().map(AllergenDTO::new).toList();
-	this.intakes = recipe.getIntakes().stream().map(IntakeDTO::new).toList();
-	this.foodNutrients = recipe.getFoodNutrients().stream().map(FoodNutrientDTO::new).toList();
+        this.id = recipe.getId();
+        this.name = recipe.getName();
+        this.description = recipe.getDescription();
+        this.ingredients = recipe.getIngredients();
+        this.minRecommendedAge = recipe.getMinRecommendedAge();
+        this.maxRecommendedAge = recipe.getMaxRecommendedAge();
+        this.elaboration = recipe.getElaboration();
+        if (recipe.getUser() == null) {
+            this.user = null;
+        } else {
+            this.user = recipe.getUser().getId();
+        }
+        this.allergens = recipe.getAllergens().stream().map(AllergenDTO::new).toList();
+        this.intakes = recipe.getIntakes().stream().map(IntakeDTO::new).toList();
+        this.foodNutrients = recipe.getFoodNutrients().stream().map(FoodNutrientDTO::new).toList();
     }
 
 }
