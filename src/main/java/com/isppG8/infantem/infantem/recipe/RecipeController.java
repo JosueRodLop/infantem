@@ -74,9 +74,38 @@ public class RecipeController {
     }
 
     @GetMapping("/recommended")
-    public ResponseEntity<List<Recipe>> getAllRecommendedRecipes() {
-        List<Recipe> recipes = recipeService.getAllRecommendedRecipes();
-        return ResponseEntity.ok(recipes);
+    public ResponseEntity<Page<Recipe>> getAllRecommendedRecipes(
+            @RequestParam(value = "maxAge", required = false) Integer maxAge,
+            @RequestParam(value = "minAge", required = false) Integer minAge,
+            @RequestParam(value = "ingredients", required = false) List<String> ingredients,
+            @RequestParam(value = "allergens", required = false) List<String> allergens,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        List<Recipe> recipes = new ArrayList<>(recipeService.getAllRecommendedRecipes());
+
+        if (maxAge != null) {
+            List<Recipe> recipesByMaxAge = recipeService.getRecommendedRecipeByMaxAge(maxAge);
+            recipes.retainAll(recipesByMaxAge);
+        }
+        if (minAge != null) {
+            List<Recipe> recipesByMinAge = recipeService.getRecommendedRecipeByMinAge(minAge);
+            recipes.retainAll(recipesByMinAge);
+        }
+        if (ingredients != null && !ingredients.isEmpty()) {
+            List<Recipe> recipesByIngredients = recipeService.getRecommendedRecipeByIngredients(ingredients);
+            recipes.retainAll(recipesByIngredients);
+        }
+        if (allergens != null && !allergens.isEmpty()) {
+            List<Recipe> recipesByAllergens = recipeService.getRecommendedRecipesFilteringAllergens(allergens);
+            recipes.retainAll(recipesByAllergens);
+        }
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), recipes.size());
+        Page<Recipe> paginatedRecipes = new PageImpl<>(recipes.subList(start, end), pageable, recipes.size());
+
+        return ResponseEntity.ok(paginatedRecipes);
     }
 
     @GetMapping("/recommended/{babyId}")

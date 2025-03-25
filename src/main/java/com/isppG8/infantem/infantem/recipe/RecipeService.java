@@ -130,4 +130,29 @@ public class RecipeService {
         return recipeRepository.findRecipesWithoutAllergen(allergens, userId);
     }
 
+    @Transactional(readOnly = true)
+    public List<Recipe> getRecommendedRecipeByMinAge(Integer age) {
+        return this.recipeRepository.findRecommendedRecipeByMinAge(age);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Recipe> getRecommendedRecipeByMaxAge(Integer age) {
+        return this.recipeRepository.findRecommendedRecipeByMaxAge(age);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Recipe> getRecommendedRecipeByIngredients(List<String> ingredients) {
+        List<Recipe> recipes = new ArrayList<>();
+        for (String ingredient : ingredients) {
+            System.out.println(ingredient);
+            recipes.addAll(this.recipeRepository.findRecipeRecommendedByIngredient(ingredient));
+        }
+        return recipes;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Recipe> getRecommendedRecipesFilteringAllergens(List<String> allergens) {
+        return recipeRepository.findRecommendedRecipesWithoutAllergen(allergens);
+    }
+
 }

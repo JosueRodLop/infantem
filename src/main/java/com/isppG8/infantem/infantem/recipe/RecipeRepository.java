@@ -35,4 +35,19 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
     List<Recipe> findRecipesWithoutAllergen(@Param("allergens") List<String> allergens,
             @Param("userId") Integer userId);
 
+    @Query("SELECT r FROM Recipe r WHERE r.user IS NULL AND r.minRecommendedAge <= :age ")
+    List<Recipe> findRecommendedRecipeByMinAge(@Param("age") Integer age);
+
+    @Query("SELECT r FROM Recipe r WHERE r.user IS NULL AND r.maxRecommendedAge >= :age")
+    List<Recipe> findRecommendedRecipeByMaxAge(@Param("age") Integer age);
+
+    @Query("SELECT r FROM Recipe r WHERE r.user IS NULL AND :ingredient IS NOT NULL AND :ingredient <> '' AND LOWER(r.ingredients) LIKE LOWER(CONCAT('%', :ingredient, '%'))")
+    List<Recipe> findRecipeRecommendedByIngredient(String ingredient);
+
+    @Query("SELECT DISTINCT r FROM Recipe r JOIN r.foodNutrients fn JOIN fn.nutrient n WHERE r.user IS NULL AND n.name = :nutrientName")
+    List<Recipe> findRecommendedRecipeByNutrient(@Param("nutrientName") String nutrientName);
+
+    @Query("SELECT r FROM Recipe r WHERE r.user IS NULL AND NOT EXISTS (SELECT 1 FROM r.allergens a WHERE a.name IN :allergens)")
+    List<Recipe> findRecommendedRecipesWithoutAllergen(@Param("allergens") List<String> allergens);
+
 }
