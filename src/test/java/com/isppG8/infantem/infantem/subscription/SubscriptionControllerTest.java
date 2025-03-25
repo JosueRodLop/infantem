@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(SubscriptionInfantemController.class)
-@WithMockUser(username = "testUser", roles = {"USER"})
+@WithMockUser(username = "testUser", roles = { "USER" })
 public class SubscriptionControllerTest {
 
     @Autowired
@@ -39,23 +39,17 @@ public class SubscriptionControllerTest {
 
     @Test
     public void testCreateSubscription() throws Exception {
-        mockMvc.perform(post("/api/v1/subscriptions/create")
-                .param("userId", "1")
-                .param("customerId", "cus_123")
-                .param("priceId", "price_abc")
-                .param("paymentMethodId", "pm_456")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        mockMvc.perform(post("/api/v1/subscriptions/create").param("userId", "1").param("customerId", "cus_123")
+                .param("priceId", "price_abc").param("paymentMethodId", "pm_456")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     public void testCancelSubscription() throws Exception {
         doNothing().when(subscriptionService).cancelSubscription("sub_789");
 
-        mockMvc.perform(post("/api/v1/subscriptions/cancel")
-                .param("subscriptionId", "sub_789")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+        mockMvc.perform(post("/api/v1/subscriptions/cancel").param("subscriptionId", "sub_789")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(content().string("Suscripción cancelada exitosamente."));
     }
 
@@ -65,9 +59,8 @@ public class SubscriptionControllerTest {
         customer.put("id", "cus_123");
         when(subscriptionService.getCustomersByEmail("test@example.com")).thenReturn(List.of(customer));
 
-        mockMvc.perform(get("/api/v1/subscriptions/customers")
-                .param("email", "test@example.com")
-                .param("lasts4", "1234"))
+        mockMvc.perform(
+                get("/api/v1/subscriptions/customers").param("email", "test@example.com").param("lasts4", "1234"))
                 .andExpect(status().isOk());
     }
 }
