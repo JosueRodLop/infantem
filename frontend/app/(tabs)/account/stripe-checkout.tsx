@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import { getToken } from "../../../utils/jwtStorage";
 import { jwtDecode } from "jwt-decode";
 
-const publicKey = process.env.STRIPE_API_KEY;
+const publicKey = process.env.EXPO_PUBLIC_STRIPE_API_KEY?.trim();
 
 
 function StripeCheckoutForm() {
@@ -59,7 +59,7 @@ function StripeCheckoutForm() {
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json", 
-                    Authorization: `Bearer ${jwt}`
+                    "Authorization": `Bearer ${jwt}`
         }
       });
       if (response.ok) {
@@ -72,6 +72,7 @@ function StripeCheckoutForm() {
   };
 
   return (
+    console.log("Clave de Stripe:", publicKey),
     <div
       style={{
         maxWidth: "400px",
