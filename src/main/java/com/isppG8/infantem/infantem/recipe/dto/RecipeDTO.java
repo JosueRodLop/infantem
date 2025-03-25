@@ -48,7 +48,11 @@ public class RecipeDTO {
 	this.minRecommendedAge = recipe.getMinRecommendedAge();
 	this.maxRecommendedAge = recipe.getMaxRecommendedAge();
 	this.elaboration = recipe.getElaboration();
-	this.user = recipe.getUser().getId();
+	if (recipe.getUser()==null) {
+		this.user = null;
+	} else {
+		this.user = recipe.getUser().getId();
+	}
 	this.allergens = recipe.getAllergens().stream().map(AllergenDTO::new).toList();
 	this.intakes = recipe.getIntakes().stream().map(IntakeDTO::new).toList();
 	this.foodNutrients = recipe.getFoodNutrients().stream().map(FoodNutrientDTO::new).toList();
