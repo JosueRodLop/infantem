@@ -19,7 +19,7 @@ public class StripeWebhookController {
 
     public StripeWebhookController(SubscriptionInfantemService subscriptionService) {
         this.subscriptionService = subscriptionService;
-        
+
         // Cargar el secreto desde .env
         Dotenv dotenv = Dotenv.load();
         this.endpointSecret = dotenv.get("STRIPE_WEBHOOK_SECRET");
