@@ -72,7 +72,7 @@ export default function SubscriptionWeb() {
                     },
                 });
                 if (response.ok) {
-                    router.push("/account/premiumplan");
+                    router.push("/account");
                 } else {
                     console.error("Error en la suscripción:", response.statusText);
                 }
