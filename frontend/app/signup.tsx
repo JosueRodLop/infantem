@@ -1,8 +1,9 @@
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Text, View, TouchableOpacity, TextInput, Image, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, TextInput, Image, ScrollView, Modal, Pressable } from "react-native";
 import { storeToken } from "../utils/jwtStorage";
 import { Ionicons } from "@expo/vector-icons"; // Importamos iconos de Expo
+import CheckBox from 'react-native-check-box'
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -12,6 +13,9 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar contraseña
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [openedTerms, setOpenedTerms] = useState(false);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const gs = require("../static/styles/globalStyles");
@@ -105,6 +109,62 @@ export default function Signup() {
           </View>
 
           {errorMessage ? <Text style={{ color: "red", marginVertical: 10, textAlign: "center" }}>{errorMessage}</Text> : null}
+
+          <View style={gs.checkboxView}>
+            <CheckBox
+              onClick={()=>{
+                setAcceptedTerms(!acceptedTerms)
+              }}
+              isChecked={acceptedTerms}
+              disabled={openedTerms}
+            />
+            <Text style={{ marginLeft: 10 }}>
+              Acepto los&nbsp;
+              <Text
+                style={{ color: "#007AFF", fontSize: 14 }}
+                onPress={() => {
+                  setModalVisible(true)
+                }}
+              >
+                términos y condiciones
+              </Text>
+            </Text>
+          </View>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={gs.centeredView}>
+              <View style={gs.modalView}>
+                <View style={{ margin: 20 }}>
+                  <Pressable
+                    style={[gs.button, gs.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <Text style={gs.textStyle}>X</Text>
+                  </Pressable>
+                  <View style={{ flex: 1 }}>
+
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={true}>
+                      <Text style={gs.modalText}>
+                        Hello World!{"\n\n"}
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                        {"\n\n"}
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                        {"\n\n"}
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                      </Text>
+                    </ScrollView>
+                  </View>
+                </View>
+                
+              </View>
+            </View>
+          </Modal>
 
           <Link href={"/signin"} style={{ marginTop: 10, textAlign: "center" }}>
             <Text style={{ color: "#007AFF", fontSize: 14 }}>¿Ya tienes cuenta? ¡Inicia sesión!</Text>

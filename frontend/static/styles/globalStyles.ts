@@ -81,6 +81,62 @@ module.exports = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
+  checkboxView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+
+//////////////
+
+  centeredView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    width: '80%',
+    maxHeight: '80%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    flex: 1
+  },
+  button: {
+    marginRight: '90%',
+    borderRadius: 20,
+    height: 30,
+    width: 30,
+    elevation: 2,
+    marginVertical: 1,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 'auto'
+  },
+  modalText: {
+    margin: 15,
+    textAlign: 'left',
+  },
+
+/////////////
 
   input: {
     width: "90%",
