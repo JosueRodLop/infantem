@@ -30,9 +30,7 @@ public class MetricService {
     }
 
     public List<Metric> getAllMetricsByBabyId(Integer babyId) {
-        return metricRepository.findAll().stream()
-                .filter(metric -> metric.getBaby().getId().equals(babyId))
-                .toList();
+        return metricRepository.findAll().stream().filter(metric -> metric.getBaby().getId().equals(babyId)).toList();
     }
 
     public Metric updateMetric(Long id, Metric updatedMetric) {
@@ -48,7 +46,6 @@ public class MetricService {
         Metric metric = getMetricById(id);
         metricRepository.delete(metric);
     }
-
 
     // Methods for calendar
 
