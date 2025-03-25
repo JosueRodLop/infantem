@@ -1,13 +1,9 @@
 package com.isppG8.infantem.infantem.subscription;
 
-import com.isppG8.infantem.infantem.user.User;
-import com.isppG8.infantem.infantem.user.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +15,6 @@ public class SubscriptionInfantemController {
 
     @Autowired
     private SubscriptionInfantemService subscriptionService;
-
-    @Autowired
-    private UserService userService;
 
     // Crear una suscripción
     @PostMapping("/create")
