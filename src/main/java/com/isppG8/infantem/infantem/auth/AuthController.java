@@ -105,19 +105,19 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-	boolean existingUser = (userService.findByUsername(signUpRequest.getUsername()) == null);
-	boolean existingEmail = (userService.findByEmail(signUpRequest.getEmail()) == null);
+        boolean existingUser = (userService.findByUsername(signUpRequest.getUsername()) == null);
+        boolean existingEmail = (userService.findByEmail(signUpRequest.getEmail()) == null);
         if (!(existingUser && existingEmail)) {
-	    String e = "";
-	    if (existingEmail) {
-		if (existingUser) {
-		    e = "Ese usuario e email están siendo utilizados";
-		} else {
-		    e = "Ese email ya está siendo utilizado";
-		}
-	    } else {
-		e = "Ese usuario ya está siendo utilizado";
-	    }
+            String e = "";
+            if (existingEmail) {
+                if (existingUser) {
+                    e = "Ese usuario e email están siendo utilizados";
+                } else {
+                    e = "Ese email ya está siendo utilizado";
+                }
+            } else {
+                e = "Ese usuario ya está siendo utilizado";
+            }
             return ResponseEntity.badRequest().body(new MessageResponse(e));
         }
         if (!emailValidationService.validateCode(signUpRequest.getEmail(), signUpRequest.getCode())) {
@@ -140,7 +140,7 @@ public class AuthController {
     public ResponseEntity<Object> generateCode(@Valid @RequestBody EmailRequest emailRequest) {
         if (emailRequest.getEmail() == null || emailRequest.getUsername() == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: missing data"));
-	}
+        }
         try {
             emailValidationService.createEmailValidation(emailRequest);
         } catch (Exception e) {

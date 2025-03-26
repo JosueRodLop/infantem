@@ -35,23 +35,24 @@ public class EmailValidationService {
     @Transactional
     public void createEmailValidation(EmailRequest emailRequest) {
         try {
-            EmailValidation oldEmailValidation = emailValidationRepository.findByEmail(emailRequest.getEmail()).orElse(null);
+            EmailValidation oldEmailValidation = emailValidationRepository.findByEmail(emailRequest.getEmail())
+                    .orElse(null);
 
             User existingEmailUser = userService.findByEmail(emailRequest.getEmail());
             User existingUsernameUser = userService.findByUsername(emailRequest.getUsername());
             if (!(existingEmailUser == null && existingUsernameUser == null)) {
-		boolean emailUser = !(existingEmailUser==null);
-		boolean usernameUser = !(existingUsernameUser==null);
-		String e = "";
-		if (emailUser) {
-		   if (usernameUser) {
-			e = "Ese usuario e email están siendo utilizados";
-		   } else {
-			e = "Ese email ya está siendo utilizado";
-		   }
-		} else {
-		   e = "Ese usuario ya está siendo utilizado";
-		}
+                boolean emailUser = !(existingEmailUser == null);
+                boolean usernameUser = !(existingUsernameUser == null);
+                String e = "";
+                if (emailUser) {
+                    if (usernameUser) {
+                        e = "Ese usuario e email están siendo utilizados";
+                    } else {
+                        e = "Ese email ya está siendo utilizado";
+                    }
+                } else {
+                    e = "Ese usuario ya está siendo utilizado";
+                }
                 throw new ResourceNotOwnedException(e);
             }
 
