@@ -27,8 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
-
-
 @WebMvcTest(BabyController.class)
 @WithMockUser(username = "testUser", roles = { "USER" })
 public class BabyControllerTest {
@@ -39,7 +37,7 @@ public class BabyControllerTest {
         public BabyService babyService() {
             return Mockito.mock(BabyService.class);
         }
-    } 
+    }
 
     @Autowired
     private MockMvc mockMvc;
@@ -83,11 +81,10 @@ public class BabyControllerTest {
                 .andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.foodPreference", is("Test food preference")));
     }
 
-
     @Test
     public void TestCreateBaby() throws Exception {
         String babyJson = """
-                {   
+                {
                     "name": "Test baby",
                     "birthDate": "2025-03-23",
                     "genre": "MALE",
@@ -102,22 +99,22 @@ public class BabyControllerTest {
 
         mockMvc.perform(post("/api/v1/baby").header("Authorization", "Bearer " + token).with(csrf())
                 .contentType(MediaType.APPLICATION_JSON).content(babyJson)).andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.foodPreference", is("Test food preference")));
+                .andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.foodPreference", is("Test food preference")));
     }
 
     @Test
     public void TestUpdateBaby() throws Exception {
         String babyJson = """
-            {   
-                "name": "Test baby 2.0",
-                "birthDate": "2025-03-23",
-                "genre": "MALE",
-                "weight": 20.0,
-                "height": 10,
-                "cephalicPerimeter": 10,
-                "foodPreference": "Updated food preference"
-            }
-            """;
+                {
+                    "name": "Test baby 2.0",
+                    "birthDate": "2025-03-23",
+                    "genre": "MALE",
+                    "weight": 20.0,
+                    "height": 10,
+                    "cephalicPerimeter": 10,
+                    "foodPreference": "Updated food preference"
+                }
+                """;
         Baby updatedBaby = createDummyBaby(1);
         updatedBaby.setName("Test baby 2.0");
         updatedBaby.setWeight(20.0);
@@ -131,64 +128,63 @@ public class BabyControllerTest {
                 .andExpect(jsonPath("$.weight", is(20.0)))
                 .andExpect(jsonPath("$.foodPreference", is("Updated food preference")))
                 .andExpect(jsonPath("$.allergens", hasSize(2)));
-        }
+    }
 
-        @Test
-        public void testDeleteBaby() throws Exception {
-            Mockito.doNothing().when(babyService).deleteBaby(1);
+    @Test
+    public void testDeleteBaby() throws Exception {
+        Mockito.doNothing().when(babyService).deleteBaby(1);
 
-            mockMvc.perform(delete("/api/v1/baby/1").header("Authorization", "Bearer " + token).with(csrf()))
-                    .andExpect(status().isNoContent());
-        }
+        mockMvc.perform(delete("/api/v1/baby/1").header("Authorization", "Bearer " + token).with(csrf()))
+                .andExpect(status().isNoContent());
+    }
 
+    @Test
+    public void TestCreateBaby_Invalid() throws Exception {
+        String invalidJson = """
+                {
+                }
+                """;
 
-        @Test
-        public void TestCreateBaby_Invalid() throws Exception {
-            String invalidJson = """
-                    {   
-                    }
-                    """;
+        mockMvc.perform(post("/api/v1/baby").header("Authorization", "Bearer " + token).with(csrf())
+                .contentType(MediaType.APPLICATION_JSON).content(invalidJson)).andExpect(status().isBadRequest());
+    }
 
-            mockMvc.perform(post("/api/v1/baby").header("Authorization", "Bearer " + token).with(csrf())
-            .contentType(MediaType.APPLICATION_JSON).content(invalidJson)).andExpect(status().isBadRequest());
-        }
+    @Test
+    public void TestUpdateBaby_Invalid() throws Exception {
+        String invalidJson = """
+                {
+                    "name": "Test baby 2.0",
+                    "birthDate": "2025-03-23",
+                    "genre": "MALE",
+                    "weight": -20.0,
+                    "height": -10,
+                    "cephalicPerimeter": 10,
+                    "foodPreference": "Updated food preference",
+                    "allergens": [
+                        { "id": 1 },
+                        { "id": 2 }
+                    ]
+                }
+                """;
 
-        @Test
-        public void TestUpdateBaby_Invalid() throws Exception {
-            String invalidJson = """
-            {   
-                "name": "Test baby 2.0",
-                "birthDate": "2025-03-23",
-                "genre": "MALE",
-                "weight": -20.0,
-                "height": -10,
-                "cephalicPerimeter": 10,
-                "foodPreference": "Updated food preference",
-                "allergens": [
-                    { "id": 1 },
-                    { "id": 2 }
-                ]
-            }
-            """;
+        mockMvc.perform(put("/api/v1/baby/1").header("Authorization", "Bearer " + token).with(csrf())
+                .contentType(MediaType.APPLICATION_JSON).content(invalidJson)).andExpect(status().isBadRequest());
+    }
 
-            mockMvc.perform(put("/api/v1/baby/1").header("Authorization", "Bearer " + token).with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON).content(invalidJson)).andExpect(status().isBadRequest());
-        }
+    @Test
+    public void TestGetBabyById_NotFound() throws Exception {
+        Mockito.when(babyService.findById(999)).thenThrow(new ResourceNotFoundException("Not Found"));
 
-        @Test
-        public void TestGetBabyById_NotFound() throws Exception {
-            Mockito.when(babyService.findById(999)).thenThrow(new ResourceNotFoundException("Not Found"));
+        mockMvc.perform(get("/api/v1/baby/999").header("Authorization", "Bearer " + token))
+                .andExpect(status().isNotFound());
+    }
 
-            mockMvc.perform(get("/api/v1/baby/999").header("Authorization", "Bearer " + token))
-                    .andExpect(status().isNotFound());
-        }
+    @Test
+    public void TestDeleteBaby_NotFound() throws Exception {
+        Mockito.doThrow(new ResourceNotFoundException("Not Found")).when(babyService).deleteBaby(999);
 
-        @Test
-        public void TestDeleteBaby_NotFound() throws Exception {
-            Mockito.doThrow(new ResourceNotFoundException("Not Found")).when(babyService).deleteBaby(999);
-
-            mockMvc.perform(delete("/api/v1/baby/999").header("Authorization", "Bearer " + token).with(csrf()))
-                    .andExpect(status().isNotFound());
-        }
+        mockMvc.perform(delete("/api/v1/baby/999").header("Authorization", "Bearer " + token).with(csrf()))
+                .andExpect(status().isNotFound());
+    }
 
 }
