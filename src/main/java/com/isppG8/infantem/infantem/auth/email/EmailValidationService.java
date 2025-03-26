@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.isppG8.infantem.infantem.auth.email.EmailDetailsService;
 import com.isppG8.infantem.infantem.auth.email.EmailDetails;
+import com.isppG8.infantem.infantem.auth.payload.request.EmailRequest;
 import com.isppG8.infantem.infantem.user.UserService;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
@@ -32,13 +33,26 @@ public class EmailValidationService {
     }
 
     @Transactional
-    public void createEmailValidation(String email) {
+    public void createEmailValidation(EmailRequest emailRequest) {
         try {
-            EmailValidation oldEmailValidation = emailValidationRepository.findByEmail(email).orElse(null);
+            EmailValidation oldEmailValidation = emailValidationRepository.findByEmail(emailRequest.getEmail()).orElse(null);
 
-            User existingUser = userService.findByEmail(email);
-            if (!(existingUser == null)) {
-                throw new ResourceNotOwnedException("");
+            User existingEmailUser = userService.findByEmail(emailRequest.getEmail());
+            User existingUsernameUser = userService.findByUsername(emailRequest.getUsername());
+            if (!(existingEmailUser == null && existingUsernameUser == null)) {
+		boolean emailUser = !(existingEmailUser==null);
+		boolean usernameUser = !(existingUsernameUser==null);
+		String e = "";
+		if (emailUser) {
+		   if (usernameUser) {
+			e = "Ese usuario e email están siendo utilizados";
+		   } else {
+			e = "Ese email ya está siendo utilizado";
+		   }
+		} else {
+		   e = "Ese usuario ya está siendo utilizado";
+		}
+                throw new ResourceNotOwnedException(e);
             }
 
             if (!(oldEmailValidation == null)) {
@@ -48,11 +62,11 @@ public class EmailValidationService {
             Random rand = new Random();
 
             EmailValidation newEmailValidation = new EmailValidation();
-            newEmailValidation.setEmail(email);
+            newEmailValidation.setEmail(emailRequest.getEmail());
             newEmailValidation.setCodeSentDate(LocalDateTime.now());
             newEmailValidation.setCode(rand.nextInt(999999));
 
-            EmailDetails details = new EmailDetails(email,
+            EmailDetails details = new EmailDetails(emailRequest.getEmail(),
                     String.format("Este es tu código de validación, caducará en 10 minutos: %d",
                             newEmailValidation.getCode()),
                     "Código de validación Infantem");
@@ -62,10 +76,10 @@ public class EmailValidationService {
             emailValidationRepository.save(newEmailValidation);
 
         } catch (ResourceNotOwnedException e) {
-            throw new ResourceNotOwnedException("That account already exists");
+            throw new ResourceNotOwnedException(e.getMessage());
         } catch (Exception e) {
             System.out.println(String.format("Exception while creating confirmation code: %s", e.toString()));
-            EmailValidation cleanup = emailValidationRepository.findByEmail(email).orElse(null);
+            EmailValidation cleanup = emailValidationRepository.findByEmail(emailRequest.getEmail()).orElse(null);
             if (!(cleanup == null)) {
                 this.deleteEmailValidation(cleanup);
             }

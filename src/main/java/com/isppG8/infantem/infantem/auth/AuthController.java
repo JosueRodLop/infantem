@@ -17,6 +17,7 @@ import com.isppG8.infantem.infantem.auth.email.EmailValidationService;
 import com.isppG8.infantem.infantem.auth.jwt.JwtUtils;
 import com.isppG8.infantem.infantem.auth.payload.request.LoginRequest;
 import com.isppG8.infantem.infantem.auth.payload.request.SignupRequest;
+import com.isppG8.infantem.infantem.auth.payload.request.EmailRequest;
 import com.isppG8.infantem.infantem.auth.payload.response.MessageResponse;
 import com.isppG8.infantem.infantem.auth.jwt.JwtResponse;
 import com.isppG8.infantem.infantem.config.services.UserDetailsImpl;
@@ -104,8 +105,20 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userService.findByUsername(signUpRequest.getUsername()) != null) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+	boolean existingUser = (userService.findByUsername(signUpRequest.getUsername()) == null);
+	boolean existingEmail = (userService.findByEmail(signUpRequest.getEmail()) == null);
+        if (!(existingUser && existingEmail)) {
+	    String e = "";
+	    if (existingEmail) {
+		if (existingUser) {
+		    e = "Ese usuario e email están siendo utilizados";
+		} else {
+		    e = "Ese email ya está siendo utilizado";
+		}
+	    } else {
+		e = "Ese usuario ya está siendo utilizado";
+	    }
+            return ResponseEntity.badRequest().body(new MessageResponse(e));
         }
         if (!emailValidationService.validateCode(signUpRequest.getEmail(), signUpRequest.getCode())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Wrong validation code"));
@@ -124,12 +137,12 @@ public class AuthController {
     }
 
     @PostMapping("/email")
-    public ResponseEntity<Object> generateCode(@Valid @RequestBody String email) {
-        if (email == null) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: No email attached"));
-        }
+    public ResponseEntity<Object> generateCode(@Valid @RequestBody EmailRequest emailRequest) {
+        if (emailRequest.getEmail() == null || emailRequest.getUsername() == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: missing data"));
+	}
         try {
-            emailValidationService.createEmailValidation(email);
+            emailValidationService.createEmailValidation(emailRequest);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
