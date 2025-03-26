@@ -27,11 +27,10 @@ import jakarta.transaction.Transactional;
 
 @SpringBootTest(classes = { InfantemApplication.class, VaccineService.class, VaccineServiceTest.TestConfig.class })
 @ActiveProfiles("test")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) 
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 @Import(VaccineServiceTest.TestConfig.class)
 public class VaccineServiceTest {
-
 
     @TestConfiguration
     static class TestConfig {
@@ -56,13 +55,13 @@ public class VaccineServiceTest {
 
     private User currentUser;
     private Baby testBaby;
+
     @BeforeEach
     public void setUp() {
 
         currentUser = new User();
         currentUser.setId(1);
         currentUser.setUsername("user1");
-        
 
         testBaby = new Baby();
         testBaby.setId(1);
@@ -75,7 +74,7 @@ public class VaccineServiceTest {
     @Test
     public void TestFindAll() {
         List<Vaccine> vaccines = vaccineService.getAll();
-        assertTrue(vaccines.size() == 5);           // 5 vaccines in the database for now
+        assertTrue(vaccines.size() == 5); // 5 vaccines in the database for now
     }
 
     @Test
@@ -84,29 +83,20 @@ public class VaccineServiceTest {
         assertTrue(vaccine.getId() == 1);
         assertTrue(vaccine.getType().equals("MMR"));
     }
-/*  This test is not working
-    @Test
-    public void TestSaveVaccine() {
 
-        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
-        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
-
-        Vaccine vaccine = new Vaccine();
-        vaccine.setId(6L);
-        vaccine.setType("Hepatitis B");
-        vaccine.setVaccinationDate(LocalDate.now());
-        vaccine.setBaby(testBaby);
-
-        vaccineService.save(vaccine);
-
-        List<Vaccine> vaccines = vaccineService.getAll();
-        assertTrue(vaccines.size() == 6);           // 6 vaccines in the database now
-    }
- */
+    /*
+     * This test is not working
+     * @Test public void TestSaveVaccine() {
+     * org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+     * org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby); Vaccine vaccine = new
+     * Vaccine(); vaccine.setId(6L); vaccine.setType("Hepatitis B"); vaccine.setVaccinationDate(LocalDate.now());
+     * vaccine.setBaby(testBaby); vaccineService.save(vaccine); List<Vaccine> vaccines = vaccineService.getAll();
+     * assertTrue(vaccines.size() == 6); // 6 vaccines in the database now }
+     */
     @Test
     public void TestDeleteVaccine() {
         vaccineService.delete(1L);
         List<Vaccine> vaccines = vaccineService.getAll();
-        assertTrue(vaccines.size() == 4);           // 4 vaccines in the database now
+        assertTrue(vaccines.size() == 4); // 4 vaccines in the database now
     }
 }
