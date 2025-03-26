@@ -1,13 +1,30 @@
 import { Link, Redirect, SplashScreen } from "expo-router";
-import { View, Text, Image, Dimensions, ScrollView } from "react-native";
+import { View, Text, Image, Dimensions, ScrollView, ImageBackground } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useFonts } from "expo-font";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 
 export default function Index() {
   const { isAuthenticated } = useAuth();
   const gs = require("../static/styles/globalStyles");
   const { height } = Dimensions.get("window");
+
+  const [isMobile, setIsMobile] = useState<boolean>(Dimensions.get("window").width < 768);
+
+  // Detecta el cambio de tamaño de la ventana
+  useEffect(() => {
+    const handleResize = () => {
+      const { width } = Dimensions.get("window");
+      setIsMobile(width < 768); // Establece si la resolución es móvil
+    };
+
+    const subscription = Dimensions.addEventListener('change', handleResize);
+
+    return () => {
+      subscription?.remove();
+    };
+  }, []);
 
   const [fontsLoaded] = useFonts({
     "Loubag-Regular": require("../assets/fonts/Loubag-Regular.ttf"),
@@ -20,7 +37,7 @@ export default function Index() {
     {
       title: "1. Recomendaciones",
       desc: "Recetas personalizadas para ti y tu bebé según sus necesidades.",
-      icon: require("../static/images/Pot.png"), 
+      icon: require("../static/images/Pot.png"),
     },
     {
       title: "2. Detección de Alergias",
@@ -39,8 +56,36 @@ export default function Index() {
     },
   ];
 
-  const { width } = Dimensions.get("window");
-  const isMobile = width < 768;
+  const [currentReviewIndex, setCurrentReviewIndex] = useState(0);  // Estado para rotar las reseñas
+
+  const reviews = [
+    {
+      name: "María Gómez",
+      text: "Me ha ayudado mucho a planificar las comidas de mi bebé, ¡es muy fácil de usar y súper útil!",
+      stars: 5,
+    },
+    {
+      name: "Carlos Pérez",
+      text: "¡Una herramienta increíble! Las recetas personalizadas son perfectas para las necesidades de mi bebé.",
+      stars: 5,
+    },
+    {
+      name: "Lucía Martínez",
+      text: "Me encanta que puedo controlar la dieta de mi bebé y las alertas por alergias me han sido muy útiles.",
+      stars: 5,
+    },
+  ];
+
+  useEffect(() => {
+    // Rotación de las reseñas cada 3 segundos
+    const intervalId = setInterval(() => {
+      setCurrentReviewIndex((prevIndex) => (prevIndex + 1) % reviews.length); // Cambiar la reseña
+    }, 5000);
+
+    return () => clearInterval(intervalId); // Limpiar el intervalo al desmontar
+  }, [reviews.length]);
+
+  // Removed duplicate declarations of width and isMobile
 
   useEffect(() => {
     if (fontsLoaded) {
@@ -51,41 +96,57 @@ export default function Index() {
   if (!fontsLoaded) return null;
   if (isAuthenticated) return <Redirect href="recipes" />;
 
+  const renderStars = (stars: number) => {
+    const starArray = Array(stars).fill(true); // Crear un array de estrellas
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, marginTop: -2
+       }}>
+        {starArray.map((_, index) => (
+          <Image
+            key={index}
+            source={require("../static/images/star.png")} // Asegúrate de tener una imagen de estrella
+            style={gs.starIcon}
+          />
+        ))}
+      </View>
+    );
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "#E3F2FD" }}>
       <ScrollView contentContainerStyle={{ padding: 10, paddingBottom: 200 }}>
-      <View style={{ width: "110%", height: height  }}>
-        <Image
-          source={require("../static/images/Background.png")}
-          style={{
-            width: "100%",
-            height: "100%",
-            resizeMode: "cover",
-          }}
-        />
-        <View
+        <View style={{ width: "110%", height: height, marginHorizontal: -10, marginTop: -10, }}>
+          <ImageBackground
+            source={isMobile
+              ? require("../static/images/Background3.0.png") // Imagen para móvil
+              : require("../static/images/Background2.0.png")} // Imagen para web
+            style={gs.banner2}
+            imageStyle={gs.bannerImage2}
+          >
+          </ImageBackground>
+          <View
             style={{
               flex: 1,
               justifyContent: "center",
-              paddingHorizontal:"10%",
+              paddingHorizontal: "10%",
               position: "absolute",
-              top: 160,}}
+              top: isMobile ? 290: 160,
+            }}
           >
             <Text
               style={{
                 color: "#1565C0",
                 fontFamily: "Loubag-Regular",
-                fontSize: 36,
-              }}
-            >
-              El mejor cuidado{" "}
-              
+                fontSize: isMobile ? 30 : 36,
+              }}>El mejor cuidado{" "}
+
             </Text>
             <Text style={{
-                color: "#1565C0",
-                fontFamily: "Loubag-Bold",
-                fontSize: 50,
-                marginBottom: 30,}}>para tu bebé</Text>
+              color: "#1565C0",
+              fontFamily: "Loubag-Bold",
+              fontSize: isMobile ? 45 : 50,
+              marginBottom: 30,
+            }}>para tu bebé</Text>
 
             <Link
               style={[
@@ -112,81 +173,93 @@ export default function Index() {
               </Text>
             </Link>
           </View>
-      </View>
-        
-       
-{/*---------------------------------------------------------------------------------------------------------------------------- */}
-        <View
-      style={{
-        backgroundColor: "#BBDEFB",
-        padding: 30,
-        borderRadius: 20,
-        marginHorizontal: 20,
-        marginTop: 60,
-        marginBottom: 100,
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 28,
-          fontFamily: "Loubag-Bold",
-          textAlign: "center",
-          color: "#0D47A1",
-          marginBottom: 30,
-        }}
-      >
-        ¿Cómo te ayudamos?
-      </Text>
+        </View>
 
-      <View
-        style={{
-          flexDirection: isMobile ? "column" : "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 30,
-          flexWrap: "wrap",
-        }}
-      >
-        {features.map((feature, index) => (
-          <View
-            key={index}
+        {/* Scroll horizontal de reseñas - Ahora está sobre "¿Cómo te ayudamos?" */}
+        <View style={gs.reviewsContainer}>
+          <Text style={gs.reviewsTitle}>Lo que dicen nuestros usuarios</Text>
+          <View style={gs.reviewsCardContainer}>
+            <View style={gs.reviewCard}>
+              {/* Nombre y reseña */}
+              <View style={gs.reviewHeader}>
+                <Text style={gs.reviewName}>{reviews[currentReviewIndex].name}</Text>
+              </View>
+              {renderStars(reviews[currentReviewIndex].stars)} {/* Mostrar las estrellas debajo del nombre */}
+              <Text style={gs.reviewText}>{reviews[currentReviewIndex].text}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Sección "¿Cómo te ayudamos?" */}
+        <View
+          style={{
+            backgroundColor: "#BBDEFB",
+            padding: 30,
+            borderRadius: 20,
+            marginHorizontal: 20,
+            marginTop: -200,
+            marginBottom: 100,
+          }}
+        >
+          <Text
             style={{
-              width: isMobile ? "100%" : "23%",
-              alignItems: "center",
+              fontSize: 28,
+              fontFamily: "Loubag-Bold",
+              textAlign: "center",
+              color: "#0D47A1",
+              marginBottom: 30,
             }}
           >
-            <Image
-              source={feature.icon}
-              style={{ width: 250, height: 250, marginBottom: 0}}
-              resizeMode="contain"
-            />
-            <Text
-              style={{
-                fontSize: 18,
-                fontFamily: "Loubag-Bold",
-                textAlign: "center",
-                marginBottom: 10,
-                color: "#0D47A1",
-              }}
-            >
-              {feature.title}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: "Loubag-Regular",
-                textAlign: "center",
-                color: "#0D47A1",
-              }}
-            >
-              {feature.desc}
-            </Text>
-          </View>
-        ))}
-      </View>
-    </View>
-    
+            ¿Cómo te ayudamos?
+          </Text>
 
+          <View
+            style={{
+              flexDirection: isMobile ? "column" : "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 30,
+              flexWrap: "wrap",
+            }}
+          >
+            {features.map((feature, index) => (
+              <View
+                key={index}
+                style={{
+                  width: isMobile ? "100%" : "23%",
+                  alignItems: "center",
+                }}
+              >
+                <Image
+                  source={feature.icon}
+                  style={{ width: 250, height: 250, marginBottom: 0 }}
+                  resizeMode="contain"
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "Loubag-Bold",
+                    textAlign: "center",
+                    marginBottom: 10,
+                    color: "#0D47A1",
+                  }}
+                >
+                  {feature.title}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "Loubag-Regular",
+                    textAlign: "center",
+                    color: "#0D47A1",
+                  }}
+                >
+                  {feature.desc}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
       </ScrollView>
     </View>
   );

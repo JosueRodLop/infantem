@@ -1,7 +1,7 @@
 'use strict';
 import { StyleSheet, Platform, StatusBar, Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 module.exports = StyleSheet.create({
   container: {
@@ -202,4 +202,71 @@ module.exports = StyleSheet.create({
   }, 
   
 
+  // Prueba alvjimosu
+  container2: {
+    flex: 1,
+    margin: 0, 
+    padding: 0,
+  },
+  banner2: {
+    width: '100%',
+    height: height * 0.6, // Ajusta la altura del banner según tu necesidad
+  },
+  bannerImage2: {
+    resizeMode: 'cover', // La imagen cubrirá el área sin distorsionarse
+    backgroundColor: 'transparent', // Asegura que no haya color de fondo
+  },
+  // Estilos para el contenedor de reseñas
+  reviewsContainer: {
+    marginTop: -300,  // Espaciado reducido para acercar las reseñas al banner
+    paddingHorizontal: 20,
+    marginBottom: 250,
+  },
+  reviewsTitle: {
+    fontSize: 24,
+    fontFamily: "Loubag-Bold",
+    color: "#1565C0",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  reviewsCardContainer: {
+    width: '100%',
+    overflow: 'hidden',
+    alignItems: 'center',
+  },
+  reviewCard: {
+    backgroundColor: "#FFF",
+    padding: 20,
+    width: '80%',
+    marginBottom: 30,
+    borderRadius: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  reviewHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  reviewName: {
+    fontSize: 22,
+    fontFamily: "Loubag-Bold",
+    color: "#1565C0",
+    marginLeft: 10,
+  },
+  reviewText: {
+    fontSize: 16,
+    fontFamily: "Loubag-Regular",
+    color: "#666",
+    textAlign: "center",
+  },
+  starIcon: {
+    width: 20,
+    height: 20,
+    marginLeft: 5, // Espacio entre las estrellas
+  },
 });
