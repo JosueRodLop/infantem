@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,21 +30,18 @@ public class Allergen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String description;
 
-    @ManyToMany(mappedBy = "allergens")
+    @ManyToMany
+    @JoinTable(name = "recipe_allergen", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "allergen_id"))
     private List<Recipe> recipes = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "baby_allergen", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "allergen_id"))
     private List<Baby> babies = new ArrayList<>();
 
-    public Allergen() {
-    }
-
-    public Allergen(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 }

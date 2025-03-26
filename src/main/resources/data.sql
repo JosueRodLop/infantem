@@ -104,3 +104,38 @@ INSERT INTO advertisement_table(company_name, title, target_url, photo_route, ti
 ('Nutribén', 'Potitos de verduras', 'google.com', 'a', 0, 0, 1, false),
 ('Avent', 'Esterilizador de biberones', 'google.com', 'a', 0, 0, 1, false),
 ('Babymoov', 'Cuna de viaje', 'google.com', 'a', 0, 0, 1, false);
+
+INSERT INTO recipe_allergen(allergen_id,recipe_id) VALUES
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,5);
+
+
+-- Inserción de síntomas relacionados con las ingestas
+INSERT INTO intake_symptom (description, date) VALUES
+('El bebé no presentó ningún síntoma.', '2024-03-01 08:00:00'),
+('El bebé rechazó la comida ofrecida.', '2024-03-01 12:30:00'),
+('El bebé mostró signos de malestar estomacal.', '2024-03-01 18:00:00'),
+('El bebé presentó una reacción alérgica leve.', '2024-03-02 08:30:00'),
+('El bebé presentó una reacción alérgica severa.', '2024-03-02 13:00:00'),
+('El bebé vomitó después de la ingesta.', '2024-03-02 15:00:00'),
+('El bebé tuvo diarrea después de la ingesta.', '2024-03-02 18:00:00'),
+('El bebé presentó fiebre después de la ingesta.', '2024-03-03 08:00:00'),
+('El bebé presentó erupciones en la piel.', '2024-03-03 12:00:00'),
+('Otros síntomas no especificados.', '2024-03-03 18:00:00');
+
+-- Inserción de ingestas
+INSERT INTO intake_table (date, quantity, observations, baby_id, intake_symptom_id) VALUES
+('2024-03-01 08:00:00', 200, 'Desayuno: el bebé comió bien, sin problemas.', 1, 1),
+('2024-03-01 12:30:00', 150, 'Almuerzo: el bebé dejó un poco de comida.', 1, 2),
+('2024-03-01 18:00:00', 180, 'Merienda: el bebé disfrutó la comida.', 2, 3),
+('2024-03-02 08:30:00', 220, 'Desayuno: el bebé comió todo.', 3, 1),
+('2024-03-02 13:00:00', 160, 'Almuerzo: el bebé tuvo un poco de malestar.', 4, 4);
+
+-- Relación entre intake y recetas
+INSERT INTO intake_recipe (intake_id, recipe_id) VALUES
+(1, 1), (1, 2), 
+(2, 3),        
+(3, 4), (3, 5)
