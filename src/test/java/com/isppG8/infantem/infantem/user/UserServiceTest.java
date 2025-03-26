@@ -35,13 +35,11 @@ public class UserServiceTest {
     private PasswordEncoder encoder;
 
     @Autowired
-    public UserServiceTest(UserRepository userRepository, UserService userService,
-            PasswordEncoder passwordEncoder) {
+    public UserServiceTest(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.encoder = passwordEncoder;
     }
-
 
     @Test
     public void TestGetAllUsers() {

@@ -60,7 +60,6 @@ public class UserController {
 
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails,
             @RequestHeader(name = "Authorization") String token) {

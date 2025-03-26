@@ -73,7 +73,8 @@ public class VaccineServiceTest {
         assertTrue(vaccine.getType().equals("MMR"));
     }
 
-    @Test public void TestSaveVaccine() {
+    @Test
+    public void TestSaveVaccine() {
         Vaccine vaccine = new Vaccine();
         vaccine.setType("Hepatitis B");
         vaccine.setVaccinationDate(LocalDate.now());
@@ -83,10 +84,9 @@ public class VaccineServiceTest {
 
         vaccineService.save(vaccine);
 
-        assertEquals(numVaccionesBefore+1, vaccineService.getAll().size(), "Vaccine not saved");
+        assertEquals(numVaccionesBefore + 1, vaccineService.getAll().size(), "Vaccine not saved");
     }
-    
-    
+
     @Test
     public void TestDeleteVaccine() {
         vaccineService.delete(1L);

@@ -27,6 +27,7 @@ import com.isppG8.infantem.infantem.user.UserService;
 public class BabyServiceTest {
 
     private BabyService babyService;
+
     @Autowired
     public BabyServiceTest(BabyService babyService) {
         this.babyService = babyService;

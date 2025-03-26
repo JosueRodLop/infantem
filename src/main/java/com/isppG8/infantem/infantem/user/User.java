@@ -75,6 +75,6 @@ public class User {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    
+
     List<Baby> babies = new ArrayList<>();
 }

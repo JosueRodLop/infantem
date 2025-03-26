@@ -47,7 +47,6 @@ public class VaccineService {
 
     // TODO: update vaccine
 
-    
     @Transactional
     public void delete(Long id) {
         this.vaccineRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vaccine", "id", id));
