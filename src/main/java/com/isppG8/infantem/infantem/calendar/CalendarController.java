@@ -4,11 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isppG8.infantem.infantem.calendar.dto.CalendarDay;
 import com.isppG8.infantem.infantem.calendar.dto.CalendarEvents;
@@ -25,13 +28,14 @@ public class CalendarController {
     }
 
     @GetMapping
-    public List<CalendarEvents> getCalendarByUserId(@RequestParam Integer month, @RequestParam Integer year) {
+    public List<CalendarEvents> getCalendarByUserId(@RequestParam Integer month, @RequestParam Integer year)
+            throws MethodArgumentNotValidException {
         // Validate month and year
-        if (month == null || month < 1 || month > 12) {
-            throw new IllegalArgumentException("Invalid month. Month must be between 1 and 12.");
+        if (month < 1 || month > 12) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid month. Month must be between 1 and 12.");
         }
-        if (year == null || year < 2000) {
-            throw new IllegalArgumentException("Invalid year.");
+        if (year < 2000) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid year.");
         }
 
         // Calculate start date
