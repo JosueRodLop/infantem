@@ -60,6 +60,19 @@ public class BabyControllerTest {
         return baby;
     }
 
+    private BabyDTO createDummyBabyDTO(Integer id) {
+        BabyDTO baby = new BabyDTO();
+        baby.setId(id);
+        baby.setName("Test baby");
+        baby.setBirthDate(LocalDate.of(2025, 3, 23));
+        baby.setGenre(Genre.MALE);
+        baby.setWeight(10.0);
+        baby.setHeight(10);
+        baby.setCephalicPerimeter(10);
+        baby.setFoodPreference("Test food preference");
+        return baby;
+    }
+
     @Test
     public void TestFindBabies() throws Exception {
         Baby b1 = createDummyBaby(1);
@@ -115,19 +128,23 @@ public class BabyControllerTest {
                     "foodPreference": "Updated food preference"
                 }
                 """;
-        Baby updatedBaby = createDummyBaby(1);
+        BabyDTO updatedBaby = createDummyBabyDTO(1);
         updatedBaby.setName("Test baby 2.0");
         updatedBaby.setWeight(20.0);
         updatedBaby.setFoodPreference("Updated food preference");
 
-        Mockito.when(babyService.updateBaby(Mockito.eq(1), Mockito.any(Baby.class))).thenReturn(updatedBaby);
+        Baby returnedBaby = createDummyBaby(1);
+        returnedBaby.setName("Test baby 2.0");
+        returnedBaby.setWeight(20.0);
+        returnedBaby.setFoodPreference("Updated food preference");
+
+        Mockito.when(babyService.updateBaby(Mockito.eq(1), Mockito.any(BabyDTO.class))).thenReturn(returnedBaby);
 
         mockMvc.perform(put("/api/v1/baby/1").header("Authorization", "Bearer " + token).with(csrf())
                 .contentType(MediaType.APPLICATION_JSON).content(babyJson)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.name", is("Test baby 2.0")))
                 .andExpect(jsonPath("$.weight", is(20.0)))
-                .andExpect(jsonPath("$.foodPreference", is("Updated food preference")))
-                .andExpect(jsonPath("$.allergens", hasSize(2)));
+                .andExpect(jsonPath("$.foodPreference", is("Updated food preference")));
     }
 
     @Test

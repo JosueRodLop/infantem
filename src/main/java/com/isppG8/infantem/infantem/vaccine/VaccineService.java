@@ -42,10 +42,12 @@ public class VaccineService {
 
     @Transactional
     public Vaccine save(Vaccine vaccine) {
-        checkOwnership(vaccine);
         return this.vaccineRepository.save(vaccine);
     }
 
+    // TODO: update vaccine
+
+    
     @Transactional
     public void delete(Long id) {
         this.vaccineRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vaccine", "id", id));

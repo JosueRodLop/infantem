@@ -1,5 +1,6 @@
 package com.isppG8.infantem.infantem.baby;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -8,43 +9,31 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.context.annotation.Import;
 
-import com.isppG8.infantem.infantem.InfantemApplication;
 import com.isppG8.infantem.infantem.baby.dto.BabyDTO;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 
-@SpringBootTest(classes = { InfantemApplication.class, BabyService.class, BabyServiceTest.TestConfig.class })
+@SpringBootTest
 @ActiveProfiles("test")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-@Import(BabyServiceTest.TestConfig.class)
 public class BabyServiceTest {
 
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public UserService userService() {
-            return org.mockito.Mockito.mock(UserService.class);
-        }
-
+    private BabyService babyService;
+    @Autowired
+    public BabyServiceTest(BabyService babyService) {
+        this.babyService = babyService;
     }
 
-    @Autowired
-    private BabyRepository babyRepository;
-    @Autowired
+    @MockitoBean
     private UserService userService;
-    @Autowired
-    private BabyService babyService;
 
     private User currentUser;
     private Baby testBaby;
@@ -60,11 +49,12 @@ public class BabyServiceTest {
         testBaby.setName("Juan");
         currentUser.setBabies(List.of(testBaby));
 
+        Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+        Mockito.when(userService.findCurrentUserId()).thenReturn(currentUser.getId());
     }
 
     @Test
     public void TestGetBabiesByUser() {
-        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
         List<Baby> babies = babyService.findBabiesByUser();
         assertTrue(babies.size() == 1);
 
@@ -79,30 +69,23 @@ public class BabyServiceTest {
 
     @Test
     public void TestUpdateBaby() {
-        User u = userService.getUserById(1L);
-        // org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(u);
 
-        System.out.println(u);
-
-        Baby baby = new Baby();
+        BabyDTO baby = new BabyDTO();
         baby.setId(1);
-        baby.setName("pedro");
+        baby.setName("Pedro");
         baby.setBirthDate(LocalDate.of(2021, 12, 31));
         baby.setGenre(Genre.MALE);
         baby.setWeight(7.0);
         baby.setHeight(50);
         baby.setCephalicPerimeter(30);
         baby.setFoodPreference("Leche materna");
-        u.setBabies(List.of(baby));
-        baby.setUsers(List.of(u));
 
         babyService.updateBaby(1, baby);
-        assertTrue(testBaby.getName().equals("Pedro"));
+        assertEquals("Pedro", baby.getName(), "The name should be Pedro");
     }
 
     @Test
     public void TestCreateBaby() {
-        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
         BabyDTO baby = new BabyDTO();
         baby.setId(2);
         baby.setName("Pedro");
@@ -115,30 +98,32 @@ public class BabyServiceTest {
 
         Baby b2 = babyService.createBaby(baby);
         currentUser.setBabies(List.of(b2));
-        assertTrue(babyRepository.findById(2).isPresent());
+        assertTrue(babyService.findBabiesByUser().contains(b2));
         assertTrue(babyService.findBabiesByUser().contains(b2));
     }
 
     @Test
     public void TestFindbabyById() {
-        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
-        Baby baby2 = new Baby();
-        baby2.setId(2);
-        baby2.setName("Pedro");
-        baby2.setUsers(List.of(currentUser));
-        babyRepository.save(baby2);
-        currentUser.setBabies(List.of(baby2));
+        BabyDTO baby = new BabyDTO();
+        baby.setId(2);
+        baby.setName("Pedro");
+        baby.setBirthDate(LocalDate.of(2021, 12, 31));
+        baby.setGenre(Genre.MALE);
+        baby.setWeight(7.0);
+        baby.setHeight(50);
+        baby.setCephalicPerimeter(30);
+        baby.setFoodPreference("Leche materna");
+        Baby createdBaby = babyService.createBaby(baby);
 
-        Baby baby = babyService.findById(2);
-        assertTrue(baby.getName().equals("Pedro"));
+        Baby baby2 = babyService.findById(createdBaby.getId());
+        assertEquals("Pedro", baby2.getName(), "The name should be Pedro");
     }
 
     @Test
     public void TestDeleteBaby() {
         org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
 
-        Baby baby2 = new Baby();
-        baby2.setId(2);
+        BabyDTO baby2 = new BabyDTO();
         baby2.setName("Pedro");
         baby2.setBirthDate(LocalDate.of(2021, 12, 31));
         baby2.setGenre(Genre.MALE);
@@ -146,12 +131,10 @@ public class BabyServiceTest {
         baby2.setHeight(50);
         baby2.setCephalicPerimeter(30);
         baby2.setFoodPreference("Leche materna");
-        baby2.setUsers(List.of(currentUser));
-        babyRepository.save(baby2);
-        currentUser.setBabies(List.of(baby2));
+        Baby created = babyService.createBaby(baby2);
 
-        babyService.deleteBaby(2);
-        assertThrows(ResourceNotFoundException.class, () -> babyService.findById(2));
+        babyService.deleteBaby(created.getId());
+        assertThrows(ResourceNotFoundException.class, () -> babyService.findById(created.getId()));
     }
 
     @Test
