@@ -34,7 +34,7 @@ public class BabyService {
     }
 
     @Transactional(readOnly = true)
-    public Baby findById(int id) {
+    public Baby findById(int id) throws ResourceNotFoundException, ResourceNotOwnedException {
         User user = userService.findCurrentUser();
 
         Optional<Baby> optionalBaby = babyRepository.findById(id);
