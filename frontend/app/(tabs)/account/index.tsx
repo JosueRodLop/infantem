@@ -113,9 +113,9 @@ export default function Account() {
       source={require("../../../static/images/Background.png")}
       style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center" }}
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
-    >      
-    <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor:"transparent" }]}>
-    <Image source={require("../../../static/images/Bib.png")} style={{ position: 'absolute', top: "20%", right: "72%", width: 120, height: 120,transform: [{ rotate: '-15deg' }] }} />
+    >
+      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor: "transparent" }]}>
+        <Image source={require("../../../static/images/Bib.png")} style={{ position: 'absolute', top: "20%", right: "72%", width: 120, height: 120, transform: [{ rotate: '-15deg' }] }} />
 
 
         <Text style={[gs.headerText, { color: "#1565C0" }]}>Perfil</Text>
@@ -133,24 +133,24 @@ export default function Account() {
 
         {user && (
           <>
-            <Text style={[gs.inputLabel,{width:"80%",paddingLeft:10,color: "#1565C0", fontWeight: "bold"}]}>Nombre</Text>
-            <TextInput 
-              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
-            value={user.name} editable={isEditing} onChangeText={(text) => setUser({ ...user, name: text })} />
+            <Text style={[gs.inputLabel, { width: "80%", paddingLeft: 10, color: "#1565C0", fontWeight: "bold" }]}>Nombre</Text>
+            <TextInput
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.8, width: "80%" }]}
+              value={user.name} editable={isEditing} onChangeText={(text) => setUser({ ...user, name: text })} />
 
-            <Text style={[gs.inputLabel,{width:"80%",paddingLeft:10,color: "#1565C0", fontWeight: "bold"}]}>Apellido</Text>
-            <TextInput 
-             style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
-            value={user.surname} editable={isEditing} onChangeText={(text) => setUser({ ...user, surname: text })} />
+            <Text style={[gs.inputLabel, { width: "80%", paddingLeft: 10, color: "#1565C0", fontWeight: "bold" }]}>Apellido</Text>
+            <TextInput
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.8, width: "80%" }]}
+              value={user.surname} editable={isEditing} onChangeText={(text) => setUser({ ...user, surname: text })} />
 
-            <Text style={[gs.inputLabel,{width:"80%",paddingLeft:10,color: "#1565C0", fontWeight: "bold"}]}>Nombre de Usuario</Text>
-            <TextInput 
-              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+            <Text style={[gs.inputLabel, { width: "80%", paddingLeft: 10, color: "#1565C0", fontWeight: "bold" }]}>Nombre de Usuario</Text>
+            <TextInput
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.8, width: "80%" }]}
               value={user.username} editable={isEditing} onChangeText={(text) => setUser({ ...user, username: text })} />
 
-            <Text style={[gs.inputLabel,{width:"80%",paddingLeft:10,color: "#1565C0", fontWeight: "bold"}]}>Correo Electrónico</Text>
-            <TextInput 
-              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.8, width:"80%"}]} 
+            <Text style={[gs.inputLabel, { width: "80%", paddingLeft: 10, color: "#1565C0", fontWeight: "bold" }]}>Correo Electrónico</Text>
+            <TextInput
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.8, width: "80%" }]}
               value={user.email} editable={isEditing} onChangeText={(text) => setUser({ ...user, email: text })} />
           </>
         )}

@@ -63,6 +63,10 @@ public class UserService {
             return findByUsername(auth.getName());
     }
 
+    public Integer findCurrentUserId() {
+        return this.findCurrentUser().getId();
+    }
+
     @Transactional
     public User save(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {

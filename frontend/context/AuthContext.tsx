@@ -52,6 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             profilePhotoRoute: userData.profilePhotoRoute,
           });
           setIsAuthenticated(true);
+          console.log("reaching here")
         } else {
           await signOut();
         }
@@ -67,13 +68,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (isLoading || token) {
       validateToken();
     }
-  }, [token, apiUrl]);
+  }, [token]);
 
   const checkAuth = async (): Promise<boolean> => {
     try {
       setIsLoading(true);
       const storedToken = await getToken();
       setToken(storedToken); 
+      setIsLoading(false);
       return storedToken != null; 
     } catch (error) {
       console.error('Auth check failed:', error);
