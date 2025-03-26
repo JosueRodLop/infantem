@@ -35,7 +35,6 @@ public class EmailValidationService {
     @Transactional
     public void createEmailValidation(EmailRequest emailRequest) {
         try {
-            System.out.println(emailRequest.getEmail());
             EmailValidation oldEmailValidation = emailValidationRepository.findByEmail(emailRequest.getEmail())
                     .orElse(null);
 
