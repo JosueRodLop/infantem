@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, ScrollView, ActivityIndicator } from "react-native";
 import { Calendar } from "react-native-calendars";
-import { getToken } from "../../../utils/jwtStorage"; // Importar la función para obtener el token JWT
+import { useAuth } from "../../../context/AuthContext";
 
 const gs = require("../../../static/styles/globalStyles");
 
@@ -11,7 +11,7 @@ const CalendarTab = () => {
   const [events, setEvents] = useState<{ [key: string]: { [babyId: string]: string[] } }>({});
   const [babies, setBabies] = useState<{ [babyId: string]: string }>({}); // Estado para almacenar los nombres de los bebés
   const [loading, setLoading] = useState<boolean>(true);
-  const [jwt, setJwt] = useState<string | null>(null); // Estado para almacenar el token JWT
+  const { token } = useAuth();
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -26,7 +26,7 @@ const CalendarTab = () => {
     try {
       setLoading(true);
 
-      if (!jwt) {
+      if (!token) {
         console.error("No se encontró el token JWT");
         return;
       }
@@ -38,7 +38,7 @@ const CalendarTab = () => {
 
       const response = await fetch(`${apiUrl}/api/v1/calendar?month=${month}&year=${year}`, {
         headers: {
-          Authorization: `Bearer ${jwt}`, // Incluir el token JWT en las cabeceras
+          Authorization: `Bearer ${token}`, // Incluir el token JWT en las cabeceras
         },
       });
 
@@ -78,14 +78,14 @@ const CalendarTab = () => {
   // Obtener los nombres de los bebés desde el backend
   const fetchBabies = async () => {
     try {
-      if (!jwt) {
+      if (!token) {
         console.error("No se encontró el token JWT");
         return;
       }
 
       const response = await fetch(`${apiUrl}/api/v1/baby`, {
         headers: {
-          Authorization: `Bearer ${jwt}`, // Incluir el token JWT en las cabeceras
+          Authorization: `Bearer ${token}`, // Incluir el token JWT en las cabeceras
         },
       });
 
@@ -107,23 +107,13 @@ const CalendarTab = () => {
     }
   };
 
-  // Obtener el token JWT al cargar el componente
-  useEffect(() => {
-    const fetchToken = async () => {
-      const token = await getToken(); // Obtener el token JWT desde el almacenamiento
-      setJwt(token);
-    };
-
-    fetchToken();
-  }, []);
-
   // Obtener los eventos del calendario y los nombres de los bebés cuando se tenga el token JWT
   useEffect(() => {
-    if (jwt) {
+    if (token) {
       fetchCalendarEvents();
       fetchBabies();
     }
-  }, [jwt]);
+  }, [token]);
 
   // Renderizar el componente del calendario
   const renderCalendar = () => (
