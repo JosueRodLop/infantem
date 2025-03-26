@@ -4,7 +4,7 @@ import { Text, View, TouchableOpacity, TextInput, Image, ScrollView, Modal, Pres
 import { storeToken } from "../utils/jwtStorage";
 import { Ionicons } from "@expo/vector-icons"; // Importamos iconos de Expo
 import TermsConditionsModal from "../components/TermsConditionsModal";
-import CheckBox from 'react-native-check-box';
+import CheckBox from "react-native-check-box";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -23,7 +23,7 @@ export default function Signup() {
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const gs = require("../static/styles/globalStyles");
 
-  const validEmail = (email) => {
+  const validEmail = (email: string) => {
     if (email.match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )) {
@@ -32,7 +32,7 @@ export default function Signup() {
     return false;
   };
 
-  const validPassword = (password) => {
+  const validPassword = (password: string) => {
     if (password.match(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)) {
       return true;
     }
@@ -127,21 +127,21 @@ export default function Signup() {
           </Text>
 
           <TextInput
-            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6 }]}
+            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6, width: "90%", alignSelf: "center" }]}
             placeholder="Nombre" value={name} onChangeText={setName} />
           <TextInput
-            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6 }]}
+            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6, width: "90%", alignSelf: "center" }]}
             placeholder="Apellido" value={surname} onChangeText={setSurname} />
           <TextInput
-            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6 }]}
+            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6, width: "90%", alignSelf: "center" }]}
             placeholder="Nombre de usuario" value={username} onChangeText={setUsername} autoCapitalize="none" />
           <TextInput
-            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6 }]}
+            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6, width: "90%", alignSelf: "center" }]}
             placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
 
-          <View style={{ position: "relative", alignItems: "center", width: "100%" }}>
+          <View style={{ position: "relative", alignItems: "center", width: "100%", alignSelf: "center" }}>
             <TextInput
-              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6 }]}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6, width: "90%", alignSelf: "center" }]}
               placeholder="Contraseña"
               value={password}
               onChangeText={setPassword}
@@ -149,7 +149,7 @@ export default function Signup() {
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
-              style={{ position: "absolute", right: 50, top: 20 }} // Icono alineado
+              style={{ position: "absolute", right: 30, top: 22 }} // Icono alineado
             >
               <Ionicons name={showPassword ? "eye-off" : "eye"} size={24} color="#1565C0" />
             </TouchableOpacity>
@@ -157,7 +157,7 @@ export default function Signup() {
 
           <View style={{ position: "relative" }}>
             <TextInput
-              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6 }]}
+              style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.6, width: "90%", alignSelf: "center" }]}
               placeholder="Repite la contraseña"
               value={repeatPassword}
               onChangeText={setRepeatPassword}
@@ -165,7 +165,7 @@ export default function Signup() {
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
-              style={{ position: "absolute", right: 30, top: 22}} // Icono alineado
+              style={{ position: "absolute", right: 30, top: 22 }} // Icono alineado
             >
               <Ionicons name={showPassword ? "eye-off" : "eye"} size={24} color="#1565C0" />
             </TouchableOpacity>
