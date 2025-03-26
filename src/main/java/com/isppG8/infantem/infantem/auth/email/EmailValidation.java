@@ -1,6 +1,5 @@
 package com.isppG8.infantem.infantem.auth.email;
 
-
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Max;

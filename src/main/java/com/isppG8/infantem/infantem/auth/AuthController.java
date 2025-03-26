@@ -49,7 +49,7 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
         this.authService = authService;
-	this.emailValidationService = emailValidationService;
+        this.emailValidationService = emailValidationService;
     }
 
     @PostMapping("/signin")
@@ -107,9 +107,9 @@ public class AuthController {
         if (userService.findByUsername(signUpRequest.getUsername()) != null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
-	if (!emailValidationService.validateCode(signUpRequest.getEmail(),signUpRequest.getCode())) {
-	    return ResponseEntity.badRequest().body(new MessageResponse("Error: Wrong validation code"));
-	}
+        if (!emailValidationService.validateCode(signUpRequest.getEmail(), signUpRequest.getCode())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Wrong validation code"));
+        }
         authService.createUser(signUpRequest);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signUpRequest.getUsername(), signUpRequest.getPassword()));
@@ -125,16 +125,15 @@ public class AuthController {
 
     @PostMapping("/email")
     public ResponseEntity<Object> generateCode(@Valid @RequestBody String email) {
-	if (email==null) {
-		return ResponseEntity.badRequest().body(new MessageResponse("Error: No email attached"));
-	}
-	try {
-		emailValidationService.createEmailValidation(email);
-	} catch (Exception e) {
-		return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
-	}
+        if (email == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: No email attached"));
+        }
+        try {
+            emailValidationService.createEmailValidation(email);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
         return ResponseEntity.ok().body(new MessageResponse("Code sent successfully!"));
     }
-
 
 }
