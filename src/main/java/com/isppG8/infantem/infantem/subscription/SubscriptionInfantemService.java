@@ -50,13 +50,12 @@ public class SubscriptionInfantemService {
     private final UserService userService;
     private final SubscriptionInfantemRepository subscriptionInfantemRepository;
 
-    public SubscriptionInfantemService(SubscriptionInfantemRepository subscriptionRepository,
-            StripeConfig stripeConfig, UserService userService) {
+    public SubscriptionInfantemService(SubscriptionInfantemRepository subscriptionRepository, StripeConfig stripeConfig,
+            UserService userService) {
         this.subscriptionInfantemRepository = subscriptionRepository;
         this.stripeConfig = stripeConfig;
         this.userService = userService;
     }
-
 
     public void activateSubscription(User user, String subscriptionId) {
         Optional<SubscriptionInfantem> subOpt = subscriptionInfantemRepository.findByUser(user);
@@ -154,16 +153,17 @@ public class SubscriptionInfantemService {
             // 1. Cancelar en Stripe
             Subscription stripeSubscription = Subscription.retrieve(subscriptionId);
             Subscription updatedSubscription = stripeSubscription.cancel();
-            
+
             // 2. Actualizar en base de datos local
-            SubscriptionInfantem localSubscription = subscriptionInfantemRepository.findByStripeSubscriptionId(subscriptionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Suscripción no encontrada"));
-            
-            localSubscription.setActive(false);  // ← Aquí establecemos active a false
+            SubscriptionInfantem localSubscription = subscriptionInfantemRepository
+                    .findByStripeSubscriptionId(subscriptionId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Suscripción no encontrada"));
+
+            localSubscription.setActive(false); // ← Aquí establecemos active a false
             localSubscription.setEndDate(LocalDateTime.now().toLocalDate());
-            
+
             return subscriptionInfantemRepository.save(localSubscription);
-            
+
         } catch (StripeException e) {
             throw new RuntimeException("Error al cancelar suscripción en Stripe: " + e.getMessage());
         }
