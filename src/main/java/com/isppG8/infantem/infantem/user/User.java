@@ -74,6 +74,7 @@ public class User {
     private List<Recipe> recipes = new ArrayList<>();
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    
     List<Baby> babies = new ArrayList<>();
 }

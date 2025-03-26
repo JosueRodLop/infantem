@@ -1,8 +1,7 @@
-package com.isppG8.vaccine;
+package com.isppG8.infantem.infantem.vaccine;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +19,7 @@ import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.baby.BabyService;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
-import com.isppG8.infantem.infantem.vaccine.Vaccine;
-import com.isppG8.infantem.infantem.vaccine.VaccineService;
+
 
 import jakarta.transaction.Transactional;
 
