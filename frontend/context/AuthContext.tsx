@@ -52,6 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             profilePhotoRoute: userData.profilePhotoRoute,
           });
           setIsAuthenticated(true);
+          console.log("reaching here")
         } else {
           await signOut();
         }

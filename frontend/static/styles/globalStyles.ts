@@ -81,6 +81,77 @@ module.exports = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
+  checkboxView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+
+//////////////
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  modalView: {
+    width: '90%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    maxHeight: '80%'
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    textAlign: 'center'
+  },
+  scrollView: {
+    width: '100%',
+    marginBottom: 15
+  },
+  termsText: {
+    fontSize: 14,
+    lineHeight: 22
+  },
+  buttonContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%'
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    width: '48%'
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3'
+  },
+  buttonTextStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  openButton: {
+    backgroundColor: '#2196F3',
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2
+  },
+/////////////
 
   input: {
     width: "90%",
@@ -218,9 +289,9 @@ module.exports = StyleSheet.create({
   },
   // Estilos para el contenedor de reseñas
   reviewsContainer: {
-    marginTop: -250,  // Espaciado reducido para acercar las reseñas al banner
+    marginTop: width <789 ?  -250 : -100,  // Espaciado reducido para acercar las reseñas al banner
     paddingHorizontal: 20,
-    marginBottom: 250,
+    marginBottom: width <789 ?  80 : 100,
   },
   reviewsTitle: {
     fontSize: 24,
@@ -268,5 +339,33 @@ module.exports = StyleSheet.create({
     width: 20,
     height: 20,
     marginLeft: 5, // Espacio entre las estrellas
+  },
+  footerContainer: {
+    flex: 1,
+    width: '100%', // Asegura que ocupe todo el ancho de la pantalla
+    backgroundColor: "#c7e0ff", 
+    paddingVertical: 60,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+    marginHorizontal: 0, // Elimina el margen horizonta
+    borderTopWidth: 1,
+    borderTopColor: "#c7e0ff",
+  },
+  footerText: {
+    fontSize: 14,
+    color: "#555",
+    marginBottom: 10,
+    textAlign: 'center', // Centra el texto
+  },
+  footerLinks: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 20,
+  },
+  footerLink: {
+    fontSize: 14,
+    color: "#007AFF",
+    textDecorationLine: "underline",
   },
 });
