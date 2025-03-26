@@ -23,6 +23,7 @@ import com.isppG8.infantem.infantem.nutritionalContribution.NutritionalContribut
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.vaccine.Vaccine;
 
+import io.opencensus.metrics.Metrics;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -86,7 +87,7 @@ public class Baby {
     private List<Dream> sleep = new ArrayList<>();
 
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
-    private List<Dream> metrics = new ArrayList<>();
+    private List<Metrics> metrics = new ArrayList<>();
 
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<MilestoneCompleted> milestonesCompleted = new ArrayList<>();
