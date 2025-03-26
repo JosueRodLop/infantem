@@ -1,10 +1,7 @@
 package com.isppG8.infantem.infantem.config;
 
 import com.stripe.Stripe;
-
 import io.github.cdimascio.dotenv.Dotenv;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

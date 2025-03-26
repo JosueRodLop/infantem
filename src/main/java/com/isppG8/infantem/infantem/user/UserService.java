@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.subscription.SubscriptionInfantemRepository;
-import com.isppG8.infantem.infantem.subscription.SubscriptionInfantemService;
 
 @Service
 public class UserService {

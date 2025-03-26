@@ -11,10 +11,6 @@ import com.stripe.param.CustomerListParams;
 import com.stripe.param.PaymentMethodAttachParams;
 import com.stripe.param.PaymentMethodListParams;
 import com.stripe.param.SubscriptionCreateParams;
-import com.stripe.param.SubscriptionUpdateParams;
-
-import jakarta.annotation.PostConstruct;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.isppG8.infantem.infantem.config.StripeConfig;
@@ -22,14 +18,9 @@ import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.user.User;
 import com.isppG8.infantem.infantem.user.UserService;
 import com.stripe.model.checkout.Session;
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,13 +41,12 @@ public class SubscriptionInfantemService {
     private final UserService userService;
     private final SubscriptionInfantemRepository subscriptionInfantemRepository;
 
-    public SubscriptionInfantemService(SubscriptionInfantemRepository subscriptionRepository,
-            StripeConfig stripeConfig, UserService userService) {
+    public SubscriptionInfantemService(SubscriptionInfantemRepository subscriptionRepository, StripeConfig stripeConfig,
+            UserService userService) {
         this.subscriptionInfantemRepository = subscriptionRepository;
         this.stripeConfig = stripeConfig;
         this.userService = userService;
     }
-
 
     public void activateSubscription(User user, String subscriptionId) {
         Optional<SubscriptionInfantem> subOpt = subscriptionInfantemRepository.findByUser(user);
@@ -153,23 +143,25 @@ public class SubscriptionInfantemService {
         try {
             // 1. Cancelar en Stripe
             Subscription stripeSubscription = Subscription.retrieve(subscriptionId);
-            Subscription updatedSubscription = stripeSubscription.cancel();
-            
+            stripeSubscription.cancel();
+
             // 2. Actualizar en base de datos local
-            SubscriptionInfantem localSubscription = subscriptionInfantemRepository.findByStripeSubscriptionId(subscriptionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Suscripción no encontrada"));
-            
-            localSubscription.setActive(false);  // ← Aquí establecemos active a false
+            SubscriptionInfantem localSubscription = subscriptionInfantemRepository
+                    .findByStripeSubscriptionId(subscriptionId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Suscripción no encontrada"));
+
+            localSubscription.setActive(false); // ← Aquí establecemos active a false
             localSubscription.setEndDate(LocalDateTime.now().toLocalDate());
-            
+
             return subscriptionInfantemRepository.save(localSubscription);
-            
+
         } catch (StripeException e) {
             throw new RuntimeException("Error al cancelar suscripción en Stripe: " + e.getMessage());
         }
     }
 
     // 6. Conseguir usuarios por email
+    @SuppressWarnings("unchecked")
     public List<Map<String, Object>> getCustomersByEmail(String email) throws Exception {
         CustomerListParams params = CustomerListParams.builder().setEmail(email).build();
         List<Customer> customers = Customer.list(params).getData();

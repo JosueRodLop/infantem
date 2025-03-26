@@ -43,30 +43,29 @@ public class SubscriptionInfantemServiceTest {
         Stripe.apiKey = stripeConfig.getStripeApiKey();
 
         // Forzar la inyección manualmente si es necesario
-        subscriptionService = new SubscriptionInfantemService(subscriptionInfantemRepository, stripeConfig, userService);
+        subscriptionService = new SubscriptionInfantemService(subscriptionInfantemRepository, stripeConfig,
+                userService);
     }
-
 
     @Test
     public void testCreateSubscription_Success() throws Exception {
         // Arrange
         User mockUser = new User();
         mockUser.setId(1);
-        
+
         Subscription mockStripeSubscription = new Subscription();
         mockStripeSubscription.setId("sub_123");
-        
+
         try (var mockedStatic = mockStatic(Subscription.class)) {
             mockedStatic.when(() -> Subscription.create(any(SubscriptionCreateParams.class)))
-                .thenReturn(mockStripeSubscription);
-            
+                    .thenReturn(mockStripeSubscription);
+
             // Configurar el mock de userService
             when(userService.getUserById(1L)).thenReturn(mockUser);
-            
+
             SubscriptionInfantem savedSubscription = new SubscriptionInfantem();
             savedSubscription.setStripeSubscriptionId("sub_123");
-            when(subscriptionInfantemRepository.save(any(SubscriptionInfantem.class)))
-                .thenReturn(savedSubscription);
+            when(subscriptionInfantemRepository.save(any(SubscriptionInfantem.class))).thenReturn(savedSubscription);
 
             // Act
             SubscriptionInfantem result = subscriptionService.createSubscription(1L, "cus_123", "price_123", "pm_123");
@@ -84,18 +83,17 @@ public class SubscriptionInfantemServiceTest {
         // Arrange
         Subscription mockStripeSubscription = mock(Subscription.class);
         when(mockStripeSubscription.cancel()).thenReturn(mockStripeSubscription);
-        
+
         try (var mockedStatic = mockStatic(Subscription.class)) {
-            when(Subscription.retrieve("sub_123"))
-                .thenReturn(mockStripeSubscription);
-            
+            when(Subscription.retrieve("sub_123")).thenReturn(mockStripeSubscription);
+
             SubscriptionInfantem localSubscription = new SubscriptionInfantem();
             localSubscription.setStripeSubscriptionId("sub_123");
             localSubscription.setActive(true);
-            
+
             when(subscriptionInfantemRepository.findByStripeSubscriptionId("sub_123"))
-                .thenReturn(Optional.of(localSubscription));
-            
+                    .thenReturn(Optional.of(localSubscription));
+
             when(subscriptionInfantemRepository.save(localSubscription)).thenReturn(localSubscription);
 
             // Act
@@ -117,45 +115,42 @@ public class SubscriptionInfantemServiceTest {
         mockUser.setId(1);
         mockUser.setEmail("test@example.com");
         mockUser.setName("Test User");
-    
+
         // Mock para createCustomer
         try (var customerMockedStatic = mockStatic(Customer.class)) {
             Customer mockCustomer = new Customer();
             mockCustomer.setId("cus_123");
-            customerMockedStatic.when(() -> Customer.create(any(CustomerCreateParams.class)))
-                .thenReturn(mockCustomer);
-    
+            customerMockedStatic.when(() -> Customer.create(any(CustomerCreateParams.class))).thenReturn(mockCustomer);
+
             // Mock para attachPaymentMethod
             PaymentMethod mockPaymentMethod = mock(PaymentMethod.class);
             when(mockPaymentMethod.getId()).thenReturn("pm_123");
-    
+
             try (var paymentMethodMockedStatic = mockStatic(PaymentMethod.class)) {
-                paymentMethodMockedStatic.when(() -> PaymentMethod.retrieve("pm_123"))
-                    .thenReturn(mockPaymentMethod);
-    
+                paymentMethodMockedStatic.when(() -> PaymentMethod.retrieve("pm_123")).thenReturn(mockPaymentMethod);
+
                 // 🔹 Corrección aplicada aquí:
-                when(mockPaymentMethod.attach(any(PaymentMethodAttachParams.class)))
-                    .thenReturn(mockPaymentMethod);
-    
+                when(mockPaymentMethod.attach(any(PaymentMethodAttachParams.class))).thenReturn(mockPaymentMethod);
+
                 // Mock para Subscription.create
                 Subscription mockSubscription = new Subscription();
                 mockSubscription.setId("sub_123");
-    
+
                 try (var subscriptionMockedStatic = mockStatic(Subscription.class)) {
                     subscriptionMockedStatic.when(() -> Subscription.create(any(SubscriptionCreateParams.class)))
-                        .thenReturn(mockSubscription);
-    
+                            .thenReturn(mockSubscription);
+
                     when(userService.getUserById(1L)).thenReturn(mockUser);
-    
+
                     SubscriptionInfantem savedSubscription = new SubscriptionInfantem();
                     savedSubscription.setStripeSubscriptionId("sub_123");
-    
+
                     when(subscriptionInfantemRepository.save(any(SubscriptionInfantem.class)))
-                        .thenReturn(savedSubscription);
-    
+                            .thenReturn(savedSubscription);
+
                     // Act
                     SubscriptionInfantem result = subscriptionService.createSubscriptionNew(1L, "price_123", "pm_123");
-    
+
                     // Assert
                     assertNotNull(result, "El resultado no debería ser nulo");
                     assertEquals("sub_123", result.getStripeSubscriptionId());
@@ -164,16 +159,15 @@ public class SubscriptionInfantemServiceTest {
             }
         }
     }
-    
 
     @Test
     public void testUpdateSubscriptionStatus_WhenSubscriptionExists() {
         // Arrange
         SubscriptionInfantem subscription = new SubscriptionInfantem();
         subscription.setStripeSubscriptionId("sub_123");
-        
+
         when(subscriptionInfantemRepository.findByStripeSubscriptionId("sub_123"))
-            .thenReturn(Optional.of(subscription));
+                .thenReturn(Optional.of(subscription));
 
         // Act
         subscriptionService.updateSubscriptionStatus("sub_123", true);
@@ -188,9 +182,8 @@ public class SubscriptionInfantemServiceTest {
         // Arrange
         SubscriptionInfantem subscription = new SubscriptionInfantem();
         subscription.setId(1L);
-        
-        when(subscriptionInfantemRepository.findSubscriptionByUserId(1L))
-            .thenReturn(Optional.of(subscription));
+
+        when(subscriptionInfantemRepository.findSubscriptionByUserId(1L)).thenReturn(Optional.of(subscription));
 
         // Act
         Optional<SubscriptionInfantem> result = subscriptionService.getSubscriptionUserById(1L);

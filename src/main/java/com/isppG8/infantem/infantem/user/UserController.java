@@ -18,8 +18,6 @@ import com.isppG8.infantem.infantem.auth.payload.response.MessageResponse;
 
 import com.isppG8.infantem.infantem.user.dto.UserDTO;
 
-import com.isppG8.infantem.infantem.user.dto.UserDTO;
-
 import jakarta.validation.Valid;
 
 import java.util.List;

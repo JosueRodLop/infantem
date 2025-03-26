@@ -33,7 +33,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(SubscriptionInfantemController.class)
-@WithMockUser(username = "testUser", roles = {"USER"})
+@WithMockUser(username = "testUser", roles = { "USER" })
 public class SubscriptionControllerTest {
 
     @TestConfiguration
@@ -72,16 +72,11 @@ public class SubscriptionControllerTest {
 
         // Corrección: Usar el mock del servicio correctamente
         when(subscriptionService.createSubscription(anyLong(), anyString(), anyString(), anyString()))
-            .thenReturn(fakeSubscription);
+                .thenReturn(fakeSubscription);
 
-        mockMvc.perform(post("/api/v1/subscriptions/create")
-                .with(csrf())
-                .param("userId", "1")
-                .param("customerId", "cus_test_123")
-                .param("priceId", "price_abc")
-                .param("paymentMethodId", "pm_xyz")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+        mockMvc.perform(post("/api/v1/subscriptions/create").with(csrf()).param("userId", "1")
+                .param("customerId", "cus_test_123").param("priceId", "price_abc").param("paymentMethodId", "pm_xyz")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.stripeSubscriptionId").value("sub_test_123"));
     }
 
@@ -92,16 +87,12 @@ public class SubscriptionControllerTest {
         fakeSubscription.setActive(true);
 
         when(subscriptionService.createSubscriptionNew(anyLong(), anyString(), anyString()))
-               .thenReturn(fakeSubscription);
+                .thenReturn(fakeSubscription);
 
-        mockMvc.perform(post("/api/v1/subscriptions/create/new")
-                .with(csrf())
-                .param("userId", "1")
-                .param("priceId", "price_abc")
-                .param("paymentMethodId", "pm_456")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.stripeSubscriptionId").value("sub_test_new"));
+        mockMvc.perform(
+                post("/api/v1/subscriptions/create/new").with(csrf()).param("userId", "1").param("priceId", "price_abc")
+                        .param("paymentMethodId", "pm_456").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.stripeSubscriptionId").value("sub_test_new"));
     }
 
     @Test
@@ -109,46 +100,40 @@ public class SubscriptionControllerTest {
         Map<String, Object> customer = new HashMap<>();
         customer.put("id", "cus_123");
         customer.put("name", "Test Customer");
-        
+
         Map<String, Object> paymentMethod = new HashMap<>();
         paymentMethod.put("id", "pm_123");
         paymentMethod.put("last4", "1234");
-        
+
         Map<String, Object> expectedResponse = new HashMap<>(customer);
         expectedResponse.put("paymentMethod", paymentMethod);
 
         when(subscriptionService.getCustomersByEmail("test@example.com")).thenReturn(List.of(customer));
         when(subscriptionService.getPaymentMethodsByCustomer("cus_123", 1234)).thenReturn(paymentMethod);
 
-        mockMvc.perform(get("/api/v1/subscriptions/customers")
-                .param("email", "test@example.com")
-                .param("lasts4", "1234"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("cus_123"))
+        mockMvc.perform(
+                get("/api/v1/subscriptions/customers").param("email", "test@example.com").param("lasts4", "1234"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.id").value("cus_123"))
                 .andExpect(jsonPath("$.paymentMethod.last4").value("1234"));
     }
-
 
     @Test
     public void testUpdateSubscriptionStatus() throws Exception {
         // Configura el mock
-        doNothing().when(subscriptionService)
-                .updateSubscriptionStatus(eq("sub_123"), eq(true));
+        doNothing().when(subscriptionService).updateSubscriptionStatus(eq("sub_123"), eq(true));
 
         // Ejecuta y verifica
-        mockMvc.perform(post("/api/v1/subscriptions/update-status")
-                .with(csrf())
-                .param("subscriptionId", "sub_123")  // Asegúrate que coincida con @RequestParam
-                .param("isActive", "true")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+        mockMvc.perform(post("/api/v1/subscriptions/update-status").with(csrf()).param("subscriptionId", "sub_123") // Asegúrate
+                                                                                                                    // que
+                                                                                                                    // coincida
+                                                                                                                    // con
+                                                                                                                    // @RequestParam
+                .param("isActive", "true").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(content().string("Estado de la suscripción actualizado."));
 
         // Verifica que el servicio fue llamado correctamente
-        verify(subscriptionService, times(1))
-            .updateSubscriptionStatus("sub_123", true);
+        verify(subscriptionService, times(1)).updateSubscriptionStatus("sub_123", true);
     }
-
 
     @Test
     public void testCancelSubscription() throws Exception {
@@ -156,33 +141,26 @@ public class SubscriptionControllerTest {
         SubscriptionInfantem mockLocalSubscription = new SubscriptionInfantem();
         mockLocalSubscription.setStripeSubscriptionId("sub_test_123");
         mockLocalSubscription.setActive(true);
-        
+
         // Comportamiento esperado
-        when(subscriptionService.cancelSubscription("sub_test_123"))
-            .thenAnswer(invocation -> {
-                mockLocalSubscription.setActive(false);
-                return mockLocalSubscription;
-            });
-        
-        mockMvc.perform(post("/api/v1/subscriptions/cancel")
-                .with(csrf())
-                .param("subscriptionId", "sub_test_123")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+        when(subscriptionService.cancelSubscription("sub_test_123")).thenAnswer(invocation -> {
+            mockLocalSubscription.setActive(false);
+            return mockLocalSubscription;
+        });
+
+        mockMvc.perform(post("/api/v1/subscriptions/cancel").with(csrf()).param("subscriptionId", "sub_test_123")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Suscripción cancelada exitosamente"))
-                .andExpect(jsonPath("$.subscription.active").value(false));  // ← Verificamos active=false
+                .andExpect(jsonPath("$.subscription.active").value(false)); // ← Verificamos active=false
     }
 
     @Test
     public void testCancelSubscription_NotFound() throws Exception {
         when(subscriptionService.cancelSubscription("sub_invalid"))
-            .thenThrow(new ResourceNotFoundException("Suscripción no encontrada"));
-        
-        mockMvc.perform(post("/api/v1/subscriptions/cancel")
-                .with(csrf())
-                .param("subscriptionId", "sub_invalid")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .thenThrow(new ResourceNotFoundException("Suscripción no encontrada"));
+
+        mockMvc.perform(post("/api/v1/subscriptions/cancel").with(csrf()).param("subscriptionId", "sub_invalid")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -190,8 +168,7 @@ public class SubscriptionControllerTest {
         SubscriptionInfantem subscription = new SubscriptionInfantem();
         when(subscriptionService.getSubscriptionUserById(1L)).thenReturn(Optional.of(subscription));
 
-        mockMvc.perform(get("/api/v1/subscriptions/user/1"))
-                .andExpect(status().isOk())
+        mockMvc.perform(get("/api/v1/subscriptions/user/1")).andExpect(status().isOk())
                 .andExpect(content().string("true"));
     }
 
@@ -199,8 +176,7 @@ public class SubscriptionControllerTest {
     public void testGetSubscription_WhenNotExists() throws Exception {
         when(subscriptionService.getSubscriptionUserById(1L)).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/api/v1/subscriptions/user/1"))
-                .andExpect(status().isOk())
+        mockMvc.perform(get("/api/v1/subscriptions/user/1")).andExpect(status().isOk())
                 .andExpect(content().string("false"));
     }
 }

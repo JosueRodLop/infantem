@@ -2,7 +2,12 @@ package com.isppG8.infantem.infantem.subscription;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -83,16 +88,15 @@ public class SubscriptionInfantemController {
     public ResponseEntity<?> cancelSubscription(@RequestParam String subscriptionId) {
         try {
             SubscriptionInfantem cancelledSubscription = subscriptionService.cancelSubscription(subscriptionId);
-            
+
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Suscripción cancelada exitosamente");
             response.put("subscription", cancelledSubscription);
-            response.put("active", false);  // ← Confirmamos que está inactiva
-            
+            response.put("active", false); // ← Confirmamos que está inactiva
+
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                .body("Error al cancelar la suscripción: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Error al cancelar la suscripción: " + e.getMessage());
         }
     }
 
