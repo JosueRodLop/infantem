@@ -38,6 +38,7 @@ public class BabyServiceTest {
         }
 
     }
+
     @Autowired
     private BabyRepository babyRepository;
     @Autowired
@@ -48,7 +49,6 @@ public class BabyServiceTest {
     private User currentUser;
     private Baby testBaby;
 
-
     @BeforeEach
     public void setup() {
         currentUser = new User();
@@ -58,8 +58,8 @@ public class BabyServiceTest {
         testBaby = new Baby();
         testBaby.setId(1);
         testBaby.setName("Juan");
-        currentUser.setBabies(List.of(testBaby));     
-        
+        currentUser.setBabies(List.of(testBaby));
+
     }
 
     @Test
@@ -80,14 +80,14 @@ public class BabyServiceTest {
     @Test
     public void TestUpdateBaby() {
         User u = userService.getUserById(1L);
-        //org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(u);
+        // org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(u);
 
         System.out.println(u);
 
         Baby baby = new Baby();
         baby.setId(1);
         baby.setName("pedro");
-        baby.setBirthDate(LocalDate.of(2021,12,31));
+        baby.setBirthDate(LocalDate.of(2021, 12, 31));
         baby.setGenre(Genre.MALE);
         baby.setWeight(7.0);
         baby.setHeight(50);
@@ -99,7 +99,6 @@ public class BabyServiceTest {
         babyService.updateBaby(1, baby);
         assertTrue(testBaby.getName().equals("Pedro"));
     }
-    
 
     @Test
     public void TestCreateBaby() {
@@ -107,7 +106,7 @@ public class BabyServiceTest {
         BabyDTO baby = new BabyDTO();
         baby.setId(2);
         baby.setName("Pedro");
-        baby.setBirthDate(LocalDate.of(2021,12,31));
+        baby.setBirthDate(LocalDate.of(2021, 12, 31));
         baby.setGenre(Genre.MALE);
         baby.setWeight(7.0);
         baby.setHeight(50);
@@ -129,8 +128,7 @@ public class BabyServiceTest {
         baby2.setUsers(List.of(currentUser));
         babyRepository.save(baby2);
         currentUser.setBabies(List.of(baby2));
-        
-        
+
         Baby baby = babyService.findById(2);
         assertTrue(baby.getName().equals("Pedro"));
     }
@@ -138,11 +136,11 @@ public class BabyServiceTest {
     @Test
     public void TestDeleteBaby() {
         org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
-        
+
         Baby baby2 = new Baby();
         baby2.setId(2);
         baby2.setName("Pedro");
-        baby2.setBirthDate(LocalDate.of(2021,12,31));
+        baby2.setBirthDate(LocalDate.of(2021, 12, 31));
         baby2.setGenre(Genre.MALE);
         baby2.setWeight(7.0);
         baby2.setHeight(50);
@@ -151,7 +149,7 @@ public class BabyServiceTest {
         baby2.setUsers(List.of(currentUser));
         babyRepository.save(baby2);
         currentUser.setBabies(List.of(baby2));
-        
+
         babyService.deleteBaby(2);
         assertThrows(ResourceNotFoundException.class, () -> babyService.findById(2));
     }
@@ -161,5 +159,5 @@ public class BabyServiceTest {
         Integer id = 999;
         assertThrows(ResourceNotFoundException.class, () -> babyService.deleteBaby(id));
     }
-    
+
 }
