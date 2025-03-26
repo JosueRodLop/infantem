@@ -26,7 +26,14 @@ public class CalendarController {
 
     @GetMapping
     public List<CalendarEvents> getCalendarByUserId(@RequestParam Integer month, @RequestParam Integer year) {
-        // TODO: add validation for valid month and year
+        // Validate month and year
+        if (month == null || month < 1 || month > 12) {
+            throw new IllegalArgumentException("Invalid month. Month must be between 1 and 12.");
+        }
+        if (year == null || year < 2000) {
+            throw new IllegalArgumentException("Invalid year.");
+        }
+
         // Calculate start date
         LocalDate start = LocalDate.of(year, month, 1);
 
