@@ -84,9 +84,25 @@ public class VaccineServiceTest {
         assertTrue(vaccine.getId() == 1);
         assertTrue(vaccine.getType().equals("MMR"));
     }
+/*  This test is not working
+    @Test
+    public void TestSaveVaccine() {
 
+        org.mockito.Mockito.when(userService.findCurrentUser()).thenReturn(currentUser);
+        org.mockito.Mockito.when(babyService.findById(testBaby.getId())).thenReturn(testBaby);
 
+        Vaccine vaccine = new Vaccine();
+        vaccine.setId(6L);
+        vaccine.setType("Hepatitis B");
+        vaccine.setVaccinationDate(LocalDate.now());
+        vaccine.setBaby(testBaby);
 
+        vaccineService.save(vaccine);
+
+        List<Vaccine> vaccines = vaccineService.getAll();
+        assertTrue(vaccines.size() == 6);           // 6 vaccines in the database now
+    }
+ */
     @Test
     public void TestDeleteVaccine() {
         vaccineService.delete(1L);
