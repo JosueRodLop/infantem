@@ -117,7 +117,7 @@ const CalendarTab = () => {
 
   // Renderizar el componente del calendario
   const renderCalendar = () => (
-    <View style={[gs.card, { width: "40%", padding: 10 }]}>
+    <View style={[gs.card, { maxWidth:600, padding: 10 }]}>
       <Calendar
         current={currentMonth} // Establecer el mes visible
         onDayPress={handleDayPress}
@@ -163,7 +163,7 @@ const CalendarTab = () => {
 
   // Renderizar la información del día seleccionado
   const renderSelectedDateInfo = () => (
-    <View style={[gs.card, { width: "40%", padding: 10 }]}>
+    <View style={[gs.card, { maxWidth:600, padding: 10 }]}>
       {selectedDate ? (
         <View>
           <Text style={[gs.headerText, { textAlign: "center" }]}>Eventos del día {selectedDate}:</Text>
