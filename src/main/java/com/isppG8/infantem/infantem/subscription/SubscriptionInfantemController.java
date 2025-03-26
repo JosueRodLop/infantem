@@ -82,10 +82,17 @@ public class SubscriptionInfantemController {
     @PostMapping("/cancel")
     public ResponseEntity<?> cancelSubscription(@RequestParam String subscriptionId) {
         try {
-            subscriptionService.cancelSubscription(subscriptionId);
-            return ResponseEntity.ok("Suscripción cancelada exitosamente.");
+            SubscriptionInfantem cancelledSubscription = subscriptionService.cancelSubscription(subscriptionId);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Suscripción cancelada exitosamente");
+            response.put("subscription", cancelledSubscription);
+            response.put("active", false);  // ← Confirmamos que está inactiva
+            
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al cancelar la suscripción: " + e.getMessage());
+            return ResponseEntity.badRequest()
+                .body("Error al cancelar la suscripción: " + e.getMessage());
         }
     }
 
