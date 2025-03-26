@@ -27,7 +27,7 @@ import jakarta.transaction.Transactional;
 
 @SpringBootTest(classes = { InfantemApplication.class, UserService.class })
 @ActiveProfiles("test")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) 
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 public class UserServiceTest {
 
@@ -36,7 +36,6 @@ public class UserServiceTest {
 
     @Autowired
     private UserService userService;
-
 
     private User u1;
     private User u2;
@@ -50,7 +49,7 @@ public class UserServiceTest {
         u1.setSurname("User");
         u1.setPassword("password1");
         u1.setEmail("user1@example.com");
-        
+
         u2 = new User();
         u2.setId(2);
         u2.setUsername("user2");
@@ -65,7 +64,7 @@ public class UserServiceTest {
 
     @Test
     public void TestGetAllUsers() {
-        
+
         List<User> users = userService.getAllUsers();
         assertFalse(users.isEmpty());
         assertTrue(users.contains(userRepository.findByUsername("user1").get()));
@@ -73,7 +72,7 @@ public class UserServiceTest {
 
     @Test
     public void TestFindByUsername() {
-        
+
         User user = userService.findByUsername("user1");
         assertNotNull(user);
         assertEquals("user1", user.getUsername());
@@ -81,7 +80,7 @@ public class UserServiceTest {
 
     @Test
     public void TestFindByUsernameNotFound() {
-        
+
         User user = userService.findByUsername("NonExistentUser");
         assertNull(user);
     }
@@ -95,7 +94,6 @@ public class UserServiceTest {
         newUser.setPassword("password3");
         newUser.setEmail("newEmail@test.com");
 
-       
         User saved = userService.createUser(newUser);
         assertNotNull(saved);
         assertEquals("newEmail@test.com", saved.getEmail());
@@ -145,9 +143,8 @@ public class UserServiceTest {
 
     @Test
     public void TestFindCurrentUser() {
-        SecurityContextHolder.getContext().setAuthentication(
-            new UsernamePasswordAuthenticationToken("user1", "password")
-        );
+        SecurityContextHolder.getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken("user1", "password"));
 
         User user = userService.findCurrentUser();
         assertNotNull(user);
@@ -162,7 +159,7 @@ public class UserServiceTest {
         updatedDetails.setUsername("updatedUsername");
         updatedDetails.setEmail("updated@example.com");
 
-        User updatedUser = userService.updateUser((long)u1.getId(), updatedDetails);
+        User updatedUser = userService.updateUser((long) u1.getId(), updatedDetails);
 
         assertNotNull(updatedUser);
         assertEquals("Updated", updatedUser.getName());
@@ -172,14 +169,14 @@ public class UserServiceTest {
 
     @Test
     public void TestDeleteUser() {
-        boolean result = userService.deleteUser((long)u1.getId());
+        boolean result = userService.deleteUser((long) u1.getId());
         assertTrue(result);
     }
 
     @Test
     public void TestDeleteUserNotFound() {
-        boolean result = userService.deleteUser((long)100);
+        boolean result = userService.deleteUser((long) 100);
         assertFalse(result);
     }
-    
+
 }
