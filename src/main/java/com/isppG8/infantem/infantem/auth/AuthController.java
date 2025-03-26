@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.isppG8.infantem.infantem.user.UserService;
 import com.isppG8.infantem.infantem.user.User;
+import com.isppG8.infantem.infantem.auth.email.EmailValidationService;
 import com.isppG8.infantem.infantem.auth.jwt.JwtUtils;
 import com.isppG8.infantem.infantem.auth.payload.request.LoginRequest;
 import com.isppG8.infantem.infantem.auth.payload.request.SignupRequest;
@@ -39,14 +40,16 @@ public class AuthController {
     private final UserService userService;
     private final JwtUtils jwtUtils;
     private final AuthService authService;
+    private final EmailValidationService emailValidationService;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtils jwtUtils,
-            AuthService authService) {
+            AuthService authService, EmailValidationService emailValidationService) {
         this.userService = userService;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
         this.authService = authService;
+	this.emailValidationService = emailValidationService;
     }
 
     @PostMapping("/signin")
@@ -104,6 +107,9 @@ public class AuthController {
         if (userService.findByUsername(signUpRequest.getUsername()) != null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
+	if (!emailValidationService.validateCode(signUpRequest.getEmail(),signUpRequest.getCode())) {
+	    return ResponseEntity.badRequest().body(new MessageResponse("Error: Wrong validation code"));
+	}
         authService.createUser(signUpRequest);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signUpRequest.getUsername(), signUpRequest.getPassword()));
@@ -116,5 +122,19 @@ public class AuthController {
 
         return ResponseEntity.ok().body(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
     }
+
+    @PostMapping("/email")
+    public ResponseEntity<Object> generateCode(@Valid @RequestBody String email) {
+	if (email==null) {
+		return ResponseEntity.badRequest().body(new MessageResponse("Error: No email attached"));
+	}
+	try {
+		emailValidationService.createEmailValidation(email);
+	} catch (Exception e) {
+		return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+	}
+        return ResponseEntity.ok().body(new MessageResponse("Code sent successfully!"));
+    }
+
 
 }
