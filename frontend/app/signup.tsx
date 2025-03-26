@@ -69,7 +69,7 @@ export default function Signup() {
         
         <Image source={require("../static/images/profile.webp")} style={{ width: 100, height: 100, borderRadius: 50, marginBottom: 20 }} />
 
-        <View style={[gs.card, { maxWidth: 400, width: "90%", padding: 25, borderRadius: 15, backgroundColor: "white", shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 10, elevation: 5 }]}>
+        <View style={[gs.card, { maxWidth: 400, width: "90%", padding: 25, borderRadius: 15, backgroundColor: "white", shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 10, elevation: 5, alignItems: "center" }]}>
           
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1565C0", textAlign: "center", marginBottom: 15 }}>
             Regístrate
@@ -88,7 +88,7 @@ export default function Signup() {
             style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.6}]}
             placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
 
-          <View style={{ position: "relative" }}>
+          <View style={{ position: "relative", alignItems: "center", width: "100%" }}>
             <TextInput
             style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0" , opacity:0.6}]}
             placeholder="Contraseña"
@@ -98,7 +98,7 @@ export default function Signup() {
             />
             <TouchableOpacity 
               onPress={() => setShowPassword(!showPassword)}
-              style={{ position: "absolute", right: 50, top: 20 }} // Icono alineado
+              style={{ position: "absolute", right: 30, top: 22}} // Icono alineado
             >
               <Ionicons name={showPassword ? "eye-off" : "eye"} size={24} color="#1565C0" />
             </TouchableOpacity>
