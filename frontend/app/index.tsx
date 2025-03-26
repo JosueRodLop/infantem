@@ -130,7 +130,7 @@ export default function Index() {
               justifyContent: "center",
               paddingHorizontal: "10%",
               position: "absolute",
-              top: isMobile ? 290: 160,
+              top: isMobile ? 235: 115,
             }}
           >
             <Text

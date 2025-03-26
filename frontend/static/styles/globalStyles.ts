@@ -218,7 +218,7 @@ module.exports = StyleSheet.create({
   },
   // Estilos para el contenedor de reseñas
   reviewsContainer: {
-    marginTop: -300,  // Espaciado reducido para acercar las reseñas al banner
+    marginTop: -250,  // Espaciado reducido para acercar las reseñas al banner
     paddingHorizontal: 20,
     marginBottom: 250,
   },
@@ -226,7 +226,7 @@ module.exports = StyleSheet.create({
     fontSize: 24,
     fontFamily: "Loubag-Bold",
     color: "#1565C0",
-    marginBottom: 15,
+    marginBottom: 20,
     textAlign: "center",
   },
   reviewsCardContainer: {
