@@ -17,26 +17,26 @@ public class EmailDetailsService {
 
     @Autowired
     public EmailDetailsService(JavaMailSender javaMailSender) {
-	this.javaMailSender = javaMailSender;
+        this.javaMailSender = javaMailSender;
     }
 
     public String sendSimpleMail(EmailDetails details) {
-	
-	try {
-	    SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-	    mailMessage.setFrom(sender);
-	    mailMessage.setTo(details.getRecipient());
-	    mailMessage.setText(details.getMsgBody());
-	    mailMessage.setSubject(details.getSubject());
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-	    javaMailSender.send(mailMessage);
-		
-	    return "Mail sent successfully";
+            mailMessage.setFrom(sender);
+            mailMessage.setTo(details.getRecipient());
+            mailMessage.setText(details.getMsgBody());
+            mailMessage.setSubject(details.getSubject());
 
-	} catch (Exception e) {
-	    return String.format("Error while sending email: %s",e.toString());
-	}
+            javaMailSender.send(mailMessage);
+
+            return "Mail sent successfully";
+
+        } catch (Exception e) {
+            return String.format("Error while sending email: %s", e.toString());
+        }
     }
 
 }

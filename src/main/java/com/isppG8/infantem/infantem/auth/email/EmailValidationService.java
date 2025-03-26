@@ -36,10 +36,10 @@ public class EmailValidationService {
         try {
             EmailValidation oldEmailValidation = emailValidationRepository.findByEmail(email).orElse(null);
 
-	    User existingUser = userService.findByEmail(email);
-	    if (!(existingUser==null)) {
-		throw new ResourceNotOwnedException("");
-	    }
+            User existingUser = userService.findByEmail(email);
+            if (!(existingUser == null)) {
+                throw new ResourceNotOwnedException("");
+            }
 
             if (!(oldEmailValidation == null)) {
                 this.deleteEmailValidation(oldEmailValidation);
@@ -51,23 +51,24 @@ public class EmailValidationService {
             newEmailValidation.setEmail(email);
             newEmailValidation.setCodeSentDate(LocalDateTime.now());
             newEmailValidation.setCode(rand.nextInt(999999));
-	    
-	    EmailDetails details = new EmailDetails(email,
-			    String.format("Este es tu código de validación, caducará en 10 minutos: %d",newEmailValidation.getCode()),
-			    "Código de validación Infantem");
 
-	    System.out.println(emailDetailsService.sendSimpleMail(details));
+            EmailDetails details = new EmailDetails(email,
+                    String.format("Este es tu código de validación, caducará en 10 minutos: %d",
+                            newEmailValidation.getCode()),
+                    "Código de validación Infantem");
+
+            System.out.println(emailDetailsService.sendSimpleMail(details));
 
             emailValidationRepository.save(newEmailValidation);
 
-	} catch (ResourceNotOwnedException e) {
-		throw new ResourceNotOwnedException("That account already exists");
+        } catch (ResourceNotOwnedException e) {
+            throw new ResourceNotOwnedException("That account already exists");
         } catch (Exception e) {
             System.out.println(String.format("Exception while creating confirmation code: %s", e.toString()));
-	    EmailValidation cleanup = emailValidationRepository.findByEmail(email).orElse(null);
-	    if (!(cleanup == null)) {
-		this.deleteEmailValidation(cleanup);
-	    }
+            EmailValidation cleanup = emailValidationRepository.findByEmail(email).orElse(null);
+            if (!(cleanup == null)) {
+                this.deleteEmailValidation(cleanup);
+            }
             throw new RuntimeException("Something went wrong while generating your confirmation code");
         }
     }
