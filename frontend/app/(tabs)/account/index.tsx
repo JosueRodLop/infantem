@@ -139,9 +139,9 @@ export default function Account() {
         </TouchableOpacity>
 
         <Modal visible={modalVisible} animationType="fade" transparent={true}>
-          <View style={gs.modalOverlay}>
-            <View style={gs.modalContent}>
-              <Text style={gs.modalTitle}>Selecciona tu avatar</Text>
+          <View style={[gs.modalOverlay,{marginTop: 110,width: "80%",marginHorizontal: "18%"}]}>
+            <View style={[gs.modalContent,{ alignItems: "center", justifyContent: "center" }]}>
+              <Text style={[gs.modalTitle,{color: "#1565C0"}]}>Selecciona tu avatar</Text>
               <FlatList
                 data={avatarOptions}
                 keyExtractor={(item, index) => index.toString()}
@@ -152,9 +152,29 @@ export default function Account() {
                   </TouchableOpacity>
                 )}
               />
-              <TouchableOpacity style={gs.closeModalButton} onPress={() => setModalVisible(false)}>
-                <Text style={gs.closeModalButtonText}>Cerrar</Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+                style={{
+                backgroundColor: "#1565C0",
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 8,
+                alignItems: "center",
+                alignSelf: "center",
+                marginTop: 20,
+                }}
+                  onPress={() => setModalVisible(false)}
+                  >
+              <Text
+                style={{
+                color: "white",
+                fontSize: 12,
+                fontFamily: "Loubag-Medium", // Elimínalo si no usas fuente personalizada
+              }}
+              >
+              Cerrar
+              </Text>
+            </TouchableOpacity>
+
             </View>
           </View>
         </Modal>
