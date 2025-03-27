@@ -1,6 +1,5 @@
 package com.isppG8.infantem.infantem.auth.email;
 
-import com.isppG8.infantem.infantem.auth.email.EmailDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
