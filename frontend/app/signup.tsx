@@ -18,7 +18,6 @@ export default function Signup() {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [openedTerms, setOpenedTerms] = useState(false);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const gs = require("../static/styles/globalStyles");
@@ -61,56 +60,55 @@ export default function Signup() {
     } else if (password !== repeatPassword) {
       setErrorMessage("Las contraseñas no coinciden.");
       return;
-    } else {
-      try {
-        const signupResponse = await fetch(`${apiUrl}/api/v1/auth/signup`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: name,
-            surname: surname,
-            username: username,
-            email: email,
-            password: password,
-          }),
-        });
-
-        if (!signupResponse.ok) {
-          setErrorMessage("Algo no ha ido bien.");
-          return;
-        } else if (!acceptedTerms) {
-          setErrorMessage("Debes leer y aceptar los términos y condiciones.");
-          return;
-        }
-
-        // Autologin después del registro
-        const signinResponse = await fetch(`${apiUrl}/api/v1/auth/signin`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: username,
-            password: password,
-          }),
-        });
-
-        if (!signinResponse.ok) {
-          setErrorMessage("Algo no ha ido bien");
-          return;
-        }
-
-        const data = await signinResponse.json();
-        await storeToken(data.token);
-        router.push("/recipes");
-
-      } catch (error) {
-        console.error("An error ocurred: ", error);
-      }
+    } else if (!acceptedTerms) {
+      setErrorMessage("Debes aceptar los términos y condiciones.");
+      return;
     }
 
+    try {
+      const signupResponse = await fetch(`${apiUrl}/api/v1/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          surname,
+          username,
+          email,
+          password,
+        }),
+      });
+
+      if (!signupResponse.ok) {
+        setErrorMessage("Algo no ha ido bien.");
+        return;
+      }
+
+      // Autologin
+      const signinResponse = await fetch(`${apiUrl}/api/v1/auth/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      if (!signinResponse.ok) {
+        setErrorMessage("Algo no ha ido bien");
+        return;
+      }
+
+      const data = await signinResponse.json();
+      await storeToken(data.token);
+      router.push("/recipes");
+
+    } catch (error) {
+      console.error("An error ocurred: ", error);
+    }
   };
 
   return (
@@ -175,20 +173,19 @@ export default function Signup() {
 
           <View style={gs.checkboxView}>
             <CheckBox
-              style={[{ padding: 10 }]}
+              style={{ padding: 10 }}
               onClick={() => {
                 setAcceptedTerms(!acceptedTerms);
+                if (!acceptedTerms) setErrorMessage(""); // Limpiar error si acepta
               }}
               isChecked={acceptedTerms}
-              disabled={!openedTerms}
             />
-            <Text style={{ marginLeft: 10 }}>
-              Acepto los&nbsp;
+            <Text style={{ marginLeft: 10, flexShrink: 1 }}>
+              <Text style={{ color: "red" }}>*</Text> Acepto los&nbsp;
               <Text
                 style={{ color: "#007AFF", fontSize: 14 }}
                 onPress={() => {
                   setModalVisible(true);
-                  setOpenedTerms(true);
                 }}
               >
                 términos y condiciones
