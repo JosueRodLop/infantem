@@ -50,7 +50,6 @@ export default function SubscriptionWeb() {
             if (response.ok) {
                 const data = await response.json();
                 setCustomerData(data);
-                console.log("Datos del cliente:", data);
             } else {
             console.error("Error en la suscripción:", response.statusText);
             }
