@@ -53,7 +53,7 @@ const TermsConditionsModal = ({
   
       - Plan Básico: Incluye funcionalidades esenciales como la detección de alergias, recetas generales y acceso al Marketplace.
   
-      - Plan Premium: Amplía estas funciones con recetas personalizadas, seguimiento detallado de la salud y desarrollo del bebé, y recordatorios inteligentes.
+      - Plan Premium: Amplía estas funciones con recetas personalizadas, seguimiento detallado de la salud y desarrollo del bebé, y recordatorios inteligentes. Tiene un coste de 4,99€ al mes.
   
   4. USO DE LA APLICACIÓN
   4.1 Requisitos de Edad

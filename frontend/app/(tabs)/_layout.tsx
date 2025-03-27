@@ -59,17 +59,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="account"
-        options={{
-          lazy: true,
-          headerShown: false,
-          tabBarLabel: "Cuenta",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name='man' color={color} size={24} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="calendar"
         options={{
           lazy: true,
@@ -77,6 +66,17 @@ export default function TabLayout() {
           tabBarLabel: "Calendario",
           tabBarIcon: ({ color }) => (
             <Ionicons name='calendar' color={color} size={24} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          lazy: true,
+          headerShown: false,
+          tabBarLabel: "Cuenta",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name='man' color={color} size={24} />
           ),
         }}
       />
