@@ -33,7 +33,7 @@ jobs:
           java-version: 21
 
       - name: Install dependencies and run backend tests
-        run: mvn clean install
+        run: mvn clean test
 
   test-frontend:
     name: Test Frontend
