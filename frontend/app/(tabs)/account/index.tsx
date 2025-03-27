@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 import { useAuth } from "../../../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 const avatarOptions = [
   require("../../../assets/avatar/avatar1.png"),
@@ -16,10 +17,21 @@ export default function Account() {
   const [isEditing, setIsEditing] = useState(false);
   const navigation = useNavigation();
   const [subscription, setSubscription] = useState(null);
+  const [userId, setUserId] = useState<number | null>(null);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const gs = require("../../../static/styles/globalStyles");
   const { isLoading, user, token, setUser, checkAuth, signOut } = useAuth();
+
+  useEffect(() => {
+          if (!token) return; // Evita ejecutar el efecto si jwt es null o undefined
+          try {
+              const decodedToken: any = jwtDecode(token);
+              setUserId(decodedToken.jti);
+          } catch (error) {
+              console.error("Error al decodificar el token:", error);
+          }
+      }, [token]);
 
   // Mueve el useEffect al nivel superior del componente
   useEffect(() => {
@@ -27,7 +39,7 @@ export default function Account() {
     
     const fetchSubscription = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/v1/subscriptions/user/${user.id}`, {
+        const response = await fetch(`${apiUrl}/api/v1/subscriptions/user/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
