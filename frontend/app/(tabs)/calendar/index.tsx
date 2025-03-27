@@ -166,15 +166,15 @@ const CalendarTab = () => {
     <View style={[gs.card, { maxWidth:600, padding: 10 }]}>
       {selectedDate ? (
         <View>
-          <Text style={[gs.headerText, { textAlign: "center" }]}>Eventos del día {selectedDate}:</Text>
+          <Text style={[gs.headerText, { textAlign: "center",color:"#1565C0" }]}>Eventos del día {selectedDate}:</Text>
           {events[selectedDate] ? (
             Object.keys(events[selectedDate]).map((babyId) => (
               <View key={babyId} style={{ marginTop: 10 }}>
-                <Text style={[gs.bodyText, { fontWeight: "bold", textAlign: "center" }]}>
+                <Text style={[gs.bodyText, { fontWeight: "bold",color:"#1565C0",marginRight: 30 }]}>
                   {babies[babyId] || `Bebé desconocido (${babyId})`}:
                 </Text>
                 {events[selectedDate][babyId].map((event, index) => (
-                  <Text key={index} style={[gs.bodyText, { textAlign: "center" }]}>
+                  <Text key={index} style={[gs.bodyText, { textAlign: "center",color:"#1565C0" }]}>
                     - {event}
                   </Text>
                 ))}
@@ -182,7 +182,7 @@ const CalendarTab = () => {
               </View>
             ))
           ) : (
-            <Text style={[gs.bodyText, { textAlign: "center" }]}>No hay eventos para el día seleccionado.</Text>
+            <Text style={[gs.bodyText, { textAlign: "center",color:"#1565C0" }]}>No hay eventos para el día seleccionado.</Text>
           )}
         </View>
       ) : (
