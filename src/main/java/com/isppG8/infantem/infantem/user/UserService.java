@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +20,6 @@ public class UserService {
 
     @Autowired
     private SubscriptionInfantemRepository subscriptionInfantemRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
@@ -41,21 +37,6 @@ public class UserService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
-    }
-
-    @Transactional
-    public User createUser(User user) {
-
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email address is already registered.");
-        }
-
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Username is already registered.");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
     }
 
     @Transactional(readOnly = true)
@@ -103,15 +84,6 @@ public class UserService {
             return true;
         }
         return false;
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<User> login(String username, String password) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return user;
-        }
-        return Optional.empty();
     }
 
     public Optional<User> getUserByStripeCustomerId(String stripeCustomerId) {
