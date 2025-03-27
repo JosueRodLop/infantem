@@ -1,12 +1,5 @@
 name: Run Tests
 
-env:
-  SPRING_PROFILES_ACTIVE: test
-  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-  STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
-  STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
-  EXPO_PUBLIC_STRIPE_API_KEY: ${{ secrets.EXPO_PUBLIC_STRIPE_API_KEY }}
-
 on:
   push:
     branches:
@@ -20,6 +13,14 @@ on:
 jobs:
   test-backend:
     name: Test Backend
+
+    env:
+      SPRING_PROFILES_ACTIVE: test
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
+      STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+      EXPO_PUBLIC_STRIPE_API_KEY: ${{ secrets.EXPO_PUBLIC_STRIPE_API_KEY }}
+      
     runs-on: ubuntu-latest
 
     steps:
