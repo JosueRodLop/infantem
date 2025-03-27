@@ -101,7 +101,7 @@ public class Baby {
     @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
     private List<Disease> diseases = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "babies")
+    @ManyToMany(mappedBy = "babies", cascade = CascadeType.ALL)
     private List<Allergen> allergen = new ArrayList<>();
 
     @ManyToMany
