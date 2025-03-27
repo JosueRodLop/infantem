@@ -1,12 +1,7 @@
 package com.isppG8.infantem.infantem.auth.email;
 
-import java.util.Optional;
 import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
 import java.util.Random;
-
-import com.isppG8.infantem.infantem.auth.email.EmailDetailsService;
-import com.isppG8.infantem.infantem.auth.email.EmailDetails;
 import com.isppG8.infantem.infantem.auth.payload.request.EmailRequest;
 import com.isppG8.infantem.infantem.user.UserService;
 import com.isppG8.infantem.infantem.user.User;
