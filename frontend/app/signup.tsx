@@ -1,10 +1,10 @@
 import { Link, router } from "expo-router";
-import { useState } from "react";
-import { Text, View, TouchableOpacity, TextInput, Image, ScrollView } from "react-native";
+import { useEffect, useState } from "react";
+import { Text, View, TouchableOpacity, TextInput, Image, ScrollView, Modal, Pressable } from "react-native";
 import { storeToken } from "../utils/jwtStorage";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons"; // Importamos iconos de Expo
 import TermsConditionsModal from "../components/TermsConditionsModal";
-import CheckBox from "react-native-check-box";
+import CheckBox from 'react-native-check-box';
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -14,18 +14,11 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar contraseña
+
   const [modalVisible, setModalVisible] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-
-  const [fieldErrors, setFieldErrors] = useState({
-    name: false,
-    surname: false,
-    username: false,
-    email: false,
-    password: false,
-    repeatPassword: false,
-  });
+  const [openedTerms, setOpenedTerms] = useState(false);
 
   const [askForEmailToken, setAskForEmailToken] = useState(false);
   const [emailToken, setEmailToken] = useState<string>("");
@@ -34,7 +27,6 @@ export default function Signup() {
   const gs = require("../static/styles/globalStyles");
 
   const validEmail = (email: string) => {
-
     if (email.match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )) {
@@ -51,18 +43,7 @@ export default function Signup() {
   }
 
   const handleSubmit = async () => {
-    const newFieldErrors = {
-      name: !name,
-      surname: !surname,
-      username: !username,
-      email: !email,
-      password: !password,
-      repeatPassword: !repeatPassword,
-    };
-
-    setFieldErrors(newFieldErrors);
-
-    if (Object.values(newFieldErrors).some(Boolean)) {
+    if (!name || !surname || !username || !email || !password) {
       setErrorMessage("Debes rellenar todos los campos.");
       return;
     } else if (!validEmail(email)) {
@@ -174,7 +155,6 @@ export default function Signup() {
         : 
         <View style={[gs.card, { maxWidth: 400, width: "90%", padding: 25, borderRadius: 15, backgroundColor: "white", shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 10, elevation: 5 }]}>
 
-
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1565C0", textAlign: "center", marginBottom: 15 }}>
           Regístrate
           </Text>
@@ -228,7 +208,6 @@ export default function Signup() {
 
           <View style={gs.checkboxView}>
             <CheckBox
-
             style={[{ padding: 10 }]}
           onClick={() => {
             setAcceptedTerms(!acceptedTerms);
@@ -268,9 +247,8 @@ export default function Signup() {
             </View>
         }
 
-        </View>
 
-
+      </View>
     </ScrollView>
   );
 }
