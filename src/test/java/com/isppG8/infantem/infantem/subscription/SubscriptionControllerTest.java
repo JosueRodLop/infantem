@@ -170,20 +170,22 @@ public class SubscriptionControllerTest {
         fakeSubscription.setStripeSubscriptionId("sub_test_new");
         fakeSubscription.setActive(true);
         when(subscriptionService.getSubscriptionUserById(1L)).thenReturn(Optional.of(fakeSubscription));
-    
-        mockMvc.perform(get("/api/v1/subscriptions/user/1"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.id").value(1)) // Cambiado para que coincida con la respuesta real
-               .andExpect(jsonPath("$.stripeSubscriptionId").value("sub_test_new"))
-               .andExpect(jsonPath("$.active").value(true));
+
+        mockMvc.perform(get("/api/v1/subscriptions/user/1")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1)) // Cambiado para que coincida con la respuesta real
+                .andExpect(jsonPath("$.stripeSubscriptionId").value("sub_test_new"))
+                .andExpect(jsonPath("$.active").value(true));
     }
-    
+
     @Test
     public void testGetSubscription_WhenNotExists() throws Exception {
         when(subscriptionService.getSubscriptionUserById(1L)).thenReturn(Optional.empty());
-    
-        mockMvc.perform(get("/api/v1/subscriptions/user/1"))
-               .andExpect(status().isOk())
-               .andExpect(content().string("")); // O podrías esperar un objeto vacío
+
+        mockMvc.perform(get("/api/v1/subscriptions/user/1")).andExpect(status().isOk()).andExpect(content().string("")); // O
+                                                                                                                         // podrías
+                                                                                                                         // esperar
+                                                                                                                         // un
+                                                                                                                         // objeto
+                                                                                                                         // vacío
     }
 }
