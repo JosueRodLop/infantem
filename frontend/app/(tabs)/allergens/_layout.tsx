@@ -16,7 +16,7 @@ function StackLayout() {
 					  color: "#fff",
 					}}
 				  >
-					Alérgenos
+					Infantem
 				  </Text>
 				),
 				

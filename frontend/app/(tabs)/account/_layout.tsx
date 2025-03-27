@@ -16,7 +16,7 @@ function StackLayout() {
 							color: "#fff",
 						}}
 					>
-						Cuenta
+						Infantem
 					</Text>
 				),
 

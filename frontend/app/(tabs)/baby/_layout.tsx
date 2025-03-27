@@ -16,7 +16,7 @@ function StackLayout() {
 					  color: "#fff",
 					}}
 				  >
-					Bebés
+					Infantem
 				  </Text>
 				),
 				
