@@ -26,7 +26,7 @@ export default function Allergens() {
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20,width: "100%", height: "100%",alignItems: "center", justifyContent: "center" }}>
-        <Text  style={[gs.headerText, { color: "#1565C0",fontSize:38 }]}>Alergenos</Text>
+        <Text  style={[gs.headerText, { color: "#1565C0",fontSize:38 }]}>Alérgenos</Text>
 
         { currentQuestion === questions.length - 1 ? (
           <View style={gs.card}>
