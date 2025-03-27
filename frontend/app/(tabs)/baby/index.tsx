@@ -154,8 +154,10 @@ export default function BabyInfo() {
         },
       });
 
-      if (!response.ok) throw new Error("Error deleting baby");
-
+      if (!response.ok) {
+        console.log(response)
+        throw new Error("Error deleting baby");
+      }
       setBabies((prev) => prev.filter((baby) => baby.id !== id));
     } catch (error) {
       console.error(error);

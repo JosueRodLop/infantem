@@ -72,7 +72,7 @@ public class Recipe {
     @ManyToMany(mappedBy = "recipes")
     private List<Allergen> allergens = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "intake_recipe", joinColumns = @JoinColumn(name = "intake_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
     private List<Intake> intakes = new ArrayList<>();
 

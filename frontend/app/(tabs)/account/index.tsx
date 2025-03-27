@@ -25,6 +25,7 @@ export default function Account() {
 
   useEffect(() => {
           if (!token) return; // Evita ejecutar el efecto si jwt es null o undefined
+          console.log(token)
           try {
               const decodedToken: any = jwtDecode(token);
               setUserId(decodedToken.jti);
