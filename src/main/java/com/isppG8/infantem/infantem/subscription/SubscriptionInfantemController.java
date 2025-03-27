@@ -103,10 +103,6 @@ public class SubscriptionInfantemController {
     @GetMapping("/user/{id}")
     public ResponseEntity<Object> getSubscription(@PathVariable Long id) {
         Optional<SubscriptionInfantem> subscriptionUser = subscriptionService.getSubscriptionUserById(id);
-        if (subscriptionUser.isPresent()) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.ok(false);
-        }
+        return ResponseEntity.ok(subscriptionUser);
     }
 }
