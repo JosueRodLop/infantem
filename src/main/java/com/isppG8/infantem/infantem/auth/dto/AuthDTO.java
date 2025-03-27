@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 public class AuthDTO {
 
+    private Long id;
+
     private String name;
 
     private String surname;
@@ -24,6 +26,7 @@ public class AuthDTO {
     }
 
     public AuthDTO(User user) {
+	this.id = user.getId();
         this.name = user.getName();
         this.surname = user.getSurname();
         this.username = user.getUsername();
