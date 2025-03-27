@@ -90,18 +90,18 @@ export default function Account() {
 
   return (
     <ImageBackground
-      source={require("../../../static/images/Background.png")}
-      style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center" }}
+      style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center", backgroundColor: "#E3F2FD" }}
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
       <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor: "transparent" }]}>
-        <Image source={require("../../../static/images/Bib.png")} style={{ position: 'absolute', top: "20%", right: "72%", width: 120, height: 120, transform: [{ rotate: '-15deg' }] }} />
-
-
         <Text style={[gs.headerText, { color: "#1565C0" }]}>Perfil</Text>
 
         <TouchableOpacity style={gs.profileImageContainer} onPress={() => isEditing && setModalVisible(true)} disabled={!isEditing}>
-          <Image source={user?.profilePhotoRoute ? { uri: user.profilePhotoRoute } : avatarOptions[0]} style={gs.profileImage} />
+           {/* <Image source={user?.profilePhotoRoute ? { uri: user.profilePhotoRoute } : avatarOptions[0]} style={gs.profileImage} /> */}
+          <Image
+            source={require("../../../static/images/avatar2.png")}
+            style={gs.profileImage}
+          />
         </TouchableOpacity>
 
         {user && (

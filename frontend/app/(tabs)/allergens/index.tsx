@@ -19,9 +19,8 @@ export default function Allergens() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#E3F2FD" }}>
     <ImageBackground
-      source={require("../../../static/images/Background.png")}
       style={{ flex: 1, width: "100%", height: "100%" }}
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >

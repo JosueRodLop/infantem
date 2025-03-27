@@ -203,8 +203,7 @@ export default function BabyInfo() {
 
   return (
     <ImageBackground
-      source={require("../../../static/images/Background.png")}
-      style={{ flex: 1, width: "100%", height: "100%" }}
+      style={{ flex: 1, width: "100%", height: "100%", backgroundColor: "#E3F2FD" }}
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
