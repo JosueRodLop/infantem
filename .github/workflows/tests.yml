@@ -15,7 +15,6 @@ jobs:
     name: Test Backend
 
     env:
-      SPRING_PROFILES_ACTIVE: test
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
       STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
       STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
@@ -32,6 +31,9 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 21
+      
+      - name: install dependencies
+        run: mvn install
 
       - name: Install dependencies and run backend tests
         run: mvn clean test
@@ -48,7 +50,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
 
       - name: Install dependencies
         run: cd frontend && npm install
