@@ -85,7 +85,8 @@ module.exports = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    width: "90%",
+    alignSelf: "center" ,
   },
 
 //////////////
