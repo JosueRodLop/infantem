@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.isppG8.infantem.infantem.user.UserService;
 import com.isppG8.infantem.infantem.user.User;
+import com.isppG8.infantem.infantem.auth.dto.AuthDTO;
 import com.isppG8.infantem.infantem.auth.jwt.JwtUtils;
 import com.isppG8.infantem.infantem.auth.payload.request.LoginRequest;
 import com.isppG8.infantem.infantem.auth.payload.request.SignupRequest;
@@ -85,7 +86,7 @@ public class AuthController {
             if (loggedInUser == null) {
                 throw new BadCredentialsException("");
             }
-            return ResponseEntity.ok().body(loggedInUser);
+            return ResponseEntity.ok().body(new AuthDTO(loggedInUser));
         } catch (BadCredentialsException exception) {
             return ResponseEntity.badRequest().body(new MessageResponse("Bad Credentials!"));
         } catch (Exception e) {

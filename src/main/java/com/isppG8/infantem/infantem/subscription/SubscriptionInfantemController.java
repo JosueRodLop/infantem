@@ -103,6 +103,11 @@ public class SubscriptionInfantemController {
     @GetMapping("/user/{id}")
     public ResponseEntity<Object> getSubscription(@PathVariable Long id) {
         Optional<SubscriptionInfantem> subscriptionUser = subscriptionService.getSubscriptionUserById(id);
-        return ResponseEntity.ok(subscriptionUser);
+        
+        if (subscriptionUser.isPresent()) {
+            return ResponseEntity.ok(subscriptionUser.get());
+        } else {
+            return ResponseEntity.ok().build(); // O podrías devolver un objeto vacío o un mensaje
+        }
     }
 }
