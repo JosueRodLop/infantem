@@ -11,12 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
+import com.isppG8.infantem.infantem.subscription.SubscriptionInfantemRepository;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SubscriptionInfantemRepository subscriptionInfantemRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -108,6 +112,10 @@ public class UserService {
             return user;
         }
         return Optional.empty();
+    }
+
+    public Optional<User> getUserByStripeCustomerId(String stripeCustomerId) {
+        return subscriptionInfantemRepository.findByStripeCustomerId(stripeCustomerId);
     }
 
 }
