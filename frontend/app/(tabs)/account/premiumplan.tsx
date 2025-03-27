@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { getToken } from "../../../utils/jwtStorage";
 
@@ -30,16 +30,17 @@ export default function PremiumPlan() {
     };
 
     return (
-        <View style={{ flex: 1, justifyContent: "center", padding: 50, backgroundColor: "#f4f4f4" }}>
-            <View style={{ backgroundColor: "#fff", padding: 50, borderRadius: 10, shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 5 }}>
-                <Text style={{ fontSize: 100, fontWeight: "bold", marginBottom: 20, textAlign: "left" }}>Hazte Premium</Text>
-                <Text style={{ fontSize: 50, marginBottom: 20, textAlign: "left" }}>Disfruta de beneficios exclusivos:</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Eliminación de anuncios</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Recordatorios inteligentes</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Cupones de descuentos en productos del Marketplace.</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Seguimiento del crecimiento del bebe mediante métricas avanzadas</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20 }}>🔹 Recetas personalizadas mediante filtrado por diferentes métricas adicionales</Text>
-                <Text style={{ fontSize: 50, marginBottom: 30, color: "#ff4500", fontWeight: "bold" }}>¡Todo esto por solo 4,99€/mes!</Text>
+        <View style={{ flex: 1, justifyContent: "center", padding: 40, backgroundColor: "#f4f4f4" }}>
+            <ScrollView style={{ backgroundColor: "#fff", padding: 40, borderRadius: 10, shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 5 }}>
+                <Text style={{ fontSize: 25, fontWeight: "bold", marginBottom: 20, textAlign: "center" }}>Hazte Premium</Text>
+                <Text style={{ fontSize: 16, marginBottom: 10, textAlign: "left" }}>Disfruta de beneficios exclusivos:</Text>
+                <Text style={{ fontSize: 15, marginBottom: 8 }}>🔹 Eliminación de anuncios</Text>
+                <Text style={{ fontSize: 15, marginBottom: 8 }}>🔹 Recordatorios inteligentes</Text>
+                <Text style={{ fontSize: 15, marginBottom: 8 }}>🔹 Cupones de descuentos en productos del Marketplace.</Text>
+                <Text style={{ fontSize: 15, marginBottom: 8 }}>🔹 Seguimiento del crecimiento del bebe mediante métricas avanzadas</Text>
+                <Text style={{ fontSize: 15, marginBottom: 20 }}>🔹 Recetas personalizadas mediante filtrado por diferentes métricas adicionales</Text>
+                
+                <Text style={{ fontSize: 20, marginBottom: 20, fontWeight: "bold" }}>4,99 € al mes</Text>
 
                 <TouchableOpacity
                     onPress={handleSubscribe}
@@ -49,10 +50,10 @@ export default function PremiumPlan() {
                     {loading ? (
                         <ActivityIndicator color="white" />
                     ) : (
-                        <Text style={{ color: "white", fontSize: 22, fontWeight: "bold" }}>Suscribirse ahora</Text>
+                        <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>Suscribirse ahora</Text>
                     )}
                 </TouchableOpacity>
-            </View>
+            </ScrollView>
         </View>
     );
 };
