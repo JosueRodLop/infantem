@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Modal, TextInput, Alert,ImageBackground } from "react-native";
+import { ActivityIndicator, Modal, TextInput, Alert, ImageBackground } from "react-native";
 import { Text, View, TouchableOpacity, ScrollView, Image, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,7 +7,6 @@ import { Link, router } from "expo-router";
 import { useAuth } from "../../../context/AuthContext";
 
 const avatarOptions = [
-  // There are no avatar images in backend yet.
   require("../../../assets/avatar/avatar1.png"),
   require("../../../assets/avatar/avatar2.png")
 ];
@@ -16,14 +15,41 @@ export default function Account() {
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const navigation = useNavigation();
-  const [subscription, setSubscription] = useState(false);
+  const [subscription, setSubscription] = useState(null);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-
   const gs = require("../../../static/styles/globalStyles");
-
   const { isLoading, user, token, setUser, checkAuth, signOut } = useAuth();
 
+  // Mueve el useEffect al nivel superior del componente
+  useEffect(() => {
+    if (!user || !token) return;
+    
+    const fetchSubscription = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/v1/subscriptions/user/${user.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error("Error fetching subscription");
+        }
+        
+        const data = await response.json();
+        console.log("Subscription data:", data);
+        setSubscription(data);
+      } catch (error) {
+        console.error("Error fetching subscription:", error);
+        setSubscription(null); // Asegúrate de resetear el estado si hay un error
+      }
+    };
+    
+    fetchSubscription();
+  }, [user, token]);
 
   const handleEditProfile = () => {
     setIsEditing(true);
@@ -41,25 +67,6 @@ export default function Account() {
       email: user.email,
       profilePhotoRoute: user.profilePhotoRoute
     };
-
-    useEffect(() => {
-      if (user && user.id) {
-        fetch(`${apiUrl}/api/v1/subscriptions/user/${user.id}`, {  // Corregido "subscriptions"
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log("Subscription data:", data);
-            setSubscription(data)}
-          )
-          .catch(error => console.error("Error fetching subscription:", error));
-      }
-    }, [user, apiUrl, token]); // Se ejecuta cuando user, apiUrl o token cambian
-  
 
     fetch(`${apiUrl}/api/v1/users/${user.id}`, {
       method: "PUT",
@@ -85,7 +92,6 @@ export default function Account() {
         Alert.alert("Error", `No se pudo guardar los cambios: ${error.message}`);
       });
   };
-
   const handleLogout = signOut;
 
   const handleAvatarSelection = (avatar: any) => {
