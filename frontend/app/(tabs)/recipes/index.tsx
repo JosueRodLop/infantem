@@ -64,7 +64,7 @@ export default function Page() {
     try {
       let responseReceived = false;
       if (token && user) {
-        const response = await fetch(`${apiUrl}/api/v1/recipes/user/${user.id}`, {
+        const response = await fetch(`${apiUrl}/api/v1/recipes`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -72,8 +72,8 @@ export default function Page() {
         });
         if (response.ok) {
           const recipesData = await response.json();
-          setUserRecipes(recipesData);
-          setUserFilteredRecipes(recipesData);
+          setUserRecipes(recipesData.content);
+          setUserFilteredRecipes(recipesData.content);
           responseReceived = true;
         }
       }
@@ -248,6 +248,7 @@ export default function Page() {
 
         <Image source={require("../../../static/images/Diaper.png")} style={{ position: 'absolute', top: "50%", right: "10%", width: 150, height: 80, transform: [{ rotate: '15deg' }] }} />
 
+        {/*
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
           <Text style={[gs.headerText, { color: "#1565C0", fontSize: 38, marginHorizontal: 15 }]}>Recetas recomendadas según la edad</Text>
           <TextInput
@@ -286,6 +287,7 @@ export default function Page() {
             ))
           )}
         </View>
+        */}
 
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
 
