@@ -26,7 +26,7 @@ public class AuthDTO {
     }
 
     public AuthDTO(User user) {
-	this.id = user.getId();
+        this.id = user.getId();
         this.name = user.getName();
         this.surname = user.getSurname();
         this.username = user.getUsername();
