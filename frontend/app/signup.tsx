@@ -82,7 +82,7 @@ export default function Signup() {
 
         if (!validEmailResponse.ok) {
           const data = await validEmailResponse.json();
-          setErrorMessage(data);
+          setErrorMessage(data.message);
           return;
         } 
         setAskForEmailToken(true);
