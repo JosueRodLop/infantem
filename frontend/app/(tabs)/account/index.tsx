@@ -36,7 +36,7 @@ export default function Account() {
   // Mueve el useEffect al nivel superior del componente
   useEffect(() => {
     if (!user || !token) return;
-    
+
     const fetchSubscription = async () => {
       try {
         const response = await fetch(`${apiUrl}/api/v1/subscriptions/user/${userId}`, {
@@ -46,11 +46,11 @@ export default function Account() {
             "Authorization": `Bearer ${token}`
           }
         });
-        
+
         if (!response.ok) {
           throw new Error("Error fetching subscription");
         }
-        
+
         const data = await response.json();
         console.log("Subscription data:", data);
         setSubscription(data);
@@ -59,7 +59,7 @@ export default function Account() {
         setSubscription(null); // Asegúrate de resetear el estado si hay un error
       }
     };
-    
+
     fetchSubscription();
   }, [user, token]);
 
@@ -132,15 +132,15 @@ export default function Account() {
       style={{ flex: 1, width: "100%", height: "100%", justifyContent: "center" }}
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
-      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 100, paddingBottom: 100, backgroundColor: "transparent" }]}>
+      <ScrollView contentContainerStyle={[gs.container, { paddingTop: 40, backgroundColor: "transparent" }]}>
         <Image source={require("../../../static/images/Bib.png")} style={{ position: 'absolute', top: "20%", right: "72%", width: 120, height: 120, transform: [{ rotate: '-15deg' }] }} />
 
 
         <Text style={[gs.headerText, { color: "#1565C0" }]}>Perfil</Text>
 
-        {user && !subscription &&(
-          <Link href={"/account/premiumplan"} style={[gs.mainButton, { marginTop: 10, width: 400, textAlign:"center"}]}>
-            <Text style={[gs.mainButtonText, {fontSize:30}]}>¡HAZTE PREMIUM!</Text>
+        {user && !subscription && (
+          <Link href={"/account/premiumplan"} style={[gs.mainButton, { marginVertical: 10, textAlign: "center", width: "80%" }]}>
+            <Text style={[gs.mainButtonText, { fontSize: 20 }]}>¡HAZTE PREMIUM!</Text>
           </Link>
         )}
 
@@ -176,12 +176,12 @@ export default function Account() {
         <TouchableOpacity style={[gs.mainButton, { backgroundColor: "#1565C0" }]} onPress={isEditing ? handleSaveChanges : handleEditProfile}>
           <Text style={gs.mainButtonText}>{isEditing ? "Guardar Cambios" : "Editar Perfil"}</Text>
         </TouchableOpacity>
-        
-        {user && subscription &&(
-          <Text style={[gs.mainButtonText, {fontSize:30, color:"black"}]}>¡Felicidades eres premium!</Text>
+
+        {user && subscription && (
+          <Text style={[gs.mainButtonText, { fontSize: 20, color: "black" }]}>¡Felicidades, eres premium!</Text>
         )}
 
-        <TouchableOpacity style={[gs.secondaryButton, { marginTop: 10}]} onPress={handleLogout}>
+        <TouchableOpacity style={[gs.secondaryButton, { marginTop: 10 }]} onPress={handleLogout}>
           <Text style={[gs.secondaryButtonText]}>Cerrar Sesión</Text>
         </TouchableOpacity>
 
