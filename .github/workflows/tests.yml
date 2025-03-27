@@ -1,4 +1,11 @@
 name: Run Tests
+
+env:
+  SPRING_PROFILES_ACTIVE: test
+  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+  STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
+  STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+
 on:
   push:
     branches:
@@ -14,19 +21,6 @@ jobs:
     name: Test Backend
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: root_password
-          MYSQL_DATABASE: infantem_db
-          MYSQL_USER: spring_user
-          MYSQL_PASSWORD: StrongPassword123!
-          SPRING_PROFILES_ACTIVE: test
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping --silent" --health-timeout=5s --health-retries=3
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,12 +30,6 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 21
-
-      - name: Configurar variables de entorno backend
-        run: |
-          echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> $GITHUB_ENV
-          echo "STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }}" >> $GITHUB_ENV
-          echo "STRIPE_WEBHOOK_SECRET=${{ secrets.STRIPE_WEBHOOK_SECRET }}" >> $GITHUB_ENV
 
       - name: Install dependencies and run backend tests
         run: mvn clean install
