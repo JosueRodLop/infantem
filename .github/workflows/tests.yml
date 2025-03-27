@@ -15,6 +15,7 @@ jobs:
     name: Test Backend
 
     env:
+      SPRING_PROFILES_ACTIVE: test
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
       STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
       STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
@@ -31,11 +32,18 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 21
-      
-      - name: install dependencies
+
+      - name: Create .env file (if needed)
+        run: |
+          echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> .env
+          echo "STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }}" >> .env
+          echo "STRIPE_WEBHOOK_SECRET=${{ secrets.STRIPE_WEBHOOK_SECRET }}" >> .env
+          echo "EXPO_PUBLIC_STRIPE_API_KEY=${{ secrets.EXPO_PUBLIC_STRIPE_API_KEY }}" >> .env
+
+      - name: Install dependencies
         run: mvn install
 
-      - name: Install dependencies and run backend tests
+      - name: Run backend tests
         run: mvn clean test
 
   test-frontend:
@@ -55,4 +63,4 @@ jobs:
         run: cd frontend && npm install
 
       #- name: Run frontend tests
-        #run: Add command to execute tests
+       # run: cd frontend && npm test
