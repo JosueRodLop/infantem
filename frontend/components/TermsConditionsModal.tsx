@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { 
-  Modal, 
-  View, 
-  Text, 
-  ScrollView, 
-  TouchableOpacity, 
-  StyleSheet 
+import {
+  Modal,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet
 } from 'react-native';
 
-const TermsConditionsModal = ({ 
-  visible, 
+const TermsConditionsModal = ({
+  visible,
   onClose
 }) => {
 
@@ -96,9 +96,9 @@ const TermsConditionsModal = ({
   9. CONTACTO  
   Si tiene alguna pregunta sobre estos Términos y Condiciones, puede ponerse en contacto con nosotros a través de la dirección de correo electrónico: soporte@infantem.com.
 `
-;
+    ;
 
-return (
+  return (
     <Modal
       animationType="slide"
       transparent={true}
@@ -108,13 +108,13 @@ return (
       <View style={gs.centeredView}>
         <View style={gs.modalView}>
           <Text style={gs.modalTitle}>Términos y condiciones</Text>
-          
+
           <ScrollView style={gs.scrollView}>
             <Text style={gs.termsText}>
               {termsContent}
             </Text>
           </ScrollView>
-          
+
           <View style={gs.buttonContainer}>
             <TouchableOpacity
               style={[gs.button, gs.buttonClose]}
