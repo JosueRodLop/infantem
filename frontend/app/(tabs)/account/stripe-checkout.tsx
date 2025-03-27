@@ -72,7 +72,6 @@ function StripeCheckoutForm() {
   };
 
   return (
-    console.log("Clave de Stripe:", publicKey),
     <div
       style={{
         maxWidth: "400px",
