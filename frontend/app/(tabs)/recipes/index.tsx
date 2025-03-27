@@ -73,7 +73,7 @@ export default function Page() {
     try {
       let responseReceived = false;
       if (token && user) {
-        const response = await fetch(`${apiUrl}/api/v1/recipes/user/${user.id}`, {
+        const response = await fetch(`${apiUrl}/api/v1/recipes`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -81,8 +81,8 @@ export default function Page() {
         });
         if (response.ok) {
           const recipesData = await response.json();
-          setUserRecipes(recipesData);
-          setUserFilteredRecipes(recipesData);
+          setUserRecipes(recipesData.content);
+          setUserFilteredRecipes(recipesData.content);
           responseReceived = true;
         }
       }
@@ -318,6 +318,7 @@ export default function Page() {
 
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", marginTop: 50 }}>
 
+
           <TextInput
             style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.8, width: "50%" }]}
             placeholder="Introduce la edad de tu bebé en meses. Ej: 10"
@@ -331,7 +332,6 @@ export default function Page() {
             onSubmitEditing={fetchRecommendedRecipes}
             returnKeyType="done"
           />
-
 
           {recommendedFilteredRecipes.length === 0 ? (
             <Text style={{ color: "#1565C0" }}>No se encontraron recetas 😥 </Text>
@@ -371,6 +371,7 @@ export default function Page() {
             </View>
           )}
         </View>
+        
 
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
 

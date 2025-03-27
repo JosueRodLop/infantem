@@ -155,7 +155,6 @@ module.exports = StyleSheet.create({
 /////////////
 
   input: {
-    width: "90%",
     height: 50,
     borderColor: "#CCC",
     borderWidth: 1,
