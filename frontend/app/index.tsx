@@ -3,6 +3,7 @@ import { View, Text, Image, Dimensions, ScrollView, ImageBackground,Linking, Tou
 import { useAuth } from "../context/AuthContext";
 import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
+import TermsConditionsModal from "../components/TermsConditionsModal";
 
 
 export default function Index() {
@@ -10,6 +11,7 @@ export default function Index() {
   const gs = require("../static/styles/globalStyles");
   const { height } = Dimensions.get("window");
 
+  const [modalVisible, setModalVisible] = useState(false);
   const [isMobile, setIsMobile] = useState<boolean>(Dimensions.get("window").width < 768);
 
   // Detecta el cambio de tamaño de la ventana
@@ -176,23 +178,6 @@ export default function Index() {
             </Link>
           </View>
         </View>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <View
           style={{
             backgroundColor: "#BBDEFB",
@@ -482,8 +467,12 @@ export default function Index() {
  <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#BBDEFB', paddingVertical: 10 }}>
           <Text style={gs.footerText}>© 2025 Infantem. Todos los derechos reservados. </Text>
           <View style={gs.footerLinks}>
-            <TouchableOpacity onPress={() => Linking.openURL('https://www.example.com/terms')}>
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Text style={gs.footerLink}>Términos</Text>
+              <TermsConditionsModal
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+              />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => Linking.openURL('https://www.example.com/privacy')}>
               <Text style={gs.footerLink}>Privacidad</Text>
