@@ -186,7 +186,7 @@ const CalendarTab = () => {
           )}
         </View>
       ) : (
-        <Text style={[gs.bodyText, { textAlign: "center" }]}>Selecciona un día para ver información</Text>
+        <Text style={[gs.bodyText, { textAlign: "center",color:"#1565C0" }]}>Selecciona un día para ver información</Text>
       )}
     </View>
   );
@@ -198,8 +198,9 @@ const CalendarTab = () => {
       imageStyle={{ resizeMode: "cover", opacity: 0.9 }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center", padding: 20 }}>
-        <Text style={[gs.headerText, { textAlign: "center" }]}>Calendario</Text>
-        <Text style={[gs.bodyText, { textAlign: "center" }]}>Selecciona una fecha para ver información</Text>
+      <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
+      Calendario</Text>
+        <Text style={[gs.bodyText, { textAlign: "center",color:"#1565C0" }]}>Selecciona una fecha para ver información</Text>
         {loading ? (
           <ActivityIndicator size="large" color="#00adf5" />
         ) : (
