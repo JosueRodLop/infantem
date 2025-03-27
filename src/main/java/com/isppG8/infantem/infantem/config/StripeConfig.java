@@ -10,15 +10,8 @@ public class StripeConfig {
     private final String stripeApiKey;
 
     public StripeConfig() {
-
-        String apiKey = System.getenv("STRIPE_SECTET_KEY");
-
-        if (apiKey == null) {
-            Dotenv dotenv = Dotenv.load();
-            dotenv.get("STRIPE_SECRET_KEY");
-        }
-
-        this.stripeApiKey = apiKey;
+        Dotenv dotenv = Dotenv.load();
+        this.stripeApiKey = dotenv.get("STRIPE_SECRET_KEY");
 
         // Configurar la clave de API de Stripe globalmente
         Stripe.apiKey = this.stripeApiKey;
