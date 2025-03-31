@@ -70,6 +70,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="marketplace"
+        options={{
+          lazy: true,
+          headerShown: false,
+          tabBarLabel: "Mercado",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name='cash' color={color} size={24} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="account"
         options={{
           lazy: true,
