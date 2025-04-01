@@ -15,6 +15,6 @@ public interface MetricRepository extends JpaRepository<Metric, Long> {
     @Query("SELECT DISTINCT m.date FROM Metric m WHERE m.baby.id = ?1 AND m.date BETWEEN ?2 AND ?3")
     List<LocalDate> findMetricsByUserIdAndDate(Integer babyId, LocalDate start, LocalDate end);
 
-    @Query("SELECT new com.isppG8.infantem.infantem.metric.dto.MetricSummary(m.id, m.weight, m.height, m.cephalicPerimeter) FROM Metric m WHERE m.baby.id = ?1 AND ?2 = m.date")
+    @Query("SELECT new com.isppG8.infantem.infantem.metric.dto.MetricSummary(m.id, m.weight, m.height, m.headCircumference, m.armCircumference) FROM Metric m WHERE m.baby.id = ?1 AND ?2 = m.date")
     List<MetricSummary> findMetricSummaryByBabyIdAndDate(Integer babyId, LocalDate day);
 }

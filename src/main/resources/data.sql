@@ -35,7 +35,7 @@ INSERT INTO allergen (name, description) VALUES
 ('Sulfitos', 'Utilizados como conservantes en vinos, frutas secas y productos procesados.');
 
 -- Inserción de bebés
-INSERT INTO baby_table (name, birth_date, genre, weight, height, cephalic_perimeter, food_preference) VALUES
+INSERT INTO baby_table (name, birth_date, genre, weight, height, head_circumference, food_preference) VALUES
 ('Juan', '2023-01-01', 'MALE', 3.5, 49, 35, 'Leche'),
 ('María', '2023-02-01', 'FEMALE', 3.2, 48, 34, 'Leche'),
 ('Alicia', '2023-03-01', 'FEMALE', 3.8, 36, 36, 'Leche'),
@@ -149,14 +149,14 @@ INSERT INTO disease_table (id, name, start_date, end_date, symptoms, extra_obser
 (5, 'Conjuntivitis', '2025-03-12', '2025-03-14', 'Ojos rojos, secreción ocular', 'Limpiar los ojos con solución salina.', 2);
 
 -- Inserción de métricas en la tabla metric_table
-INSERT INTO metric_table (id, weight, height, cephalic_perimeter, date, baby_id) VALUES
-(1, 3.5, 50.0, 35, '2025-03-01', 1),
-(2, 4.0, 52.0, 36, '2025-03-04', 1),
-(3, 5.0, 55.0, 37, '2025-04-01', 1),
-(4, 6.0, 60.0, 38, '2025-05-01', 2),
-(5, 7.0, 65.0, 39, '2025-06-01', 3),
-(6, 8.0, 70.0, 40, '2025-07-01', 3),
-(7, 9.0, 75.0, 41, '2025-08-01', 4),
-(8, 10.0, 80.0, 42, '2025-09-01', 4),
-(9, 11.0, 85.0, 43, '2025-10-01', 5),
-(10, 12.0, 90.0, 44, '2025-11-01', 5);
+INSERT INTO metric_table (id, weight, height, head_circumference, arm_circumference, date, baby_id) VALUES
+(1, 3.5, 50.0, 35, 10, '2025-03-01', 1),
+(2, 4.0, 52.0, 36, 11, '2025-03-04', 1),
+(3, 5.0, 55.0, 37, 12, '2025-04-01', 1),
+(4, 6.0, 60.0, 38, 13, '2025-05-01', 2),
+(5, 7.0, 65.0, 39, 14, '2025-06-01', 3),
+(6, 8.0, 70.0, 40, 25, '2025-07-01', 3),
+(7, 9.0, 75.0, 41, 26, '2025-08-01', 4),
+(8, 10.0, 80.0, 42, 27, '2025-09-01', 4),
+(9, 11.0, 85.0, 43, 28, '2025-10-01', 5),
+(10, 12.0, 90.0, 44, 29, '2025-11-01', 5);
