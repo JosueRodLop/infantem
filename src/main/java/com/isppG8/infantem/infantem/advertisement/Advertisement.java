@@ -49,7 +49,7 @@ public class Advertisement {
     private Integer totalClicks;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private Integer maxMinutes;
 
     @NotNull
