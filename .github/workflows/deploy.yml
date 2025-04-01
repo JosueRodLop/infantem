@@ -22,12 +22,10 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Build frontend
         run: |
           cd frontend
+          npm install
           echo "EXPO_PUBLIC_API_URL=https://ispp-2425-g8-s3.ew.r.appspot.com" >> .env
           npx expo export -p web
 
