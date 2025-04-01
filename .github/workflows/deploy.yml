@@ -32,8 +32,6 @@ jobs:
           deliverables: 'app.yml' 
           env_vars: |-
             SPRING_PROFILES_ACTIVE=production
-          promote: true 
-          flags: '--quiet'
 
       - name: Test deployed service
         run: curl "${{ steps.deploy.outputs.version_url }}"
