@@ -30,8 +30,6 @@ jobs:
         with:
           project_id: 'ispp-2425-g8-s3'
           deliverables: 'app.yml' 
-          env_vars: |-
-            SPRING_PROFILES_ACTIVE=production
           promote: true
           flags: '--quiet'
           
