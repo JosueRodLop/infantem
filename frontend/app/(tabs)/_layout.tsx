@@ -24,7 +24,15 @@ export default function TabLayout() {
   }
 
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarStyle: {
+          borderWidth: 1, 
+          borderColor: "blue", 
+          borderRadius: 10, 
+        },
+      }}
+    >
       <Tabs.Screen
         name="recipes"
         options={{
@@ -81,7 +89,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
-
   );
   // We should return this if the user is not logged in
   // return <Redirect href="/login" />;
