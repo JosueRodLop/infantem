@@ -44,7 +44,7 @@ public class BabyDTO {
 
     @NotNull
     @Min(0)
-    private Integer cephalicPerimeter;
+    private Integer headCircumference;
 
     @NotBlank
     private String foodPreference;
@@ -59,7 +59,7 @@ public class BabyDTO {
         this.genre = baby.getGenre();
         this.weight = baby.getWeight();
         this.height = baby.getHeight();
-        this.cephalicPerimeter = baby.getCephalicPerimeter();
+        this.headCircumference = baby.getHeadCircumference();
         this.foodPreference = baby.getFoodPreference();
     }
 }
