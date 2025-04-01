@@ -12,7 +12,6 @@ public class MetricSummary {
     private Double headCircumference;
     private Double armCircumference;
 
-
     public MetricSummary(Integer id, Double weight, Double height, Double headCircumference, Double armCircumference) {
         this.id = id;
         this.weight = weight;
