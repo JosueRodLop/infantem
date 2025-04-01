@@ -28,7 +28,8 @@ public class StripeWebhookController {
         if (webhook == null) {
             Dotenv dotenv = Dotenv.load();
             webhook = dotenv.get("STRIPE_WEBHOOK_SECRET");
-        };
+        }
+        ;
         this.endpointSecret = webhook;
     }
 
