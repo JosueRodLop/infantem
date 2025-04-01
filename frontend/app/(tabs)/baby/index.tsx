@@ -12,7 +12,7 @@ interface Baby {
   genre?: string;
   weight?: number;
   height?: number;
-  cephalicPerimeter?: number;
+  headCircumference?: number;
   foodPreference?: string;
 }
 
@@ -24,7 +24,7 @@ interface BabyDraft {
   genre: string;
   weight: string;
   height: string;
-  cephalicPerimeter: string;
+  headCircumference: string;
   foodPreference: string;
 }
 
@@ -95,7 +95,7 @@ export default function BabyInfo() {
     const parsedFields = {
       weight: editedBaby.weight ? parseFloat(editedBaby.weight) : undefined,
       height: editedBaby.height ? parseFloat(editedBaby.height) : undefined,
-      cephalicPerimeter: editedBaby.cephalicPerimeter ? parseFloat(editedBaby.cephalicPerimeter) : undefined,
+      headCircumference: editedBaby.headCircumference ? parseFloat(editedBaby.headCircumference) : undefined,
     };
 
     // If we're editing an existing baby, merge the new values with the original data.
@@ -177,7 +177,7 @@ export default function BabyInfo() {
       genre: baby.genre || "OTHER",
       weight: baby.weight ? baby.weight.toString() : "",
       height: baby.height ? baby.height.toString() : "",
-      cephalicPerimeter: baby.cephalicPerimeter ? baby.cephalicPerimeter.toString() : "",
+      headCircumference: baby.headCircumference ? baby.headCircumference.toString() : "",
       foodPreference: baby.foodPreference || "",
     });
     setIsEditing(true);
@@ -191,7 +191,7 @@ export default function BabyInfo() {
       genre: "OTHER",
       weight: "",
       height: "",
-      cephalicPerimeter: "",
+      headCircumference: "",
       foodPreference: "",
     });
     setIsEditing(true);
@@ -277,8 +277,8 @@ export default function BabyInfo() {
                 style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.8, width:"80%" }]} 
                 placeholder="Ej. 35"
                 keyboardType="decimal-pad"
-                value={editedBaby.cephalicPerimeter}
-                onChangeText={(text) => handleInputChange("cephalicPerimeter", text)}
+                value={editedBaby.headCircumference}
+                onChangeText={(text) => handleInputChange("headCircumference", text)}
               />
 
               <Text style={{ alignSelf: 'flex-start', marginLeft: '10%', color: '#1565C0', fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>Preferencias alimentarias:</Text>
