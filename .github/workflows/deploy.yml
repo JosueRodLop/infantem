@@ -17,18 +17,30 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+    
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Build frontend
         run: |
           cd frontend
-          npm install
+          echo "EXPO_PUBLIC_STRIPE_API_KEY=${{ secrets.EXPO_PUBLIC_STRIPE_API_KEY }}" >> .env
           echo "EXPO_PUBLIC_API_URL=https://ispp-2425-g8-s3.ew.r.appspot.com" >> .env
           npx expo export -p web
+
+      - name: Set backend env variables
+        uses: 73h/gae-app-yaml-replace-env-variables@v0.3
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+        with:
+          app_yaml_path: "app.yml"
 
       - name: Authenticate to Google Cloud
         id: auth
