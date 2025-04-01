@@ -20,7 +20,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
 @Tag(name = "Metrics", description = "Gestión de métricas relacionadas con el bebé")
 @RestController
 @RequestMapping("/api/v1/metrics")
@@ -34,8 +33,7 @@ public class MetricController {
     }
 
     @Operation(summary = "Crear una nueva métrica", description = "Crea una nueva métrica para un bebé.")
-    @ApiResponse(responseCode = "201", description = "Métrica creada con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Metric.class)))
+    @ApiResponse(responseCode = "201", description = "Métrica creada con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Metric.class)))
     @PostMapping
     public ResponseEntity<Metric> createMetric(@RequestBody Metric metric) {
         Metric createdMetric = metricService.createMetric(metric);
@@ -43,8 +41,7 @@ public class MetricController {
     }
 
     @Operation(summary = "Obtener métrica por ID", description = "Recupera la métrica especificada por su ID.")
-    @ApiResponse(responseCode = "200", description = "Métrica encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Metric.class)))
+    @ApiResponse(responseCode = "200", description = "Métrica encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Metric.class)))
     @ApiResponse(responseCode = "404", description = "Métrica no encontrada")
     @GetMapping("/{id}")
     public ResponseEntity<Metric> getMetricById(@PathVariable Long id) {
@@ -53,8 +50,7 @@ public class MetricController {
     }
 
     @Operation(summary = "Obtener todas las métricas por ID de bebé", description = "Recupera todas las métricas asociadas a un bebé específico por su ID.")
-    @ApiResponse(responseCode = "200", description = "Lista de métricas encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Metric.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de métricas encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Metric.class)))
     @ApiResponse(responseCode = "404", description = "Bebé no encontrado")
     @GetMapping("/baby/{babyId}")
     public ResponseEntity<List<Metric>> getAllMetricsByBabyId(@PathVariable Integer babyId) {
@@ -63,8 +59,7 @@ public class MetricController {
     }
 
     @Operation(summary = "Actualizar una métrica", description = "Actualiza los detalles de una métrica existente.")
-    @ApiResponse(responseCode = "200", description = "Métrica actualizada con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Metric.class)))
+    @ApiResponse(responseCode = "200", description = "Métrica actualizada con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Metric.class)))
     @ApiResponse(responseCode = "404", description = "Métrica no encontrada")
     @PutMapping("/{id}")
     public ResponseEntity<Metric> updateMetric(@PathVariable Long id, @RequestBody Metric metric) {

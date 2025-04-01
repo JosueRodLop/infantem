@@ -34,16 +34,14 @@ public class FoodNutrientController {
     }
 
     @Operation(summary = "Obtener todos los nutrientes de alimentos", description = "Recupera la lista de todos los nutrientes de alimentos asociados a un nutriente específico.")
-    @ApiResponse(responseCode = "200", description = "Lista de nutrientes de alimentos", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = FoodNutrient.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de nutrientes de alimentos", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FoodNutrient.class)))
     @GetMapping
     public List<FoodNutrient> getFoodNutrients() {
         return foodNutrientService.getAllFoodNutrients();
     }
 
     @Operation(summary = "Obtener un nutriente de alimento por ID", description = "Recupera los detalles de un nutriente de alimento específico mediante su ID.")
-    @ApiResponse(responseCode = "200", description = "Nutriente de alimento encontrado",
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = FoodNutrient.class)))
+    @ApiResponse(responseCode = "200", description = "Nutriente de alimento encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FoodNutrient.class)))
     @ApiResponse(responseCode = "404", description = "Nutriente de alimento no encontrado")
     @GetMapping("/{id}")
     public ResponseEntity<FoodNutrient> getFoodNutrientById(@PathVariable Long id) {
@@ -52,16 +50,14 @@ public class FoodNutrientController {
     }
 
     @Operation(summary = "Crear un nuevo nutriente de alimento", description = "Crea un nuevo nutriente de alimento.")
-    @ApiResponse(responseCode = "201", description = "Nutriente de alimento creado", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = FoodNutrient.class)))
+    @ApiResponse(responseCode = "201", description = "Nutriente de alimento creado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FoodNutrient.class)))
     @PostMapping
     public FoodNutrient createFoodNutrient(@RequestBody FoodNutrient foodNutrient) {
         return foodNutrientService.createFoodNutrient(foodNutrient);
     }
 
     @Operation(summary = "Actualizar un nutriente de alimento", description = "Actualiza un nutriente de alimento existente mediante su ID.")
-    @ApiResponse(responseCode = "200", description = "Nutriente de alimento actualizado", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = FoodNutrient.class)))
+    @ApiResponse(responseCode = "200", description = "Nutriente de alimento actualizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FoodNutrient.class)))
     @ApiResponse(responseCode = "404", description = "Nutriente de alimento no encontrado")
     @PutMapping("/{id}")
     public ResponseEntity<FoodNutrient> updateFoodNutrient(@PathVariable Long id,

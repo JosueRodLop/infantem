@@ -34,16 +34,14 @@ public class FoodController {
     }
 
     @Operation(summary = "Obtener todos los alimentos", description = "Recupera la lista de todos los alimentos disponibles.")
-    @ApiResponse(responseCode = "200", description = "Lista de alimentos", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de alimentos", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
     @GetMapping("/list")
     public List<Food> getAllFoods() {
         return foodService.findAll();
     }
 
     @Operation(summary = "Crear un nuevo alimento", description = "Crea un nuevo alimento en el sistema.")
-    @ApiResponse(responseCode = "201", description = "Alimento creado", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
+    @ApiResponse(responseCode = "201", description = "Alimento creado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Food createFood(Food food) {
@@ -52,8 +50,7 @@ public class FoodController {
     }
 
     @Operation(summary = "Actualizar un alimento", description = "Actualiza los detalles de un alimento existente.")
-    @ApiResponse(responseCode = "200", description = "Alimento actualizado", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
+    @ApiResponse(responseCode = "200", description = "Alimento actualizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
     @ApiResponse(responseCode = "404", description = "Alimento no encontrado")
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)

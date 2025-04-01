@@ -29,8 +29,7 @@ public class SubscriptionInfantemController {
     private SubscriptionInfantemService subscriptionService;
 
     @Operation(summary = "Crear una nueva suscripción", description = "Crea una nueva suscripción asociada a un usuario.")
-    @ApiResponse(responseCode = "200", description = "Suscripción creada exitosamente", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriptionInfantem.class)))
+    @ApiResponse(responseCode = "200", description = "Suscripción creada exitosamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriptionInfantem.class)))
     @ApiResponse(responseCode = "400", description = "Error al crear la suscripción")
     @PostMapping("/create")
     public ResponseEntity<?> createSubscription(@RequestParam String userId, // Ahora se recibe el ID del usuario
@@ -46,8 +45,7 @@ public class SubscriptionInfantemController {
     }
 
     @Operation(summary = "Crear una nueva suscripción (versión nueva)", description = "Crea una nueva suscripción asociada a un usuario, versión nueva.")
-    @ApiResponse(responseCode = "200", description = "Suscripción creada exitosamente", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriptionInfantem.class)))
+    @ApiResponse(responseCode = "200", description = "Suscripción creada exitosamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriptionInfantem.class)))
     @ApiResponse(responseCode = "400", description = "Error al crear la suscripción")
     @PostMapping("/create/new")
     public ResponseEntity<?> createSubscriptionNew(@RequestParam String userId, @RequestParam String priceId,
@@ -62,8 +60,7 @@ public class SubscriptionInfantemController {
     }
 
     @Operation(summary = "Obtener cliente por email", description = "Recupera los detalles de un cliente a partir de su email y últimos 4 dígitos del método de pago.")
-    @ApiResponse(responseCode = "200", description = "Cliente encontrado", 
-                 content = @Content(mediaType = "application/json"))
+    @ApiResponse(responseCode = "200", description = "Cliente encontrado", content = @Content(mediaType = "application/json"))
     @ApiResponse(responseCode = "400", description = "Error al obtener el cliente")
     @GetMapping("/customers")
     public ResponseEntity<?> getCustomersByEmail(@RequestParam String email, @RequestParam Integer lasts4) {
@@ -103,8 +100,7 @@ public class SubscriptionInfantemController {
     }
 
     @Operation(summary = "Cancelar una suscripción", description = "Cancela una suscripción existente y devuelve la información de la misma.")
-    @ApiResponse(responseCode = "200", description = "Suscripción cancelada exitosamente", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriptionInfantem.class)))
+    @ApiResponse(responseCode = "200", description = "Suscripción cancelada exitosamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriptionInfantem.class)))
     @ApiResponse(responseCode = "400", description = "Error al cancelar la suscripción")
     @PostMapping("/cancel")
     public ResponseEntity<?> cancelSubscription(@RequestParam String subscriptionId) {
@@ -123,8 +119,7 @@ public class SubscriptionInfantemController {
     }
 
     @Operation(summary = "Obtener una suscripción de un usuario por ID", description = "Recupera la suscripción de un usuario por su ID.")
-    @ApiResponse(responseCode = "200", description = "Suscripción encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriptionInfantem.class)))
+    @ApiResponse(responseCode = "200", description = "Suscripción encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriptionInfantem.class)))
     @ApiResponse(responseCode = "404", description = "Suscripción no encontrada")
     @GetMapping("/user/{id}")
     public ResponseEntity<Object> getSubscription(@PathVariable Long id) {

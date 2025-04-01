@@ -36,16 +36,14 @@ public class DreamController {
     }
 
     @Operation(summary = "Obtener todos los sueños", description = "Devuelve la lista de todos los sueños registrados.")
-    @ApiResponse(responseCode = "200", description = "Lista de sueños obtenida exitosamente",
-            content = @Content(schema = @Schema(implementation = DreamDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de sueños obtenida exitosamente", content = @Content(schema = @Schema(implementation = DreamDTO.class)))
     @GetMapping
     public List<DreamDTO> getAllDreams() {
         return dreamService.getAllDreams().stream().map(DreamDTO::new).toList();
     }
 
     @Operation(summary = "Obtener sueño por ID", description = "Devuelve el sueño con el ID especificado.")
-    @ApiResponse(responseCode = "200", description = "Sueño encontrado",
-            content = @Content(schema = @Schema(implementation = DreamDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Sueño encontrado", content = @Content(schema = @Schema(implementation = DreamDTO.class)))
     @ApiResponse(responseCode = "404", description = "Sueño no encontrado")
     @GetMapping("/{id}")
     public ResponseEntity<DreamDTO> getDreamById(@PathVariable Long id) {
@@ -54,8 +52,7 @@ public class DreamController {
     }
 
     @Operation(summary = "Crear nuevo sueño", description = "Registra un nuevo sueño en el sistema.")
-    @ApiResponse(responseCode = "201", description = "Sueño creado exitosamente",
-            content = @Content(schema = @Schema(implementation = DreamDTO.class)))
+    @ApiResponse(responseCode = "201", description = "Sueño creado exitosamente", content = @Content(schema = @Schema(implementation = DreamDTO.class)))
     @PostMapping
     public ResponseEntity<DreamDTO> createDream(@Valid @RequestBody Dream dream) {
         Dream createdDream = dreamService.createDream(dream);
@@ -63,8 +60,7 @@ public class DreamController {
     }
 
     @Operation(summary = "Actualizar sueño", description = "Actualiza los datos de un sueño existente.")
-    @ApiResponse(responseCode = "200", description = "Sueño actualizado exitosamente",
-            content = @Content(schema = @Schema(implementation = DreamDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Sueño actualizado exitosamente", content = @Content(schema = @Schema(implementation = DreamDTO.class)))
     @ApiResponse(responseCode = "404", description = "Sueño no encontrado")
     @PutMapping("/{id}")
     public ResponseEntity<DreamDTO> updateDream(@PathVariable Long id, @Valid @RequestBody Dream dreamDetails) {

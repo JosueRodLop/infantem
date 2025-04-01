@@ -49,8 +49,7 @@ public class RecipeController {
     }
 
     @Operation(summary = "Obtener todas las recetas", description = "Recupera todas las recetas filtradas por parámetros opcionales como edad, ingredientes, y alérgenos.")
-    @ApiResponse(responseCode = "200", description = "Lista de recetas encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = RecipeDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de recetas encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RecipeDTO.class)))
     @GetMapping
     public ResponseEntity<Page<RecipeDTO>> getAllRecipes(
             @RequestParam(value = "maxAge", required = false) Integer maxAge,
@@ -87,8 +86,7 @@ public class RecipeController {
     }
 
     @Operation(summary = "Obtener recetas recomendadas", description = "Recupera las recetas recomendadas basadas en diferentes filtros como edad, ingredientes y alérgenos.")
-    @ApiResponse(responseCode = "200", description = "Lista de recetas recomendadas encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = RecipeDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de recetas recomendadas encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RecipeDTO.class)))
     @GetMapping("/recommended")
     public ResponseEntity<Page<RecipeDTO>> getAllRecommendedRecipes(
             @RequestParam(value = "maxAge", required = false) Integer maxAge,
@@ -125,8 +123,7 @@ public class RecipeController {
     }
 
     @Operation(summary = "Obtener recetas recomendadas por ID de bebé", description = "Recupera las recetas recomendadas para un bebé específico utilizando su ID.")
-    @ApiResponse(responseCode = "200", description = "Recetas recomendadas por bebé encontradas", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = RecipeDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Recetas recomendadas por bebé encontradas", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RecipeDTO.class)))
     @GetMapping("/recommended/{babyId}")
     public ResponseEntity<List<RecipeDTO>> getRecommendedRecipes(@PathVariable Integer babyId) {
         List<Recipe> recipes = recipeService.getRecommendedRecipes(babyId);
@@ -134,8 +131,7 @@ public class RecipeController {
     }
 
     @Operation(summary = "Obtener recetas recomendadas por edad", description = "Recupera las recetas recomendadas para un bebé según su edad.")
-    @ApiResponse(responseCode = "200", description = "Recetas recomendadas por edad encontradas", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = RecipeDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Recetas recomendadas por edad encontradas", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RecipeDTO.class)))
     @GetMapping("/recommended/age/{age}")
     public ResponseEntity<List<RecipeDTO>> getRecommendedRecipesByAge(@PathVariable Integer age) {
         List<Recipe> recipes = recipeService.getRecommendedRecipesByAge(age);
@@ -143,8 +139,7 @@ public class RecipeController {
     }
 
     @Operation(summary = "Obtener receta por ID", description = "Recupera los detalles de una receta utilizando su ID.")
-    @ApiResponse(responseCode = "200", description = "Receta encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Recipe.class)))
+    @ApiResponse(responseCode = "200", description = "Receta encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Recipe.class)))
     @GetMapping("/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
 
@@ -153,8 +148,7 @@ public class RecipeController {
     }
 
     @Operation(summary = "Crear una receta", description = "Crea una nueva receta para un bebé.")
-    @ApiResponse(responseCode = "201", description = "Receta creada con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Recipe.class)))
+    @ApiResponse(responseCode = "201", description = "Receta creada con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Recipe.class)))
     @PostMapping
     public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipe) {
         Recipe createdRecipe = recipeService.createRecipe(recipe);
@@ -162,8 +156,7 @@ public class RecipeController {
     }
 
     @Operation(summary = "Actualizar una receta", description = "Actualiza los detalles de una receta existente.")
-    @ApiResponse(responseCode = "200", description = "Receta actualizada con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Recipe.class)))
+    @ApiResponse(responseCode = "200", description = "Receta actualizada con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Recipe.class)))
     @PutMapping("/{id}")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @Valid @RequestBody Recipe recipeDetails) {
         User user = userService.findCurrentUser();

@@ -34,10 +34,8 @@ public class CalendarController {
     }
 
     @Operation(summary = "Obtener eventos del calendario por usuario", description = "Obtiene los eventos del calendario de un usuario para un mes y año específicos.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Eventos recuperados correctamente"),
-        @ApiResponse(responseCode = "400", description = "Parámetros de mes o año no válidos")
-    })
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Eventos recuperados correctamente"),
+            @ApiResponse(responseCode = "400", description = "Parámetros de mes o año no válidos") })
     @GetMapping
     public List<CalendarEvents> getCalendarByUserId(@RequestParam Integer month, @RequestParam Integer year)
             throws MethodArgumentNotValidException {
@@ -62,9 +60,8 @@ public class CalendarController {
 
     @Operation(summary = "Obtener eventos de un día específico", description = "Obtiene los eventos del calendario de un usuario para un día específico.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Eventos del día recuperados correctamente"),
-        @ApiResponse(responseCode = "400", description = "Formato de fecha inválido")
-    })
+            @ApiResponse(responseCode = "200", description = "Eventos del día recuperados correctamente"),
+            @ApiResponse(responseCode = "400", description = "Formato de fecha inválido") })
     @GetMapping("/{day}")
     public List<CalendarDay> getCalendarDayByUserId(@PathVariable LocalDate day) {
         List<CalendarDay> calendarDayData = calendarService.getCalendarDayByUserId(day);

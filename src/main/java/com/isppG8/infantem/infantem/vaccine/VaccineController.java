@@ -34,16 +34,14 @@ public class VaccineController {
     }
 
     @Operation(summary = "Obtener todas las vacunas", description = "Recupera la lista de todas las vacunas.")
-    @ApiResponse(responseCode = "200", description = "Lista de vacunas obtenida exitosamente", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = VaccineDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de vacunas obtenida exitosamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = VaccineDTO.class)))
     @GetMapping
     public ResponseEntity<List<VaccineDTO>> getAll() {
         return ResponseEntity.ok(this.service.getAll().stream().map(VaccineDTO::new).toList());
     }
 
     @Operation(summary = "Obtener una vacuna por su ID", description = "Recupera los detalles de una vacuna por su ID.")
-    @ApiResponse(responseCode = "200", description = "Vacuna encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = VaccineDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Vacuna encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = VaccineDTO.class)))
     @ApiResponse(responseCode = "404", description = "Vacuna no encontrada")
     @GetMapping("/{id}")
     public ResponseEntity<VaccineDTO> getById(@PathVariable Long id) {
@@ -51,8 +49,7 @@ public class VaccineController {
     }
 
     @Operation(summary = "Crear una nueva vacuna", description = "Crea una nueva vacuna.")
-    @ApiResponse(responseCode = "201", description = "Vacuna creada con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = VaccineDTO.class)))
+    @ApiResponse(responseCode = "201", description = "Vacuna creada con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = VaccineDTO.class)))
     @PostMapping
     public ResponseEntity<VaccineDTO> create(@Valid @RequestBody Vaccine vaccine) {
         return ResponseEntity.status(201).body(new VaccineDTO(this.service.save(vaccine)));

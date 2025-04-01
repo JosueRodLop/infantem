@@ -36,8 +36,7 @@ public class IntakeController {
     }
 
     @Operation(summary = "Obtener todos los registros de ingesta", description = "Recupera la lista de todos los registros de ingesta disponibles.")
-    @ApiResponse(responseCode = "200", description = "Lista de registros de ingesta", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = IntakeDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de registros de ingesta", content = @Content(mediaType = "application/json", schema = @Schema(implementation = IntakeDTO.class)))
     @GetMapping
     public ResponseEntity<List<IntakeDTO>> getAllIntakes() {
         List<IntakeDTO> intakes = this.intakeService.getAllIntakes().stream().map(IntakeDTO::new).toList();
@@ -45,8 +44,7 @@ public class IntakeController {
     }
 
     @Operation(summary = "Obtener un registro de ingesta por ID", description = "Recupera un registro de ingesta específico mediante su ID.")
-    @ApiResponse(responseCode = "200", description = "Registro de ingesta encontrado", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = IntakeDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Registro de ingesta encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = IntakeDTO.class)))
     @ApiResponse(responseCode = "404", description = "Registro de ingesta no encontrado")
     @GetMapping("/{id}")
     public ResponseEntity<IntakeDTO> getIntakeById(@PathVariable Long id) {
@@ -54,16 +52,14 @@ public class IntakeController {
     }
 
     @Operation(summary = "Crear un nuevo registro de ingesta", description = "Crea un nuevo registro de ingesta en el sistema.")
-    @ApiResponse(responseCode = "200", description = "Registro de ingesta creado", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = IntakeDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Registro de ingesta creado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = IntakeDTO.class)))
     @PostMapping
     public ResponseEntity<IntakeDTO> createIntake(@Valid @RequestBody Intake intake) {
         return ResponseEntity.ok(new IntakeDTO(this.intakeService.saveIntake(intake)));
     }
 
     @Operation(summary = "Actualizar un registro de ingesta", description = "Actualiza un registro de ingesta existente.")
-    @ApiResponse(responseCode = "200", description = "Registro de ingesta actualizado", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = IntakeDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Registro de ingesta actualizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = IntakeDTO.class)))
     @ApiResponse(responseCode = "404", description = "Registro de ingesta no encontrado")
     @PutMapping("/{id}")
     public ResponseEntity<IntakeDTO> updateIntake(@PathVariable Long id, @Valid @RequestBody Intake intake) {

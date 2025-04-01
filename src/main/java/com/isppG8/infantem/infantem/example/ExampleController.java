@@ -22,8 +22,7 @@ public class ExampleController {
     private ExampleService exampleService;
 
     @Operation(summary = "Obtener todos los ejemplos", description = "Devuelve la lista de todos los ejemplos registrados.")
-    @ApiResponse(responseCode = "200", description = "Lista de ejemplos obtenida exitosamente",
-            content = @Content(schema = @Schema(implementation = Example.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de ejemplos obtenida exitosamente", content = @Content(schema = @Schema(implementation = Example.class)))
     @GetMapping
     public List<Example> getAllExamples() {
         return exampleService.getAllExamples();

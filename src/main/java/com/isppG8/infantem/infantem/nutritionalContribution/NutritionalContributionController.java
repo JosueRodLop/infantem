@@ -27,16 +27,14 @@ public class NutritionalContributionController {
     private NutritionalContributionService nutritionalContributionService;
 
     @Operation(summary = "Obtener todas las contribuciones nutricionales", description = "Recupera la lista de todas las contribuciones nutricionales disponibles.")
-    @ApiResponse(responseCode = "200", description = "Lista de contribuciones nutricionales encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = NutritionalContribution.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de contribuciones nutricionales encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NutritionalContribution.class)))
     @GetMapping
     public List<NutritionalContribution> getNutritionalContribution() {
         return nutritionalContributionService.getAllNutritionalContributions();
     }
 
     @Operation(summary = "Obtener una contribución nutricional por su ID", description = "Recupera los detalles de una contribución nutricional específica por su ID.")
-    @ApiResponse(responseCode = "200", description = "Contribución nutricional encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = NutritionalContribution.class)))
+    @ApiResponse(responseCode = "200", description = "Contribución nutricional encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NutritionalContribution.class)))
     @ApiResponse(responseCode = "404", description = "Contribución nutricional no encontrada")
     @GetMapping("/{id}")
     public ResponseEntity<NutritionalContribution> getNutritionalContributionById(@PathVariable Long id) {
@@ -45,8 +43,7 @@ public class NutritionalContributionController {
     }
 
     @Operation(summary = "Crear una nueva contribución nutricional", description = "Crea una nueva contribución nutricional para el bebé.")
-    @ApiResponse(responseCode = "201", description = "Contribución nutricional creada con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = NutritionalContribution.class)))
+    @ApiResponse(responseCode = "201", description = "Contribución nutricional creada con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NutritionalContribution.class)))
     @PostMapping
     public NutritionalContribution createNutritionalContribution(
             @RequestBody NutritionalContribution nutritionalContribution) {
@@ -54,8 +51,7 @@ public class NutritionalContributionController {
     }
 
     @Operation(summary = "Actualizar una contribución nutricional existente", description = "Actualiza la información de una contribución nutricional específica.")
-    @ApiResponse(responseCode = "200", description = "Contribución nutricional actualizada con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = NutritionalContribution.class)))
+    @ApiResponse(responseCode = "200", description = "Contribución nutricional actualizada con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NutritionalContribution.class)))
     @ApiResponse(responseCode = "404", description = "Contribución nutricional no encontrada")
     @PutMapping("/{id}")
     public ResponseEntity<NutritionalContribution> updateNutritionalContribution(@PathVariable Long id,

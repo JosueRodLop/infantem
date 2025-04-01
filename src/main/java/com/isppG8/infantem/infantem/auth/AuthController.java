@@ -63,8 +63,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Iniciar sesión", description = "Autentica un usuario y devuelve un token JWT.")
-    @ApiResponse(responseCode = "200", description = "Autenticación exitosa",
-            content = @Content(schema = @Schema(implementation = JwtResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Autenticación exitosa", content = @Content(schema = @Schema(implementation = JwtResponse.class)))
     @ApiResponse(responseCode = "400", description = "Credenciales incorrectas")
     @PostMapping("/signin")
     public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -87,8 +86,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Obtener usuario autenticado", description = "Obtiene la información del usuario autenticado a partir del token JWT.")
-    @ApiResponse(responseCode = "200", description = "Usuario autenticado",
-            content = @Content(schema = @Schema(implementation = AuthDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Usuario autenticado", content = @Content(schema = @Schema(implementation = AuthDTO.class)))
     @ApiResponse(responseCode = "400", description = "Token inválido o error de autenticación")
     @GetMapping("/me")
     public ResponseEntity<Object> authSantos(@RequestHeader HttpHeaders headers) {
@@ -115,8 +113,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Validar token JWT", description = "Verifica si un token JWT es válido.")
-    @ApiResponse(responseCode = "200", description = "Token válido",
-            content = @Content(schema = @Schema(implementation = Boolean.class)))
+    @ApiResponse(responseCode = "200", description = "Token válido", content = @Content(schema = @Schema(implementation = Boolean.class)))
     @GetMapping("/validate")
     public ResponseEntity<Boolean> validateToken(@RequestParam String token) {
         Boolean isValid = jwtUtils.validateJwtToken(token);
@@ -124,8 +121,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Registrar nuevo usuario", description = "Registra un usuario en el sistema y devuelve un token JWT.")
-    @ApiResponse(responseCode = "200", description = "Usuario registrado exitosamente",
-            content = @Content(schema = @Schema(implementation = JwtResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = JwtResponse.class)))
     @ApiResponse(responseCode = "400", description = "Usuario o email ya en uso o código de validación incorrecto")
     @PostMapping("/signup")
     public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {

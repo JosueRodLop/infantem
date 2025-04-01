@@ -29,16 +29,14 @@ public class MilestoneController {
     private MilestoneService milestoneService;
 
     @Operation(summary = "Obtener todos los hitos", description = "Recupera todos los hitos del bebé.")
-    @ApiResponse(responseCode = "200", description = "Lista de hitos encontrada", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de hitos encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
     @GetMapping
     public List<Milestone> getAllMilestones() {
         return milestoneService.getAllMilestones();
     }
 
     @Operation(summary = "Obtener un hito por ID", description = "Recupera un hito específico por su ID.")
-    @ApiResponse(responseCode = "200", description = "Hito encontrado", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
+    @ApiResponse(responseCode = "200", description = "Hito encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
     @ApiResponse(responseCode = "404", description = "Hito no encontrado")
     @GetMapping("/{id}")
     public ResponseEntity<Milestone> getMilestoneById(@PathVariable Long id) {
@@ -47,16 +45,14 @@ public class MilestoneController {
     }
 
     @Operation(summary = "Crear un nuevo hito", description = "Crea un nuevo hito para el bebé.")
-    @ApiResponse(responseCode = "201", description = "Hito creado con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
+    @ApiResponse(responseCode = "201", description = "Hito creado con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
     @PostMapping
     public Milestone createMilestone(@RequestBody Milestone milestone) {
         return milestoneService.createMilestone(milestone);
     }
 
     @Operation(summary = "Actualizar un hito", description = "Actualiza un hito existente por su ID.")
-    @ApiResponse(responseCode = "200", description = "Hito actualizado con éxito", 
-                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
+    @ApiResponse(responseCode = "200", description = "Hito actualizado con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
     @ApiResponse(responseCode = "404", description = "Hito no encontrado")
     @PutMapping("/{id}")
     public ResponseEntity<Milestone> updateMilestone(@PathVariable Long id, @RequestBody Milestone milestoneDetails) {

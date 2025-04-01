@@ -20,16 +20,14 @@ public class AllergenController {
     private AllergenService allergenService;
 
     @Operation(summary = "Obtener todos los alérgenos", description = "Devuelve una lista de todos los alérgenos.")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
-                 content = @Content(array = @ArraySchema(schema = @Schema(implementation = AllergenDTO.class))))
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito", content = @Content(array = @ArraySchema(schema = @Schema(implementation = AllergenDTO.class))))
     @GetMapping
     public List<AllergenDTO> getAllAllergens() {
         return allergenService.getAllAllergens().stream().map(AllergenDTO::new).toList();
     }
 
     @Operation(summary = "Obtener un alérgeno por ID", description = "Devuelve un alérgeno basado en su ID.")
-    @ApiResponse(responseCode = "200", description = "Alérgeno encontrado",
-                 content = @Content(schema = @Schema(implementation = AllergenDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Alérgeno encontrado", content = @Content(schema = @Schema(implementation = AllergenDTO.class)))
     @ApiResponse(responseCode = "404", description = "Alérgeno no encontrado")
     @GetMapping("/{id}")
     public ResponseEntity<AllergenDTO> getAllergenById(@PathVariable Long id) {
@@ -38,8 +36,7 @@ public class AllergenController {
     }
 
     @Operation(summary = "Crear un nuevo alérgeno", description = "Crea y devuelve un nuevo alérgeno.")
-    @ApiResponse(responseCode = "201", description = "Alérgeno creado exitosamente",
-                 content = @Content(schema = @Schema(implementation = AllergenDTO.class)))
+    @ApiResponse(responseCode = "201", description = "Alérgeno creado exitosamente", content = @Content(schema = @Schema(implementation = AllergenDTO.class)))
     @ApiResponse(responseCode = "400", description = "Datos inválidos")
     @PostMapping
     public ResponseEntity<AllergenDTO> createAllergen(@Valid @RequestBody Allergen allergen) {
@@ -48,8 +45,7 @@ public class AllergenController {
     }
 
     @Operation(summary = "Actualizar un alérgeno", description = "Modifica los datos de un alérgeno existente.")
-    @ApiResponse(responseCode = "200", description = "Alérgeno actualizado correctamente",
-                 content = @Content(schema = @Schema(implementation = AllergenDTO.class)))
+    @ApiResponse(responseCode = "200", description = "Alérgeno actualizado correctamente", content = @Content(schema = @Schema(implementation = AllergenDTO.class)))
     @ApiResponse(responseCode = "404", description = "Alérgeno no encontrado")
     @PutMapping("/{id}")
     public ResponseEntity<AllergenDTO> updateAllergen(@PathVariable Long id,
