@@ -13,8 +13,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Exceptions", description = "Manejo de excepciones globales para la API")
 @RestControllerAdvice
 public class ExceptonHandleController {
+
+    @Operation(summary = "Manejo de excepciones globales", description = "Maneja cualquier excepción no controlada en la API.")
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor",
+            content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ErrorMessage> globalExceptionHandler(Exception ex, WebRequest request) {
@@ -24,6 +35,9 @@ public class ExceptonHandleController {
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Operation(summary = "Manejo de excepción recurso no encontrado", description = "Maneja la excepción cuando un recurso no es encontrado.")
+    @ApiResponse(responseCode = "404", description = "Recurso no encontrado",
+            content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
@@ -33,6 +47,9 @@ public class ExceptonHandleController {
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Manejo de excepción recurso no propiedad", description = "Maneja la excepción cuando un recurso no pertenece al usuario.")
+    @ApiResponse(responseCode = "403", description = "Recurso no es propiedad del usuario",
+            content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     @ExceptionHandler(ResourceNotOwnedException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ResponseEntity<ErrorMessage> resourceNotOwnedException(ResourceNotOwnedException ex, WebRequest request) {
@@ -42,6 +59,9 @@ public class ExceptonHandleController {
         return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
     }
 
+    @Operation(summary = "Manejo de excepción de validación", description = "Maneja las excepciones de validación de datos.")
+    @ApiResponse(responseCode = "400", description = "Error de validación de datos",
+            content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorMessage> handleValidationExceptions(MethodArgumentNotValidException ex,

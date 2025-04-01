@@ -14,8 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Foods", description = "Gestión de alimentos")
 @RestController
 @RequestMapping("/api/v1/food")
 public class FoodController {
@@ -27,11 +33,17 @@ public class FoodController {
         this.foodService = foodService;
     }
 
+    @Operation(summary = "Obtener todos los alimentos", description = "Recupera la lista de todos los alimentos disponibles.")
+    @ApiResponse(responseCode = "200", description = "Lista de alimentos", 
+                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
     @GetMapping("/list")
     public List<Food> getAllFoods() {
         return foodService.findAll();
     }
 
+    @Operation(summary = "Crear un nuevo alimento", description = "Crea un nuevo alimento en el sistema.")
+    @ApiResponse(responseCode = "201", description = "Alimento creado", 
+                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Food createFood(Food food) {
@@ -39,6 +51,10 @@ public class FoodController {
         return food;
     }
 
+    @Operation(summary = "Actualizar un alimento", description = "Actualiza los detalles de un alimento existente.")
+    @ApiResponse(responseCode = "200", description = "Alimento actualizado", 
+                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Food.class)))
+    @ApiResponse(responseCode = "404", description = "Alimento no encontrado")
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateFood(@PathVariable("id") Long id, @RequestBody @Valid Food food) {
@@ -52,6 +68,9 @@ public class FoodController {
         foodService.save(food);
     }
 
+    @Operation(summary = "Eliminar un alimento", description = "Elimina un alimento del sistema mediante su ID.")
+    @ApiResponse(responseCode = "200", description = "Alimento eliminado")
+    @ApiResponse(responseCode = "404", description = "Alimento no encontrado")
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteFood(@PathVariable("id") Long id) {
