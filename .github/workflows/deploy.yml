@@ -10,12 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: 'read' 
+      contents: 'read'
       id-token: 'write'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          echo "EXPO_PUBLIC_API_URL=https://ispp-2425-g8-s3.ew.r.appspot.com" >> .env
+          npx expo export -p web
 
       - name: Authenticate to Google Cloud
         id: auth
@@ -29,10 +43,9 @@ jobs:
         uses: google-github-actions/deploy-appengine@v2
         with:
           project_id: 'ispp-2425-g8-s3'
-          deliverables: 'app.yml' 
+          deliverables: 'app.yml'
           promote: true
           flags: '--quiet'
-          
 
       - name: Test deployed service
         run: curl "${{ steps.deploy.outputs.version_url }}"
