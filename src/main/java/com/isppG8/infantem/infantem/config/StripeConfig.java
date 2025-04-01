@@ -10,9 +10,9 @@ public class StripeConfig {
     private final String stripeApiKey;
 
     public StripeConfig() {
-        
+
         String apiKey = System.getenv("STRIPE_SECRET_KEY");
-        
+
         if (apiKey == null) {
             Dotenv dotenv = Dotenv.load();
             apiKey = dotenv.get("STRIPE_SECRET_KEY");
