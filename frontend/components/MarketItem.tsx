@@ -5,17 +5,18 @@ import { MarketItem } from "../types";
 export default function MarketItemComponent({ item }: { item: MarketItem }) {
   const gs = require("../static/styles/globalStyles");
 
+  // Im waiting for a good approach before adding the image
   return (
     <TouchableOpacity style={gs.card}>
       <View style={gs.row}>
-      {item.imageUrl && (
+      {/* item.imageUrl && (
         <View style={{ marginRight: 20 }}>
           <Image 
             source={{ uri: item.imageUrl }} 
             resizeMode="cover"
           />
         </View>
-      )}
+      ) */ }
         
         <View style={{ flex: 1 }}>
           <Text style={gs.cardTitle} numberOfLines={1}>{item.title}</Text>
