@@ -160,3 +160,37 @@ INSERT INTO metric_table (id, weight, height, cephalic_perimeter, date, baby_id)
 (8, 10.0, 80.0, 42, '2025-09-01', 4),
 (9, 11.0, 85.0, 43, '2025-10-01', 5),
 (10, 12.0, 90.0, 44, '2025-11-01', 5);
+
+-- Inserción de productos
+
+INSERT INTO product (title, description, shop_url, image_url) VALUES 
+(
+  'Puré de calabaza ecológico',
+  'Un puré 100% natural hecho con calabazas ecológicas ideal para bebés mayores de 6 meses.',
+  'https://www.tiendanatural.com/pure-calabaza',
+  'https://cdn.tiendanatural.com/images/pure-calabaza.jpg'
+),
+(
+  'Biberón anticólicos Avent',
+  'Biberón de 260ml con sistema anticólicos, recomendado por pediatras.',
+  'https://www.bebesmarket.com/biberon-avent-anticolicos',
+  'https://www.bebesmarket.com/images/biberon-avent.jpg'
+),
+(
+  'Set de cucharas blandas',
+  'Cucharas de silicona para bebés, suaves con las encías y aptas para lavavajillas.',
+  'https://www.pequebebe.es/set-cucharas-blandas',
+  'https://www.pequebebe.es/images/cucharas-bebes.jpg'
+),
+(
+  'Trona evolutiva de madera',
+  'Trona ajustable en altura, fabricada con madera natural y acabados seguros para bebés.',
+  'https://www.tronasymas.com/trona-evolutiva-madera',
+  'https://www.tronasymas.com/images/trona-evolutiva.jpg'
+),
+(
+  'Crema hidratante para bebé',
+  'Crema dermatológicamente testada para el cuidado diario de la piel del bebé.',
+  'https://www.bebecuidado.com/crema-hidratante-bebe',
+  'https://www.bebecuidado.com/images/crema-bebe.jpg'
+);

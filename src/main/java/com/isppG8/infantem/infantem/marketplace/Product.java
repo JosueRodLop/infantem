@@ -10,8 +10,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Product {
     
     @Id
@@ -20,20 +24,16 @@ public class Product {
 
     @NotBlank
     @Size(min = 3)
-    private String name;
+    private String title;
 
     @NotBlank
     @Size(min = 10, max = 255)
     private String description;
 
-    @NotNull
-    @Positive
-    private Float price;
-
-    @NotBlank
-    private String provider;
-
     @NotBlank
     @URL
-    private String link;
+    private String shopUrl;
+
+    @URL
+    private String imageUrl;
 }
