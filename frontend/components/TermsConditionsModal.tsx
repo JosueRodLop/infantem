@@ -25,17 +25,17 @@ const TermsConditionsModal = ({
 
   2. OBJETO
   Infantem es una aplicación móvil diseñada para asistir a padres y madres en el seguimiento de la alimentación, el crecimiento y los hitos de desarrollo de sus hijos. La App incluye, entre otras funcionalidades, recomendaciones de recetas personalizadas, detección de alergias e intolerancias alimentarias, un marketplace de productos recomendados, y un sistema de seguimiento de hitos del desarrollo.
-  
+
   3. FUNCIONALIDADES DE LA APLICACIÓN
   3.1 Recomendaciones Personalizadas de Recetas
   La App recomienda recetas y menús basados en la edad del bebé y los alimentos que puede ir introduciendo a su dieta. Las recomendaciones se ajustan según las preferencias del usuario, incluyendo alergias o intolerancias alimentarias.
-  
+
   3.2 Detección de Alergias e Intolerancias
   La aplicación proporciona un sistema de preguntas para ayudar a los padres a detectar posibles alergias o intolerancias a alimentos. En caso de sospecha de alergia o intolerancia, la App recomienda una consulta médica para confirmar el diagnóstico.
 
   3.3 Registro de Alimentación
   La App permite a los usuarios registrar las comidas de sus hijos, llevando un seguimiento de los alimentos introducidos y proporcionando recomendaciones adicionales basadas en la dieta del bebé.
-  
+
   3.4 Marketplace
   El Marketplace de la App redirige a los usuarios a plataformas de terceros para adquirir productos recomendados, tales como alimentos o accesorios para el bebé. Los productos serán proporcionados por empresas afiliadas, y los usuarios deberán seguir sus términos y condiciones al realizar compras.
 
@@ -50,11 +50,11 @@ const TermsConditionsModal = ({
 
   3.8 Diferenciación entre Plan Básico y Premium
   La App ofrece dos modalidades de uso:
-  
-      - Plan Básico: Incluye funcionalidades esenciales como la detección de alergias, recetas generales y acceso al Marketplace.
-  
-      - Plan Premium: Amplía estas funciones con recetas personalizadas, seguimiento detallado de la salud y desarrollo del bebé, y recordatorios inteligentes. Tiene un coste de 4,99€ al mes.
-  
+
+  - Plan Básico: Incluye funcionalidades esenciales como la detección de alergias, recetas generales y acceso al Marketplace.
+
+  - Plan Premium: Amplía estas funciones con recetas personalizadas, seguimiento detallado de la salud y desarrollo del bebé, y recordatorios inteligentes. Tiene un coste de 4,99€ al mes.
+
   4. USO DE LA APLICACIÓN
   4.1 Requisitos de Edad
   El usuario debe ser mayor de 18 años para utilizar la App. En el caso de usuarios menores de 18 años, la App solo debe ser utilizada con la supervisión de un adulto responsable.
@@ -68,7 +68,7 @@ const TermsConditionsModal = ({
   5. PROTECCIÓN DE DATOS
   5.1 Tratamiento de Datos Personales
   En cumplimiento con el Reglamento General de Protección de Datos (RGPD) y la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD), Infantem se compromete a proteger la privacidad de los datos personales de los usuarios.
-  
+
   Los datos personales proporcionados por los usuarios, como los relacionados con la salud del bebé, serán procesados exclusivamente para los fines de proporcionar las funcionalidades de la App, como el seguimiento del crecimiento, la personalización de recetas, y la detección de alergias.
 
   5.2 Consentimiento
@@ -87,11 +87,18 @@ const TermsConditionsModal = ({
   6.3 Salud del Bebé
   Infantem no se hace responsable de las consecuencias derivadas del uso de las recomendaciones de la App, especialmente en lo que respecta a la salud del bebé. Cualquier cambio en la dieta o el seguimiento de salud debe ser supervisado por un profesional médico.
 
-  7. MODIFICACIONES
-  Infantem se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento, sin necesidad de aviso previo. Cualquier cambio será publicado en esta página y entrará en vigor inmediatamente después de su publicación. El uso continuado de la App después de dicha publicación constituye la aceptación de los nuevos términos.
+  7. PROPIEDAD INTELECTUAL
+  Todos los derechos de propiedad intelectual relacionados con la aplicación Infantem, incluyendo el código, diseño, logotipos, textos, imágenes y otros elementos, pertenecen al G8 de ISPP 2025. Está prohibida la reproducción, distribución, comunicación pública o transformación de cualquier elemento de la aplicación sin la autorización expresa de los titulares de los derechos.
 
-  8. LEY APLICABLE Y JURISDICCIÓN
-  Estos Términos y Condiciones se regirán e interpretarán de acuerdo con la legislación española. Cualquier disputa derivada del uso de la App será resuelta ante los tribunales competentes de Sevilla, España.
+  8. SUSCRIPCIÓN Y CANCELACIÓN
+  8.1 Suscripción Premium
+  Las suscripciones al plan Premium se realizan mensualmente y se renuevan de forma automática hasta que el usuario decida cancelarlas.
+
+  8.2 Procedimiento de Cancelación
+  La cancelación de la suscripción Premium se podrá realizar en cualquier momento a través de la opción disponible en el perfil del usuario. Cuando se cancela la suscripción, esta dejará de tener efecto cuando termine el periodo mensual ya pagado.
+
+  8.3 Política de Reembolsos
+  No existe política de reembolsos de ningún tipo para las suscripciones Premium.
 
   9. ACUERDO DEL NIVEL DE SERVICIO
 
@@ -177,9 +184,22 @@ const TermsConditionsModal = ({
   - Infantem se reserva el derecho de actualizar los términos del SLA para reflejar mejoras en el servicio.
   - Su vigencia comienza en la fecha de aceptación por parte del usuario.
 
-  Fecha de última actualización: 02/04/2025
+  [Fecha de última actualización del ANS: 02/04/2025]
 
-  10. CONTACTO
+  10. TERMINACIÓN DEL SERVICIO
+  Infantem podría cancelar el plan de un usuario o todo su acceso al sistema si se detecta cualquier uso indebido en la App, incluyendo pero no limitándose a: intentos de vulneración de la seguridad, suplantación de identidad, uso con fines comerciales no autorizados, o cualquier actividad que contravenga estos Términos y Condiciones.
+
+  11. INFORMACIÓN DEL PROVEEDOR
+  - Dirección: Escuela Técnica Superior de Ingeniería Informática, Avenida Reina Mercedes, Universidad de Sevilla.
+  - Contacto: ispp.g8@gmail.com
+
+  12. MODIFICACIONES
+  Infantem se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento, sin necesidad de aviso previo. Cualquier cambio será publicado en esta página y entrará en vigor inmediatamente después de su publicación. El uso continuado de la App después de dicha publicación constituye la aceptación de los nuevos términos.
+
+  13. LEY APLICABLE Y JURISDICCIÓN
+  Estos Términos y Condiciones se regirán e interpretarán de acuerdo con la legislación española. Cualquier disputa derivada del uso de la App será resuelta ante los tribunales competentes de Sevilla, España.
+
+  14. CONTACTO
   Si tiene alguna pregunta sobre estos Términos y Condiciones, puede ponerse en contacto con nosotros a través de la dirección de correo electrónico: soporte@infantem.com.
   `;
 
