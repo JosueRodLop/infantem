@@ -164,33 +164,22 @@ INSERT INTO metric_table (id, weight, height, cephalic_perimeter, date, baby_id)
 -- Inserción de productos
 
 INSERT INTO product (title, description, shop_url, image_url) VALUES 
-(
-  'Puré de calabaza ecológico',
-  'Un puré 100% natural hecho con calabazas ecológicas ideal para bebés mayores de 6 meses.',
-  'https://www.tiendanatural.com/pure-calabaza',
-  'https://cdn.tiendanatural.com/images/pure-calabaza.jpg'
-),
-(
-  'Biberón anticólicos Avent',
-  'Biberón de 260ml con sistema anticólicos, recomendado por pediatras.',
-  'https://www.bebesmarket.com/biberon-avent-anticolicos',
-  'https://www.bebesmarket.com/images/biberon-avent.jpg'
-),
-(
-  'Set de cucharas blandas',
-  'Cucharas de silicona para bebés, suaves con las encías y aptas para lavavajillas.',
-  'https://www.pequebebe.es/set-cucharas-blandas',
-  'https://www.pequebebe.es/images/cucharas-bebes.jpg'
-),
-(
-  'Trona evolutiva de madera',
-  'Trona ajustable en altura, fabricada con madera natural y acabados seguros para bebés.',
-  'https://www.tronasymas.com/trona-evolutiva-madera',
-  'https://www.tronasymas.com/images/trona-evolutiva.jpg'
-),
-(
-  'Crema hidratante para bebé',
-  'Crema dermatológicamente testada para el cuidado diario de la piel del bebé.',
-  'https://www.bebecuidado.com/crema-hidratante-bebe',
-  'https://www.bebecuidado.com/images/crema-bebe.jpg'
-);
+('Puré de calabaza ecológico', 'Un puré 100% natural hecho con calabazas ecológicas ideal para bebés mayores de 6 meses.', 'https://www.tiendanatural.com/pure-calabaza', 'https://cdn.tiendanatural.com/images/pure-calabaza.jpg'),
+('Biberón anticólicos Avent', 'Biberón de 260ml con sistema anticólicos, recomendado por pediatras.', 'https://www.bebesmarket.com/biberon-avent-anticolicos', 'https://www.bebesmarket.com/images/biberon-avent.jpg'),
+('Set de cucharas blandas', 'Cucharas de silicona para bebés, suaves con las encías y aptas para lavavajillas.', 'https://www.pequebebe.es/set-cucharas-blandas', 'https://www.pequebebe.es/images/cucharas-bebes.jpg'),
+('Trona evolutiva de madera', 'Trona ajustable en altura, fabricada con madera natural y acabados seguros para bebés.', 'https://www.tronasymas.com/trona-evolutiva-madera', 'https://www.tronasymas.com/images/trona-evolutiva.jpg'),
+('Crema hidratante para bebé', 'Crema dermatológicamente testada para el cuidado diario de la piel del bebé.', 'https://www.bebecuidado.com/crema-hidratante-bebe', 'https://www.bebecuidado.com/images/crema-bebe.jpg'),
+('Toallitas húmedas sin perfume', 'Toallitas suaves sin perfume, ideales para pieles sensibles y con aloe vera.', 'https://www.bebeseco.com/toallitas-sin-perfume', 'https://www.bebeseco.com/images/toallitas.jpg'),
+('Termómetro digital infantil', 'Termómetro con punta flexible y lectura rápida en menos de 10 segundos.', 'https://www.pequesalud.com/termometro-digital-bebe', 'https://www.pequesalud.com/images/termometro.jpg'),
+('Chupete ortodóntico 0-6 meses', 'Diseñado para adaptarse al paladar del bebé y favorecer el desarrollo oral.', 'https://www.chupetesycia.com/chupete-0-6', 'https://www.chupetesycia.com/images/chupete.jpg'),
+('Cepillo de dientes para bebés', 'Cepillo suave con mango ergonómico para comenzar la higiene dental temprana.', 'https://www.bebehigiene.com/cepillo-bebe', 'https://www.bebehigiene.com/images/cepillo.jpg'),
+('Juego de baberos impermeables', 'Baberos de colores, resistentes al agua y fáciles de limpiar.', 'https://www.bebestienda.com/baberos-impermeables', 'https://www.bebestienda.com/images/baberos.jpg'),
+('Pañales ecológicos talla 2', 'Pañales biodegradables, cómodos y sin químicos agresivos para la piel del bebé.', 'https://www.panalverde.com/paales-talla-2', 'https://www.panalverde.com/images/panales.jpg'),
+('Mochila portabebés ergonómica', 'Mochila ajustable con soporte lumbar para mayor comodidad del bebé y el portador.', 'https://www.portabebesnatural.com/mochila-ergonomica', 'https://www.portabebesnatural.com/images/mochila.jpg'),
+('Set de alimentación de silicona', 'Incluye plato con ventosa, cuchara y vaso con tapa, todo libre de BPA.', 'https://www.bebesilicone.com/set-alimentacion', 'https://www.bebesilicone.com/images/set.jpg'),
+('Crema solar para bebés SPF 50', 'Protección alta, resistente al agua y formulada para pieles sensibles.', 'https://www.bebesol.com/crema-solar-spf50', 'https://www.bebesol.com/images/crema.jpg'),
+('Silla de auto grupo 0+', 'Silla de auto con sistema Isofix, reclinable y con protección lateral.', 'https://www.sillasauto.com/silla-grupo-0', 'https://www.sillasauto.com/images/silla.jpg'),
+('Manta de juego con arcos', 'Manta suave con juguetes colgantes para estimular el desarrollo del bebé.', 'https://www.juegosbebe.com/manta-juego', 'https://www.juegosbebe.com/images/manta.jpg'),
+('Bañera plegable para bebés', 'Bañera portátil, fácil de almacenar y con soporte antideslizante.', 'https://www.bebebano.com/banera-plegable', 'https://www.bebebano.com/images/banera.jpg'),
+('Cojín de lactancia ergonómico', 'Cojín que facilita la postura durante la lactancia y el descanso del bebé.', 'https://www.lactancia.com/cojin-lactancia', 'https://www.lactancia.com/images/cojin.jpg'),
+('Sonajero de madera natural', 'Sonajero seguro y ecológico, ideal para estimular los sentidos del bebé.', 'https://www.juguetesbebe.com/sonajero-madera', 'https://www.juguetesbebe.com/images/sonajero.jpg');
