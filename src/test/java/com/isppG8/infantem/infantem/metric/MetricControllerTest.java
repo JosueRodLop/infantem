@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.isppG8.infantem.infantem.metric.dto.MetricSummary;
+
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
@@ -37,7 +39,7 @@ public class MetricControllerTest {
         metric.setArmCircumference(17.1);
 
         when(metricService.getMetricById(1L)).thenReturn(metric);
-        ResponseEntity<Metric> response = metricController.getMetricById(1L);
+        ResponseEntity<MetricSummary> response = metricController.getMetricById(1L);
         assertNotNull(response.getBody());
         assertEquals(3.5, response.getBody().getWeight());
     }
