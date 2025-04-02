@@ -93,10 +93,95 @@ const TermsConditionsModal = ({
   8. LEY APLICABLE Y JURISDICCIÓN
   Estos Términos y Condiciones se regirán e interpretarán de acuerdo con la legislación española. Cualquier disputa derivada del uso de la App será resuelta ante los tribunales competentes de Sevilla, España.
 
-  9. CONTACTO  
+  9. ACUERDO DEL NIVEL DE SERVICIO
+
+  Este Acuerdo de Nivel de Servicio (SLA) establece los compromisos de disponibilidad, soporte y calidad del servicio proporcionado por Infantem, la aplicación inteligente para la alimentación de bebés. Este acuerdo es aplicable a todos los usuarios registrados que utilizan la aplicación.
+
+  El objetivo de este SLA es garantizar un servicio confiable y de alta calidad, definiendo estándares de desempeño, tiempos de respuesta y mecanismos de compensación en caso de incumplimiento.
+
+  9.1 Definiciones
+
+  - Proveedor: Infantem y sus operadores.
+  - Usuario: Cualquier persona que haya registrado una cuenta y utilice la aplicación.
+  - Cliente: Cualquier persona que haya obtenido el plan Premium de la aplicación.
+  - Tiempo de actividad (Uptime): Porcentaje de tiempo en el que el servicio opera correctamente.
+  - Tiempo de respuesta: Tiempo máximo en el que el equipo de soporte responde a una incidencia reportada.
+  - Tiempo de resolución: Periodo estimado para solucionar una incidencia reportada.
+  - Mantenimiento programado: Periodos planificados de inactividad para actualizaciones o mejoras del sistema.
+  - Incidencia: Cualquier problema o interrupción en el servicio que afecte a los usuarios.
+  - Escalamiento: Procedimiento mediante el cual una incidencia se eleva a niveles superiores de soporte si no puede resolverse en un nivel inferior.
+
+  9.2 Nivel de Servicio
+
+  9.2.1 Disponibilidad
+
+  - Infantem garantiza una disponibilidad del servicio del 99.9% mensual.
+  - En caso de incumplimiento de este nivel, se aplicarán compensaciones según la sección 6.
+  - No se considerará incumplimiento del SLA si la indisponibilidad se debe a fuerza mayor o causas ajenas al proveedor.
+  - Infantem implementará sistemas de resolución de incidencias como plan de contingencia a los posibles fallos del sistema.
+
+  9.2.2 Tiempos de Respuesta y Resolución
+
+  - Crítica: Fallo total del servicio, afectando a todos los usuarios. Tiempo de Respuesta: 2 horas. Tiempo de Respuesta: 4 horas.
+  - Alta: Funcionalidad esencial afectada, impactando a la mayoría de los usuarios. Tiempo de Respuesta: 4 horas. Tiempo de Respuesta: 10 horas.
+  - Media: Funcionalidad no esencial afectada, afectando a algunos usuarios. Tiempo de Respuesta: 8 horas. Tiempo de Respuesta: 22 horas.
+  - Baja: Errores menores o consultas generales. Tiempo de Respuesta: 24 horas. Tiempo de Respuesta: 60 horas
+
+  Las incidencias de nivel Crítico y Alta recibirán prioridad y serán escaladas de inmediato al equipo de soporte avanzado.
+
+  9.3 Soporte Técnico
+
+  - El servicio de atención al cliente se hará mediante el correo de contacto especificado arriba, con los tiempos de respuesta descritos en el punto 3.2 en caso de incidencias con la app; si se trata de dudas por el uso de la app u otros asuntos, el tiempo de respuesta aproximado será de entre 24 y 48 horas.
+  - Contacto: ispp.g8@gmail.com o formulario en la app.
+  - El soporte se ofrece en español e inglés.
+  - Los usuarios con suscripción Premium recibirán atención prioritaria.
+
+  9.4 Mantenimiento Programado
+
+  - Se notificará con 48 horas de anticipación.
+  - Se programará en horarios de menor uso.
+  - Infantem realizará mantenimientos para mejorar la seguridad, rendimiento y estabilidad del servicio.
+  - Durante el mantenimiento, algunos o todos los servicios pueden estar temporalmente limitados.
+
+
+  9.5 Penalizaciones y Compensaciones
+
+  Si Infantem no cumple con el _99.9%_ de disponibilidad, los usuarios afectados podrán solicitar:
+
+  - Usuarios Premium: Una extensión gratuita de su suscripción Premium proporcional al tiempo de inactividad.
+  - Usuarios gratuitos: Un cupón de descuento para la suscripción Premium en futuras renovaciones.
+
+  9.6 Escalamiento de Incidencias
+
+  Si un usuario considera que una incidencia no ha sido resuelta dentro de los plazos establecidos, puede solicitar un escalamiento del problema. Los niveles de escalamiento incluyen:
+
+  1. Soporte General.
+  2. Soporte Técnico Avanzado.
+  3. Equipo de Ingeniería y Desarrollo.
+  4. Dirección Técnica.
+
+  Cada nivel de escalamiento tendrá un plazo adicional de 12 horas para revisar el problema y ofrecer una solución viable.
+
+  9.7 Exclusiones del SLA
+
+  Este SLA no cubre interrupciones causadas por:
+
+  - Factores fuera del control de Infantem (fuerza mayor, fallos de terceros, etc.).
+  - Uso indebido de la aplicación.
+  - Mantenimientos programados anunciados previamente.
+  - Problemas derivados de hardware o software del usuario.
+
+  9.8 Modificaciones y Vigencia
+
+  - Este SLA puede ser modificado con previo aviso por correo a los usuarios.
+  - Infantem se reserva el derecho de actualizar los términos del SLA para reflejar mejoras en el servicio.
+  - Su vigencia comienza en la fecha de aceptación por parte del usuario.
+
+  Fecha de última actualización: 02/04/2025
+
+  10. CONTACTO
   Si tiene alguna pregunta sobre estos Términos y Condiciones, puede ponerse en contacto con nosotros a través de la dirección de correo electrónico: soporte@infantem.com.
-`
-    ;
+  `;
 
   return (
     <Modal
