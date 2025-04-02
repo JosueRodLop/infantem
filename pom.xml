@@ -193,10 +193,22 @@
 				<version>2.4.4</version>
 			</plugin>
 			<plugin>
-                <groupId>net.revelc.code.formatter</groupId>
-                <artifactId>formatter-maven-plugin</artifactId>
+				<groupId>net.revelc.code.formatter</groupId>
+				<artifactId>formatter-maven-plugin</artifactId>
 				<version>2.25.0</version>
-            </plugin>
+				<configuration>
+					<configFile>/formatter.xml</configFile>
+					<lineEnding>LF</lineEnding>
+					<removeUnusedImports>true</removeUnusedImports>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
     			<groupId>org.sonarsource.scanner.maven</groupId>
     			<artifactId>sonar-maven-plugin</artifactId>
