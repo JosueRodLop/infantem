@@ -11,6 +11,7 @@ public class MetricSummary {
     private Double height;
     private Double headCircumference;
     private Double armCircumference;
+    private Double weightForHeight;
 
     public MetricSummary(Integer id, Double weight, Double height, Double headCircumference, Double armCircumference) {
         this.id = id;
@@ -18,5 +19,10 @@ public class MetricSummary {
         this.height = height;
         this.headCircumference = headCircumference;
         this.armCircumference = armCircumference;
+        this.weightForHeight = calculateWeightForHeight();
+    }
+
+    private Double calculateWeightForHeight() {
+        return (height != null && height > 0) ? weight / height : 0;
     }
 }
