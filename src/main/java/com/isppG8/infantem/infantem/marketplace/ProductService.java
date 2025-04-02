@@ -1,7 +1,5 @@
 package com.isppG8.infantem.infantem.marketplace;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +17,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> getProducts(Pageable pageable){
+    public Page<Product> getProducts(Pageable pageable) {
         return this.productRepository.findAll(pageable);
     }
 }

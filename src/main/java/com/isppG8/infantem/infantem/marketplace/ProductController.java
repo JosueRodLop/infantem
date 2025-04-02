@@ -1,7 +1,5 @@
 package com.isppG8.infantem.infantem.marketplace;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,13 +22,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Product>> getAllProducts(
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<Page<Product>> getAllProducts(@RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size) {
 
-                Pageable pageable = PageRequest.of(page, size);
-                Page<Product> productPage = this.productService.getProducts(pageable);
-        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage = this.productService.getProducts(pageable);
+
         return ResponseEntity.ok(productPage);
     }
 }
