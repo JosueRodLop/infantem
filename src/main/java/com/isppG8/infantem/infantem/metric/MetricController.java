@@ -37,27 +37,17 @@ public class MetricController {
     @GetMapping("/{id}")
     public ResponseEntity<MetricSummary> getMetricById(@PathVariable Long id) {
         Metric metric = metricService.getMetricById(id);
-        MetricSummary metricDTO = new MetricSummary(
-            metric.getId(),
-            metric.getWeight(),
-            metric.getHeight(),
-            metric.getHeadCircumference(),
-            metric.getArmCircumference()
-        );
+        MetricSummary metricDTO = new MetricSummary(metric.getId(), metric.getWeight(), metric.getHeight(),
+                metric.getHeadCircumference(), metric.getArmCircumference());
         return ResponseEntity.ok(metricDTO);
     }
 
     @GetMapping("/baby/{babyId}")
     public ResponseEntity<List<MetricSummary>> getAllMetricsByBabyId(@PathVariable Integer babyId) {
         List<MetricSummary> metrics = metricService.getAllMetricsByBabyId(babyId).stream()
-            .map(metric -> new MetricSummary(
-                metric.getId(),
-                metric.getWeight(),
-                metric.getHeight(),
-                metric.getHeadCircumference(),
-                metric.getArmCircumference()
-            ))
-            .collect(Collectors.toList());
+                .map(metric -> new MetricSummary(metric.getId(), metric.getWeight(), metric.getHeight(),
+                        metric.getHeadCircumference(), metric.getArmCircumference()))
+                .collect(Collectors.toList());
         return ResponseEntity.ok(metrics);
     }
 
