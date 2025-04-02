@@ -12,12 +12,12 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository){
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     @Transactional(readOnly = true)
-    public List<Product> getAllProducts(){
+    public List<Product> getAllProducts() {
         return this.productRepository.findAll();
     }
 }
