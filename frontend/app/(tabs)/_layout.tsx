@@ -74,7 +74,7 @@ export default function TabLayout() {
         options={{
           lazy: true,
           headerShown: false,
-          tabBarLabel: "Mercado",
+          tabBarLabel: "Tienda",
           tabBarIcon: ({ color }) => (
             <Ionicons name='cash' color={color} size={24} />
           ),

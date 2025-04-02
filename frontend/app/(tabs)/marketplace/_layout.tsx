@@ -25,7 +25,7 @@ function StackLayout() {
 			<Stack.Screen
 				name="index"
 				options={{
-					title: "Mercado",
+					title: "Tienda",
 				}}
 			/>
 		</Stack>
