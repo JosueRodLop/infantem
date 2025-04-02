@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isppG8.infantem.infantem.metric.dto.MetricSummary;
+import com.isppG8.infantem.infantem.metric.dto.MetricDTO;
 
 @RestController
 @RequestMapping("/api/v1/metrics")
@@ -35,17 +35,17 @@ public class MetricController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MetricSummary> getMetricById(@PathVariable Long id) {
+    public ResponseEntity<MetricDTO> getMetricById(@PathVariable Long id) {
         Metric metric = metricService.getMetricById(id);
-        MetricSummary metricDTO = new MetricSummary(metric.getId(), metric.getWeight(), metric.getHeight(),
+        MetricDTO metricDTO = new MetricDTO(metric.getId(), metric.getWeight(), metric.getHeight(),
                 metric.getHeadCircumference(), metric.getArmCircumference());
         return ResponseEntity.ok(metricDTO);
     }
 
     @GetMapping("/baby/{babyId}")
-    public ResponseEntity<List<MetricSummary>> getAllMetricsByBabyId(@PathVariable Integer babyId) {
-        List<MetricSummary> metrics = metricService.getAllMetricsByBabyId(babyId).stream()
-                .map(metric -> new MetricSummary(metric.getId(), metric.getWeight(), metric.getHeight(),
+    public ResponseEntity<List<MetricDTO>> getAllMetricsByBabyId(@PathVariable Integer babyId) {
+        List<MetricDTO> metrics = metricService.getAllMetricsByBabyId(babyId).stream()
+                .map(metric -> new MetricDTO(metric.getId(), metric.getWeight(), metric.getHeight(),
                         metric.getHeadCircumference(), metric.getArmCircumference()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(metrics);
