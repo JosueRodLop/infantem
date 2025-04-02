@@ -12,7 +12,6 @@ export default function MarketItemComponent({ item }: { item: MarketItem }) {
         <View style={{ marginRight: 20 }}>
           <Image 
             source={{ uri: item.imageUrl }} 
-            style={[gs.navbarImage, { width: 80, height: 80 }]} 
             resizeMode="cover"
           />
         </View>
