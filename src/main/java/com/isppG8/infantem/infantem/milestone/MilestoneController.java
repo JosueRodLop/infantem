@@ -28,42 +28,45 @@ public class MilestoneController {
     @Autowired
     private MilestoneService milestoneService;
 
-    @Operation(summary = "Obtener todos los hitos", description = "Recupera todos los hitos del bebé.")
-    @ApiResponse(responseCode = "200", description = "Lista de hitos encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
-    @GetMapping
+    @Operation(summary = "Obtener todos los hitos", description = "Recupera todos los hitos del bebé.") @ApiResponse(
+            responseCode = "200", description = "Lista de hitos encontrada",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Milestone.class))) @GetMapping
     public List<Milestone> getAllMilestones() {
         return milestoneService.getAllMilestones();
     }
 
-    @Operation(summary = "Obtener un hito por ID", description = "Recupera un hito específico por su ID.")
-    @ApiResponse(responseCode = "200", description = "Hito encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
-    @ApiResponse(responseCode = "404", description = "Hito no encontrado")
-    @GetMapping("/{id}")
+    @Operation(summary = "Obtener un hito por ID", description = "Recupera un hito específico por su ID.") @ApiResponse(
+            responseCode = "200", description = "Hito encontrado",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Milestone.class))) @ApiResponse(responseCode = "404",
+                            description = "Hito no encontrado") @GetMapping("/{id}")
     public ResponseEntity<Milestone> getMilestoneById(@PathVariable Long id) {
         Optional<Milestone> milestone = milestoneService.getMilestoneById(id);
         return milestone.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Crear un nuevo hito", description = "Crea un nuevo hito para el bebé.")
-    @ApiResponse(responseCode = "201", description = "Hito creado con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
-    @PostMapping
+    @Operation(summary = "Crear un nuevo hito", description = "Crea un nuevo hito para el bebé.") @ApiResponse(
+            responseCode = "201", description = "Hito creado con éxito",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Milestone.class))) @PostMapping
     public Milestone createMilestone(@RequestBody Milestone milestone) {
         return milestoneService.createMilestone(milestone);
     }
 
-    @Operation(summary = "Actualizar un hito", description = "Actualiza un hito existente por su ID.")
-    @ApiResponse(responseCode = "200", description = "Hito actualizado con éxito", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Milestone.class)))
-    @ApiResponse(responseCode = "404", description = "Hito no encontrado")
-    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar un hito", description = "Actualiza un hito existente por su ID.") @ApiResponse(
+            responseCode = "200", description = "Hito actualizado con éxito",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Milestone.class))) @ApiResponse(responseCode = "404",
+                            description = "Hito no encontrado") @PutMapping("/{id}")
     public ResponseEntity<Milestone> updateMilestone(@PathVariable Long id, @RequestBody Milestone milestoneDetails) {
         Optional<Milestone> updatedMilestone = milestoneService.updateMilestone(id, milestoneDetails);
         return updatedMilestone.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Eliminar un hito", description = "Elimina un hito específico por su ID.")
-    @ApiResponse(responseCode = "204", description = "Hito eliminado con éxito")
-    @ApiResponse(responseCode = "404", description = "Hito no encontrado")
-    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar un hito", description = "Elimina un hito específico por su ID.") @ApiResponse(
+            responseCode = "204", description = "Hito eliminado con éxito") @ApiResponse(responseCode = "404",
+                    description = "Hito no encontrado") @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMilestone(@PathVariable Long id) {
         return milestoneService.deleteMilestone(id) ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();

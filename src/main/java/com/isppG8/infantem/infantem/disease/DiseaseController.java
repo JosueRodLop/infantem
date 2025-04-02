@@ -32,40 +32,44 @@ public class DiseaseController {
         this.diseaseService = service;
     }
 
-    @Operation(summary = "Obtener todas las enfermedades", description = "Devuelve la lista de todas las enfermedades registradas.")
-    @ApiResponse(responseCode = "200", description = "Lista de enfermedades obtenida exitosamente", content = @Content(schema = @Schema(implementation = Disease.class)))
-    @GetMapping
+    @Operation(summary = "Obtener todas las enfermedades",
+            description = "Devuelve la lista de todas las enfermedades registradas.") @ApiResponse(responseCode = "200",
+                    description = "Lista de enfermedades obtenida exitosamente",
+                    content = @Content(schema = @Schema(implementation = Disease.class))) @GetMapping
     public List<Disease> getAll() {
         return diseaseService.getAll();
     }
 
-    @Operation(summary = "Obtener enfermedad por ID", description = "Devuelve la enfermedad con el ID especificado.")
-    @ApiResponse(responseCode = "200", description = "Enfermedad encontrada", content = @Content(schema = @Schema(implementation = Disease.class)))
-    @ApiResponse(responseCode = "404", description = "Enfermedad no encontrada")
-    @GetMapping("/{id}")
+    @Operation(summary = "Obtener enfermedad por ID",
+            description = "Devuelve la enfermedad con el ID especificado.") @ApiResponse(responseCode = "200",
+                    description = "Enfermedad encontrada",
+                    content = @Content(schema = @Schema(implementation = Disease.class))) @ApiResponse(
+                            responseCode = "404", description = "Enfermedad no encontrada") @GetMapping("/{id}")
     public Disease getById(@PathVariable Long id) {
         return diseaseService.getById(id);
     }
 
-    @Operation(summary = "Crear nueva enfermedad", description = "Registra una nueva enfermedad en el sistema.")
-    @ApiResponse(responseCode = "200", description = "Enfermedad creada exitosamente", content = @Content(schema = @Schema(implementation = Disease.class)))
-    @PostMapping
+    @Operation(summary = "Crear nueva enfermedad",
+            description = "Registra una nueva enfermedad en el sistema.") @ApiResponse(responseCode = "200",
+                    description = "Enfermedad creada exitosamente",
+                    content = @Content(schema = @Schema(implementation = Disease.class))) @PostMapping
     public ResponseEntity<Disease> create(@RequestBody Disease disease) {
         return ResponseEntity.ok(diseaseService.save(disease));
     }
 
-    @Operation(summary = "Actualizar enfermedad", description = "Actualiza los datos de una enfermedad existente.")
-    @ApiResponse(responseCode = "200", description = "Enfermedad actualizada exitosamente", content = @Content(schema = @Schema(implementation = Disease.class)))
-    @ApiResponse(responseCode = "404", description = "Enfermedad no encontrada")
-    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar enfermedad",
+            description = "Actualiza los datos de una enfermedad existente.") @ApiResponse(responseCode = "200",
+                    description = "Enfermedad actualizada exitosamente",
+                    content = @Content(schema = @Schema(implementation = Disease.class))) @ApiResponse(
+                            responseCode = "404", description = "Enfermedad no encontrada") @PutMapping("/{id}")
     public ResponseEntity<Disease> update(@PathVariable Long id, @Valid @RequestBody Disease disease) {
         return ResponseEntity.ok(diseaseService.update(id, disease));
     }
 
-    @Operation(summary = "Eliminar enfermedad", description = "Elimina una enfermedad registrada del sistema.")
-    @ApiResponse(responseCode = "204", description = "Enfermedad eliminada exitosamente")
-    @ApiResponse(responseCode = "404", description = "Enfermedad no encontrada")
-    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar enfermedad",
+            description = "Elimina una enfermedad registrada del sistema.") @ApiResponse(responseCode = "204",
+                    description = "Enfermedad eliminada exitosamente") @ApiResponse(responseCode = "404",
+                            description = "Enfermedad no encontrada") @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         diseaseService.delete(id);
         return ResponseEntity.noContent().build();

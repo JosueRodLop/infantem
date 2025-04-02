@@ -105,7 +105,8 @@ public class Baby {
     private List<Allergen> allergen = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "user_baby", joinColumns = @JoinColumn(name = "baby_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(name = "user_baby", joinColumns = @JoinColumn(name = "baby_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Size(min = 1, max = 2, message = "A baby should have 1 or 2 users")
     private List<User> users = new ArrayList<>();
 }

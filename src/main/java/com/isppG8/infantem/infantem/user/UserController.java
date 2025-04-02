@@ -42,19 +42,22 @@ public class UserController {
         this.jwtUtils = jwtUtils;
     }
 
-    @Operation(summary = "Obtener todos los usuarios", description = "Recupera la lista de todos los usuarios.")
-    @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class)))
-    @PreAuthorize("hasAuthority('admin')")
-    @GetMapping
+    @Operation(summary = "Obtener todos los usuarios",
+            description = "Recupera la lista de todos los usuarios.") @ApiResponse(responseCode = "200",
+                    description = "Lista de usuarios obtenida exitosamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(
+                            implementation = UserDTO.class))) @PreAuthorize("hasAuthority('admin')") @GetMapping
     public List<UserDTO> getAllUsers() {
         List<UserDTO> users = this.userService.getAllUsers().stream().map(UserDTO::new).toList();
         return users;
     }
 
-    @Operation(summary = "Obtener un usuario por su ID", description = "Recupera los detalles de un usuario por su ID.")
-    @ApiResponse(responseCode = "200", description = "Usuario encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class)))
-    @ApiResponse(responseCode = "400", description = "El usuario no es el tuyo o no existe")
-    @GetMapping("/{id}")
+    @Operation(summary = "Obtener un usuario por su ID",
+            description = "Recupera los detalles de un usuario por su ID.") @ApiResponse(responseCode = "200",
+                    description = "Usuario encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class))) @ApiResponse(responseCode = "400",
+                                    description = "El usuario no es el tuyo o no existe") @GetMapping("/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable Long id,
             @RequestHeader(name = "Authorization") String token) {
 
@@ -73,10 +76,12 @@ public class UserController {
 
     }
 
-    @Operation(summary = "Actualizar un usuario por su ID", description = "Actualiza la información de un usuario por su ID.")
-    @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class)))
-    @ApiResponse(responseCode = "400", description = "El usuario no es el tuyo")
-    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar un usuario por su ID",
+            description = "Actualiza la información de un usuario por su ID.") @ApiResponse(responseCode = "200",
+                    description = "Usuario actualizado exitosamente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class))) @ApiResponse(responseCode = "400",
+                                    description = "El usuario no es el tuyo") @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails,
             @RequestHeader(name = "Authorization") String token) {
 
@@ -91,10 +96,11 @@ public class UserController {
 
     }
 
-    @Operation(summary = "Eliminar un usuario por su ID", description = "Elimina un usuario por su ID.")
-    @ApiResponse(responseCode = "200", description = "Usuario eliminado exitosamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class)))
-    @ApiResponse(responseCode = "400", description = "El usuario no es el tuyo")
-    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar un usuario por su ID", description = "Elimina un usuario por su ID.") @ApiResponse(
+            responseCode = "200", description = "Usuario eliminado exitosamente",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = MessageResponse.class))) @ApiResponse(responseCode = "400",
+                            description = "El usuario no es el tuyo") @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long id,
             @RequestHeader(name = "Authorization") String token) {
 

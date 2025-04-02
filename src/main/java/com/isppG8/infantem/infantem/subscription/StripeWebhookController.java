@@ -34,11 +34,12 @@ public class StripeWebhookController {
         this.endpointSecret = dotenv.get("STRIPE_WEBHOOK_SECRET");
     }
 
-    @Operation(summary = "Recibir eventos de webhook de Stripe", description = "Recibe eventos de Stripe para gestionar suscripciones y pagos.")
-    @ApiResponse(responseCode = "200", description = "Evento recibido correctamente")
-    @ApiResponse(responseCode = "400", description = "Falta la firma del webhook o firma inválida")
-    @ApiResponse(responseCode = "400", description = "Payload inválido")
-    @PostMapping
+    @Operation(summary = "Recibir eventos de webhook de Stripe",
+            description = "Recibe eventos de Stripe para gestionar suscripciones y pagos.") @ApiResponse(
+                    responseCode = "200",
+                    description = "Evento recibido correctamente") @ApiResponse(responseCode = "400",
+                            description = "Falta la firma del webhook o firma inválida") @ApiResponse(
+                                    responseCode = "400", description = "Payload inválido") @PostMapping
     public ResponseEntity<String> handleWebhook(@RequestBody String payload,
             @RequestHeader("Stripe-Signature") String sigHeader) throws StripeException {
         if (sigHeader == null) {
