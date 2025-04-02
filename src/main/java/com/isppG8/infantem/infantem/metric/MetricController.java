@@ -44,9 +44,9 @@ public class MetricController {
 
     @GetMapping("/baby/{babyId}")
     public ResponseEntity<List<MetricDTO>> getAllMetricsByBabyId(@PathVariable Integer babyId) {
-        List<MetricDTO> metrics = metricService.getAllMetricsByBabyId(babyId).stream()
-                .map(metric -> new MetricDTO(metric.getId(), metric.getWeight(), metric.getHeight(),
-                        metric.getHeadCircumference(), metric.getArmCircumference()))
+        List<MetricDTO> metrics = metricService
+                .getAllMetricsByBabyId(babyId).stream().map(metric -> new MetricDTO(metric.getId(), metric.getWeight(),
+                        metric.getHeight(), metric.getHeadCircumference(), metric.getArmCircumference()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(metrics);
     }
