@@ -53,11 +53,4 @@ public class Metric {
     @NotNull
     @JoinColumn(name = "baby_id")
     private Baby baby;
-
-    public double getWeightForHeight() {
-        if (height <= 0) {
-            return 0; // Evitar división por cero
-        }
-        return weight / height;
-    }
 }
