@@ -57,8 +57,7 @@ public class ProductControllerTest {
         Page<Product> page = new PageImpl<>(List.of(product1, product2), PageRequest.of(0, 10), 2);
         Mockito.when(productService.getProducts(Mockito.any())).thenReturn(page);
 
-        mockMvc.perform(get("/api/v1/products?page=0&size=10"))
-                .andExpect(status().isOk())
+        mockMvc.perform(get("/api/v1/products?page=0&size=10")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(2)))
                 .andExpect(jsonPath("$.content[0].title", is("Producto 1")))
                 .andExpect(jsonPath("$.content[1].title", is("Producto 2")));
@@ -66,13 +65,11 @@ public class ProductControllerTest {
 
     @Test
     public void testGetAllProducts_InvalidPage_ShouldReturnBadRequest() throws Exception {
-        mockMvc.perform(get("/api/v1/products?page=-1&size=10"))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(get("/api/v1/products?page=-1&size=10")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void testGetAllProducts_ZeroSize_ShouldReturnBadRequest() throws Exception {
-        mockMvc.perform(get("/api/v1/products?page=0&size=0"))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(get("/api/v1/products?page=0&size=0")).andExpect(status().isBadRequest());
     }
 }

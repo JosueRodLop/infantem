@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {InfantemApplication.class, ProductService.class})
+@SpringBootTest(classes = { InfantemApplication.class, ProductService.class })
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
