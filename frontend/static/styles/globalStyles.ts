@@ -238,28 +238,29 @@ module.exports = StyleSheet.create({
   },
   navBar: {
     position: "absolute",
-    width: Platform.OS === "ios" ? "100%" : StatusBar.currentHeight,  // Ajuste para iPhone con notch
+    width: Platform.OS === "ios" ? "100%" : StatusBar.currentHeight, 
     left: 0,
     right: 0,
     zIndex: 10,
     backgroundColor: "rgb(0,122,255)",
-    height: 60, // Fija la altura en píxeles para evitar % inconsistentes
+    height: 60,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    paddingHorizontal: 15, // Mejor espaciado en móvil
-    elevation: 10, 
+    paddingHorizontal: 15,
+
+    // Sombra en iOS (más intensa y difuminada)
     shadowColor: "#000", 
-    shadowOffset: { width: 0, height: 4 }, 
-    shadowOpacity: 0.3, 
-    shadowRadius: 4, 
+    shadowOffset: { width: 0, height: 10 },  // Mucho más baja
+    shadowOpacity: 0.7,  // Más oscura
+    shadowRadius: 15,  // Mucho más difusa
+
+    // Sombra en Android (elevation más alto)
+    elevation: 25,  // Sombra mucho más intensa en Android
+    
     flexWrap: "wrap",
-  },
-  navBarImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
+},
+
   navText: {
     fontSize: width < 400 ? 14 : 16, // Reduce el tamaño en móviles pequeños
     fontWeight: "bold",

@@ -137,7 +137,7 @@ export default function SubscriptionWeb() {
             ) : (
             <>
                 <View>
-                    <Text>Para registrar tu pago en Stripe antes tendremos qeu asociar tu método de pago a un usuario, para ello, vamos a usar los datos de tu usuario en nuetsra aplicación</Text>
+                    <Text>Para registrar tu pago en Stripe antes tendremos que asociar tu método de pago a un usuario, para ello, vamos a usar los datos de tu usuario en nuestra aplicación</Text>
                     <TouchableOpacity onPress={() => setAccepted(!accepted)} style={{ flexDirection: "row", alignItems: "center", marginVertical: 10 }}>
                         <View style={{
                             width: 20,
