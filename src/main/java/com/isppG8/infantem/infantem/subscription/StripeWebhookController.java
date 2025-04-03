@@ -6,6 +6,10 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
 import io.github.cdimascio.dotenv.Dotenv;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Tag(name = "Stripe Webhook", description = "Gestión de eventos de webhook de Stripe")
 @RestController
 @RequestMapping("/stripe/webhook")
 public class StripeWebhookController {
@@ -29,7 +34,12 @@ public class StripeWebhookController {
         this.endpointSecret = dotenv.get("STRIPE_WEBHOOK_SECRET");
     }
 
-    @PostMapping
+    @Operation(summary = "Recibir eventos de webhook de Stripe",
+            description = "Recibe eventos de Stripe para gestionar suscripciones y pagos.") @ApiResponse(
+                    responseCode = "200",
+                    description = "Evento recibido correctamente") @ApiResponse(responseCode = "400",
+                            description = "Falta la firma del webhook o firma inválida") @ApiResponse(
+                                    responseCode = "400", description = "Payload inválido") @PostMapping
     public ResponseEntity<String> handleWebhook(@RequestBody String payload,
             @RequestHeader("Stripe-Signature") String sigHeader) throws StripeException {
         if (sigHeader == null) {
