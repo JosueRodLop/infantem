@@ -29,9 +29,12 @@ public class StripeWebhookController {
     public StripeWebhookController(SubscriptionInfantemService subscriptionService) {
         this.subscriptionService = subscriptionService;
 
-        // Cargar el secreto desde .env
-        Dotenv dotenv = Dotenv.load();
-        this.endpointSecret = dotenv.get("STRIPE_WEBHOOK_SECRET");
+        String webhook = System.getenv("STRIPE_WEBHOOK_SECRET");
+        if (webhook == null) {
+            Dotenv dotenv = Dotenv.load();
+            webhook = dotenv.get("STRIPE_WEBHOOK_SECRET");
+        }
+        this.endpointSecret = webhook;
     }
 
     @Operation(summary = "Recibir eventos de webhook de Stripe",
