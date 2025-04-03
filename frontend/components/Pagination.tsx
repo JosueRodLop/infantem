@@ -17,7 +17,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, page, setPage }) =>
               style={{
                 padding: 10,
                 margin: 5,
-                backgroundColor: num === page ? "#007AFF" : 'lightgray',
+                backgroundColor: num === page ? "#1565C0" : 'lightgray',
                 borderRadius: 5,
               }}
             >
