@@ -9,14 +9,18 @@ export default function MarketItemComponent({ item }: { item: MarketItem }) {
   return (
     <TouchableOpacity style={gs.card}>
       <View style={gs.row}>
-      {/* item.imageUrl && (
+      { item.imageUrl && (
         <View style={{ marginRight: 20 }}>
           <Image 
             source={{ uri: item.imageUrl }} 
             resizeMode="cover"
+            style={{
+              width: 100,
+              height: 100,
+            }}
           />
         </View>
-      ) */ }
+      )  }
         
         <View style={{ flex: 1 }}>
           <Text style={gs.cardTitle} numberOfLines={1}>{item.title}</Text>
