@@ -46,9 +46,9 @@ export default function Marketplace() {
   return (
     <View style={gs.container}>
       <Text style={{ color: "#1565C0", fontSize: 36, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>Tienda</Text>
-      <Text style={[gs.bodyText, { textAlign: "center",color:"#1565C0" }]}>Compra todos lo que necesites para tu bebé</Text>
+        <Text style={[gs.bodyText, { textAlign: "center",color:"#1565C0" }]}>Compra todos lo que necesites para tu bebé</Text>
 
-      <ScrollView>
+      <ScrollView style={{maxWidth:600}}>
         {marketItems.map((item, index) => (
           <MarketItemComponent key={index} item={item} />
         ))}
