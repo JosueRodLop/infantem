@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, ImageBackground, ScrollView, Image, TextInput } from "react-native";
 import { getToken } from "../../../utils/jwtStorage";
+import { Link, router } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -300,13 +301,13 @@ export default function BabyInfo() {
         </View>
 
         {/* LISTADO DE BEBÉS */}
-        <Text style={[gs.subHeaderText, { color: "#1565C0", marginBottom: 10, fontWeight: "bold" }]}>Mis bebés registrados</Text>
+        {!isEditing && (<Text style={[gs.subHeaderText, { color: "#1565C0", marginBottom: 10, fontWeight: "bold" }]}>Mis bebés registrados</Text>)}
 
-        {babies.length === 0 ? (
+        {babies.length === 0 ? !isEditing &&  (
           <Text style={{ textAlign: "center", color: "gray", fontSize: 16 }}>
             No hay bebés registrados aún.
           </Text>
-        ) : (
+        ) : !isEditing &&  (
           babies.map((baby) => (
             <View key={baby.id} style={[gs.card, { width: "100%", flexDirection: "row", alignItems: "center", padding: 15, marginBottom: 10 }]}>
               <Image
@@ -320,6 +321,12 @@ export default function BabyInfo() {
                 <Text style={gs.cardContent}>⚖️ Peso: {baby.weight} kg </Text>
                 <Text style={gs.cardContent}>📏 Altura: {baby.height} cm</Text>
               </View>
+              <View style={{ flexDirection: "column", gap: 10, marginRight: 20}}>
+                <TouchableOpacity style={[gs.mainButton, { backgroundColor: "green" }]} onPress={() => router.push("/baby/metricas")}>
+                  <Text style={gs.mainButtonText}>Métricas</Text>
+                </TouchableOpacity>
+              </View>
+
               <View style={{ flexDirection: "column", alignItems: "center", gap: 10 }}>
                 <TouchableOpacity style={gs.mainButton} onPress={() => handleEditBaby(baby)}>
                   <Text style={gs.mainButtonText}>Editar</Text>
@@ -328,6 +335,7 @@ export default function BabyInfo() {
                   <Text style={gs.mainButtonText}>Eliminar</Text>
                 </TouchableOpacity>
               </View>
+
             </View>
           ))
         )}
