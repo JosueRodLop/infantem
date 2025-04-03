@@ -44,7 +44,7 @@ module.exports = StyleSheet.create({
   },
 
   mainButton: {
-    backgroundColor: "#007AFF", 
+    backgroundColor: "#1565C0", 
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
@@ -63,14 +63,14 @@ module.exports = StyleSheet.create({
   secondaryButton: {
     backgroundColor: "white",
     borderWidth: 2,
-    borderColor: "#007AFF",
+    borderColor: "#1565C0",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
     alignItems: "center",
   },
   secondaryButtonText: {
-    color: "#007AFF",
+    color: "#1565C0",
     fontSize: 16,
     fontWeight: "bold",
   },
