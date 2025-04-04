@@ -6,34 +6,28 @@ import { useAuth } from "../../../context/AuthContext";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
+interface ScrollEvent {
+  nativeEvent: {
+    contentOffset: {
+      x: number;
+      y: number;
+    };
+  };
+}
+
 export default function Page() {
-  const [allRecommendedRecipes, setAllRecommendedRecipes] = useState<Recipe[]>([]);
-  const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
-  const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
-  const [allFilteredRecipes, setAllFilteredRecipes] = useState<Recipe[]>([]);
-  const [userFilteredRecipes, setUserFilteredRecipes] = useState<Recipe[]>([]);
-
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const [age, setAge] = useState<number | null>(null);
-
   const gs = require("../../../static/styles/globalStyles");
-
-  const { user, token } = useAuth();
-
-  const [activeIndex, setActiveIndex] = useState(0);
+  const { token } = useAuth();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
   const screenWidth = Dimensions.get('window').width;
 
-  interface ScrollEvent {
-    nativeEvent: {
-      contentOffset: {
-        x: number;
-        y: number;
-      };
-    };
-  }
+  const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
+  const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+
 
   useEffect(() => {
     fetchRecommendedRecipes();
@@ -49,46 +43,37 @@ export default function Page() {
         },
       });
 
-      if (response.ok) {
-        const recipesData = await response.json();
-        setAllRecommendedRecipes(recipesData);
-        // TODO: This must be changed. The pagination must be managed. This is a hot fix needed to have the application working.
-        // FIX THIS.
-        setAllFilteredRecipes(recipesData.content); 
-        return true;
-      } else {
-        return false;
-      }
+      if (!response.ok)
+        throw new Error("Error fetching recipes");
+
+      const recipesData = await response.json();
+      setRecommendedRecipes(recipesData.content);
+      return true;
+
     } catch (error) {
       console.error('Error fetching recipes: ', error);
-      setAllRecommendedRecipes([]);
-      setAllFilteredRecipes([]);
       return false;
     }
   };
 
   const fetchUserRecipes = async (): Promise<boolean> => {
     try {
-      let responseReceived = false;
-      if (token && user) {
-        const response = await fetch(`${apiUrl}/api/v1/recipes`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const recipesData = await response.json();
-          setUserRecipes(recipesData.content);
-          setUserFilteredRecipes(recipesData.content);
-          responseReceived = true;
-        }
-      }
-      return responseReceived ? true : false;
+      const response = await fetch(`${apiUrl}/api/v1/recipes`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok)
+        throw new Error("Error fetching recipes");
+
+      const recipesData = await response.json();
+      setUserRecipes(recipesData.content);
+      return true
+
     } catch (error) {
       console.error('Error fetching user recipes: ', error);
-      setUserRecipes([]);
-      setUserFilteredRecipes([]);
       return false;
     }
   };
@@ -179,7 +164,7 @@ export default function Page() {
 
 
 
-        {allFilteredRecipes.length === 0 ? (
+        {recommendedRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
           <View
@@ -196,7 +181,7 @@ export default function Page() {
             >
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 20, paddingHorizontal: 20 }}>
 
-                {allFilteredRecipes.map((recipe, index) => (
+                {recommendedRecipes.map((recipe, index) => (
                   <TouchableOpacity key={index} onPress={() => router.push(`/recipes/detail?recipeId=${recipe.id}`)}>
                     <View
                       key={index}
@@ -283,12 +268,12 @@ export default function Page() {
             </Link>
           </View>
 
-          {userFilteredRecipes.length === 0 ? (
+          {userRecipes.length === 0 ? (
             <Text style={{ color: "#1565C0" }}>No se encontraron recetas 😥 </Text>
           ) : (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 20, paddingHorizontal: 10, marginTop: 20 }}>
               {
-                userFilteredRecipes.map((recipe, index) => (
+                userRecipes.map((recipe, index) => (
                   <TouchableOpacity key={index} onPress={() => router.push(`/recipes/detail?recipeId=${recipe.id}`)}>
                     <View
                       key={index}
