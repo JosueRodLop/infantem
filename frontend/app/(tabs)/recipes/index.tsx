@@ -12,7 +12,6 @@ export default function Page() {
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
   const [allFilteredRecipes, setAllFilteredRecipes] = useState<Recipe[]>([]);
   const [userFilteredRecipes, setUserFilteredRecipes] = useState<Recipe[]>([]);
-  const [recommendedFilteredRecipes, setRecommendedFilteredRecipes] = useState<Recipe[]>([]);
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -37,11 +36,11 @@ export default function Page() {
   }
 
   useEffect(() => {
-    obtainAllRecommendedRecipes();
-    obtainUserRecipes();
+    fetchRecommendedRecipes();
+    fetchUserRecipes();
   }, []);
 
-  const obtainAllRecommendedRecipes = async (): Promise<boolean> => {
+  const fetchRecommendedRecipes= async (): Promise<boolean> => {
     try {
       const response = await fetch(`${apiUrl}/api/v1/recipes/recommended`, {
         method: 'GET',
@@ -68,7 +67,7 @@ export default function Page() {
     }
   };
 
-  const obtainUserRecipes = async (): Promise<boolean> => {
+  const fetchUserRecipes = async (): Promise<boolean> => {
     try {
       let responseReceived = false;
       if (token && user) {
@@ -94,52 +93,15 @@ export default function Page() {
     }
   };
 
-  const fetchRecommendedRecipes = async () => {
-    if (age === null) return;
-    try {
-      const response = await fetch(`${apiUrl}/api/v1/recipes/recommended/age/${age}`, {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Error al obtener recetas recomendadas");
-      }
-      const data = await response.json();
-      setRecommendedRecipes(data);
-      setRecommendedFilteredRecipes(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const handleSearch = (query: string) => {
+    // TODO: Add this
+  }
 
-    setSearchQuery(query);
-
-    const filteredAll = allRecommendedRecipes.filter((recipe: Recipe) =>
-      recipe.name.toLowerCase().includes(query.toLowerCase())
-    );
-    const filteredUser = userRecipes.filter((recipe: Recipe) =>
-      recipe.name.toLowerCase().includes(query.toLowerCase())
-    );
-    const filteredRecommended = recommendedRecipes.filter((recipe: Recipe) =>
-      recipe.name.toLowerCase().includes(query.toLowerCase())
-    );
-
-    setAllFilteredRecipes(filteredAll);
-    setUserFilteredRecipes(filteredUser);
-    setRecommendedFilteredRecipes(filteredRecommended);
-
-  };
 
   const handleScroll = (event: ScrollEvent) => {
     const slideIndex = Math.round(event.nativeEvent.contentOffset.x / screenWidth);
     setActiveIndex(slideIndex);
   };
-
   const goToSlide = (index: number) => {
     scrollRef.current?.scrollTo({ x: index * screenWidth, animated: true });
     setActiveIndex(index);
@@ -203,7 +165,7 @@ export default function Page() {
           }}
         >
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1565C0", marginRight: 10 }}>
-            Recetas Recomendadas por Nuestros Expertos
+            Recetas recomendadas por nuestros expertos
           </Text>
           <View
             style={{
@@ -290,88 +252,6 @@ export default function Page() {
 
           </View>
         )}
-
-
-        <View
-          style={{
-            width: "90%",
-            flexDirection: "row",
-            alignItems: "center",
-            marginLeft: "5%",
-            marginTop: 100,
-            marginBottom: 10,
-          }}
-        >
-          <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1565C0", marginRight: 10 }}>
-            Recetas recomendadas según la edad
-          </Text>
-          <View
-            style={{
-              flex: 1,
-              height: 2,
-              backgroundColor: "#1565C0",
-              opacity: 0.6,
-            }}
-          />
-        </View>
-
-        <View style={{ width: "100%", alignItems: "center", justifyContent: "center", marginTop: 50 }}>
-
-
-          <TextInput
-            style={[gs.input, { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1565C0", opacity: 0.8, width: "50%" }]}
-            placeholder="Introduce la edad de tu bebé en meses. Ej: 10"
-            keyboardType="numeric"
-            value={age !== null ? age.toString() : ""}
-            onChangeText={(text) => {
-              // Convierte el texto en número entero y lo guarda en el estado
-              const numericValue = parseInt(text.replace(/[^0-9]/g, ""), 10);
-              setAge(isNaN(numericValue) ? null : numericValue);
-            }}
-            onSubmitEditing={fetchRecommendedRecipes}
-            returnKeyType="done"
-          />
-
-          {recommendedFilteredRecipes.length === 0 ? (
-            <Text style={{ color: "#1565C0" }}>No se encontraron recetas 😥 </Text>
-          ) : (
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 20, paddingHorizontal: 10, marginTop: 20 }}>
-              {
-
-                recommendedFilteredRecipes.map((recipe, index) => (
-                  <TouchableOpacity key={index} onPress={() => router.push(`/recipes/detail?recipeId=${recipe.id}`)}>
-                    <View
-                      key={index}
-                      style={{
-                        width: 250,
-                        backgroundColor: "#fff",
-                        borderRadius: 10,
-                        overflow: "hidden",
-                        shadowColor: "#000",
-                        shadowOpacity: 0.1,
-                        shadowRadius: 6,
-                        elevation: 3,
-                        marginBottom: 30,
-                      }}>
-                      <Image
-                        source={require("frontend/assets/adaptive-icon.png")}
-                        style={{ width: "100%", height: 150 }}
-                        resizeMode="cover"
-                      />
-                      {/* Contenido */}
-                      <View style={{ padding: 12 }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 4 }}>
-                          {recipe.name}
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-            </View>
-          )}
-        </View>
-        
-
 
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
 
