@@ -21,6 +21,7 @@ export default function Page() {
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
   const screenWidth = Dimensions.get('window').width;
+  const cardWidth = screenWidth < 500 ? 170 : 250;
 
   const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
@@ -186,7 +187,7 @@ export default function Page() {
                     <View
                       key={index}
                       style={{
-                        width: 250,
+                        width: cardWidth,
                         backgroundColor: "#fff",
                         borderRadius: 10,
                         overflow: "hidden",
@@ -278,7 +279,7 @@ export default function Page() {
                     <View
                       key={index}
                       style={{
-                        width: 250,
+                        width: cardWidth,
                         backgroundColor: "#fff",
                         borderRadius: 10,
                         overflow: "hidden",
