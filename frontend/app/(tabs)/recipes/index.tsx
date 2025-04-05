@@ -3,6 +3,8 @@ import { Text, View, TextInput, ScrollView, Image, Dimensions, TouchableOpacity 
 import { Link, useRouter } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
 import { useAuth } from "../../../context/AuthContext";
+import { RecipeFilter } from "../../../types";
+import RecipeFilterComponent from "../../../components/RecipeFilter";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -27,8 +29,7 @@ export default function Page() {
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-
+  const [filters, setFilters] = useState<RecipeFilter>({});
 
   useEffect(() => {
     fetchRecommendedRecipes();
@@ -97,55 +98,26 @@ export default function Page() {
 
     <View style={{ flex: 1, backgroundColor: "#E3F2FD" }}>
       <ScrollView contentContainerStyle={{ padding: 0, paddingBottom: 0 }}>
-        <View
-          style={{
-            width: "90%",
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            borderRadius: 10,
-            padding: 20,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: 30,
-            marginBottom: 10,
-            marginLeft: "5%",
-          }}
-        >
+
+        <View style={{width: "90%", marginTop: 30, marginLeft: "5%"}}>
           <View style={{ flex: 1 }}>
             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
               <Text style={{ fontSize: 28, fontWeight: "bold", color: "#1565C0", marginRight: 10 }}>
                 Recetas
               </Text>
-
             </View>
             <Text style={{ fontSize: 16, color: "#1565C0" }}>
               Elige entre nuestra variedad de recetas
             </Text>
           </View>
-          <View style={{ flex: 1, alignItems: "flex-end" }}>
-            <View style={{ flexDirection: "row", width: "100%", backgroundColor: "white", alignItems: "center", borderWidth: 1, borderColor: "#1565C0", borderRadius: 8, opacity: 0.8, paddingHorizontal: 10 }}>
-              <TextInput
-                style={{ flex: 1, padding: 12 }}
-                placeholder="Busca recetas... (Actualmente no disponible)"
-                value={searchQuery}
-                onChangeText={(text) => {
-                  setSearchQuery(text);
-                }}
-              /* onSubmitEditing={() => {
-                handleSearch(searchQuery);
-              }} */
-              />
-              <Image source={require("../../../static/images/MagnifyingGlass.png")} style={{ width: 40, height: 40, opacity: searchQuery.trim() === "" ? 1 : 1 }} />
-            </View>
-          </View>
         </View>
+
 
         <View
           style={{
-            width: "90%",
             flexDirection: "row",
             alignItems: "center",
-            marginLeft: "5%",
+            marginHorizontal:"5%",
             marginTop: 40,
             marginBottom: 10,
           }}
@@ -153,23 +125,17 @@ export default function Page() {
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1565C0", marginRight: 10 }}>
             Recetas recomendadas por nuestros expertos
           </Text>
-          <View
-            style={{
-              flex: 1,
-              height: 2,
-              backgroundColor: "#1565C0",
-              opacity: 0.6,
-            }}
-          />
+          <View style={{ flex: 1, height: 2, backgroundColor: "#1565C0", opacity: 0.6 }}/> 
         </View>
 
 
+        <RecipeFilterComponent filters={filters} setFilters={setFilters} />
 
         {recommendedRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
           <View
-            style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 20, width: "100%" }}
+            style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
           >
             <ScrollView
               ref={scrollRef}
@@ -178,9 +144,9 @@ export default function Page() {
               showsHorizontalScrollIndicator={false}
               onScroll={handleScroll}
               scrollEventThrottle={16}
-              style={{ paddingVertical: 50, marginLeft: 0, marginTop: 0 }}
+              style={{ marginHorizontal: "5%"}}
             >
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 20, paddingHorizontal: 20 }}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 20, paddingTop: 20 }}>
 
                 {recommendedRecipes.map((recipe, index) => (
                   <TouchableOpacity key={index} onPress={() => router.push(`/recipes/detail?recipeId=${recipe.id}`)}>
@@ -213,6 +179,7 @@ export default function Page() {
                 ))}
               </View>
             </ScrollView>
+    
             {/* Flecha Izq */}
             <TouchableOpacity
               onPress={() => goToSlide(activeIndex - 1)}
