@@ -112,7 +112,6 @@ export default function Page() {
           </View>
         </View>
 
-
         <View
           style={{
             flexDirection: "row",
@@ -206,30 +205,25 @@ export default function Page() {
           </View>
         )}
 
+
+        <View
+          style={{
+            flexDirection: "row",
+            marginHorizontal:"5%",
+            marginTop: 60,
+            marginBottom: 10,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1565C0", marginRight: 10 }}>
+            Todas tus recetas 
+          </Text>
+          <View style={{ flex: 1, height: 1, backgroundColor: "#1565C0", opacity: 0.6 }}/> 
+        </View>
+
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
 
-          <View
-            style={{
-              width: "90%",
-              flexDirection: "row",
-              alignItems: "center",
-              marginLeft: "5%",
-              marginTop: 40,
-              marginBottom: 10,
-            }}
-          >
-            <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1565C0", marginRight: 10 }}>
-              Todas tus recetas
-            </Text>
-            <View
-              style={{
-                flex: 1,
-                height: 2,
-                backgroundColor: "#1565C0",
-                opacity: 0.6,
-              }}
-            />
-          </View>
+
           <View style={{ gap: 10, marginVertical: 20, alignSelf: "flex-start", alignItems: "center", width: "100%" }}>
             <Link style={[gs.mainButton, { backgroundColor: "#1565C0" }]} href={"/recipes/add"}>
               <Text style={gs.mainButtonText}>Añade una receta</Text>
