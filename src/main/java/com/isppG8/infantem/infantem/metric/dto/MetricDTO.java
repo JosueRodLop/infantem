@@ -2,6 +2,9 @@ package com.isppG8.infantem.infantem.metric.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import java.time.LocalDate;
+
+import com.isppG8.infantem.infantem.baby.Baby;
 
 @Getter
 @Setter
@@ -11,18 +14,16 @@ public class MetricDTO {
     private Double height;
     private Double headCircumference;
     private Double armCircumference;
-    private Double weightForHeight;
+    private LocalDate date;
+    private Baby baby;
+    
 
-    public MetricDTO(Integer id, Double weight, Double height, Double headCircumference, Double armCircumference) {
+    public MetricDTO(Integer id, Double weight, Double height, Double headCircumference, Double armCircumference, LocalDate date) {
         this.id = id;
         this.weight = weight;
         this.height = height;
         this.headCircumference = headCircumference;
         this.armCircumference = armCircumference;
-        this.weightForHeight = calculateWeightForHeight();
-    }
-
-    private Double calculateWeightForHeight() {
-        return (height != null && height > 0) ? weight / height : 0;
+        this.date = date;
     }
 }
