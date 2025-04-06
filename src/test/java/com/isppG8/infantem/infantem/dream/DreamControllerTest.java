@@ -28,20 +28,19 @@ import com.isppG8.infantem.infantem.user.UserService;
 public class DreamControllerTest {
 
     @Autowired
-        private DreamController dreamController;
+    private DreamController dreamController;
 
-        @MockitoBean
-        private UserService userService;
+    @MockitoBean
+    private UserService userService;
 
-        @MockitoBean
-        private DreamService dreamService;
+    @MockitoBean
+    private DreamService dreamService;
 
-        @MockitoBean
-        private BabyRepository babyRepository;
+    @MockitoBean
+    private BabyRepository babyRepository;
 
-        @MockitoBean
-        private DreamRepository dreamRepository;
-
+    @MockitoBean
+    private DreamRepository dreamRepository;
 
     @Autowired
     public DreamControllerTest(DreamController dreamController, DreamService dreamService) {
@@ -72,7 +71,6 @@ public class DreamControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    
     @Test
     public void testCreateDream() {
         Dream dream = createSampleDream();
@@ -95,16 +93,15 @@ public class DreamControllerTest {
         User mockUser = dream.getBaby().getUsers().get(0);
         when(userService.findCurrentUser()).thenReturn(mockUser);
         when(dreamService.updateDream(eq(1L), any(Dream.class))).thenCallRealMethod();
-    
+
         doReturn(dream).when(dreamService).updateDream(eq(1L), any(Dream.class));
-    
+
         ResponseEntity<DreamDTO> response = dreamController.updateDream(1L, dream);
-    
+
         assertNotNull(response.getBody());
         assertEquals(dream.getDateEnd(), response.getBody().getDateEnd());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
-    
 
     @Test
     public void testDeleteDream() {
@@ -114,7 +111,6 @@ public class DreamControllerTest {
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
-    
 
     @Test
     public void testGetAllDreamsEmpty() {
@@ -125,7 +121,6 @@ public class DreamControllerTest {
         assertTrue(dreams.isEmpty(), "Dream list should be empty");
     }
 
-
     private Dream createSampleDream() {
         Dream dream = new Dream();
         dream.setId(1L);
@@ -135,17 +130,14 @@ public class DreamControllerTest {
         dream.setDreamType(DreamType.DEEP);
 
         User user = new User();
-        user.setId((int)1L);
+        user.setId((int) 1L);
 
         Baby baby = new Baby();
         baby.setId(1);
         baby.setUsers(List.of(user));
         dream.setBaby(baby);
-    
+
         return dream;
     }
-    
-    
-    
-}
 
+}
