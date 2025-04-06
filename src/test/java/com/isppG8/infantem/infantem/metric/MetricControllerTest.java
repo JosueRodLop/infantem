@@ -50,10 +50,8 @@ public class MetricControllerTest {
         Mockito.when(metricService.getMetricById(1L)).thenReturn(metric);
 
         // Hacemos la petición al endpoint correcto con el ID
-        mockMvc.perform(get("/api/v1/metrics/" + metric.getId())  // Nota el /1 al final
-                .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.armCircumference", is(17.1)));
+        mockMvc.perform(get("/api/v1/metrics/" + metric.getId()) // Nota el /1 al final
+                .header("Authorization", "Bearer " + token)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.armCircumference", is(17.1)));
     }
 }
