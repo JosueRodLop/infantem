@@ -322,7 +322,7 @@ export default function BabyInfo() {
                 <Text style={gs.cardContent}>📏 Altura: {baby.height} cm</Text>
               </View>
               <View style={{ flexDirection: "column", gap: 10, marginRight: 20}}>
-                <TouchableOpacity style={[gs.mainButton, { backgroundColor: "green" }]} onPress={() => router.push("/baby/metricas")}>
+                <TouchableOpacity style={[gs.mainButton, { backgroundColor: "green" }]} onPress={() => router.push(`/baby/metricas?babyId=${baby.id}`)}>
                   <Text style={gs.mainButtonText}>Métricas</Text>
                 </TouchableOpacity>
               </View>
