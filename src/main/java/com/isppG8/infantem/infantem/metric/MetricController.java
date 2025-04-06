@@ -54,7 +54,7 @@ public class MetricController {
             if (baby == null) {
                 return ResponseEntity.badRequest().build();
             }
-            
+
             // Crear y configurar la métrica
             Metric metric = new Metric();
             metric.setWeight(metricRequest.getWeight());

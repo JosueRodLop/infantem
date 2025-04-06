@@ -16,9 +16,9 @@ public class MetricDTO {
     private Double armCircumference;
     private LocalDate date;
     private Baby baby;
-    
 
-    public MetricDTO(Integer id, Double weight, Double height, Double headCircumference, Double armCircumference, LocalDate date) {
+    public MetricDTO(Integer id, Double weight, Double height, Double headCircumference, Double armCircumference,
+            LocalDate date) {
         this.id = id;
         this.weight = weight;
         this.height = height;
