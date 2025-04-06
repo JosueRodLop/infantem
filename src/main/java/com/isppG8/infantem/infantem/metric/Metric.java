@@ -43,7 +43,7 @@ public class Metric {
     private Double headCircumference;
 
     @Min(0)
-    @Max(30)
+    @Max(21)
     private Double armCircumference;
 
     @PastOrPresent
