@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isppG8.infantem.infantem.baby.Baby;
 import com.isppG8.infantem.infantem.baby.BabyService;
-import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
-import com.isppG8.infantem.infantem.exceptions.ResourceNotOwnedException;
 import com.isppG8.infantem.infantem.metric.dto.MetricDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
