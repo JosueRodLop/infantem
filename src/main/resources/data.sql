@@ -99,7 +99,17 @@ INSERT INTO recipe_table(max_recommended_age, min_recommended_age, user_id, desc
 (7, 5, 1, 'Puré de lentejas con zanahoria', 'Cocinar lentejas y zanahoria, triturar.', 'Lentejas, zanahoria', 'Puré de Lentejas', 'a'),
 (10, 7, null, 'Pescado blanco al vapor con verduras', 'Cocinar pescado blanco y verduras al vapor.', 'Pescado blanco, verduras', 'Pescado al Vapor', 'a'),
 (12, 9, null, 'Mini hamburguesas de ternera', 'Carne de ternera picada, formar mini hamburguesas y cocinar a la plancha.', 'Ternera picada', 'Mini Hamburguesas', 'a'),
-(11, 8, null, 'Pasta corta con verduras', 'Cocinar pasta corta, mezclar con verduras al vapor y triturar ligeramente.', 'Pasta corta, verduras', 'Pasta con Verduras', 'a');
+(11, 8, null, 'Pasta corta con verduras', 'Cocinar pasta corta, mezclar con verduras al vapor y triturar ligeramente.', 'Pasta corta, verduras', 'Pasta con Verduras', 'a'),
+(12, 9, null, 'Mini hamburguesas de ternera', 'Carne de ternera picada, formar mini hamburguesas y cocinar a la plancha.', 'Ternera picada', 'Mini Hamburguesas', 'a'),
+(9, 6, null, 'Cocer brócoli y patata al vapor, triturar hasta obtener una crema suave.', 'Cocer brócoli y patata al vapor, triturar.', 'Brócoli, patata', 'Crema de Brócoli y Patata', 'a'),
+(10, 7, null, 'Cocer calabacín y arroz, triturar hasta conseguir una papilla homogénea.', 'Cocer calabacín y arroz, triturar.', 'Calabacín, arroz', 'Papilla de Calabacín y Arroz', 'a'),
+(11, 8, null, 'Saltear calabaza y lentejas cocidas, triturar para obtener un puré.', 'Cocer calabaza y lentejas, triturar.', 'Calabaza, lentejas', 'Puré de Calabaza y Lentejas', 'a'),
+(12, 9, null, 'Hervir pasta pequeña con brócoli y triturar ligeramente.', 'Cocer pasta pequeña y brócoli, triturar.', 'Pasta pequeña, brócoli', 'Pasta con Brócoli', 'a'),
+(9, 7, null, 'Cocer pera y ciruela, triturar para obtener una compota suave.', 'Cocer pera y ciruela, triturar.', 'Pera, ciruela', 'Compota de Pera y Ciruela', 'a'),
+(10, 7, null, 'Cocer arroz con leche vegetal y manzana, triturar.', 'Cocer arroz con leche vegetal y manzana, triturar.', 'Arroz, leche vegetal, manzana', 'Papilla de Arroz y Manzana', 'a'),
+(11, 8, null, 'Cocer garbanzos y calabacín, triturar para formar un puré.', 'Cocer garbanzos y calabacín, triturar.', 'Garbanzos, calabacín', 'Puré de Garbanzos y Calabacín', 'a'),
+(12, 9, null, 'Tostar pan integral, untar con aguacate y huevo cocido triturado.', 'Tostar pan integral, untar con aguacate y huevo cocido.', 'Pan integral, aguacate, huevo', 'Tostada Nutritiva', 'a');
+
 
 -- Inserción de anuncios
 INSERT INTO advertisement_table(company_name, title, target_url, photo_route, time_seen, total_clicks, max_minutes, is_completed) VALUES 
