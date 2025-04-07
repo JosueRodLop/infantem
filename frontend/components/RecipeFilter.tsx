@@ -90,6 +90,7 @@ const RecipeFilterComponent = ({ filters, setFilters, onApplyFilters }: RecipeFi
 
   const handleReset = () => {
     setFilters({});
+    onApplyFilters({});
   };
 
   return (

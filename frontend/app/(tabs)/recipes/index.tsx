@@ -138,7 +138,7 @@ export default function Page() {
               <Text style={{ color: "#757575", marginRight: 8 }}>🔍</Text>
               <TextInput 
                 placeholder="Buscar por título de receta" 
-                style={{ flex: 1, fontSize: 16 }} 
+                style={{ flex: 1, fontSize: 14 }} 
                 onChangeText={(text) => setFilters({ ...filters, name: text })} 
                 placeholderTextColor="#9E9E9E" 
                 selectionColor="#1565C0"
@@ -151,12 +151,30 @@ export default function Page() {
                   paddingVertical: 8,
                   paddingHorizontal: 12,
                   borderRadius: 6,
-                  marginLeft: 8
                 }}
                 onPress={() => fetchRecommendedRecipes(filters)}
                 >
                 <Text style={{ color: "white", fontWeight: "500" }}>Buscar</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                  style={{
+                    backgroundColor: "white",
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginLeft: 8,
+                    borderWidth: 1,
+                    borderColor: "#E0E0E0"
+                  }}
+                  onPress={() => {
+                    setFilters({});
+                    fetchRecommendedRecipes({}); 
+                  }}
+                >
+              <Text style={{ color: "#757575", fontSize: 16 }}>✕</Text>
+            </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -256,7 +274,7 @@ export default function Page() {
             <Text style={{ color: "#757575", marginRight: 8 }}>🔍</Text>
             <TextInput 
               placeholder="Buscar por título de receta" 
-              style={{ flex: 1, fontSize: 16 }} 
+              style={{ flex: 1, fontSize: 14 }} 
               onChangeText={(text) => setUserRecipesSearchQuery(text)}
               placeholderTextColor="#9E9E9E" 
               selectionColor="#1565C0"
