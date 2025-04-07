@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Text, View, TextInput, ScrollView, Image, Dimensions, TouchableOpacity } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { Recipe } from "../../../types/Recipe";
@@ -9,20 +9,11 @@ import Pagination from "../../../components/Pagination";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-interface ScrollEvent {
-  nativeEvent: {
-    contentOffset: {
-      x: number;
-      y: number;
-    };
-  };
-}
 
 export default function Page() {
   const gs = require("../../../static/styles/globalStyles");
   const { token } = useAuth();
   const router = useRouter();
-  const scrollRef = useRef<ScrollView>(null);
   const screenWidth = Dimensions.get('window').width;
   const cardWidth = screenWidth < 500 ? 170 : 250;
 
@@ -33,15 +24,18 @@ export default function Page() {
   const [recommendedPage, setRecommendedPage] = useState<number>(1);
   const [recommendedTotalPages, setRecommendedTotalPages] = useState<number | null>(null);
 
-  const [activeIndex, setActiveIndex] = useState(0);
   const [filters, setFilters] = useState<RecipeFilter>({});
   const [userRecipesSearchQuery, setUserRecipesSearchQuery] = useState<string | undefined>();
 
 
   useEffect(() => {
     fetchRecommendedRecipes(filters);
+  }, [recommendedPage]);
+
+  useEffect(() => {
     fetchUserRecipes();
-  }, []);
+  }, [userPage]);
+
 
   const fetchRecommendedRecipes = async (filters: RecipeFilter): Promise<boolean> => {
 
@@ -110,15 +104,6 @@ export default function Page() {
       console.error('Error fetching user recipes: ', error);
       return false;
     }
-  };
-
-  const handleScroll = (event: ScrollEvent) => {
-    const slideIndex = Math.round(event.nativeEvent.contentOffset.x / screenWidth);
-    setActiveIndex(slideIndex);
-  };
-  const goToSlide = (index: number) => {
-    scrollRef.current?.scrollTo({ x: index * screenWidth, animated: true });
-    setActiveIndex(index);
   };
 
   return (
@@ -197,15 +182,11 @@ export default function Page() {
         {recommendedRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
         ) : (
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
-          >
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <ScrollView
-              ref={scrollRef}
               horizontal
               pagingEnabled
-              showsHorizontalScrollIndicator={false}
-              onScroll={handleScroll}
+              showsHorizontalScrollIndicator={true}
               scrollEventThrottle={16}
               style={{ marginHorizontal: "5%"}}
             >
@@ -217,6 +198,7 @@ export default function Page() {
                       key={index}
                       style={{
                         width: cardWidth,
+                        minHeight: 230,
                         backgroundColor: "#fff",
                         borderRadius: 10,
                         overflow: "hidden",
@@ -243,35 +225,14 @@ export default function Page() {
               </View>
             </ScrollView>
     
-            {/* Flecha Izq */}
-            <TouchableOpacity
-              onPress={() => goToSlide(activeIndex - 1)}
-              style={{ position: 'absolute', right: 0, width: "60%", top: '90%', zIndex: 1 }}
-            >
-              <Image
-                source={require('../../../static/images/left-arrow.png')}
-                style={{ width: 50, height: 50 }}
-              />
-            </TouchableOpacity>
-
-            {/* Flecha derecha */}
-            <TouchableOpacity
-              onPress={() => goToSlide(activeIndex + 1)}
-              style={{ position: 'absolute', right: "-55%", width: "100%", top: '90%', zIndex: 1, marginBottom: 20 }}
-            >
-              <Image
-                source={require('../../../static/images/rigth-arrow.png')}
-                style={{ width: 50, height: 50 }}
-              />
-            </TouchableOpacity>
           </View>
         )}
 
-        {recommendedTotalPages && recommendedTotalPages > 1 && (
+        {recommendedTotalPages && (
           <Pagination 
           totalPages={recommendedTotalPages} 
           page={recommendedPage} 
-          setPage={setRecommendedTotalPages} 
+          setPage={setRecommendedPage} 
           />
         )}
 
@@ -352,6 +313,7 @@ export default function Page() {
                       key={index}
                       style={{
                         width: cardWidth,
+                        minHeight: 230,
                         backgroundColor: "#fff",
                         borderRadius: 10,
                         overflow: "hidden",
@@ -381,7 +343,7 @@ export default function Page() {
             <Pagination 
             totalPages={userTotalPages} 
             page={userPage} 
-            setPage={setUserTotalPages} 
+            setPage={setUserPage} 
             />
           )}
         </View>
