@@ -5,6 +5,7 @@ import { Recipe } from "../../../types/Recipe";
 import { useAuth } from "../../../context/AuthContext";
 import { RecipeFilter } from "../../../types";
 import RecipeFilterComponent from "../../../components/RecipeFilter";
+import Pagination from "../../../components/Pagination";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -26,11 +27,16 @@ export default function Page() {
   const cardWidth = screenWidth < 500 ? 170 : 250;
 
   const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
+  const [userPage, setUserPage] = useState<number>(1);
+  const [userTotalPages, setUserTotalPages] = useState<number | null>(null);
   const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
+  const [recommendedPage, setRecommendedPage] = useState<number>(1);
+  const [recommendedTotalPages, setRecommendedTotalPages] = useState<number | null>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [filters, setFilters] = useState<RecipeFilter>({});
   const [userRecipesSearchQuery, setUserRecipesSearchQuery] = useState<string | undefined>();
+
 
   useEffect(() => {
     fetchRecommendedRecipes(filters);
@@ -56,7 +62,7 @@ export default function Page() {
     });
     
     const queryString = queryParams.toString();
-    const url = `${apiUrl}/api/v1/recipes/recommended${queryString ? `?${queryString}` : ''}`;
+    const url = `${apiUrl}/api/v1/recipes/recommended?page=${recommendedPage-1}${queryString ? `&${queryString}` : ''}`;
 
     try {
       const response = await fetch(url, {
@@ -71,6 +77,7 @@ export default function Page() {
 
       const recipesData = await response.json();
       setRecommendedRecipes(recipesData.content);
+      setRecommendedTotalPages(recipesData.totalPages);
       return true;
 
     } catch (error) {
@@ -81,7 +88,7 @@ export default function Page() {
 
   const fetchUserRecipes = async (searchQuery?: string): Promise<boolean> => {
 
-    const url = `${apiUrl}/api/v1/recipes${searchQuery? `?name=${searchQuery}` : ''}`;
+    const url = `${apiUrl}/api/v1/recipes?page=${userPage-1}${searchQuery? `&name=${searchQuery}` : ''}`;
 
     try {
       const response = await fetch(url, {
@@ -96,6 +103,7 @@ export default function Page() {
 
       const recipesData = await response.json();
       setUserRecipes(recipesData.content);
+      setUserTotalPages(recipesData.totalPages);
       return true
 
     } catch (error) {
@@ -256,11 +264,16 @@ export default function Page() {
                 style={{ width: 50, height: 50 }}
               />
             </TouchableOpacity>
-
-
           </View>
         )}
 
+        {recommendedTotalPages && recommendedTotalPages > 1 && (
+          <Pagination 
+          totalPages={recommendedTotalPages} 
+          page={recommendedPage} 
+          setPage={setRecommendedTotalPages} 
+          />
+        )}
 
         <View
           style={{
@@ -363,6 +376,13 @@ export default function Page() {
                   </TouchableOpacity>
                 ))}
             </View>
+          )}
+          {userTotalPages && userTotalPages > 1 && (
+            <Pagination 
+            totalPages={userTotalPages} 
+            page={userPage} 
+            setPage={setUserTotalPages} 
+            />
           )}
         </View>
       </ScrollView>

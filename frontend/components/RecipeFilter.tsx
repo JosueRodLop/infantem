@@ -23,6 +23,7 @@ const RecipeFilterComponent = ({ filters, setFilters, onApplyFilters }: RecipeFi
   const [expanded, setExpanded] = useState(false);
   const animatedHeight = useState(new Animated.Value(0))[0];
 
+  // Yeah, the animation code is a bit messy; but trust me, it looked way bad without it.
   const toggleExpand = () => {
     const toValue = expanded ? 0 : 1;
     Animated.timing(animatedHeight, {
