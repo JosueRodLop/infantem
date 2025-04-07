@@ -13,9 +13,10 @@ import { RecipeFilter } from '../types';
 type RecipeFilterProps = {
   filters: RecipeFilter;
   setFilters: React.Dispatch<React.SetStateAction<RecipeFilter>>;
+  onApplyFilters: (filters: any) => void; 
 };
 
-const RecipeFilterComponent = ({ filters, setFilters }: RecipeFilterProps) => {
+const RecipeFilterComponent = ({ filters, setFilters, onApplyFilters }: RecipeFilterProps) => {
   const [ingredient, setIngredient] = useState('');
   const [allergen, setAllergen] = useState('');
   
@@ -207,7 +208,7 @@ const RecipeFilterComponent = ({ filters, setFilters }: RecipeFilterProps) => {
               <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
                 <Text style={styles.resetButtonText}>Restablecer</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.applyButton} onPress={() => setFilters({ ...filters })}>
+              <TouchableOpacity style={styles.applyButton} onPress={() => onApplyFilters(filters)}> 
                 <Text style={styles.applyButtonText}>Aplicar filtros</Text>
               </TouchableOpacity>
             </View>

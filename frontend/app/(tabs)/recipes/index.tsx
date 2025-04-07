@@ -180,7 +180,7 @@ export default function Page() {
         </View>
 
 
-        <RecipeFilterComponent filters={filters} setFilters={setFilters} />
+        <RecipeFilterComponent filters={filters} setFilters={setFilters} onApplyFilters={fetchRecommendedRecipes} />
 
         {recommendedRecipes.length === 0 ? (
           <Text>No se encontraron recetas.</Text>
