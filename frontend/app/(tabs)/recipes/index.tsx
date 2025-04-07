@@ -30,6 +30,7 @@ export default function Page() {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [filters, setFilters] = useState<RecipeFilter>({});
+  const [userRecipesSearchQuery, setUserRecipesSearchQuery] = useState<string | undefined>();
 
   useEffect(() => {
     fetchRecommendedRecipes(filters);
@@ -78,9 +79,12 @@ export default function Page() {
     }
   };
 
-  const fetchUserRecipes = async (): Promise<boolean> => {
+  const fetchUserRecipes = async (searchQuery?: string): Promise<boolean> => {
+
+    const url = `${apiUrl}/api/v1/recipes${searchQuery? `?name=${searchQuery}` : ''}`;
+
     try {
-      const response = await fetch(`${apiUrl}/api/v1/recipes`, {
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -137,7 +141,7 @@ export default function Page() {
               Elige entre nuestra variedad de recetas
             </Text>
             
-            <View style={{ borderRadius: 8, padding: 12, flexDirection: "row", borderWidth: 1, borderColor: "#E0E0E0" }}>
+            <View style={{ borderRadius: 8, padding: 12, alignItems:"center", flexDirection: "row", borderWidth: 1, borderColor: "#E0E0E0" }}>
               <Text style={{ color: "#757575", marginRight: 8 }}>🔍</Text>
               <TextInput 
                 placeholder="Buscar por título de receta" 
@@ -274,7 +278,49 @@ export default function Page() {
         </View>
 
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", }}>
-
+          <View style={{ borderRadius: 8, padding: 12, alignItems:"center", flexDirection: "row", backgroundColor: "white"}}>
+            <Text style={{ color: "#757575", marginRight: 8 }}>🔍</Text>
+            <TextInput 
+              placeholder="Buscar por título de receta" 
+              style={{ flex: 1, fontSize: 16 }} 
+              onChangeText={(text) => setUserRecipesSearchQuery(text)}
+              placeholderTextColor="#9E9E9E" 
+              selectionColor="#1565C0"
+              returnKeyType="search"
+              onSubmitEditing={() => fetchUserRecipes(userRecipesSearchQuery)}
+            /> 
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#1565C0",
+                paddingVertical: 8,
+                paddingHorizontal: 12,
+                borderRadius: 6,
+                marginLeft: 8
+              }}
+              onPress={() => fetchUserRecipes(userRecipesSearchQuery)}
+              >
+              <Text style={{ color: "white", fontWeight: "500" }}>Buscar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "white",
+                width: 32,
+                height: 32,
+                borderRadius: 16,
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 8,
+                borderWidth: 1,
+                borderColor: "#E0E0E0"
+              }}
+              onPress={() => {
+                setUserRecipesSearchQuery(undefined);
+                fetchUserRecipes(); 
+              }}
+            >
+              <Text style={{ color: "#757575", fontSize: 16 }}>✕</Text>
+            </TouchableOpacity>
+          </View>
 
           <View style={{ gap: 10, marginVertical: 20, alignSelf: "flex-start", alignItems: "center", width: "100%" }}>
             <Link style={[gs.mainButton, { backgroundColor: "#1565C0" }]} href={"/recipes/add"}>
