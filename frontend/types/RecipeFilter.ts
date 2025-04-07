@@ -1,5 +1,5 @@
 export type RecipeFilter = {
-  searchQuery?: string;
+  name?: string;
   maxAge?: number;
   minAge?: number;
   ingredients?: string[];

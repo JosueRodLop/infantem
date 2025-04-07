@@ -8,8 +8,14 @@ import {
   StyleSheet,
   Animated,
 } from 'react-native';
+import { RecipeFilter } from '../types';
 
-const RecipeFilterComponent = ({ filters, setFilters }) => {
+type RecipeFilterProps = {
+  filters: RecipeFilter;
+  setFilters: React.Dispatch<React.SetStateAction<RecipeFilter>>;
+};
+
+const RecipeFilterComponent = ({ filters, setFilters }: RecipeFilterProps) => {
   const [ingredient, setIngredient] = useState('');
   const [allergen, setAllergen] = useState('');
   
@@ -28,7 +34,7 @@ const RecipeFilterComponent = ({ filters, setFilters }) => {
 
   const getActiveFiltersCount = () => {
     let count = 0;
-    if (filters.searchQuery) count++;
+    if (filters.name) count++;
     if (filters.minAge !== undefined) count++;
     if (filters.maxAge !== undefined) count++;
     if (filters.ingredients && filters.ingredients.length > 0) count++;
@@ -106,8 +112,8 @@ const RecipeFilterComponent = ({ filters, setFilters }) => {
               <TextInput
                 style={styles.input}
                 placeholder="Busca por el nombre de la receta..."
-                value={filters.searchQuery || ''}
-                onChangeText={(text) => setFilters({ ...filters, searchQuery: text })}
+                value={filters.name || ''}
+                onChangeText={(text) => setFilters({ ...filters, name: text })}
                 placeholderTextColor="#A0A0A0"
               />
             </View>
@@ -201,7 +207,7 @@ const RecipeFilterComponent = ({ filters, setFilters }) => {
               <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
                 <Text style={styles.resetButtonText}>Restablecer</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.applyButton} onPress={() => setFilters({ ...filters, page: 0 })}>
+              <TouchableOpacity style={styles.applyButton} onPress={() => setFilters({ ...filters })}>
                 <Text style={styles.applyButtonText}>Aplicar filtros</Text>
               </TouchableOpacity>
             </View>
