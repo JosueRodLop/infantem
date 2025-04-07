@@ -40,7 +40,10 @@ INSERT INTO baby_table (name, birth_date, genre, weight, height, head_circumfere
 ('María', '2023-02-01', 'FEMALE', 3.2, 48, 34, 'Leche'),
 ('Alicia', '2023-03-01', 'FEMALE', 3.8, 36, 36, 'Leche'),
 ('Bruno', '2023-04-01', 'MALE', 3.6, 41, 35, 'Leche'),
-('Carlos', '2023-05-01', 'MALE', 3.4, 49, 34, 'Leche');
+('Carlos', '2023-05-01', 'MALE', 3.4, 49, 34, 'Leche'),
+('Luffy', '2022-03-20', 'MALE', 3.4, 49, 34, 'Carne'),
+('Nami', '2024-01-02', 'FEMALE', 3.4, 49, 34, 'Dinero'),
+('Chopper', '2025-04-01', 'OTHER', 3.5, 51, 35, 'Algodón de azucar');
 
 -- Inserción de relaciones entre bebés y alérgenos
 INSERT INTO baby_allergen (allergen_id, baby_id) VALUES
@@ -73,7 +76,7 @@ INSERT INTO vaccine_table (type, vaccination_date, baby_id) VALUES
 
 -- Relación entre usuarios y bebés
 INSERT INTO user_baby (user_id, baby_id) VALUES
-(1, 1), (2, 2), (1,3);
+(1, 1), (2, 2), (1,3), (14,6), (14,7), (14,8);
 
 -- Inserción de hitos
 INSERT INTO milestone (name, description) VALUES
@@ -171,7 +174,10 @@ INSERT INTO metric_table (id, weight, height, head_circumference, arm_circumfere
 (7, 9.0, 75.0, 41, 16, '2025-04-03', 4),
 (8, 10.0, 80.0, 42, 17, '2025-04-04', 4),
 (9, 11.0, 85.0, 43, 18, '2025-04-03', 5),
-(10, 12.0, 90.0, 44, 19, '2025-04-04', 5);
+(10, 12.0, 90.0, 44, 19, '2025-04-04', 5),
+(11, 17.0, 100.0, 51, 17.5, '2025-04-04', 6),
+(12, 8.0, 73.0, 43.5, 13, '2025-04-05', 7),
+(13, 3.5, 51, 35, 12.5, '2025-04-06', 8);
 
 -- Inserción de productos
 
