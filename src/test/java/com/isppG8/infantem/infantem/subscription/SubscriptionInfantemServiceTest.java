@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import com.isppG8.infantem.infantem.auth.AuthoritiesService;
 import com.isppG8.infantem.infantem.config.StripeConfig;
 import com.isppG8.infantem.infantem.exceptions.ResourceNotFoundException;
 import com.isppG8.infantem.infantem.user.User;
@@ -32,6 +33,9 @@ public class SubscriptionInfantemServiceTest {
     private UserService userService;
 
     @Mock
+    private AuthoritiesService authoritiesService;
+
+    @Mock
     private StripeConfig stripeConfig;
 
     @InjectMocks
@@ -43,8 +47,8 @@ public class SubscriptionInfantemServiceTest {
         Stripe.apiKey = stripeConfig.getStripeApiKey();
 
         // Forzar la inyección manualmente si es necesario
-        subscriptionService = new SubscriptionInfantemService(subscriptionInfantemRepository, stripeConfig,
-                userService);
+        subscriptionService = new SubscriptionInfantemService(subscriptionInfantemRepository, stripeConfig, userService,
+                authoritiesService);
     }
 
     @Test

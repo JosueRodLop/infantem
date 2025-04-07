@@ -14,15 +14,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isppG8.infantem.infantem.user.User;
+import com.isppG8.infantem.infantem.user.UserService;
+
 @RestController
 @RequestMapping("api/v1/advertisements")
 public class AdvertisementController {
 
     private AdvertisementService advertisementService;
+    private UserService userService;
 
     @Autowired
-    public AdvertisementController(AdvertisementService advertisementService) {
+    public AdvertisementController(AdvertisementService advertisementService, UserService userService) {
         this.advertisementService = advertisementService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -45,6 +50,10 @@ public class AdvertisementController {
 
     @GetMapping("/toShow")
     public ResponseEntity<Advertisement> getAdvertisementToShow() {
+        User user = userService.findCurrentUser();
+        if (user.getAuthorities().equals("premium")) {
+            return null;
+        }
         Optional<Advertisement> adToShow = advertisementService.getAdvertisementToShow();
         return adToShow.map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
     }
