@@ -147,8 +147,8 @@ export function getHCGP(metrics: {headCircumference?: number}) {
             ],
             [
                 0.762,
-                0.503,
-                0.242
+                0.502,
+                0.241
             ],
             [
                 0.762,
@@ -160,10 +160,10 @@ export function getHCGP(metrics: {headCircumference?: number}) {
             ],
         ],
         metrica:[
-            20.4*(2*((metrics?.headCircumference ?? 31.5) < 31.5 ? 0 :
-            (metrics?.headCircumference ?? 31.5) > 42.5 ? 42.5 : (metrics?.headCircumference ?? 31.5)- 31.5)),
-            12*(2*((metrics?.headCircumference ?? 31.5) < 31.5 ? 0 :
-            (metrics?.headCircumference ?? 31.5) > 51 ? 51 : (metrics?.headCircumference ?? 31.5)- 31.5)),
+            42.45*((metrics?.headCircumference ?? 31.5) < 31.5 ? 0 :
+            (metrics?.headCircumference ?? 31.5) > 42.5 ? 42.5 : (metrics?.headCircumference ?? 31.5) - 31),
+            24*(((metrics?.headCircumference ?? 31.5) < 31.5 ? 0 :
+            (metrics?.headCircumference ?? 31.5) > 51 ? 51 : (metrics?.headCircumference ?? 31.5) - 30.5)),
             21.8*((metrics?.headCircumference ?? 32) < 32 ? 0 :
             (metrics?.headCircumference ?? 32) > 53.5 ? 53.5 : (metrics?.headCircumference ?? 32)- 32),
         ]
@@ -296,31 +296,9 @@ export function getHGP(metrics: {height?: number}) {
                 0.24,
             ],
             [
-                0.764,
-                0.742,
-                0.720,
-                0.698,
-                0.677,
-                0.655,
-                0.633,
-                0.611,
-                0.589,
-                0.567,
-                0.546,
-                0.524,
+                0.762,
                 0.502,
-                0.480,
-                0.458,
-                0.436,
-                0.414,
-                0.392,
-                0.370,
-                0.349,
-                0.327,
-                0.305,
-                0.283,
-                0.261,
-                0.240,
+                0.241
             ],
             [
                 0.764,
@@ -332,8 +310,8 @@ export function getHGP(metrics: {height?: number}) {
         metrica:[
             17.1* ((metrics?.height ?? 45) < 45 ? 0 : 
             (metrics?.height ?? 45) > 72.5 ? 72.5 :((metrics?.height ?? 45) - 45)),
-            9.55* ((metrics?.height ?? 45) < 45 ? 0 : 
-            (metrics?.height ?? 45) > 95 ? 95 : ((metrics?.height ?? 45) - 45)),
+            9.6* ((metrics?.height ?? 45) < 45 ? 0 : 
+            (metrics?.height ?? 45) > 95 ? 95 : ((metrics?.height ?? 45)  - 45)),
             12 * ((metrics?.height ?? 80) < 80 ? 0 : 
             (metrics?.height ?? 80) > 120 ? 120 : ((metrics?.height ?? 80) - 80))
         ]
@@ -415,8 +393,8 @@ export function getWBP(metrics: {weight?: number}) {
             ],
         ],
         metrica:[
-            50.8* ((metrics?.weight ?? 1) < 1 ? 0 : 
-            (metrics?.weight ?? 1) > 10.5 ? 10.5 : ((metrics?.weight ?? 1) - 1)),
+            56 * ((metrics?.weight ?? 1) < 1 ? 0 : 
+            (metrics?.weight ?? 1) > 10.5 ? 10.5 : ((metrics?.weight ?? 1) - 1.75)),
             30.4* ((metrics?.weight ?? 1) < 1 ? 0 : 
             (metrics?.weight ?? 1) > 16.5 ? 16.5 : ((metrics?.weight ?? 1) - 1)),
             29.83 * ((metrics?.weight ?? 8) < 8 ? 0 : 
@@ -466,31 +444,9 @@ export function getWGP(metrics: {weight?: number}) {
                 0.24,
             ],
             [
-                0.764,
-                0.742,
-                0.720,
-                0.698,
-                0.677,
-                0.655,
-                0.633,
-                0.611,
-                0.589,
-                0.567,
-                0.546,
-                0.524,
+                0.762,
                 0.502,
-                0.480,
-                0.458,
-                0.436,
-                0.414,
-                0.392,
-                0.370,
-                0.349,
-                0.327,
-                0.305,
-                0.283,
-                0.261,
-                0.240,
+                0.241
             ],
             [
                 0.764,
@@ -500,9 +456,9 @@ export function getWGP(metrics: {weight?: number}) {
             ],
         ],
         metrica:[
-            50.8* ((metrics?.weight ?? 1) < 1 ? 0 : 
-            (metrics?.weight ?? 1) > 10.5 ? 10.5 : ((metrics?.weight ?? 1) - 1)),
-            30.4* ((metrics?.weight ?? 1) < 1 ? 0 : 
+            56 * ((metrics?.weight ?? 1) < 1 ? 0 : 
+            (metrics?.weight ?? 1) > 10.5 ? 10.5 : ((metrics?.weight ?? 1) - 1.75)),
+            32.6* ((metrics?.weight ?? 1) < 1 ? 0 : 
             (metrics?.weight ?? 1) > 15.5 ? 15.5 : ((metrics?.weight ?? 1) - 1)),
             28.83 * ((metrics?.weight ?? 8) < 8 ? 0 : 
             (metrics?.weight ?? 1) > 25.5 ? 25.5 : ((metrics?.weight ?? 8) - 8.5))
@@ -530,14 +486,14 @@ export function getWFHBP(metrics: {weight?: number, height?: number}) {
         ],
         
         height:[
-            13.6* ((metrics?.height ?? 45) < 45 ? 0 : 
+            11.52* ((metrics?.height ?? 45) < 45 ? 0 : 
             (metrics?.height ?? 45) > 110 ? 110 : ((metrics?.height ?? 45) - 45)),
             13.6* ((metrics?.height ?? 45) < 45 ? 0 : 
             (metrics?.height ?? 45) > 120 ? 120 : ((metrics?.height ?? 65) - 65)),
         ],
         weight:[
-            20.8* ((metrics?.weight ?? 1) < 1 ? 0 : 
-            (metrics?.weight ?? 1) > 21 ? 21 : ((metrics?.weight ?? 1) - 1)),
+            21.8* ((metrics?.weight ?? 1) < 1 ? 0 : 
+            (metrics?.weight ?? 1) > 23 ? 23 : ((metrics?.weight ?? 1) - 1)),
             20.8* ((metrics?.weight ?? 5) < 5 ? 0 : 
             (metrics?.weight ?? 5) > 28 ? 28 : ((metrics?.weight ?? 5) - 5)),
         ]
@@ -564,14 +520,14 @@ export function getWFHGP(metrics: {weight?: number, height?: number}) {
         ],
         
         height:[
-            13.6* ((metrics?.height ?? 45) < 45 ? 0 : 
+            11.52* ((metrics?.height ?? 45) < 45 ? 0 : 
             (metrics?.height ?? 45) > 110 ? 110 : ((metrics?.height ?? 45) - 45)),
             13.6* ((metrics?.height ?? 45) < 45 ? 0 : 
             (metrics?.height ?? 45) > 120 ? 120 : ((metrics?.height ?? 65) - 65)),
         ],
         weight:[
-            20.8* ((metrics?.weight ?? 1) < 1 ? 0 : 
-            (metrics?.weight ?? 1) > 21 ? 21 : ((metrics?.weight ?? 1) - 1)),
+            21.8* ((metrics?.weight ?? 1) < 1 ? 0 : 
+            (metrics?.weight ?? 1) > 23 ? 23 : ((metrics?.weight ?? 1) - 1)),
             20.8* ((metrics?.weight ?? 5) < 5 ? 0 : 
             (metrics?.weight ?? 5) > 28 ? 28 : ((metrics?.weight ?? 5) - 5)),
         ]
