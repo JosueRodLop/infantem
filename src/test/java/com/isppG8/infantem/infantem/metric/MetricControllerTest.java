@@ -36,7 +36,7 @@ public class MetricControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private BabyService babyService; 
+    private BabyService babyService;
 
     @Autowired
     private MetricService metricService;
@@ -59,9 +59,7 @@ public class MetricControllerTest {
 
         // Hacemos la petición al endpoint correcto con el ID
         mockMvc.perform(get("/api/v1/metrics/" + metric.getId()) // Nota el /1 al final
-                .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.armCircumference", is(17.1)));
+                .header("Authorization", "Bearer " + token)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.armCircumference", is(17.1)));
     }
 }
