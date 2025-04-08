@@ -47,6 +47,12 @@ jobs:
       #   run: npm test -- --coverage # Ajusta el comando según tu configuración
       #   working-directory: ./frontend
 
+      - name: Mostrar contenido de sonar-project.properties # <--- AÑADE ESTE PASO
+        run: |
+          echo "--- Contenido de sonar-project.properties ---"
+          cat sonar-project.properties
+          echo "-------------------------------------------"
+
       - name: SonarCloud Scan
         # Usamos la acción SonarSource/sonarqube-scan-action
         # Reemplaza @v2.1.0 por la versión "Latest" que encuentres en el enlace de arriba
