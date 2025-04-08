@@ -47,15 +47,13 @@ jobs:
       #   run: npm test -- --coverage # Ajusta el comando según tu configuración
       #   working-directory: ./frontend
 
-      - name: Set up SonarScanner
-        uses: SonarSource/sonar-scanner-cli
-        with:
-          sonar-scanner-version: '7.1.0.4889'
-
-      - name: Análisis con SonarScanner CLI
+      - name: SonarCloud Scan
+        # Usamos la acción SonarSource/sonarqube-scan-action
+        # Reemplaza @v2.1.0 por la versión "Latest" que encuentres en el enlace de arriba
+        uses: SonarSource/sonarqube-scan-action@v2.1.0
         env:
+          # Token de SonarCloud (Obligatorio)
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # Token de GitHub (Necesario para decorar PRs en GitHub)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: sonar-scanner
 
-        
