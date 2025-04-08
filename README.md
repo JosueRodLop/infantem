@@ -12,8 +12,9 @@
 - [🚀 MVP – Producto Mínimo Viable](#-mvp--producto-mínimo-viable)
 - [💳 Comparativa entre Plan Básico y Plan Premium](#-comparativa-entre-plan-básico-y-plan-premium)
 - [🛠️ Tecnologías utilizadas](#️-tecnologías-utilizadas)
-- [👥 Equipo](#equipo)
+- [👥 Equipo](#-equipo)
 - [📦 Setup del Proyecto](#-setup-del-proyecto)
+- [📊 Métricas de Calidad (SonarCloud)](#-métricas-de-calidad-sonarcloud)
 - [🔗 Redes Sociales](#-redes-sociales)
 
 
