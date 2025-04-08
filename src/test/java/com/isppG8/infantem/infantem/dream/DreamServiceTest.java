@@ -160,6 +160,19 @@ public class DreamServiceTest {
 
         assertNotNull(result);
         assertEquals(expectedDates, result);
+
+        start = LocalDate.of(2023, 1, 31);
+        end = LocalDate.of(2023, 2, 1);
+
+        expectedDates = new HashSet<>(Arrays.asList(LocalDate.of(2023, 1, 31), LocalDate.of(2023, 2, 1)));
+
+        when(dreamRepository.findDreamDatesByBabyIdAndDate(eq(1), any(), any())).thenReturn(
+                Arrays.asList(new Tuple<>(LocalDateTime.of(2023, 1, 31, 22, 0), LocalDateTime.of(2023, 2, 1, 6, 0))));
+
+        result = dreamService.getDreamsByBabyIdAndDate(1, start, end);
+
+        assertNotNull(result);
+        assertEquals(expectedDates, result);
     }
 
     @Test
@@ -190,6 +203,11 @@ public class DreamServiceTest {
         doNothing().when(dreamRepository).deleteById(1L);
         dreamService.deleteDream(1L);
         verify(dreamRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    public void testDeleteDreamNotFound() {
+        assertThrows(ResourceNotFoundException.class, () -> dreamService.deleteDream(999L));
     }
 
     @Test
@@ -234,6 +252,27 @@ public class DreamServiceTest {
     }
 
     @Test
+    public void testUpdateNonExistingDream() {
+        User currentUser = new User();
+        Baby baby = dream.getBaby();
+        baby.setUsers(List.of(currentUser));
+
+        when(userService.findCurrentUser()).thenReturn(currentUser);
+        when(babyRepository.findById(1)).thenReturn(Optional.of(baby));
+        when(dreamRepository.findById(1L)).thenReturn(Optional.of(dream));
+        when(dreamRepository.save(any(Dream.class))).thenReturn(dream);
+
+        Dream updatedDetails = new Dream();
+        updatedDetails.setDateStart(LocalDateTime.of(2023, 4, 1, 21, 30));
+        updatedDetails.setDateEnd(LocalDateTime.of(2023, 4, 2, 6, 0));
+        updatedDetails.setNumWakeups(1);
+        updatedDetails.setDreamType(DreamType.DEEP);
+        updatedDetails.setBaby(baby);
+
+        assertThrows(ResourceNotFoundException.class, () -> dreamService.updateDream(999L, updatedDetails));
+    }
+
+    @Test
     public void testCreateDreamWithoutBabyAssociation() {
         Baby unassociatedBaby = new Baby();
         unassociatedBaby.setId(2);
@@ -272,6 +311,22 @@ public class DreamServiceTest {
         List<DreamSummary> result = dreamService.getDreamSummaryByBabyIdAndDate(999, day);
 
         assertTrue(result.isEmpty(), "Dream summary should be empty for non-existent baby.");
+    }
+
+    @Test
+    public void creeateInvalidDreamDate() {
+        Dream invalidDream = new Dream();
+        invalidDream.setNumWakeups(1);
+        invalidDream.setDreamType(DreamType.DEEP);
+
+        assertTrue(invalidDream.isDateValid());
+
+        invalidDream.setDateStart(LocalDateTime.now());
+        invalidDream.setDateEnd(null);
+        invalidDream.setNumWakeups(1);
+        invalidDream.setDreamType(DreamType.DEEP);
+
+        assertTrue(invalidDream.isDateValid());
     }
 
 }
