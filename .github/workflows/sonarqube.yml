@@ -48,7 +48,7 @@ jobs:
       #   working-directory: ./frontend
 
       - name: Set up SonarScanner
-        uses: SonarSource/sonar-scanner-setup@v2
+        uses: SonarSource/sonar-scanner-setup@v7.1.0.4889
 
       - name: Análisis con SonarScanner CLI
         env:
